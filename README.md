@@ -130,25 +130,67 @@ python -m http.server 3000
 
 ---
 
-## ⚙️ Konfigurasi Data & Spreadsheet Personal
+## ⚙️ Panduan Pengisian Link Spreadsheet & Nilai Fungsionaris
 
-Seluruh database fungsionaris berada pada array `staffList` di file [`app.js`](file:///c:/Users/thilm/.gemini/antigravity-ide/scratch/bem-fteic-evaluasi/app.js). Untuk memperbarui tautan Google Sheets atau PIN personal:
+Seluruh konfigurasi tautan spreadsheet dan data nilai fungsionaris diatur di dalam berkas [`app.js`](file:///c:/Users/thilm/.gemini/antigravity-ide/scratch/bem-fteic-evaluasi/app.js):
 
-```javascript
-{
-  "id": "staf-001",
-  "nama": "Hasan",
-  "role": "Kepala Departemen Dalam Negeri",
-  "roleCategory": "Pimpinan",
-  "departemenBEM": "DAGRI",
-  "departemenBEMFull": "Dalam Negeri",
-  "nrp": "5027231073",
-  "asalDepartemen": "Teknologi Informasi",
-  "pin": "PecintaKopi",
-  "foto": "assets/foto-staf/staf-001.jpg",
-  "sheetUrl": "https://docs.google.com/spreadsheets/d/1bCxdPG1rLqV7Il2ALjLsSvSnl8x-QNt7RstkudCPG1E/edit?usp=sharing"
-}
-```
+### 1. Cara Input Link Spreadsheet (Google Sheets)
+Terdapat 2 opsi praktis:
+- **Opsi A: Satu Link Master (Global untuk Seluruh Staf)**  
+  Jika seluruh fungsionaris mengisi di satu Google Spreadsheet utama (misal menggunakan tab sheet berbeda per orang atau form gabungan), cukup masukkan link-nya pada baris paling atas di `app.js`:
+  ```javascript
+  const MASTER_PA_SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/ID_SPREADSHEET_ANDA/edit?usp=sharing";
+  ```
+  *Jika `sheetUrl` individual staf kosong, tombol "Isi Lembar Spreadsheet" akan otomatis membuka link master ini.*
+
+- **Opsi B: Link Khusus per Fungsionaris**  
+  Jika masing-masing pengurus memiliki file spreadsheet pribadi tersendiri, isi langsung pada properti `"sheetUrl"` di dalam array `staffList`:
+  ```javascript
+  {
+    "id": "staf-001",
+    "nama": "Hasan",
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1bCxdPG1rLqV7Il2ALjLsSvSnl8x-QNt7RstkudCPG1E/edit?usp=sharing"
+  }
+  ```
+
+### 2. Cara Input Nilai-Nilai per Fungsionaris
+Secara bawaan (*default*), sistem telah menghitung skor objektif terkalibrasi secara otomatis (skala 0 - 10) lengkap dengan grafik Pie Chart 3D animasi untuk seluruh 94 anggota.
+
+Jika Biro Personalia ingin **memasukkan nilai manual hasil sidang evaluasi** untuk fungsionaris tertentu, cukup tambahkan properti `"customScores"` pada objek staf bersangkutan di `staffList`:
+
+- **Untuk Kabinet (Pimpinan, Wakapim, Kabiro - 7 Indikator):**
+  ```javascript
+  {
+    "id": "staf-001",
+    "nama": "Hasan",
+    "customScores": {
+      "Leadership": 9.5,
+      "Development": 9.2,
+      "Empowerment": 9.4,
+      "Coordination": 9.6,
+      "Representation": 9.8,
+      "Administration": 9.3,
+      "Exemplary": 9.7
+    }
+  }
+  ```
+
+- **Untuk Staf Departemen (6 Indikator):**
+  ```javascript
+  {
+    "id": "staf-020",
+    "nama": "Nama Staf",
+    "customScores": {
+      "Tanggung Jawab": 9.0,
+      "Adaptif": 8.8,
+      "Komunikatif": 9.2,
+      "Kerja Sama": 9.5,
+      "Fundamental": 8.9,
+      "Responsif": 9.1
+    }
+  }
+  ```
+*Sistem akan otomatis menghitung rata-rata, persentase capaian, predikat kinerja, dan merender grafik Pie Chart 3D sesuai nilai yang diinput.*
 
 ---
 

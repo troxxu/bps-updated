@@ -6,10 +6,35 @@
  * ==============================================================================
  */
 
+// ==============================================================================
+// 0. MASTER CONFIGURATION: GOOGLE SPREADSHEET FORM PA & PENILAIAN
+// ==============================================================================
+// CARA INPUT LINK SPREADSHEET:
+// 1. LINK GLOBAL / MASTER: Jika seluruh fungsionaris mengisi di satu Google Spreadsheet
+//    (atau spreadsheet master dengan tab masing-masing), masukkan link-nya di variabel di bawah ini:
+const MASTER_PA_SPREADSHEET_URL = ""; 
+// Contoh: "https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit?usp=sharing"
+
+// 2. LINK INDIVIDUAL PER FUNGSIONARIS:
+//    Setiap objek staf di dalam `staffList` memiliki properti `"sheetUrl": "..."`.
+//    Jika staf memiliki link Google Sheet pribadi tersendiri, isi pada `"sheetUrl"` masing-masing staf.
+//    Jika `"sheetUrl"` kosong (""), sistem otomatis menggunakan `MASTER_PA_SPREADSHEET_URL`.
+
+// 3. CARA INPUT NILAI-NILAI PER FUNGSIONARIS (CUSTOM SCORES):
+//    Secara default, nilai indikator dihitung otomatis oleh sistem rubrik resmi (0-10)
+//    lengkap dengan visualisasi Pie Chart 3D animasi.
+//    Jika Anda ingin memasukkan nilai manual/tetap untuk staf tertentu, cukup tambahkan properti:
+//    "customScores": {
+//       // Untuk Kabinet (Pimpinan / Kabiro):
+//       "Leadership": 9.5, "Development": 9.2, "Empowerment": 9.4,
+//       "Coordination": 9.6, "Representation": 9.8, "Administration": 9.3, "Exemplary": 9.7
+//       // Atau untuk Staf:
+//       "Tanggung Jawab": 9.0, "Adaptif": 8.8, "Komunikatif": 9.2,
+//       "Kerja Sama": 9.5, "Fundamental": 8.9, "Responsif": 9.1
+//    }
+// ==============================================================================
+
 // 1. DATA SELURUH ANGGOTA KABINET (94 ORANG)
-// Menggunakan Nama Departemen & Jabatan Lengkap Resmi (Tanpa Singkatan)
-// Dilengkapi Password Personal Masing-Masing Anggota.
-// Tautan spreadsheet saat ini berstatus 'On Progress' (akan segera diisi).
 const staffList = [
   {
     "id": "staf-001",
@@ -1501,12 +1526,18 @@ function getStaffRubricData(staff) {
   // Skor per indikator 0 - 10
   const items = rubricTemplate.map((item, idx) => {
     let score;
-    // Nilai terkalibrasi realistis (standar fungsionaris aktif ITS: 7.8 - 9.8)
-    const factor = ((seed * (idx + 7)) % 19) / 10;
-    score = Math.min(10.0, Math.max(7.8, 8.0 + factor));
+    // Cek jika ada custom scores yang diinput langsung per fungsionaris
+    if (staff.customScores && (typeof staff.customScores[item.name] === 'number' || typeof staff.customScores[item.key] === 'number')) {
+      score = typeof staff.customScores[item.name] === 'number' ? staff.customScores[item.name] : staff.customScores[item.key];
+      score = Math.min(10.0, Math.max(0.0, score));
+    } else {
+      // Nilai terkalibrasi realistis (standar fungsionaris aktif ITS: 7.8 - 9.8)
+      const factor = ((seed * (idx + 7)) % 19) / 10;
+      score = Math.min(10.0, Math.max(7.8, 8.0 + factor));
 
-    if (isKabinet && idx === 0) score = Math.max(8.8, score);
-    if (isKabinet && idx === 2) score = Math.max(9.0, score);
+      if (isKabinet && idx === 0) score = Math.max(8.8, score);
+      if (isKabinet && idx === 2) score = Math.max(9.0, score);
+    }
 
     let levelKey = "9-10";
     let levelBadge = "Sangat Baik (9-10)";
@@ -1539,10 +1570,12 @@ function getStaffRubricData(staff) {
   if (averageScore >= 9.2) predikat = "Istimewa (High Performer)";
   else if (averageScore < 8.0) predikat = "Baik (Dalam Pendampingan)";
 
-  const hasSheet = staff.sheetUrl &&
-                    staff.sheetUrl.trim() !== '' &&
-                    !staff.sheetUrl.includes('on-progress') &&
-                    staff.sheetUrl.startsWith('http');
+  const activeSheet = (staff.sheetUrl && staff.sheetUrl.trim() !== '' && !staff.sheetUrl.includes('on-progress') && staff.sheetUrl.startsWith('http'))
+    ? staff.sheetUrl.trim()
+    : (typeof MASTER_PA_SPREADSHEET_URL === 'string' && MASTER_PA_SPREADSHEET_URL.trim().startsWith('http'))
+      ? MASTER_PA_SPREADSHEET_URL.trim()
+      : '';
+  const hasSheet = Boolean(activeSheet);
 
   const formStatus = hasSheet ? "Terhubung & Aktif" : "Siap Diisi (Q1 2026)";
   const sheetNote = hasSheet ? "Google Sheets Terverifikasi" : "Menunggu Rekap Personalia";
@@ -2359,14 +2392,15 @@ function openProgressModalFromProgressState() {
 }
 
 function executeOpenSheet(staff) {
-  const hasValidSheet = staff.sheetUrl && 
-                        staff.sheetUrl.trim() !== '' && 
-                        !staff.sheetUrl.includes('on-progress') &&
-                        staff.sheetUrl.startsWith('http');
+  const activeSheet = (staff.sheetUrl && staff.sheetUrl.trim() !== '' && !staff.sheetUrl.includes('on-progress') && staff.sheetUrl.startsWith('http'))
+    ? staff.sheetUrl.trim()
+    : (typeof MASTER_PA_SPREADSHEET_URL === 'string' && MASTER_PA_SPREADSHEET_URL.trim().startsWith('http'))
+      ? MASTER_PA_SPREADSHEET_URL.trim()
+      : '';
 
-  if (hasValidSheet) {
+  if (activeSheet) {
     showToast("Akses Diberikan", `Membuka spreadsheet evaluasi ${staff.nama}...`);
-    window.open(staff.sheetUrl, "_blank", "noopener,noreferrer");
+    window.open(activeSheet, "_blank", "noopener,noreferrer");
     closeModal();
   } else {
     // Tautan masih on-progress: buka modal dengan notifikasi status
@@ -2589,31 +2623,47 @@ function initNavScroll() {
 }
 
 // 12. MOBILE MENU
-function initMobileMenu() {
+function toggleMobileMenu() {
   const hamburger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobileMenu');
   if (!hamburger || !mobileMenu) return;
 
-  function openMenu() {
+  const isOpen = mobileMenu.classList.contains('open');
+  if (isOpen) {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  } else {
     hamburger.classList.add('open');
     mobileMenu.classList.add('open');
     hamburger.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
   }
+}
+window.toggleMobileMenu = toggleMobileMenu;
 
-  function closeMenu() {
-    hamburger.classList.remove('open');
-    mobileMenu.classList.remove('open');
-    hamburger.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
-  }
+function initMobileMenu() {
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  if (!hamburger || !mobileMenu) return;
 
-  hamburger.addEventListener('click', () => {
-    mobileMenu.classList.contains('open') ? closeMenu() : openMenu();
-  });
+  hamburger.onclick = function (e) {
+    if (e) e.preventDefault();
+    toggleMobileMenu();
+  };
 
   mobileMenu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', closeMenu);
+    link.onclick = function () {
+      const h = document.getElementById('hamburger');
+      const m = document.getElementById('mobileMenu');
+      if (m) m.classList.remove('open');
+      if (h) {
+        h.classList.remove('open');
+        h.setAttribute('aria-expanded', 'false');
+      }
+      document.body.style.overflow = '';
+    };
   });
 }
 

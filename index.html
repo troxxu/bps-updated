@@ -65,13 +65,13 @@
 
   <!-- Mobile Menu Drawer -->
   <div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="Navigasi Mobile">
-    <a href="#beranda" onclick="toggleMobileMenu()">Beranda</a>
+    <a href="index.html" class="active" style="color: var(--accent);">Beranda</a>
     <a href="about-bps.html">Tentang BPS</a>
     <a href="biro-personalia.html">Biro Personalia</a>
     <a href="biro-keorganisasian.html">Biro Keorganisasian</a>
-    <a href="#staf" onclick="toggleMobileMenu()">Daftar Staf</a>
-    <a href="#faq" onclick="toggleMobileMenu()">Panduan & FAQ</a>
-    <a href="#staf" class="mobile-cta btn-primary" onclick="toggleMobileMenu()">Pilih Profil Staf</a>
+    <a href="#staf">Daftar Staf &amp; Performance Appraisal</a>
+    <a href="#faq">Panduan &amp; FAQ</a>
+    <a href="#staf" class="mobile-cta btn-primary">Buka Performance Appraisal Report</a>
   </div>
 
   <!-- ── 2. HERO SECTION (MAGIC UI ENHANCED) ── -->
@@ -746,6 +746,38 @@
   </div>
 
   <!-- Scripts: Loaded and executed immediately -->
+  <script>
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      const btn = document.getElementById('hamburger');
+      if (!menu || !btn) return;
+      const isOpen = menu.classList.contains('open');
+      if (isOpen) {
+        menu.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      } else {
+        menu.classList.add('open');
+        btn.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+    window.toggleMobileMenu = toggleMobileMenu;
+    document.querySelectorAll('#mobileMenu a').forEach(link => {
+      link.addEventListener('click', () => {
+        const menu = document.getElementById('mobileMenu');
+        const btn = document.getElementById('hamburger');
+        if (menu) menu.classList.remove('open');
+        if (btn) {
+          btn.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+        document.body.style.overflow = '';
+      });
+    });
+  </script>
   <script src="app.js" defer></script>
 </body>
 
