@@ -175,22 +175,55 @@ Jika Biro Personalia ingin **memasukkan nilai manual hasil sidang evaluasi** unt
   }
   ```
 
-- **Untuk Staf Departemen (6 Indikator):**
+- **Untuk Staf Departemen (12 Indikator):**
   ```javascript
   {
     "id": "staf-020",
     "nama": "Nama Staf",
     "customScores": {
-      "Tanggung Jawab": 9.0,
-      "Adaptif": 8.8,
-      "Komunikatif": 9.2,
-      "Kerja Sama": 9.5,
-      "Fundamental": 8.9,
-      "Responsif": 9.1
+      "Kritis": 9.0,
+      "Disiplin": 8.8,
+      "Inovatif": 9.2,
+      "Solidaritas": 9.5,
+      "Sosial": 8.9,
+      "Rasa Kekeluargaan": 9.1,
+      "Inisiatif": 9.0,
+      "Tanggung Jawab": 9.4,
+      "Etika": 9.5,
+      "Pemahaman Proker": 9.0,
+      "Fundamental": 9.2,
+      "Responsif": 9.3
     }
   }
   ```
 *Sistem akan otomatis menghitung rata-rata, persentase capaian, predikat kinerja, dan merender grafik Pie Chart 3D sesuai nilai yang diinput.*
+
+---
+
+## 🧭 Keselarasan Visi, Misi Kabinet Polaris & Tata Kelola Organisasi (TKO 2026)
+
+Portal ini mengimplementasikan bahasa, nilai, dan prinsip yang tertuang dalam dokumen resmi **Tata Kelola Organisasi (TKO) BEM FTEIC ITS 2026**:
+1. **Filosofi Kabinet Polaris ("Pola Harmonis")**:
+   - **Pola**: Kerangka kerja terstruktur, tatanan sistematis, dan landasan kokoh.
+   - **Harmonis**: Keseimbangan, keselarasan, dan sinergi antar berbagai elemen yang berbeda.
+2. **Visi Resmi BEM FTEIC ITS 2026**:
+   > *"Mewujudkan BEM FTEIC yang adaptif dan harmonis sebagai elevator pengembangan kapasitas mahasiswa FTEIC serta berperan komprehensif dalam masyarakat."*
+3. **4 Nilai Visi**:
+   - **Adaptif**: Responsif terhadap perubahan, sistem kerja fleksibel (*agile*), berbasis data, dan solutif.
+   - **Harmonis**: Ekosistem saling menguatkan antar 6 jurusan FTEIC, HMD, Ormawa, dan birokrasi.
+   - **Elevator**: Akselerator pertumbuhan kapasitas, kepemimpinan, dan daya saing insan FTEIC.
+   - **Komprehensif**: Pendekatan holistik (akademik, minat bakat, kesejahteraan, sosial kemasyarakatan, dan organisasi).
+4. **4 Misi Resmi Kabinet Polaris (Misi A, B, C, D)**:
+   - Pengoptimalan sistem serta budaya kerja yang adaptif, profesional, dan humanis.
+   - Penguatan sinergi kelembagaan dan perluasan jejaring strategis internal & eksternal.
+   - Pengembangan kapasitas, ruang aktualisasi, dan nilai keilmuan berkelanjutan.
+   - Penjagaan citra kelembagaan, kemandirian organisasi, serta penguatan peran sosial berdampak nyata.
+5. **Prinsip Tata Kelola Organisasi (TKO)**:
+   - **Good Student Governance**: Transparansi, partisipasi, akuntabilitas, efisiensi, dan profesionalisme.
+   - **Organizational Well Being**: Kesejahteraan fisik, mental, dan emosional fungsionaris.
+   - **Structured Direction**: Pola kerja sistematis, terukur via kerangka kerja OKR (*Objective & Key Results*), dan siklus monitoring terintegrasi.
+
+*(Sesuai arahan, berkas PDF TKO tidak diunggah/di-embed ke dalam situs web; seluruh konsep dan terminologinya diintegrasikan secara organik ke dalam konten dan antarmuka portal).*
 
 ---
 

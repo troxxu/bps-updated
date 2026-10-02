@@ -1582,20 +1582,20 @@ function getStaffRubricData(staff) {
 
   let feedback = "";
   if (staff.roleCategory === 'Pimpinan') {
-    feedback = `Menunjukkan kapabilitas leadership dan arah strategis yang solid dalam mengawal ritme ${staff.departemenBEMFull}. Koordinasi lintas departemen dan pendampingan fungsionaris berjalan optimal.`;
+    feedback = `Menunjukkan kapabilitas kepemimpinan terarah (Structured Direction), adaptif terhadap dinamika kampus, serta mengawal sinergi ${staff.departemenBEMFull} selaras dengan visi Kabinet Polaris dan tata kelola Good Student Governance.`;
   } else if (staff.roleCategory === 'Wakil Pimpinan') {
-    feedback = `Sinergi internal dan eksekusi program kerja ${staff.departemenBEMFull} berjalan responsif dan terukur. Pertahankan komunikasi proaktif dan transfer knowledge yang konsisten.`;
+    feedback = `Eksekusi program kerja dan pendampingan teknis ${staff.departemenBEMFull} berjalan adaptif dan terukur. Menjadi penghubung harmonis bagi staf dalam akselerasi kapasitas fungsionaris.`;
   } else if (staff.roleCategory === 'Kabiro') {
-    feedback = `Pengelolaan biro dan ketepatan timeline proker terlaksana dengan tertib. Terus perkuat pemantauan berkala dan motivasi rekan-rekan staf biro.`;
+    feedback = `Pengelolaan biro berlandaskan sistem yang terarah, disiplin lini masa proker, serta komitmen kuat menjaga keharmonisan dan kesejahteraan (Organizational Well Being) seluruh fungsionaris biro.`;
   } else if (staff.roleCategory === 'Sekretaris') {
-    feedback = `Tata kelola administrasi, kearsipan dokumen, serta notulensi koordinasi tersusun rapi dan akurat. Ritme kerja yang sangat mendukung operasional organisasi.`;
+    feedback = `Tata kelola administrasi, kearsipan dokumen, kepatuhan TKO Bab VIII, serta notulensi koordinasi terstandar dan akuntabel. Menopang operasional organisasi secara efisien dan profesional.`;
   } else {
-    feedback = `Menunjukkan inisiatif, rasa kekeluargaan, dan dedikasi yang tinggi dalam menjalankan amanah staf di ${staff.departemenBEMFull}. Terus kembangkan kompetensi dan kolaborasi aktif!`;
+    feedback = `Menunjukkan dedikasi tinggi, inisiatif kolaboratif, serta kemauan belajar dalam peran sebagai elevator pengembangan kapasitas diri di ${staff.departemenBEMFull}. Berperan aktif mewujudkan BEM FTEIC yang adaptif, harmonis, dan komprehensif.`;
   }
 
   return {
     isKabinet,
-    rubricType: isKabinet ? "Evaluasi Kepemimpinan Kabinet (7 Indikator)" : "Evaluasi Kinerja Staf (12 Indikator)",
+    rubricType: isKabinet ? "Evaluasi Kepemimpinan Kabinet (7 Indikator) — Polaris Leadership" : "Evaluasi Kinerja Staf (12 Indikator) — Elevator Kapasitas Insan",
     averageScore,
     achievementPct: `${achievementPct}%`,
     predikat,
