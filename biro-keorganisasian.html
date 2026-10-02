@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Biro Keorganisasian — Badan Pengembangan Strategis BEM FTEIC ITS Kabinet Polaris 2026</title>
+
+  <!-- Meta & SEO -->
+  <meta name="description"
+    content="Profil resmi Biro Keorganisasian BEM FTEIC ITS. Motor pengawal dinamika struktural, monitoring dan evaluasi program kerja, serta penilaian kerangka kerja berbasis Objective and Key Results (OKR)." />
+  <meta name="theme-color" content="#1D536B" />
+  <link rel="icon" type="image/png" href="assets/logo-bem-fteic.png" />
+
+  <!-- Performance: Preload critical resources -->
+  <link rel="preload" href="style.css" as="style" />
+  <link rel="preload" href="app.js" as="script" />
+
+  <!-- Google Fonts (async loading for fast text render) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
+    rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
+      rel="stylesheet" />
+  </noscript>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- ── 1. NAVIGATION BAR ── -->
+  <nav class="nav scrolled" id="mainNav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/logo-bem-fteic.png" alt="Logo BEM FTEIC" class="nav-logo-bem" />
+        <div class="nav-logo-divider"></div>
+        <img src="assets/logo-kabinet-polaris.png" alt="Logo Kabinet Polaris" class="nav-logo-kabinet" />
+        <span class="logo-badge">BPS</span>
+      </a>
+
+      <ul class="nav-links" role="list">
+        <li><a href="index.html">Beranda</a></li>
+        <li><a href="about-bps.html">Tentang BPS</a></li>
+        <li><a href="biro-personalia.html">Biro Personalia</a></li>
+        <li><a href="biro-keorganisasian.html" class="active">Biro Keorganisasian</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <a href="index.html#staf" class="btn-primary">Performance Appraisal Report →</a>
+      </div>
+
+      <button class="nav-hamburger" id="hamburger" aria-label="Buka Menu" aria-expanded="false" onclick="toggleMobileMenu()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Drawer -->
+  <div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="Navigasi Mobile">
+    <a href="index.html">Beranda</a>
+    <a href="about-bps.html">Tentang BPS</a>
+    <a href="biro-personalia.html">Biro Personalia</a>
+    <a href="biro-keorganisasian.html" class="active" style="color: var(--accent);">Biro Keorganisasian</a>
+    <a href="index.html#staf">Daftar Staf &amp; Performance Appraisal</a>
+    <a href="index.html#faq">Bantuan &amp; FAQ</a>
+    <a href="index.html#staf" class="mobile-cta btn-primary">Buka Performance Appraisal Report</a>
+  </div>
+
+  <!-- ── 2. SUBPAGE HERO SECTION ── -->
+  <section class="subpage-hero" style="position: relative; overflow: hidden;">
+    <div class="magic-grid-bg" aria-hidden="true"></div>
+    <div class="magic-ambient-glow" aria-hidden="true"></div>
+    <div class="container" style="position: relative; z-index: 2;">
+      <!-- Breadcrumb -->
+      <div class="breadcrumb">
+        <a href="index.html">Beranda</a>
+        <span class="breadcrumb-separator">/</span>
+        <a href="about-bps.html">Tentang BPS</a>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-current">Biro Keorganisasian</span>
+      </div>
+
+      <div class="subpage-header">
+        <div class="subpage-badge magic-pill-badge">
+          <span class="magic-pill-dot">
+            <span class="magic-ping"></span>
+            <span class="magic-dot"></span>
+          </span>
+          <span>Pengawalan Mutu Proker &amp; Kerangka OKR</span>
+        </div>
+
+        <h1 class="subpage-title">
+          Pengawal Mutu &amp; Kualitas<br>
+          <span class="magic-shiny-text">Program Kerja BEM FTEIC ITS</span>
+        </h1>
+
+        <p class="subpage-sub">
+          Mendampingi setiap departemen merancang, merealisasikan, dan mengevaluasi program kerja berbasis Objective &amp; Key Results (OKR) demi pencapaian target yang transparan, terukur, dan berdampak nyata.
+        </p>
+
+        <div class="subpage-actions">
+          <a href="#okr-framework" class="magic-shimmer-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+            <span>Pelajari Kerangka Kerja OKR ↓</span>
+          </a>
+          <a href="#siklus-monitoring" class="btn-outline">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+            <span>Siklus Monitoring Proker ↓</span>
+          </a>
+          <a href="biro-personalia.html" class="btn-gold">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+            <span>Lihat Biro Personalia →</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 2.5 POTRET TIM BIRO KEORGANISASIAN SHOWCASE ── -->
+  <section class="container team-showcase-section" style="padding-top: 50px; padding-bottom: 20px;">
+    <div class="team-showcase-card">
+      <div class="magic-border-beam" aria-hidden="true"></div>
+      <div class="team-showcase-grid">
+        <div class="team-showcase-media">
+          <div class="team-photo-frame ratio-keorganisasian">
+            <img src="assets/foto-biro-keorganisasian.jpg" alt="Tim Fungsionaris Biro Keorganisasian BEM FTEIC ITS Kabinet Polaris 2026" class="team-photo-img" loading="lazy" />
+            <div class="team-photo-overlay"></div>
+            <div class="team-photo-tag">
+              <span class="magic-pill-dot"><span class="magic-ping"></span><span class="magic-dot"></span></span>
+              Biro Keorganisasian 2026
+            </div>
+            <div class="team-photo-caption-bar">
+              <span>Tim Fungsionaris Biro Keorganisasian</span>
+              <span style="opacity: 0.85; font-size: 0.72rem;">Organizational Dynamics &amp; OKR</span>
+            </div>
+          </div>
+        </div>
+        <div class="team-showcase-content">
+          <div class="team-showcase-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            Organizational Dynamics &amp; OKR System
+          </div>
+          <h2 class="team-showcase-title">Memastikan Program Kerja Tepat Sasaran dan Berdampak</h2>
+          <p class="team-showcase-desc">
+            Biro Keorganisasian mengawal denyut efektivitas struktural organisasi di BEM FTEIC ITS. Dengan implementasi kerangka kerja <strong>Objective and Key Results (OKR)</strong>, audit proposal, supervisi lapangan, hingga evaluasi LPJ berkala, tim ini menjamin setiap program kerja terealisasi dengan tata kelola unggul dan dampak yang terukur.
+          </p>
+          <div class="team-stats-mini">
+            <div class="team-stat-item">
+              <span class="team-stat-number">4</span>
+              <span class="team-stat-label">Fungsionaris Biro</span>
+            </div>
+            <div class="team-stat-item">
+              <span class="team-stat-number">3</span>
+              <span class="team-stat-label">Tahap Monitoring</span>
+            </div>
+            <div class="team-stat-item">
+              <span class="team-stat-number">100%</span>
+              <span class="team-stat-label">Akuntabel</span>
+            </div>
+          </div>
+          <div class="team-showcase-links">
+            <a href="#okr-framework" class="team-link-pill accent-pill">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+              Pelajari Kerangka OKR ↓
+            </a>
+            <a href="#siklus-monitoring" class="team-link-pill">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+              3 Siklus Pengawasan ↓
+            </a>
+            <a href="about-bps.html" class="team-link-pill">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line></svg>
+              Kembali ke Profil BPS ↗
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 3. KERANGKA KERJA OKR (OBJECTIVE AND KEY RESULTS) ── -->
+  <section class="container" id="okr-framework" style="padding-top: 60px; padding-bottom: 60px;">
+    <div class="section-label reveal">Kompas Kinerja Organisasi</div>
+    <h2 class="section-title reveal reveal-delay-1">Mengawal Kualitas Program Kerja Lewat <em>Kerangka OKR</em></h2>
+    <p class="section-sub reveal reveal-delay-2">
+      Bukan sekadar mengejar terlaksananya kegiatan, kerangka kerja OKR membantu setiap departemen di BEM FTEIC ITS memahami esensi tujuan, fokus pada dampak nyata, dan memiliki tolok ukur keberhasilan yang transparan.
+    </p>
+
+    <!-- OKR Hero Banner -->
+    <div class="okr-hero-banner reveal reveal-delay-2">
+      <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 12px; flex-wrap: wrap;">
+        <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(214, 148, 21, 0.15); border: 1px solid rgba(214, 148, 21, 0.3); display: flex; align-items: center; justify-content: center; color: var(--gold-accent);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+        </div>
+        <h3 style="font-size: 1.35rem; font-weight: 700; color: var(--text-1);">
+          Fokus pada Nilai &amp; Dampak, Bukan Sekadar Formalitas
+        </h3>
+      </div>
+      <p style="font-size: 0.95rem; line-height: 1.7; color: var(--text-2); max-width: 840px;">
+        OKR membagi perencanaan program kerja ke dalam dua pertanyaan penting: <strong>Ke mana arah dampak yang dituju?</strong> (Objective) dan <strong>Bagaimana kita tahu tujuan itu tercapai?</strong> (Key Results). Pendekatan ini membuat evaluasi program kerja menjadi sarana diskusi solutif, bukan ajang mencari kesalahan.
+      </p>
+
+      <div class="okr-grid">
+        <!-- Objective Card -->
+        <div class="okr-card reveal reveal-delay-1">
+          <div class="okr-card-header">
+            <span class="okr-pill okr-pill-obj">OBJECTIVE (O)</span>
+            <span style="font-size: 0.76rem; font-weight: 700; color: var(--text-3); text-transform: uppercase;">Arah &amp; Esensi</span>
+          </div>
+          <h4 class="okr-card-title">Arah &amp; Dampak yang Diharapkan</h4>
+          <p class="okr-card-desc">
+            Tujuan kualitatif yang menginspirasi, menjawab alasan mendasar mengapa program kerja tersebut penting dan manfaat nyata apa yang dirasakan oleh sivitas akademika FTEIC ITS.
+          </p>
+        </div>
+
+        <!-- Key Results Card -->
+        <div class="okr-card reveal reveal-delay-2">
+          <div class="okr-card-header">
+            <span class="okr-pill okr-pill-kr">KEY RESULTS (KR)</span>
+            <span style="font-size: 0.76rem; font-weight: 700; color: var(--text-3); text-transform: uppercase;">Bukti Terukur</span>
+          </div>
+          <h4 class="okr-card-title">Tolok Ukur Keberhasilan yang Nyata</h4>
+          <p class="okr-card-desc">
+            Bukti konkret yang dapat dievaluasi bersama—seperti kepuasan peserta, tingkat partisipasi mahasiswa, ketepatan waktu, dan manfaat luaran program kerja.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 Pilar Pengawasan Biro Keorganisasian -->
+    <div style="margin-top: 50px;">
+      <h3 class="reveal" style="font-size: 1.45rem; font-weight: 700; color: var(--text-1); margin-bottom: 20px;">
+        Pilar Pendampingan &amp; Pengawalan Mutu Proker
+      </h3>
+
+      <!-- Interactive Pillars Slider Component -->
+      <div class="pillars-slider-component reveal reveal-delay-2">
+        <div class="pillars-slider-topbar">
+          <div class="slider-info-badge">
+            <span class="magic-dot"></span>
+            <span>Geser kartu ke kanan/kiri atau gunakan tombol navigasi</span>
+          </div>
+          <div class="slider-nav-controls">
+            <button type="button" class="slider-nav-btn slider-prev-btn" aria-label="Geser ke kiri" title="Geser ke Kiri">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <div class="slider-counter-pill">
+              <span class="slider-active-idx">1</span>
+              <span class="slider-sep">/</span>
+              <span class="slider-total-idx">4</span>
+            </div>
+            <button type="button" class="slider-nav-btn slider-next-btn" aria-label="Geser ke kanan" title="Geser ke Kanan">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="pillars-slider-track" tabindex="0" role="region" aria-label="Slides 4 Pilar Mutu Proker">
+          <!-- Pilar 1 -->
+          <div class="pillar-slide-card">
+            <div class="pillar-card-top">
+              <span class="pillar-num-badge">Pilar 01</span>
+              <div class="pillar-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              </div>
+            </div>
+            <h4 class="pillar-card-title">Bedah Konsep &amp; Validasi</h4>
+            <p class="pillar-card-desc">
+              Penyelarasan rancangan awal proker bersama panitia pelaksana: uji relevansi, kelayakan timeline, &amp; visi kabinet.
+            </p>
+            <div class="pillar-tags">
+              <span class="pillar-tag">Feasibility</span>
+              <span class="pillar-tag">Visi Polaris</span>
+            </div>
+          </div>
+
+          <!-- Pilar 2 -->
+          <div class="pillar-slide-card">
+            <div class="pillar-card-top">
+              <span class="pillar-num-badge">Pilar 02</span>
+              <div class="pillar-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+              </div>
+            </div>
+            <h4 class="pillar-card-title">Supervisi &amp; Pendampingan</h4>
+            <p class="pillar-card-desc">
+              Hadir langsung saat persiapan dan eksekusi acara sebagai rekan diskusi solutif saat panitia menghadapi kendala teknis.
+            </p>
+            <div class="pillar-tags">
+              <span class="pillar-tag">Live Monitoring</span>
+              <span class="pillar-tag">Mitigasi Risiko</span>
+            </div>
+          </div>
+
+          <!-- Pilar 3 -->
+          <div class="pillar-slide-card">
+            <div class="pillar-card-top">
+              <span class="pillar-num-badge">Pilar 03</span>
+              <div class="pillar-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              </div>
+            </div>
+            <h4 class="pillar-card-title">Evaluasi Objektif &amp; Konstruktif</h4>
+            <p class="pillar-card-desc">
+              Meninjau capaian target OKR secara terbuka, merayakan keberhasilan, dan memetakan ruang optimasi berikutnya.
+            </p>
+            <div class="pillar-tags">
+              <span class="pillar-tag">Review OKR</span>
+              <span class="pillar-tag">Dampak Riil</span>
+            </div>
+          </div>
+
+          <!-- Pilar 4 -->
+          <div class="pillar-slide-card">
+            <div class="pillar-card-top">
+              <span class="pillar-num-badge">Pilar 04</span>
+              <div class="pillar-icon-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+              </div>
+            </div>
+            <h4 class="pillar-card-title">Catatan Perbaikan &amp; Estafet</h4>
+            <p class="pillar-card-desc">
+              Dokumentasi pembelajaran terpadu agar kepanitiaan periode mendatang dapat belajar dan melangkah lebih matang.
+            </p>
+            <div class="pillar-tags">
+              <span class="pillar-tag">Knowledge Base</span>
+              <span class="pillar-tag">LPJ Akuntabel</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 4. SIKLUS MONITORING DAN EVALUASI PROGRAM KERJA ── -->
+  <section style="background: var(--surface); padding: 70px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);" id="siklus-monitoring">
+    <div class="container">
+      <div class="section-label reveal">Alur Pendampingan</div>
+      <h2 class="section-title reveal reveal-delay-1">Tiga Langkah: <em>Menemani Proker dari Gagasan Hingga Tuntas</em></h2>
+      <p class="section-sub reveal reveal-delay-2">
+        Biro Keorganisasian menemani setiap tahapan program kerja dengan prinsip kemitraan yang suportif agar output kegiatan berkualitas dan membawa dampak positif.
+      </p>
+
+      <div class="monitoring-flow-grid">
+
+        <!-- Tahap 1 -->
+        <div class="monitoring-flow-card reveal reveal-delay-1">
+          <span class="monitoring-step-num">Tahap 1: Pra-Kegiatan</span>
+          <h4 class="monitoring-card-title">Diskusi Konsep &amp; Sasaran</h4>
+          <p class="monitoring-card-desc">
+            Duduk bersama merapikan timeline, menyepakati tolok ukur keberhasilan (Key Results), serta mengantisipasi potensi kendala teknis sebelum kegiatan dimulai.
+          </p>
+        </div>
+
+        <!-- Tahap 2 -->
+        <div class="monitoring-flow-card reveal reveal-delay-2">
+          <span class="monitoring-step-num">Tahap 2: Eksekusi</span>
+          <h4 class="monitoring-card-title">Pendampingan di Lapangan</h4>
+          <p class="monitoring-card-desc">
+            Memantau kelancaran teknis di lokasi, memastikan koordinasi tim solid, dan mendampingi panitia agar acara berjalan tertib, aman, dan nyaman bagi peserta.
+          </p>
+        </div>
+
+        <!-- Tahap 3 -->
+        <div class="monitoring-flow-card reveal reveal-delay-3">
+          <span class="monitoring-step-num">Tahap 3: Pasca-Kegiatan</span>
+          <h4 class="monitoring-card-title">Refleksi &amp; Penuntasan LPJ</h4>
+          <p class="monitoring-card-desc">
+            Menyelesaikan pertanggungjawaban kegiatan secara rapi, merefleksikan ketercapaian target, dan mengarsipkan catatan evaluasi untuk kepengurusan selanjutnya.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Sinergi Box -->
+      <div class="synergy-callout reveal reveal-delay-2" style="margin-top: 50px;">
+        <h3 class="synergy-title">Dua Biro, Satu Tujuan untuk <em>BEM FTEIC ITS</em></h3>
+        <p class="synergy-desc">
+          Biro Keorganisasian dan Biro Personalia di bawah payung BPS bekerja saling melengkapi bak dua sisi mata uang:
+        </p>
+
+        <div class="synergy-grid">
+          <div class="synergy-item">
+            <div class="synergy-item-title">Biro Keorganisasian (Sistem &amp; Dampak)</div>
+            <div class="synergy-item-desc">
+              Menjaga agar wadah dan sistem organisasi tetap sehat, efisien, terarah, dan menghasilkan manfaat nyata bagi mahasiswa melalui instrumen OKR yang jelas.
+            </div>
+          </div>
+          <div class="synergy-item">
+            <div class="synergy-item-title">Biro Personalia (Insan &amp; Kebersamaan)</div>
+            <div class="synergy-item-desc">
+              Menjaga agar insan yang menggerakkan organisasi senantiasa merasa nyaman, termotivasi, terlatih kemampuannya, dan memiliki ikatan kekeluargaan yang erat.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── 5. FOOTER ── -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <img src="assets/logo-bem-fteic.png" alt="BEM FTEIC" class="footer-logo-img" />
+            <div class="footer-logo-text">
+              <span class="footer-title">BEM FTEIC ITS</span>
+              <span class="footer-sub">Kabinet Polaris 2026</span>
+            </div>
+          </div>
+          <p class="footer-brand-desc">
+            Biro Keorganisasian — Badan Pengembangan Strategis (BPS) BEM FTEIC ITS. Mengawal dinamika struktural,
+            audit efektivitas program kerja, dan kerangka kerja Objective & Key Results (OKR).
+          </p>
+        </div>
+
+        <div>
+          <div class="footer-col-label">Navigasi Halaman</div>
+          <div class="footer-links">
+            <a href="index.html">Beranda Portal</a>
+            <a href="about-bps.html">Tentang BPS</a>
+            <a href="biro-personalia.html">Biro Personalia</a>
+            <a href="biro-keorganisasian.html" style="font-weight: 700; color: var(--accent);">Biro Keorganisasian</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-col-label">Topik Keorganisasian</div>
+          <div class="footer-links">
+            <a href="#okr-framework">Kerangka Kerja OKR</a>
+            <a href="#siklus-monitoring">3 Siklus Monitoring Proker</a>
+            <a href="about-bps.html#dua-biro">Sinergi Komplementer BPS</a>
+            <a href="index.html#staf">Performance Appraisal Report</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-col-label">Tautan Eksternal</div>
+          <div class="footer-links">
+            <a href="https://www.its.ac.id/fakultas/fteic/" target="_blank" rel="noopener">Fakultas FTEIC ITS</a>
+            <a href="https://www.instagram.com/bemfteic.its/" target="_blank" rel="noopener">Instagram BEM FTEIC</a>
+            <a href="https://its.ac.id" target="_blank" rel="noopener">Institut Teknologi Sepuluh Nopember</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-copy">
+          © 2026 Biro Keorganisasian BPS BEM FTEIC ITS. All rights reserved.
+        </div>
+        <div class="footer-legal">
+          <span>Objective & Key Results (OKR)</span>
+          <span>Transparansi Kinerja Kabinet</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      const btn = document.getElementById('hamburger');
+      menu.classList.toggle('open');
+      btn.classList.toggle('open');
+    }
+    document.querySelectorAll('#mobileMenu a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('mobileMenu').classList.remove('open');
+        document.getElementById('hamburger').classList.remove('open');
+      });
+    });
+  </script>
+  <script src="app.js" defer></script>
+</body>
+
+</html>

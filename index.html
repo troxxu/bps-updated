@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BEM FTEIC ITS 2026 | Ruang Refleksi &amp; Apresiasi — Kabinet Polaris</title>
+
+  <!-- Meta & SEO -->
+  <meta name="description"
+    content="Portal Akses Lembar Evaluasi & Nilai Kinerja Bulanan Fungsionaris BEM FTEIC ITS Kabinet Polaris 2026 Institut Teknologi Sepuluh Nopember." />
+  <meta name="theme-color" content="#1D536B" />
+  <link rel="icon" type="image/png" href="assets/logo-bem-fteic.png" />
+
+  <!-- Performance: Preload critical resources -->
+  <link rel="preload" href="style.css" as="style" />
+  <link rel="preload" href="app.js" as="script" />
+
+  <!-- Google Fonts (async loading for fast text render) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
+    rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
+      rel="stylesheet" />
+  </noscript>
+
+  <!-- Custom Stylesheet (Clearwave Design System) -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- ── 1. NAVIGATION BAR ── -->
+  <nav class="nav" id="mainNav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/logo-bem-fteic.png" alt="Logo BEM FTEIC" class="nav-logo-bem" />
+        <div class="nav-logo-divider"></div>
+        <img src="assets/logo-kabinet-polaris.png" alt="Logo Kabinet Polaris" class="nav-logo-kabinet" />
+        <span class="logo-badge">BPS</span>
+      </a>
+
+      <ul class="nav-links" role="list">
+        <li><a href="index.html" class="active">Beranda</a></li>
+        <li><a href="about-bps.html">Tentang BPS</a></li>
+        <li><a href="biro-personalia.html">Biro Personalia</a></li>
+        <li><a href="biro-keorganisasian.html">Biro Keorganisasian</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <a href="#staf" class="btn-primary">Performance Appraisal Report →</a>
+      </div>
+
+      <button class="nav-hamburger" id="hamburger" aria-label="Buka Menu" aria-expanded="false"
+        onclick="toggleMobileMenu()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Drawer -->
+  <div class="mobile-menu" id="mobileMenu" role="dialog" aria-modal="true" aria-label="Navigasi Mobile">
+    <a href="#beranda" onclick="toggleMobileMenu()">Beranda</a>
+    <a href="about-bps.html">Tentang BPS</a>
+    <a href="biro-personalia.html">Biro Personalia</a>
+    <a href="biro-keorganisasian.html">Biro Keorganisasian</a>
+    <a href="#staf" onclick="toggleMobileMenu()">Daftar Staf</a>
+    <a href="#faq" onclick="toggleMobileMenu()">Panduan & FAQ</a>
+    <a href="#staf" class="mobile-cta btn-primary" onclick="toggleMobileMenu()">Pilih Profil Staf</a>
+  </div>
+
+  <!-- ── 2. HERO SECTION (MAGIC UI ENHANCED) ── -->
+  <section class="hero" id="beranda" style="position: relative; overflow: hidden;">
+    <!-- Magic UI Background Layers -->
+    <div class="magic-grid-bg" aria-hidden="true"></div>
+    <div class="magic-ambient-glow" aria-hidden="true"></div>
+
+    <div class="container" style="position: relative; z-index: 1;">
+      <div class="hero-inner">
+
+        <!-- Left Content -->
+        <div class="hero-content">
+          <!-- Magic UI Live Pulsing Status Pill -->
+          <div class="magic-pill-badge reveal">
+            <span class="magic-ping-wrap">
+              <span class="magic-ping-dot"></span>
+              <span class="magic-ping-center"></span>
+            </span>
+            <span class="magic-pill-title">Kabinet Polaris</span>
+            <span class="magic-pill-sep"></span>
+            <span class="magic-pill-desc">Performance Appraisal Report</span>
+          </div>
+
+          <h1 class="hero-title reveal reveal-delay-1">
+            BEM FTEIC ITS 2026<br>
+            <span class="magic-shiny-text">Ruang Refleksi &amp; Apresiasi</span>
+          </h1>
+
+          <p class="hero-sub reveal reveal-delay-2">
+            Ruang tumbuh dan refleksi perjalanan kepengurusan seluruh fungsionaris BEM FTEIC ITS. Pantau capaian
+            personal, pelajari catatan pendampingan dari biro, dan akses pedoman SOP resmi dengan aman melalui PIN
+            personal.
+          </p>
+
+          <div class="hero-actions reveal reveal-delay-3">
+            <a href="#staf" class="magic-shimmer-btn">
+              <span>Buka Performance Appraisal Report</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Visual: Magic UI Live System Terminal Card -->
+        <div class="hero-visual reveal reveal-delay-2">
+          <div class="magic-terminal-card">
+            <div class="magic-border-beam" aria-hidden="true"></div>
+            <div class="magic-terminal-header">
+              <div class="magic-term-dots">
+                <span class="magic-term-dot red"></span>
+                <span class="magic-term-dot yellow"></span>
+                <span class="magic-term-dot green"></span>
+              </div>
+              <div class="magic-term-domain">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                bpselectics.vercel.app
+              </div>
+            </div>
+
+            <div class="magic-term-body">
+              <div class="magic-term-banner">
+                <div>
+                  <div class="magic-term-title">Portal Kinerja &amp; Pendampingan</div>
+                  <div class="magic-term-sub">Kabinet Polaris 2026</div>
+                </div>
+                <div class="magic-term-live-tag">
+                  <span class="magic-ping-wrap" style="width: 10px; height: 10px;">
+                    <span class="magic-ping-dot"></span>
+                    <span class="magic-ping-center" style="width: 5px; height: 5px;"></span>
+                  </span>
+                  Aktif 2026
+                </div>
+              </div>
+
+              <!-- 3 Core Metric Highlights -->
+              <div class="magic-term-metrics-grid">
+                <div class="magic-term-metric-box">
+                  <div class="magic-term-metric-num">94</div>
+                  <div class="magic-term-metric-lbl">Fungsionaris</div>
+                </div>
+                <div class="magic-term-metric-box">
+                  <div class="magic-term-metric-num">6</div>
+                  <div class="magic-term-metric-lbl">Departemen</div>
+                </div>
+                <div class="magic-term-metric-box">
+                  <div class="magic-term-metric-num">2</div>
+                  <div class="magic-term-metric-lbl">Biro BPS</div>
+                </div>
+              </div>
+
+              <!-- Ruang Lingkup Layanan & Tata Kelola BPS -->
+              <div class="magic-term-feed">
+                <div class="magic-feed-line" style="margin-bottom: 8px;">
+                  <span class="magic-feed-dot"></span>
+                  <span class="magic-feed-tag">Biro Personalia:</span>
+                  <span class="magic-feed-text">Performance Appraisal Report, pendampingan &amp; ruang bertumbuh</span>
+                </div>
+                <div class="magic-feed-line" style="margin-bottom: 8px;">
+                  <span class="magic-feed-dot"></span>
+                  <span class="magic-feed-tag">Biro Keorganisasian:</span>
+                  <span class="magic-feed-text">Monitoring program kerja, supervisi &amp; ketercapaian target OKR</span>
+                </div>
+                <div class="magic-feed-line" style="margin-bottom: 8px;">
+                  <span class="magic-feed-dot"></span>
+                  <span class="magic-feed-tag">SOP Evaluasi:</span>
+                  <span class="magic-feed-text">Pedoman baku kedisiplinan dan mekanisme apresiasi 2026</span>
+                </div>
+                <div class="magic-feed-line">
+                  <span class="magic-feed-dot"></span>
+                  <span class="magic-feed-tag">Akses Terproteksi:</span>
+                  <span class="magic-feed-text">Rekapitulasi nilai privat langsung ke lembar kerja personal</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 3. INFINITE MARQUEE (MAGIC UI) ── -->
+  <div class="magic-marquee-container" aria-label="Departemen dan Biro BEM FTEIC ITS">
+    <div class="magic-marquee-track">
+      <div class="magic-marquee-group">
+        <span class="magic-marquee-badge"><span class="magic-marquee-dot"></span>Departemen Dalam Negeri (DAGRI)</span>
+        <span class="magic-marquee-badge"><span class="magic-marquee-dot"></span>Departemen Luar Negeri (LUGRI)</span>
+        <span class="magic-marquee-badge"><span class="magic-marquee-dot"></span>Pengembangan Sumber Daya Manusia
+          (PSDM)</span>
+        <span class="magic-marquee-badge"><span class="magic-marquee-dot"></span>Riset dan Teknologi (RISTEK)</span>
+        <span class="magic-marquee-badge"><span class="magic-marquee-dot"></span>Kewirausahaan (KWU)</span>
+        <span class="magic-marquee-badge"><span class="magic-marquee-dot"></span>Sosial Masyarakat (SOSMAS)</span>
+        <span class="magic-marquee-badge"><span class="magic-marquee-dot gold"></span>Biro Personalia (HRM &amp;
+          HRD)</span>
+        <span class="magic-marquee-badge"><span class="magic-marquee-dot gold"></span>Biro Keorganisasian (OKR &amp;
+          SOP)</span>
+      </div>
+      <div class="magic-marquee-group" aria-hidden="true">
+        <span class="magic-marquee-badge"><span class="magic-marquee-dot"></span>Departemen Dalam Negeri (DAGRI)</span>
+        <span class="magic-marquee-badge"><span class="magic-marquee-dot"></span>Departemen Luar Negeri (LUGRI)</span>
+        <span class="magic-marquee-badge"><span class="magic-marquee-dot"></span>Pengembangan Sumber Daya Manusia
+          (PSDM)</span>
+        <span class="magic-marquee-badge"><span class="magic-marquee-dot"></span>Riset dan Teknologi (RISTEK)</span>
+        <span class="magic-marquee-badge"><span class="magic-marquee-dot"></span>Kewirausahaan (KWU)</span>
+        <span class="magic-marquee-badge"><span class="magic-marquee-dot"></span>Sosial Masyarakat (SOSMAS)</span>
+        <span class="magic-marquee-badge"><span class="magic-marquee-dot gold"></span>Biro Personalia (HRM &amp;
+          HRD)</span>
+        <span class="magic-marquee-badge"><span class="magic-marquee-dot gold"></span>Biro Keorganisasian (OKR &amp;
+          SOP)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 4. STAFF DIRECTORY SECTION ── -->
+  <section class="staff-section" id="staf">
+    <div class="container">
+
+      <!-- Section Header -->
+      <div class="staff-header">
+        <div class="section-label reveal">Direktori Fungsionaris</div>
+        <h2 class="section-title reveal reveal-delay-1">Daftar Fungsionaris &amp; <em>Performance Appraisal Report</em>
+        </h2>
+        <p class="section-sub reveal reveal-delay-2">
+          Cari nama Anda atau gunakan filter departemen di bawah, masukkan PIN personal, dan akses langsung lembar
+          evaluasi berkala Anda.
+        </p>
+      </div>
+
+      <!-- Controls: Filter Tabs & Live Search Bar -->
+      <div class="controls-wrapper reveal reveal-delay-1">
+        <div class="controls-inner">
+
+          <!-- Filter Tabs -->
+          <div class="filter-tabs" id="filterTabs">
+            <button class="filter-pill active" data-filter="all" onclick="setFilter('all')">
+              Semua (<span id="countAll">94</span>)
+            </button>
+            <button class="filter-pill" data-filter="DAGRI" onclick="setFilter('DAGRI')">
+              Dalam Negeri (<span id="count_DAGRI">15</span>)
+            </button>
+            <button class="filter-pill" data-filter="LUGRI" onclick="setFilter('LUGRI')">
+              Luar Negeri (<span id="count_LUGRI">18</span>)
+            </button>
+            <button class="filter-pill" data-filter="PSDM" onclick="setFilter('PSDM')">
+              Pengembangan Sumber Daya Manusia (<span id="count_PSDM">13</span>)
+            </button>
+            <button class="filter-pill" data-filter="RISTEK" onclick="setFilter('RISTEK')">
+              Riset dan Teknologi (<span id="count_RISTEK">15</span>)
+            </button>
+            <button class="filter-pill" data-filter="KWU" onclick="setFilter('KWU')">
+              Kewirausahaan (<span id="count_KWU">15</span>)
+            </button>
+            <button class="filter-pill" data-filter="SOSMAS" onclick="setFilter('SOSMAS')">
+              Sosial Masyarakat (<span id="count_SOSMAS">18</span>)
+            </button>
+          </div>
+
+          <!-- Live Search Input -->
+          <div class="search-box">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2.2">
+              <circle cx="11" cy="11" r="8" />
+              <path d="M21 21l-4.35-4.35" />
+            </svg>
+            <input type="text" id="searchInput" placeholder="Cari nama, NRP, jabatan, atau jurusan..."
+              oninput="handleSearch(this.value)" autocomplete="off" />
+            <button id="clearSearchBtn" class="clear-search-btn" style="display:none;" onclick="clearSearchInput()"
+              title="Hapus pencarian">✕</button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Staff Cards Grid Container (With Pre-rendered Default Cards for Instant Display) -->
+      <div id="staffGrid" class="staff-grid">
+        <!-- Seluruh 94 Fungsionaris di-render dinamis oleh app.js -->
+      </div>
+
+      <!-- Pagination Controls (Pages untuk HP & Desktop) -->
+      <div id="staffPagination" class="pagination-wrapper"></div>
+
+      <!-- Empty State if Search Finds Nothing -->
+      <div id="emptyState" class="empty-state hidden">
+        <div class="empty-state-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </div>
+        <h3>Fungsionaris Tidak Ditemukan</h3>
+        <p>Tidak ada data yang sesuai dengan kata kunci pencarian atau filter departemen saat ini. Silakan periksa
+          kembali ejaan nama atau NRP Anda.</p>
+        <button onclick="resetAllFilters()" class="btn-primary" style="margin-top:16px;">
+          Reset Pencarian
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── 5. FAQ SECTION ── -->
+  <section class="faq-section" id="faq">
+    <div class="container">
+      <div class="faq-inner">
+
+        <div class="faq-sidebar reveal">
+          <div class="section-label">Pusat Bantuan</div>
+          <h2 class="section-title">Informasi &amp; <em>Pertanyaan Umum</em></h2>
+          <p class="section-sub">
+            Punya kendala dalam mengakses Performance Appraisal Report atau membutuhkan bantuan terkait PIN personal?
+            Simak panduan di samping.
+          </p>
+          <button class="faq-toggle-all" id="faqToggleAll">
+            <span id="faqToggleIcon">+</span> Buka Semua
+          </button>
+        </div>
+
+        <div class="faq-list reveal reveal-delay-1" id="faqList">
+
+          <div class="faq-item">
+            <div class="faq-question" tabindex="0" role="button" aria-expanded="false">
+              Bagaimana cara saya mendapatkan PIN personal?
+              <div class="faq-icon">+</div>
+            </div>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                PIN personal dibagikan secara privat oleh tim Biro Personalia melalui narahubung masing-masing
+                departemen. PIN ini bersifat rahasia agar lembar evaluasi Anda hanya dapat dibuka oleh Anda sendiri.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" tabindex="0" role="button" aria-expanded="false">
+              Apakah orang lain bisa melihat spreadsheet evaluasi saya jika tahu tautannya?
+              <div class="faq-icon">+</div>
+            </div>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                <strong>Sama sekali tidak bisa.</strong> Selain verifikasi PIN di website ini, lembar Google Sheets
+                masing-masing fungsionaris telah diatur perizinannya (*Share Settings*) secara khusus ke akun email
+                Google/ITS resmi milik fungsionaris yang bersangkutan. Pihak luar tanpa izin akan otomatis ditolak oleh
+                sistem Google.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" tabindex="0" role="button" aria-expanded="false">
+              Kapan nilai evaluasi bulanan diperbarui?
+              <div class="faq-icon">+</div>
+            </div>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                Penilaian dilakukan berkala setiap akhir bulan. Komponen evaluasi mencakup keaktifan rapat, kedisiplinan
+                koordinasi, kontribusi pada program kerja, serta kesesuaian dengan panduan GDPS BEM FTEIC ITS 2026.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" tabindex="0" role="button" aria-expanded="false">
+              Apa yang harus dilakukan jika saya lupa kode PIN?
+              <div class="faq-icon">+</div>
+            </div>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                Silakan hubungi narahubung Biro Personalia. Tim personalia akan membantu memverifikasi identitas Anda
+                dan mengirimkan kembali atau mereset kode akses PIN Anda.
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 6. CTA BANNER ── -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-inner reveal">
+        <div class="cta-content">
+          <div class="cta-label">✦ BEM FTEIC ITS 2026 • KABINET POLARIS</div>
+          <h2 class="cta-title">Satu Periode, Ruang Belajar<br><em>dan Tumbuh Bersama.</em></h2>
+          <p class="cta-sub">
+            Evaluasi bukan sekadar deretan angka, melainkan cermin untuk saling menguatkan langkah, mendengar aspirasi,
+            dan merayakan setiap proses belajar di BEM FTEIC ITS.
+          </p>
+        </div>
+        <div class="cta-actions">
+          <a href="#staf" class="btn-cta-primary">
+            Akses Performance Appraisal Report
+            <span>→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 7. FOOTER ── -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logos">
+            <img src="assets/logo-bem-fteic.png" alt="Logo BEM FTEIC" class="footer-logo-bem" />
+            <div class="footer-logo-divider"></div>
+            <img src="assets/logo-kabinet-polaris.png" alt="Logo Kabinet Polaris" class="footer-logo-kabinet" />
+          </div>
+          <p class="footer-brand-desc">
+            Portal Kinerja Staf & Anggota Kabinet Polaris BEM FTEIC ITS. Fakultas Teknologi Elektro dan Informatika
+            Cerdas, Institut Teknologi Sepuluh Nopember Surabaya.
+          </p>
+        </div>
+
+        <div>
+          <div class="footer-col-label">Navigasi</div>
+          <div class="footer-links">
+            <a href="#beranda">Beranda</a>
+            <a href="#staf">Daftar Staf</a>
+            <a href="#faq">Panduan & FAQ</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-col-label">Badan & Biro</div>
+          <div class="footer-links">
+            <a href="about-bps.html">Tentang BPS (Badan)</a>
+            <a href="biro-personalia.html">Biro Personalia (HR)</a>
+            <a href="biro-keorganisasian.html">Biro Keorganisasian (OKR)</a>
+            <a href="https://www.its.ac.id/fakultas/fteic/" target="_blank" rel="noopener">Fakultas FTEIC ITS</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-col-label">Kontak</div>
+          <div class="footer-links">
+            <a href="javascript:void(0)" onclick="openLupaPinHelp()">Hubungi Biro Personalia</a>
+            <a href="https://www.instagram.com/bemfteic.its/" target="_blank" rel="noopener">Instagram BEM FTEIC</a>
+            <a href="https://its.ac.id" target="_blank" rel="noopener">Portal ITS Surabaya</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-copy">
+          © 2026 Badan Pengembangan Strategis BEM FTEIC ITS. All rights reserved.
+        </div>
+        <div class="footer-legal">
+          <span>Privasi Data</span>
+          <span>Google Sheets Encryption</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── 8. MODAL AUTENTIKASI PIN STAF ── -->
+  <div id="passwordModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modalName">
+    <div class="modal-card" id="modalContainer">
+
+      <!-- Close Button -->
+      <button type="button" class="modal-close-btn" onclick="closeModal()" aria-label="Tutup popup">
+        ✕
+      </button>
+
+      <!-- Profile Header Inside Modal -->
+      <div class="modal-profile">
+        <div class="modal-avatar-wrap">
+          <img id="modalAvatar" src="" alt="Foto Staf" class="modal-avatar-img" />
+          <img src="assets/logo-kabinet-polaris-icon.png" alt="Polaris" class="modal-avatar-badge-img"
+            title="BEM FTEIC Kabinet Polaris" />
+        </div>
+
+        <h3 id="modalName" class="modal-name">Nama Staf</h3>
+        <p id="modalRole" class="modal-role">Jabatan Staf</p>
+
+
+        <div id="authTargetBadge" class="auth-target-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span id="authTargetText">Akses Privat Terproteksi PIN</span>
+        </div>
+      </div>
+
+      <!-- PIN Form -->
+      <form id="authForm" onsubmit="handleVerifyPassword(event)" class="modal-form">
+        <div class="form-group">
+          <div class="form-label-row">
+            <label for="staffPin">PIN / Kode Unik PA Personal</label>
+            <span class="label-hint">Akses Terproteksi &amp; Privat</span>
+          </div>
+
+          <div class="pin-input-wrap">
+            <input type="password" id="staffPin" placeholder="Masukkan PIN personal..." maxlength="50" required
+              autocomplete="off" />
+            <button type="button" id="togglePasswordBtn" class="toggle-eye-btn" onclick="togglePasswordVisibility()"
+              title="Lihat / Sembunyikan PIN">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Error Alert Banner -->
+          <div id="errorMessage" class="alert-banner alert-error hidden">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              style="flex-shrink:0;">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span id="errorMessageText">PIN / Kode Unik PA tidak sesuai. Silakan periksa kembali!</span>
+          </div>
+
+          <!-- Success Alert Banner -->
+          <div id="successMessage" class="alert-banner alert-success hidden">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              style="flex-shrink:0;">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <span id="successMessageText">PIN Terverifikasi! Membuka akses...</span>
+          </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="modal-actions">
+          <button type="button" onclick="closeModal()" class="btn-modal-cancel">
+            Batal
+          </button>
+          <button type="submit" id="submitBtn" class="btn-modal-submit">
+            Verifikasi &amp; Buka Akses
+          </button>
+        </div>
+
+        <p class="modal-help-text">
+          Lupa PIN / Kode Unik PA? <a href="javascript:void(0)" onclick="openLupaPinHelp()">Hubungi Biro Personalia</a>
+        </p>
+      </form>
+
+      <!-- On-Progress State (Ditampilkan saat PIN benar dan spreadsheet masih on progress) -->
+      <div id="progressState" class="progress-state hidden">
+        <div class="progress-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        </div>
+        <h4 class="progress-title">PIN Terverifikasi!</h4>
+        <p class="progress-subtitle">Halo, <strong id="progressStaffName">Nama</strong></p>
+        <div class="progress-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          Status Lembar Kerja: On Progress
+        </div>
+        <p class="progress-desc">
+          Tautan lembar evaluasi Google Sheets personal Anda saat ini sedang disiapkan oleh Biro Personalia &amp; Biro
+          Keorganisasian. Anda tetap dapat meninjau capaian Anda melalui tombol <strong>Lihat Report</strong>.
+        </p>
+        <div class="modal-actions" style="margin-top: 16px;">
+          <button type="button" onclick="closeModal()" class="btn-modal-cancel">
+            Tutup
+          </button>
+          <button type="button" onclick="openProgressModalFromProgressState()" class="btn-modal-submit">
+            Lihat Report Kinerja
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── 8B. MODAL DETAIL PROGRESS & EVALUASI FUNGSIONARIS ── -->
+  <div id="progressModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="pmName"
+    onclick="if(event.target === this) closeProgressModal()">
+    <div class="modal-card modal-card-wide" id="progressModalContainer">
+
+      <!-- Close Button -->
+      <button type="button" class="modal-close-btn" onclick="closeProgressModal()" aria-label="Tutup progress">
+        ✕
+      </button>
+
+      <!-- Profile Header Inside Modal -->
+      <div class="pm-profile-header">
+        <div class="pm-avatar-wrap">
+          <img id="pmAvatar" src="" alt="Foto Fungsionaris" class="pm-avatar-img" />
+          <div class="pm-avatar-status" title="Aktif Berdinamika"></div>
+        </div>
+        <div class="pm-header-details">
+          <div class="pm-badges-row">
+            <span id="pmDeptBadge" class="pill-dept dept-dagri">Departemen</span>
+            <span id="pmRoleBadge"></span>
+          </div>
+          <h3 id="pmName" class="pm-name">Nama Fungsionaris</h3>
+          <p id="pmRole" class="pm-role">Jabatan • Departemen Asal</p>
+          <div class="pm-nrp-row">
+            <span id="pmNrp" class="pm-nrp-text">NRP: -</span>
+            <span class="pm-divider">•</span>
+            <span class="pm-period-text">Kabinet Polaris 2026</span>
+          </div>
+          <div class="pm-privacy-verified-badge" title="Data evaluasi telah diotentikasi via PIN">
+            <span class="privacy-lock-dot"></span>
+            <span>Akses Privat Terverifikasi PIN</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bento Metric Highlights -->
+      <div class="pm-bento-grid">
+        <div class="pm-bento-card">
+          <div class="pm-bento-label">Indeks Rata-Rata PA</div>
+          <div class="pm-bento-value"><span id="pmOverallScore">9.1</span><span class="pm-bento-unit">/10</span></div>
+          <div class="pm-bento-sub" id="pmScoreCategory">Predikat: Istimewa</div>
+        </div>
+
+        <div class="pm-bento-card">
+          <div class="pm-bento-label">Tingkat Capaian</div>
+          <div class="pm-bento-value text-accent" id="pmAchievementPct">91%</div>
+          <div class="pm-bento-sub">Standar Mahasiswa ITS</div>
+        </div>
+
+        <div class="pm-bento-card">
+          <div class="pm-bento-label">Status Form Evaluasi</div>
+          <div class="pm-bento-value" id="pmFormStatus">Terhubung &amp; Aktif</div>
+          <div class="pm-bento-sub" id="pmSheetAvailability">Google Sheets Privat</div>
+        </div>
+      </div>
+
+      <!-- ── SECTION GRAFIK 3D PIE CHART ANIMATED ── -->
+      <div class="pm-chart-section">
+        <div class="pm-chart-header">
+          <div class="pm-section-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
+              <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+            </svg>
+            <span id="pmChartTitle">Distribusi Nilai Indikator (Grafik 3D Interaktif)</span>
+          </div>
+          <span class="pm-chart-hint">Sentuh / hover irisan diagram untuk rincian skor</span>
+        </div>
+
+        <div class="pm-chart-layout">
+          <div class="pm-canvas-container">
+            <canvas id="pieChart3D" width="460" height="260"></canvas>
+            <div id="pie3DTooltip" class="pie-3d-tooltip hidden"></div>
+          </div>
+          <div id="pieLegend" class="pie-legend-grid"></div>
+        </div>
+      </div>
+
+      <!-- ── DETAIL INDIKATOR & PARAMETER PENILAIAN ── -->
+      <div class="pm-section-block">
+        <div class="pm-section-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+          <span id="pmRubricTitle">Rincian Capaian Indikator (Skala 0 - 10)</span>
+        </div>
+        <div id="pmIndicatorsList" class="pm-indicators-list"></div>
+      </div>
+
+      <!-- Catatan Pembinaan & Feedback Personalia -->
+      <div class="pm-feedback-box">
+        <div class="pm-feedback-header">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <span>Catatan Pendampingan Biro Personalia</span>
+        </div>
+        <p id="pmFeedbackText" class="pm-feedback-text">
+          Fungsionaris menunjukkan dedikasi dan dinamika kerja yang positif. Harap pastikan lembar evaluasi berkala
+          diisi secara lengkap untuk pemantauan optimal.
+        </p>
+      </div>
+
+      <!-- Action Footer -->
+      <div class="pm-modal-actions">
+        <button type="button" class="btn-modal-lock" onclick="lockStaffSession()"
+          title="Kunci kembali sesi ini agar PIN harus dimasukkan kembali jika dibuka ulang">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span>Kunci Sesi</span>
+        </button>
+        <button type="button" class="btn-modal-cancel" onclick="closeProgressModal()">
+          Tutup
+        </button>
+        <button type="button" id="pmGoToSheetBtn" class="btn-modal-submit" onclick="transitionFromProgressToSheet()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+          </svg>
+          <span>Isi Lembar Spreadsheet</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── 9. TOAST NOTIFICATION ── -->
+  <div id="toastNotification" class="toast-box hidden">
+    <div id="toastIcon" class="toast-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+    </div>
+    <div class="toast-body">
+      <div id="toastTitle" class="toast-title">Notifikasi</div>
+      <div id="toastMessage" class="toast-message">Pesan notifikasi</div>
+    </div>
+  </div>
+
+  <!-- Scripts: Loaded and executed immediately -->
+  <script src="app.js" defer></script>
+</body>
+
+</html>
