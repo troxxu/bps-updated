@@ -169,6 +169,12 @@ body::before {
   z-index: 1;
 }
 
+@media (max-width: 640px) {
+  .container {
+    padding: 0 16px;
+  }
+}
+
 .hidden {
   display: none !important;
 }
@@ -2519,6 +2525,18 @@ body::before {
   margin-bottom: 6px;
 }
 
+.pm-rubric-pill {
+  background: rgba(29, 83, 107, 0.08);
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+  font-weight: 600;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+}
+
 .pm-name {
   font-family: var(--font-display);
   font-size: 1.18rem;
@@ -3056,19 +3074,7 @@ body::before {
   font-weight: 600;
 }
 
-@media (max-width: 640px) {
-  .pm-live-banner {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-  }
-  .pm-live-refresh-btn {
-    justify-content: center;
-    width: 100%;
-  }
-}
-
-/* Modal Action Footer */
+/* Modal Action Footer (Desktop Default) */
 .pm-modal-actions {
   display: flex;
   gap: 10px;
@@ -3104,6 +3110,308 @@ body::before {
 
 .pm-modal-actions .btn-modal-submit {
   flex: 1.3;
+}
+
+@media (max-width: 640px) {
+  /* Overlay & Modal Card Sizing on Mobile */
+  .modal-overlay {
+    padding: 12px 10px;
+  }
+
+  .modal-card-wide {
+    width: 100%;
+    max-width: 100%;
+    max-height: 92vh;
+    padding: 24px 15px 20px;
+    border-radius: 22px;
+    box-shadow: 0 16px 36px rgba(15, 23, 42, 0.35);
+  }
+
+  .modal-close-btn {
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    font-size: 13px;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    z-index: 10;
+  }
+
+  /* Centered Profile Header for Mobile */
+  .pm-profile-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    padding-top: 4px;
+  }
+
+  .pm-avatar-wrap {
+    width: 68px;
+    height: 68px;
+    margin: 0 auto;
+  }
+
+  .pm-header-details {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .pm-badges-row {
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 6px;
+    width: 100%;
+  }
+
+  .pm-rubric-pill {
+    font-size: 0.62rem;
+    height: 22px;
+    padding: 0 9px;
+    max-width: 100%;
+  }
+
+  .pm-name {
+    font-size: 1.15rem;
+    line-height: 1.3;
+    margin-bottom: 3px;
+    text-align: center;
+    word-break: break-word;
+  }
+
+  .pm-role {
+    font-size: 0.78rem;
+    line-height: 1.35;
+    text-align: center;
+    margin-bottom: 4px;
+    color: var(--text-2);
+  }
+
+  .pm-nrp-row {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    font-size: 0.72rem;
+    margin-top: 2px;
+    white-space: nowrap;
+  }
+
+  .pm-privacy-verified-badge {
+    margin: 8px auto 0 auto;
+    font-size: 0.68rem;
+    padding: 3px 10px;
+  }
+
+  /* Real-Time Live Sync Banner on Mobile */
+  .pm-live-banner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 11px 12px;
+    margin-bottom: 14px;
+  }
+
+  .pm-live-banner-left {
+    gap: 9px;
+  }
+
+  .pm-live-title-row {
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .pm-live-status-title {
+    font-size: 0.78rem;
+    line-height: 1.3;
+  }
+
+  .pm-live-badge-chip {
+    font-size: 0.62rem;
+  }
+
+  .pm-live-status-desc {
+    font-size: 0.7rem;
+    line-height: 1.45;
+  }
+
+  .pm-live-refresh-btn {
+    justify-content: center;
+    width: 100%;
+    padding: 7px 12px;
+    font-size: 0.72rem;
+  }
+
+  /* Bento Stat Cards: 2-column top + 1 full-width status card */
+  .pm-bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .pm-bento-card {
+    padding: 10px 8px;
+  }
+
+  .pm-bento-card:nth-child(3) {
+    grid-column: span 2;
+    padding: 11px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .pm-bento-label {
+    font-size: 0.63rem;
+    margin-bottom: 2px;
+  }
+
+  .pm-bento-value {
+    font-size: 1.15rem;
+  }
+
+  .pm-bento-card:nth-child(3) .pm-bento-value {
+    font-size: 0.92rem;
+    margin-top: 1px;
+  }
+
+  .pm-bento-sub {
+    font-size: 0.64rem;
+    margin-top: 2px;
+  }
+
+  /* 3D Animated Chart Section */
+  .pm-chart-section {
+    padding: 14px 12px;
+    margin-bottom: 16px;
+    border-radius: var(--radius-sm);
+  }
+
+  .pm-chart-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+
+  .pm-section-title {
+    font-size: 0.8rem;
+    gap: 6px;
+  }
+
+  .pm-chart-hint {
+    font-size: 0.67rem;
+  }
+
+  .pm-canvas-container {
+    height: 200px;
+    max-width: 100%;
+  }
+
+  .pie-legend-grid {
+    gap: 5px;
+  }
+
+  .pie-legend-item {
+    font-size: 0.67rem;
+    padding: 4px 8px;
+  }
+
+  /* Indicator Cards */
+  .pm-section-block {
+    padding: 13px 12px;
+    margin-bottom: 16px;
+    border-radius: var(--radius-sm);
+  }
+
+  .pm-indicator-card {
+    padding: 10px 11px;
+  }
+
+  .pm-ind-name {
+    font-size: 0.82rem;
+  }
+
+  .pm-ind-score-badge {
+    font-size: 0.74rem;
+    padding: 2px 6px;
+  }
+
+  .pm-ind-desc {
+    font-size: 0.72rem;
+  }
+
+  .pm-ind-param-box {
+    padding: 6px 9px;
+  }
+
+  .pm-ind-param-text {
+    font-size: 0.69rem;
+  }
+
+  /* Feedback & Peer Feedback Containers */
+  .pm-feedback-box {
+    padding: 12px 13px;
+    margin-bottom: 16px;
+  }
+
+  .pm-feedback-text {
+    font-size: 0.76rem;
+    line-height: 1.5;
+  }
+
+  .pm-peer-feedback-box {
+    padding: 12px 13px;
+    margin-bottom: 16px;
+  }
+
+  .pm-peer-item-card {
+    padding: 9px 11px;
+  }
+
+  .pm-peer-item-content {
+    font-size: 0.73rem;
+  }
+
+  /* Action Buttons: Primary full-width on top, secondary side-by-side */
+  .pm-modal-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .pm-modal-actions #pmGoToSheetBtn {
+    grid-column: span 2;
+    order: -1;
+    width: 100%;
+    flex: none !important;
+    padding: 12px 14px;
+    font-size: 0.82rem;
+  }
+
+  .pm-modal-actions .btn-modal-lock {
+    width: 100%;
+    flex: none !important;
+    padding: 10px 12px;
+    font-size: 0.76rem;
+    justify-content: center;
+  }
+
+  .pm-modal-actions .btn-modal-cancel {
+    width: 100%;
+    flex: none !important;
+    padding: 10px 12px;
+    font-size: 0.76rem;
+    justify-content: center;
+  }
 }
 
 /* ── RESPONSIVE STYLES ── */
@@ -5420,6 +5728,108 @@ body::before {
   border-radius: 6px;
 }
 
+@media (max-width: 640px) {
+  .timeline-section {
+    padding: 40px 0;
+  }
+
+  .timeline-filter-wrap {
+    margin: 16px 0 24px;
+    gap: 6px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    justify-content: flex-start;
+  }
+
+  .timeline-filter-wrap::-webkit-scrollbar {
+    display: none;
+  }
+
+  .timeline-filter-btn {
+    padding: 6px 12px;
+    font-size: 0.74rem;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .timeline-filter-count {
+    font-size: 0.65rem;
+    padding: 1px 5px;
+  }
+
+  .timeline-track-line {
+    left: 14px !important;
+    width: 2px !important;
+  }
+
+  .timeline-item {
+    padding-left: 36px !important;
+    margin-bottom: 18px !important;
+  }
+
+  .timeline-item .timeline-node {
+    left: 4px !important;
+    top: 14px !important;
+    width: 22px !important;
+    height: 22px !important;
+    border-width: 2px !important;
+    box-shadow: 0 0 0 3px rgba(29, 83, 107, 0.12) !important;
+  }
+
+  .node-dot {
+    width: 7px !important;
+    height: 7px !important;
+  }
+
+  .timeline-card {
+    padding: 15px 14px 13px !important;
+    border-radius: 14px !important;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04) !important;
+  }
+
+  .timeline-card-header {
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+
+  .timeline-seq-badge {
+    font-size: 0.64rem;
+    padding: 2px 8px;
+    letter-spacing: 0.04em;
+  }
+
+  .timeline-status-pill {
+    font-size: 0.64rem;
+    padding: 2px 8px;
+  }
+
+  .timeline-card-title {
+    font-size: 0.94rem;
+    line-height: 1.35;
+    margin-bottom: 5px;
+  }
+
+  .timeline-card-sub {
+    font-size: 0.76rem;
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+
+  .timeline-tags-row {
+    gap: 5px;
+    margin-top: 6px;
+  }
+
+  .timeline-tag {
+    font-size: 0.66rem;
+    padding: 2px 7px;
+    border-radius: 4px;
+  }
+}
+
 /* ══════════════════════════════════════════════════════════════════
    CAMERA ROLL DESIGN (INTERNALISASI VILLA BATU)
    ══════════════════════════════════════════════════════════════════ */
@@ -6668,6 +7078,112 @@ body::before {
     grid-template-columns: 1fr;
     gap: 24px;
   }
+
+  .lifecycle-diagram-card {
+    position: static !important;
+    top: auto !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .lifecycle-section {
+    padding: 36px 0;
+  }
+
+  .lifecycle-layout {
+    gap: 16px;
+    margin-top: 18px;
+  }
+
+  .lifecycle-diagram-card {
+    padding: 14px;
+    border-radius: 14px;
+    position: static !important;
+    top: auto !important;
+  }
+
+  .diagram-frame {
+    padding: 6px;
+    border-radius: 10px;
+  }
+
+  .diagram-caption {
+    font-size: 0.76rem;
+    line-height: 1.5;
+    margin-top: 10px;
+  }
+
+  .diagram-tags {
+    gap: 4px;
+    margin-top: 8px;
+  }
+
+  .diagram-tag-item {
+    font-size: 0.67rem;
+    padding: 2px 7px;
+  }
+
+  .pillars-slider-topbar {
+    margin-bottom: 10px;
+    gap: 8px;
+  }
+
+  .slider-info-badge {
+    font-size: 0.72rem;
+    padding: 4px 10px;
+  }
+
+  .journey-slider-track {
+    padding: 6px 2px 14px;
+    gap: 10px;
+  }
+
+  .journey-slide-card,
+  .lifecycle-step-card {
+    flex: 0 0 270px;
+    max-width: 285px;
+    padding: 15px 13px;
+    border-radius: 13px;
+  }
+
+  .step-header {
+    margin-bottom: 8px;
+    gap: 6px;
+  }
+
+  .step-number-tag {
+    font-size: 0.64rem;
+    padding: 2px 7px;
+  }
+
+  .step-badge {
+    font-size: 0.64rem;
+    padding: 2px 7px;
+  }
+
+  .step-title {
+    font-size: 0.95rem;
+    margin-bottom: 5px;
+  }
+
+  .step-desc {
+    font-size: 0.75rem;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+
+  .step-programs {
+    gap: 4px;
+  }
+
+  .step-programs-label {
+    font-size: 0.66rem;
+  }
+
+  .step-proker-chip {
+    font-size: 0.65rem;
+    padding: 2px 7px;
+  }
 }
 
 .lifecycle-diagram-card {
@@ -7277,7 +7793,8 @@ body::before {
 
 /* ── KONSEPSI VISI MISI & FILOSOFI POLARIS (TKO 2026) ── */
 .polaris-conception-section {
-  padding: 60px 0 30px;
+  padding-top: 60px;
+  padding-bottom: 30px;
 }
 
 .polaris-philosophy-box {
@@ -7569,5 +8086,150 @@ body::before {
   font-size: 0.82rem;
   line-height: 1.6;
   color: var(--text-2);
+}
+
+@media (max-width: 640px) {
+  /* Conception Section Spacing */
+  .polaris-conception-section {
+    padding-top: 36px;
+    padding-bottom: 24px;
+  }
+
+  /* Philosophy Box */
+  .polaris-philosophy-box {
+    padding: 18px 15px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+  }
+
+  .polaris-philosophy-title {
+    font-size: 1.15rem;
+  }
+
+  .polaris-philosophy-desc {
+    font-size: 0.82rem;
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+
+  .polaris-dual-terms {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .polaris-term-item {
+    padding: 12px 14px;
+    border-radius: 10px;
+  }
+
+  .polaris-term-title {
+    font-size: 0.86rem;
+    margin-bottom: 4px;
+  }
+
+  .polaris-term-desc {
+    font-size: 0.76rem;
+    line-height: 1.5;
+  }
+
+  /* Vision Hero Card */
+  .polaris-vision-hero-card {
+    padding: 20px 16px;
+    border-radius: 18px;
+    margin-bottom: 22px;
+  }
+
+  .vision-tag-pill {
+    font-size: 0.68rem;
+    padding: 4px 10px;
+    margin-bottom: 12px;
+  }
+
+  .vision-quote-id {
+    font-size: 1.05rem;
+    line-height: 1.55;
+    margin-bottom: 12px;
+  }
+
+  .vision-quote-en {
+    font-size: 0.82rem;
+    line-height: 1.55;
+    padding-top: 12px;
+  }
+
+  /* 4 Values Grid: Compact 2x2 Matrix on Mobile */
+  .polaris-values-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 9px !important;
+    margin-bottom: 24px !important;
+  }
+
+  .polaris-value-card {
+    padding: 13px 11px !important;
+    border-radius: 13px !important;
+  }
+
+  .polaris-value-top {
+    margin-bottom: 8px;
+  }
+
+  .polaris-value-badge {
+    font-size: 0.62rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .polaris-value-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+  }
+
+  .polaris-value-icon svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .polaris-value-title {
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+
+  .polaris-value-desc {
+    font-size: 0.72rem;
+    line-height: 1.45;
+  }
+
+  /* 4 Missions Grid: Sleek, Proportionate Accent Cards */
+  .polaris-missions-grid {
+    gap: 10px !important;
+    margin-bottom: 28px !important;
+  }
+
+  .polaris-mission-card {
+    padding: 15px 14px !important;
+    border-radius: 13px !important;
+    border-left: 3.5px solid var(--accent) !important;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
+  }
+
+  .polaris-mission-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    margin-bottom: 8px;
+  }
+
+  .polaris-mission-title {
+    font-size: 0.88rem;
+    line-height: 1.35;
+    margin-bottom: 5px;
+  }
+
+  .polaris-mission-desc {
+    font-size: 0.76rem;
+    line-height: 1.5;
+  }
 }
 

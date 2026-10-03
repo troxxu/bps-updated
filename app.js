@@ -2072,7 +2072,8 @@ function getStaffRubricData(staff, liveData = null) {
 
   return {
     isKabinet,
-    rubricType: isKabinet ? "Evaluasi Kepemimpinan Kabinet (7 Indikator) — Polaris Leadership" : "Evaluasi Kinerja Staf (12 Indikator) — Elevator Kapasitas Insan",
+    rubricType: isKabinet ? "Evaluasi Kabinet (7 Indikator)" : "Evaluasi Staf (12 Indikator)",
+    rubricTypeFull: isKabinet ? "Evaluasi Kepemimpinan Kabinet (7 Indikator) — Polaris Leadership" : "Evaluasi Kinerja Staf (12 Indikator) — Elevator Kapasitas Insan",
     averageScore,
     achievementPct: `${achievementPct}%`,
     predikat,
@@ -2849,7 +2850,10 @@ function openProgressModal(staff, liveData = null) {
 
   const roleBadge = document.getElementById("pmRoleBadge");
   if (roleBadge) {
-    roleBadge.innerHTML = `<span class="pill-dept" style="background: rgba(29, 83, 107, 0.1); color: var(--accent); border: 1px solid var(--accent-border);">${data.rubricType}</span>`;
+    const fullTitle = data.rubricTypeFull || data.rubricType;
+    roleBadge.className = "pill-dept pm-rubric-pill";
+    roleBadge.title = fullTitle;
+    roleBadge.textContent = data.rubricType;
   }
 
   // Update Live Sync Status Banner
