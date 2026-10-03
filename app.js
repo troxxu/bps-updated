@@ -73,7 +73,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "coco",
     "foto": "assets/foto-staf/staf-003.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1xT_eEtcQSdu9ELqIMZOCNWGN_ALbB8onAeBasds2S-4/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-004",
@@ -86,7 +86,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "pipa tw2",
     "foto": "assets/foto-staf/staf-004.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1yLlhJSZpop_LcBhKjFAqukYwuq4q0PtdX1x8t2SGYDc/edit?usp=sharing"
   },
   {
     "id": "staf-005",
@@ -99,7 +99,7 @@ const staffList = [
     "asalDepartemen": "Teknik Biomedik",
     "pin": "cihuy54321",
     "foto": "assets/foto-staf/staf-005.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1bwGEq_kaaGC9qc9A6xa_Kc-mbHuN0MfP2AP3Y9Es08s/edit?usp=sharing"
   },
   {
     "id": "staf-006",
@@ -112,7 +112,7 @@ const staffList = [
     "asalDepartemen": "Teknik Biomedik",
     "pin": "nadhifgacor",
     "foto": "assets/foto-staf/staf-006.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1VAiaCt_ATtf1PiEzY8N6PXEqiCxINtQXhB8YrEl2NZM/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-007",
@@ -125,7 +125,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "JuruSelamat",
     "foto": "assets/foto-staf/staf-007.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1tBmAYx2YljmSI3SMua894M9T3vJxHvwlMWk1KWUmumQ/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-008",
@@ -138,7 +138,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "Coklat",
     "foto": "assets/foto-staf/staf-008.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/13ONynqsGjp6B0AReRrhyv8lScNkB2rX4Sk5HlpUNl8Q/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-009",
@@ -151,7 +151,7 @@ const staffList = [
     "asalDepartemen": "Teknik Biomedik",
     "pin": "Stroberipisang",
     "foto": "assets/foto-staf/staf-009.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1gzCGB9GnaUVNnMcIdaBFKDzMzwgRqwA0ir2ewRf4ZE0/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-010",
@@ -164,7 +164,7 @@ const staffList = [
     "asalDepartemen": "Teknologi Informasi",
     "pin": "jerusnipis",
     "foto": "assets/foto-staf/staf-010.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1uINBdu5hewG6cH-5zzIWMOi3LFn7iilmirr3yrK0l7M/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-011",
@@ -177,7 +177,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "nabilahadi!",
     "foto": "assets/foto-staf/staf-011.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1Ao1Zxbpsmz_qoJwgvjcE4AiLizXlFbcDsrTtkAdFDiw/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-012",
@@ -190,7 +190,7 @@ const staffList = [
     "asalDepartemen": "Sistem Informasi",
     "pin": "diklaksonmencelat",
     "foto": "assets/foto-staf/staf-012.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1htslHcO5YFcfnFnUByk6izoqQcKm_qhfUFeguysCLyA/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-013",
@@ -203,7 +203,7 @@ const staffList = [
     "asalDepartemen": "Sistem Informasi",
     "pin": "bhaapp",
     "foto": "assets/foto-staf/staf-013.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1BAC2n7vfuAe9YJASfXZQ605b2M_C2HmUwYfEEypIl_o/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-014",
@@ -216,7 +216,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "JamesSiPendekar",
     "foto": "assets/foto-staf/staf-014.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1ZVrtUOc8onczqkX2eoCWYJyiY5ODAbMDk32K716C-QE/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-015",
@@ -229,7 +229,7 @@ const staffList = [
     "asalDepartemen": "Teknik Komputer",
     "pin": "howbot",
     "foto": "assets/foto-staf/staf-015.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1Y4l6gQEctdPS_D3LO7dOgzsjfYG0nUI9J4wclloUJcY/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-016",
@@ -242,7 +242,7 @@ const staffList = [
     "asalDepartemen": "Teknik Informatika",
     "pin": "ayoberantemsatusatu",
     "foto": "assets/foto-staf/staf-016.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1ngpLsJ8hIqQ0L9r3u0gupakaYXmGvc0FKZZB-c2Bc_M/edit?usp=sharing"
   },
   {
     "id": "staf-017",
@@ -255,7 +255,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "enopsdm",
     "foto": "assets/foto-staf/staf-017.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/19x0edAi3BIwW9RZIGMJ3LGhk9tIL615YwasOwWcQ4_8/edit?usp=sharing"
   },
   {
     "id": "staf-018",
@@ -268,7 +268,7 @@ const staffList = [
     "asalDepartemen": "Teknik Komputer",
     "pin": "meloidx",
     "foto": "assets/foto-staf/staf-018.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1YGvqJcducY2fhqy6F82fK5HP3jlep5kH3-V7-BPq2p4/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-019",
@@ -281,7 +281,7 @@ const staffList = [
     "asalDepartemen": "Sistem Informasi",
     "pin": "missytiffainipsdm",
     "foto": "https://ui-avatars.com/api/?name=Missy+Tiffaini+Novlensia+Sinaga&background=1D536B&color=fff&size=200&bold=true",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1aTU_NLO4_8eMG9qI7yrmOWbGEeuYaEML3-LVkwl0ph4/edit?usp=sharing"
   },
   {
     "id": "staf-020",
@@ -294,7 +294,7 @@ const staffList = [
     "asalDepartemen": "Teknik Komputer",
     "pin": "theooopsdm",
     "foto": "assets/foto-staf/staf-020.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1_okzz1tlfbqib7U6AiuAiC1AyyzUUEtmUQw6NSYQudE/edit?usp=sharing"
   },
   {
     "id": "staf-021",
@@ -307,7 +307,7 @@ const staffList = [
     "asalDepartemen": "Teknologi Informasi",
     "pin": "piscok",
     "foto": "assets/foto-staf/staf-021.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1vSyyoyzeX-6gJH2wtSOx2ECXnIZdDbKZTSZ4h58-UQg/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-022",
@@ -320,7 +320,7 @@ const staffList = [
     "asalDepartemen": "Teknik Biomedik",
     "pin": "pawpaw",
     "foto": "assets/foto-staf/staf-022.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1akScl5j76YtoXpqnkW0nUAUE8XtsMlpYkPlsJLVzUwA/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-023",
@@ -333,7 +333,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "pecintapisangijo_06",
     "foto": "assets/foto-staf/staf-023.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1IvbixUOaxHf-OCHxRav6sVhb1hjlPnEl-yYo9YKX-wU/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-024",
@@ -346,7 +346,7 @@ const staffList = [
     "asalDepartemen": "Teknik Biomedik",
     "pin": "Pompomarine",
     "foto": "assets/foto-staf/staf-024.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1wZibiak-QtoDa0olFlzSAFR-dT_a5Fnf1X6jiI-ZqC0/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-025",
@@ -359,7 +359,7 @@ const staffList = [
     "asalDepartemen": "Teknik Informatika",
     "pin": "SMWADA",
     "foto": "assets/foto-staf/staf-025.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1prQ3RyzCxsEWLF1kJ2L-DmVesJX11rdrdY8D83st1uw/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-026",
@@ -372,7 +372,7 @@ const staffList = [
     "asalDepartemen": "Teknik Informatika",
     "pin": "Fox",
     "foto": "assets/foto-staf/staf-026.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1eCLQLIw1MIYDPjT7PiMAhf7s643AQJC4CRWm2SzEmt8/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-027",
@@ -385,7 +385,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "O2Reings",
     "foto": "assets/foto-staf/staf-027.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1ZPO8dRULBUZ--TUdCJ6PnNxgzSH5Mu-Yx6Z2D4G8IIA/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-028",
@@ -398,7 +398,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "Buritos",
     "foto": "assets/foto-staf/staf-028.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/15FBvqCTh9elis1cdTsYfBlP1bNhzt62BKNyGKuGvY3o/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-029",
@@ -411,7 +411,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "keindraotwlulus",
     "foto": "assets/foto-staf/staf-029.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1mUceAGNSlWIDUwexbFrw2ppAFwqFl10Y66oqJ-3TaiE/edit?usp=sharing"
   },
   {
     "id": "staf-030",
@@ -424,7 +424,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "janicerizztech",
     "foto": "assets/foto-staf/staf-030.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1XuBmW1Ht4cd4fhr9-08haYuPGRsEt5oXHhJu_eboDrw/edit?usp=sharing"
   },
   {
     "id": "staf-031",
@@ -437,7 +437,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "TuaBangka1",
     "foto": "assets/foto-staf/staf-031.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1bY13BceAmDb__dOFqJ2sbNw26ZoG4NCN4lhOb5uaoH0/edit?usp=drive_link"
   },
   {
     "id": "staf-032",
@@ -450,7 +450,7 @@ const staffList = [
     "asalDepartemen": "Teknik Biomedik",
     "pin": "Yaya",
     "foto": "assets/foto-staf/staf-032.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1vuES6IT7JtJG7LxFp5x0c5mv5rr-VHBP8krJjboJtIg/edit?usp=sharing"
   },
   {
     "id": "staf-033",
@@ -463,7 +463,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "einsteinsanglegend",
     "foto": "assets/foto-staf/staf-033.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1vo6jZ79fUA2aeuQk1SjIIfGjrXgzhx6TaQTo5iHDW5w/edit?usp=sharing"
   },
   {
     "id": "staf-034",
@@ -476,7 +476,7 @@ const staffList = [
     "asalDepartemen": "Teknik Biomedik",
     "pin": "user",
     "foto": "assets/foto-staf/staf-034.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1_r9cZVwFuSuxPcDZiSZPx1nLyw1TBuv86D-WgR7fVTU/edit?usp=drive_link"
   },
   {
     "id": "staf-035",
@@ -489,7 +489,7 @@ const staffList = [
     "asalDepartemen": "Teknik Biomedik",
     "pin": "Mihu",
     "foto": "assets/foto-staf/staf-035.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/11Ho6z4kaux-W5GySb_aSzBXGNxtOG3OrRwZYVeygyL4/edit?usp=drive_link"
   },
   {
     "id": "staf-036",
@@ -502,7 +502,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "akucintamasEinstein",
     "foto": "assets/foto-staf/staf-036.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1As7WB1Ryit98r6U0i33PI0zisecBPNlE4NGrA25zMio/edit?usp=drive_link"
   },
   {
     "id": "staf-037",
@@ -515,7 +515,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "Raflisekdep",
     "foto": "assets/foto-staf/staf-037.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1aRyeDMLeg4FsCNarci-rUHPRLIylC_d1RXBwaYBGxxo/edit?usp=drive_link"
   },
   {
     "id": "staf-038",
@@ -528,7 +528,7 @@ const staffList = [
     "asalDepartemen": "Teknik Biomedik",
     "pin": "Miawmaomeow",
     "foto": "assets/foto-staf/staf-038.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/18JXvD2N-4nBj6hSMlbd8GtdExONgcwyv3PaRiU5v9Qg/edit?usp=drive_link"
   },
   {
     "id": "staf-039",
@@ -541,7 +541,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "Ok",
     "foto": "assets/foto-staf/staf-039.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1JTgmf6eykf1uUwLV2f9y9ZXYC1QF4LUK3Nogy68vF5A/edit?usp=drive_link"
   },
   {
     "id": "staf-040",
@@ -554,7 +554,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "el ciloko",
     "foto": "assets/foto-staf/staf-040.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1G3RwIEJ44Vbn2UMyLghqQYiwuQTAWJeyOayyMKW2_wU/edit?usp=drive_link"
   },
   {
     "id": "staf-041",
@@ -567,7 +567,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "akucintaEinstein",
     "foto": "assets/foto-staf/staf-041.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/163XoC3ociekfMCAl_NAqiXdG1xFa0rH0KxGSvRLhM3g/edit?usp=drive_link"
   },
   {
     "id": "staf-042",
@@ -580,7 +580,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "IsThatSo??",
     "foto": "assets/foto-staf/staf-042.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1iojuvMqZOnQA_Lwlt6AffgW7Wsut48LTN4Cyhe1gNwM/edit?usp=drive_link"
   },
   {
     "id": "staf-043",
@@ -593,7 +593,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "bleki",
     "foto": "assets/foto-staf/staf-043.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1Yf93Xk0JhEdvZ3z4zYBG4xbnjsdqIGrsO6x3D1Lf33Q/edit?usp=drive_link"
   },
   {
     "id": "staf-044",
@@ -606,7 +606,7 @@ const staffList = [
     "asalDepartemen": "Sistem Informasi",
     "pin": "nafasosmasgacor",
     "foto": "assets/foto-staf/staf-044.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1ZDUGTZtifi5PFBtkkkrNvrCz45HtkeBCYADFlKj5mvo/edit?usp=sharing"
   },
   {
     "id": "staf-045",
@@ -619,7 +619,7 @@ const staffList = [
     "asalDepartemen": "Sistem Informasi",
     "pin": "keishasosmas",
     "foto": "assets/foto-staf/staf-045.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1b_FKWo39JpeN--WyaZZZClDbyGu-B-ZTHib7OjUFGbA/edit?usp=sharing"
   },
   {
     "id": "staf-046",
@@ -632,7 +632,7 @@ const staffList = [
     "asalDepartemen": "Teknik Informatika",
     "pin": "efanganteng",
     "foto": "assets/foto-staf/staf-046.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1349XCLEPkcPWGEA7ukripQRAhFu4pK-oWBLDRyR7CfA/edit?usp=sharing"
   },
   {
     "id": "staf-047",
@@ -645,7 +645,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "jojo",
     "foto": "assets/foto-staf/staf-047.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1imBCd-Yvcb8WvOUGFTyOPhs-mHZzaKP0DoFZqJ65u10/edit?usp=sharing"
   },
   {
     "id": "staf-048",
@@ -658,7 +658,7 @@ const staffList = [
     "asalDepartemen": "Teknik Informatika",
     "pin": "alifwerrr",
     "foto": "assets/foto-staf/staf-048.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1XIDRxAIocLspO-dGEWW8xuJPRQVUgpvSKyRCTr-MTnw/edit?usp=sharing"
   },
   {
     "id": "staf-049",
@@ -671,7 +671,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "Baksobio",
     "foto": "assets/foto-staf/staf-049.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1ywS2RP8j6OddG93phiFPkYry3dK7OFdnC7l3VpMAmgg/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-050",
@@ -684,7 +684,7 @@ const staffList = [
     "asalDepartemen": "Sistem Informasi",
     "pin": "Ryukennnn",
     "foto": "assets/foto-staf/staf-050.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1n5945rq1eOzVjX8WrG-YeA2kxaOzZ_L3ouqxDFVH8aI/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-051",
@@ -697,7 +697,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "Nisza",
     "foto": "assets/foto-staf/staf-051.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1as5tuVm0oZLd1ZDdrAkefcGxTvhnV9m313rcqE34n_s/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-052",
@@ -710,7 +710,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "sicantik",
     "foto": "assets/foto-staf/staf-052.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1KzUXtMIcdZG6QNy_-WkrlSxGY2edu3C9AqcxJPXzLDE/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-053",
@@ -723,7 +723,7 @@ const staffList = [
     "asalDepartemen": "Teknik Informatika",
     "pin": "amar",
     "foto": "assets/foto-staf/staf-053.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1y-m5f1AOYWIcKZyyx_ZnnCDtM9EYFn8ZbGS9rSJfIVY/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-054",
@@ -736,7 +736,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "aghapelari",
     "foto": "assets/foto-staf/staf-054.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1Cfr8qh3gdyZzm7OOolz_1_N8cA4LO26aV8NEe3Sf8wM/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-055",
@@ -749,7 +749,7 @@ const staffList = [
     "asalDepartemen": "Teknik Biomedik",
     "pin": "Miere",
     "foto": "assets/foto-staf/staf-055.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1HRXoRZK3ZbCFUheVkPm5AYHr3tQdc4KUuRJeWKuLX8g/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-056",
@@ -762,7 +762,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "X’Ray",
     "foto": "assets/foto-staf/staf-056.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1J4iVqW3g6oGrbjga1tecy3jnYBpSc172lhVnlOI8L3Y/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-057",
@@ -775,7 +775,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "mngni",
     "foto": "assets/foto-staf/staf-057.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1Iusx0XoBIfUgzZvfBj_4tpmtpOK87GT8GW4qhVfnrgE/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-058",
@@ -788,7 +788,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "theresia.ivona",
     "foto": "assets/foto-staf/staf-058.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1NG27XAZev6BYU3LZyF6_hpjOR_hb4CAmRCLwjGG_0Vo/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-059",
@@ -801,7 +801,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "malik",
     "foto": "assets/foto-staf/staf-059.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1AUWGn25_ISOjfqRp-ZRk9RoT1oKu7oFVEqNcN7Zp5WE/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-060",
@@ -814,7 +814,7 @@ const staffList = [
     "asalDepartemen": "Sistem Informasi",
     "pin": "Bebas",
     "foto": "assets/foto-staf/staf-060.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1LaqUpV4Cb4CE3yRw8wv2TVMdvQ7FkTf8XsdyxpgGAws/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-061",
@@ -827,7 +827,7 @@ const staffList = [
     "asalDepartemen": "Teknik Biomedik",
     "pin": "mangeak",
     "foto": "assets/foto-staf/staf-061.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1gQz3I_AaodvrE4djGTp-Wl7OzBnL0Zdspa4JS7QAspE/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-062",
@@ -840,7 +840,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "fadhilpemburucinta",
     "foto": "assets/foto-staf/staf-062.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/15Y5p0RQrQp0dFFOUnOm2LwUrk6pwl4Ua6Bvrn6YhscI/edit?usp=sharing"
   },
   {
     "id": "staf-063",
@@ -853,7 +853,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "widyallugrigacor",
     "foto": "assets/foto-staf/staf-063.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1i43V_xVqDhE4uyIgbqzZjvIt8zqJqlKAcLxLGrrCsiU/edit?usp=sharing"
   },
   {
     "id": "staf-064",
@@ -866,7 +866,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "razkaahliediting",
     "foto": "assets/foto-staf/staf-064.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1Zk84jALyjoaOxI9VsCQTdWs8lCGFiirvGKGqqurzm5s/edit?usp=sharing"
   },
   {
     "id": "staf-065",
@@ -879,7 +879,7 @@ const staffList = [
     "asalDepartemen": "Teknik Informatika",
     "pin": "rajanabangnyadentyo",
     "foto": "assets/foto-staf/staf-065.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1qCqsAScvhTSAsIIeCcLNPdocafULX3dTWX80M1IFt04/edit?usp=sharing"
   },
   {
     "id": "staf-066",
@@ -892,7 +892,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "ninditaputri_",
     "foto": "assets/foto-staf/staf-066.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1h8yJZx6oLeL0LOZCgaJPfhQsheoZPLb2ldWUXvEsy3Q/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-067",
@@ -905,7 +905,7 @@ const staffList = [
     "asalDepartemen": "Teknik Biomedik",
     "pin": "Chiowu",
     "foto": "assets/foto-staf/staf-067.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1jJkCmqyTVlPicCdHHsKvyKZboFXlYArzt69F4xwSytQ/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-068",
@@ -918,7 +918,7 @@ const staffList = [
     "asalDepartemen": "Teknik Komputer",
     "pin": "Sasageyou",
     "foto": "assets/foto-staf/staf-068.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1VPZOnaPDFBZLZ1Th7tyZFHnJUd9H1T_ZmPJup_xEkPc/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-069",
@@ -931,7 +931,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "obhcombisachet",
     "foto": "assets/foto-staf/staf-069.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1r3KvwMgJpU3lnmiZdGRXoHK2ZcnnuJPAOMWOoW0hDpQ/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-070",
@@ -944,7 +944,7 @@ const staffList = [
     "asalDepartemen": "Teknik Komputer",
     "pin": "hany",
     "foto": "assets/foto-staf/staf-070.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1drUjS8o60eZSRff5Uv2RO4VW5i6_rNfgDCPyPvBzl44/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-071",
@@ -957,7 +957,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "iqbalfarisi",
     "foto": "assets/foto-staf/staf-071.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1YHX1Er60bZ83Cb8q6GKifXmavQaWcO17rXOsIFKia9k/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-072",
@@ -970,7 +970,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "RV.1211",
     "foto": "assets/foto-staf/staf-072.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/17abNSGCMOVDMHKtaj-7eiCwXlkumG3YsrwzE4FfedVM/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-073",
@@ -983,7 +983,7 @@ const staffList = [
     "asalDepartemen": "Teknik Komputer",
     "pin": "stressedel",
     "foto": "assets/foto-staf/staf-073.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1NInPeqc8mmz8NIUL86TsoB1C4dc0eT1RmG5vaQIFwuc/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-074",
@@ -996,7 +996,7 @@ const staffList = [
     "asalDepartemen": "Teknik Biomedik",
     "pin": "penghunitw2",
     "foto": "assets/foto-staf/staf-074.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1p2c6Mec0AMipM-O-UUEXs1a_r-C8ht0M5xgmdihY0j4/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-075",
@@ -1009,7 +1009,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "beabadoobee",
     "foto": "assets/foto-staf/staf-075.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1apOdGZl62iDdvyFdQVYcDwBWAQCTceDv6kUrib1ThO0/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-076",
@@ -1022,7 +1022,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "tahugorenk",
     "foto": "assets/foto-staf/staf-076.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1_1V0_h7ukmi-9jbDi7j35skhqyPULIMZRXgpF3JuJrE/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-077",
@@ -1035,7 +1035,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "Kecebong",
     "foto": "assets/foto-staf/staf-077.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1u8bdCd4M8eQb-IneEbwiCbOzbmoCD8A8lE5BFJC658o/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-078",
@@ -1048,7 +1048,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "KipasAngin",
     "foto": "assets/foto-staf/staf-078.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1eEcWqIJZwAA561v54HPjUYwyV875UnmDdPe6AoaXslk/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-079",
@@ -1061,7 +1061,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "DewaaaKapas",
     "foto": "assets/foto-staf/staf-079.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1FWhtZBALOu0mkJtdwKTkfHgxH-p8tix35ZwT789guRg/edit?gid=346760844#gid=346760844"
   },
   {
     "id": "staf-080",
@@ -1074,7 +1074,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "Jendela Waktu",
     "foto": "assets/foto-staf/staf-080.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1mr2mVUThFIpEmO9bQRZjG_pMa_2s1SPQ8UzS7yAqazQ/edit?usp=sharing"
   },
   {
     "id": "staf-081",
@@ -1087,7 +1087,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "kudanilemas",
     "foto": "assets/foto-staf/staf-081.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1MnBcmddKZzCR8SDKNYyJdqxMtZbcrEKjGMmbzg3BP50/edit?usp=sharing"
   },
   {
     "id": "staf-082",
@@ -1100,7 +1100,7 @@ const staffList = [
     "asalDepartemen": "Sistem Informasi",
     "pin": "Blubub",
     "foto": "assets/foto-staf/staf-082.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1Zv0SF0pRtzoxRDRTFeVCyEMAik7vNUdq1UJMVREpT0M/edit?usp=sharing"
   },
   {
     "id": "staf-083",
@@ -1113,7 +1113,7 @@ const staffList = [
     "asalDepartemen": "Teknik Informatika",
     "pin": "Mantao",
     "foto": "https://ui-avatars.com/api/?name=Ramandita+Ahmad+Saguna&background=1D536B&color=fff&size=200&bold=true",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/16TYrorhtMOy9mjnUDCJ4_0tCff6Y-GJyClQjXr13XiA/edit?usp=sharing"
   },
   {
     "id": "staf-084",
@@ -1126,7 +1126,7 @@ const staffList = [
     "asalDepartemen": "Teknik Biomedik",
     "pin": "rawr",
     "foto": "assets/foto-staf/staf-084.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/15ybnnkDkntzRNZMFBRH6PBPoADZU0WpIU5ktACIbFGg/edit?usp=drive_link"
   },
   {
     "id": "staf-085",
@@ -1139,7 +1139,7 @@ const staffList = [
     "asalDepartemen": "Sistem Informasi",
     "pin": "kalkulus2",
     "foto": "assets/foto-staf/staf-085.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/133hhKZopk7P1yYhn3AjPKku9IgjHAk5G3vtOiAQgThw/edit?usp=drive_link"
   },
   {
     "id": "staf-086",
@@ -1152,7 +1152,7 @@ const staffList = [
     "asalDepartemen": "Teknik Komputer",
     "pin": "faraam",
     "foto": "assets/foto-staf/staf-086.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/16PNxkaRaYSJlGnEX_q4wDEgkv7QCr67nwwuduBaMkcs/edit?usp=drive_link"
   },
   {
     "id": "staf-087",
@@ -1165,7 +1165,7 @@ const staffList = [
     "asalDepartemen": "Teknologi Informasi",
     "pin": "Oscar",
     "foto": "assets/foto-staf/staf-087.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1hYi6DQByVH20eyJGGIo3gEMC6GXo_YXNvHqQOGsAva8/edit?usp=drive_link"
   },
   {
     "id": "staf-088",
@@ -1178,7 +1178,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "lmlvyy",
     "foto": "assets/foto-staf/staf-088.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1wleZp9b9Ym6_xxNRCk0ARoUcF_giJ8v77HGirwVIgn0/edit?usp=drive_link"
   },
   {
     "id": "staf-089",
@@ -1191,7 +1191,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "capt.A",
     "foto": "assets/foto-staf/staf-089.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1tS03Td9GqK0mfuKyOJlfuVidIspRxmRI_HMIw3Nax3A/edit?usp=drive_link"
   },
   {
     "id": "staf-090",
@@ -1204,7 +1204,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "zevanyacantik",
     "foto": "assets/foto-staf/staf-090.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1KKaoTL-1Ow7ifO0x4IZW1pbRFXskColuRWcYqlwQgHE/edit?usp=drive_link"
   },
   {
     "id": "staf-091",
@@ -1217,7 +1217,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "remotAC",
     "foto": "assets/foto-staf/staf-091.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1wt5OGEKylwzM03RBQ0pLc8NkjR0wAdIZzzCd5YsY1eI/edit?usp=drive_link"
   },
   {
     "id": "staf-092",
@@ -1230,7 +1230,7 @@ const staffList = [
     "asalDepartemen": "Teknik Biomedik",
     "pin": "nagitaslavina26",
     "foto": "assets/foto-staf/staf-092.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1BycwY9WcFQIyF4IGJ8s8IGdes3kQ-OiudyDkhYPmuIU/edit?usp=drive_link"
   },
   {
     "id": "staf-093",
@@ -1243,7 +1243,7 @@ const staffList = [
     "asalDepartemen": "Sistem Informasi",
     "pin": "Michael",
     "foto": "assets/foto-staf/staf-093.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1PgGTy7cYM-OLO4Ro1C94NQvK-fm2Pa61fDVJJl9zRp4/edit?usp=drive_link"
   },
   {
     "id": "staf-094",
@@ -1256,7 +1256,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "NasiKebuli",
     "foto": "assets/foto-staf/staf-094.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1ABwY5AMCU83YfqScAiuUxOJ04VlIAxS6VSf58PmUW0w/edit?usp=drive_link"
   }
 ];
 
@@ -2366,10 +2366,7 @@ function closeProgressModal() {
 function transitionFromProgressToSheet() {
   if (!currentProgressStaff) return;
   const target = currentProgressStaff;
-  closeProgressModal();
-  setTimeout(() => {
-    executeOpenSheet(target);
-  }, 150);
+  executeOpenSheet(target);
 }
 
 function lockStaffSession() {
@@ -2392,6 +2389,9 @@ function openProgressModalFromProgressState() {
 }
 
 function executeOpenSheet(staff) {
+  if (!staff) staff = currentProgressStaff || currentSelectedStaff;
+  if (!staff) return;
+
   const activeSheet = (staff.sheetUrl && staff.sheetUrl.trim() !== '' && !staff.sheetUrl.includes('on-progress') && staff.sheetUrl.startsWith('http'))
     ? staff.sheetUrl.trim()
     : (typeof MASTER_PA_SPREADSHEET_URL === 'string' && MASTER_PA_SPREADSHEET_URL.trim().startsWith('http'))
@@ -2400,7 +2400,20 @@ function executeOpenSheet(staff) {
 
   if (activeSheet) {
     showToast("Akses Diberikan", `Membuka spreadsheet evaluasi ${staff.nama}...`);
-    window.open(activeSheet, "_blank", "noopener,noreferrer");
+    try {
+      const win = window.open(activeSheet, "_blank", "noopener,noreferrer");
+      if (!win || win.closed || typeof win.closed === 'undefined') {
+        const a = document.createElement("a");
+        a.href = activeSheet;
+        a.target = "_blank";
+        a.rel = "noopener,noreferrer";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+    } catch (err) {
+      window.location.href = activeSheet;
+    }
     closeModal();
   } else {
     // Tautan masih on-progress: buka modal dengan notifikasi status
