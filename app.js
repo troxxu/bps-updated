@@ -1602,15 +1602,23 @@ function isStaffNameMatchingCol(targetName, colCell) {
   return false;
 }
 
-// Menentukan tab spreadsheet evaluator berdasarkan peran target
-function getEvaluatorTabForTarget(evaluator, target) {
+// Menentukan daftar tab kandidat spreadsheet evaluator berdasarkan peran target
+function getCandidateTabsForTarget(evaluator, target) {
   const isTargetKabinet = ['Pimpinan', 'Wakil Pimpinan', 'Kabiro'].includes(target.roleCategory);
-  const isEvaluatorKabinet = ['Pimpinan', 'Wakil Pimpinan', 'Kabiro'].includes(evaluator.roleCategory);
+  const isEvaluatorKabinet = ['Pimpinan', 'Wakil Pimpinan', 'Kabiro', 'Sekretaris'].includes(evaluator.roleCategory);
 
-  if (isEvaluatorKabinet) {
-    return isTargetKabinet ? 'PA Kabinet-Kabinet' : 'PA Kabinet-Staf';
+  if (isTargetKabinet) {
+    if (isEvaluatorKabinet) {
+      return ['PA Kabinet-Kabinet', 'PA Staf-Kabinet', 'PA', 'Sheet1'];
+    } else {
+      return ['PA Staf-Kabinet', 'PA Kabinet-Kabinet', 'PA', 'Sheet1'];
+    }
   } else {
-    return isTargetKabinet ? 'PA Staf-Kabinet' : 'PA Staf-Staf';
+    if (isEvaluatorKabinet) {
+      return ['PA Kabinet-Staf', 'PA Staf-Staf', 'PA', 'Sheet1'];
+    } else {
+      return ['PA Staf-Staf', 'PA Kabinet-Staf', 'PA', 'Sheet1'];
+    }
   }
 }
 
@@ -1643,7 +1651,10 @@ function escapeHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
-// Master Asynchronous Live Score Fetcher & 360-degree Aggregator
+// Master Asynchronous Live Score Fetcher & Weighted 360-degree Aggregator
+// Rumus Pembobotan Resmi:
+// Target Staf: Kabinet = 0.55, Staf = 0.35, Diri Sendiri = 0.10 (Total 1.0)
+// Target Kabinet: Staf = 0.55, Kabinet = 0.35, Diri Sendiri = 0.10 (Total 1.0)
 async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
   if (!staff) return null;
 
@@ -1664,8 +1675,8 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
     }
   }
 
-  const isKabinet = ['Pimpinan', 'Wakil Pimpinan', 'Kabiro'].includes(staff.roleCategory);
-  const indicatorList = isKabinet ? RUBRIC_KABINET : RUBRIC_STAF;
+  const isTargetKabinet = ['Pimpinan', 'Wakil Pimpinan', 'Kabiro'].includes(staff.roleCategory);
+  const indicatorList = isTargetKabinet ? RUBRIC_KABINET : RUBRIC_STAF;
 
   // Dapatkan seluruh fungsionaris di departemen yang sama yang memiliki link Google Sheet
   const deptMembers = staffList.filter(s =>
@@ -1674,56 +1685,81 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
     s.sheetUrl.includes('/d/')
   );
 
-  // Evaluator adalah anggota lain di departemen terkait (bukan diri sendiri)
-  const evaluators = deptMembers.filter(s => s.id !== staff.id);
+  // Evaluator mencakup seluruh anggota departemen TERMASUK diri sendiri untuk penilaian mandiri (Self-Assessment)
+  const evaluators = deptMembers;
 
-  // Fetch semua lembar spreadsheet evaluator secara paralel
+  // Fetch semua lembar spreadsheet evaluator secara paralel dengan tab fallback
   const fetchPromises = evaluators.map(async (ev) => {
     const sheetIdMatch = ev.sheetUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
     if (!sheetIdMatch) return null;
     const sheetId = sheetIdMatch[1];
-    const tabName = getEvaluatorTabForTarget(ev, staff);
-    const rows = await fetchSheetCsvWithTimeout(sheetId, tabName, 4500);
-    return { evaluator: ev, tabName, rows };
+    const candidateTabs = getCandidateTabsForTarget(ev, staff);
+
+    let foundRows = null;
+    let targetColIdx = -1;
+    let matchedTab = null;
+
+    for (const tab of candidateTabs) {
+      const rows = await fetchSheetCsvWithTimeout(sheetId, tab, 4500);
+      if (!rows || rows.length === 0) continue;
+
+      const maxScan = Math.min(15, rows.length);
+      for (let r = 0; r < maxScan; r++) {
+        const row = rows[r];
+        for (let c = 0; c < row.length; c++) {
+          if (isStaffNameMatchingCol(staff.nama, row[c])) {
+            targetColIdx = c;
+            break;
+          }
+        }
+        if (targetColIdx !== -1) break;
+      }
+
+      if (targetColIdx !== -1) {
+        foundRows = rows;
+        matchedTab = tab;
+        break;
+      }
+    }
+
+    if (!foundRows || targetColIdx === -1) return null;
+    return { evaluator: ev, tabName: matchedTab, rows: foundRows, colIdx: targetColIdx };
   });
 
   const settledResults = await Promise.allSettled(fetchPromises);
 
-  // Map nilai per indikator & kualitatif feedback
-  const collectedScores = {};
+  // Map nilai per indikator dikelompokkan ke dalam 3 tier: kabinet, staf, self
+  const scoresByGroup = {};
   indicatorList.forEach(ind => {
-    collectedScores[ind.key] = [];
+    scoresByGroup[ind.key] = {
+      kabinet: [],
+      staf: [],
+      self: []
+    };
   });
+
   const collectedFeedback = [];
+  const activeKabinetEvaluators = new Set();
+  const activeStafEvaluators = new Set();
+  let hasSelfAssessment = false;
 
   settledResults.forEach(res => {
-    if (res.status !== 'fulfilled' || !res.value || !res.value.rows || res.value.rows.length === 0) return;
-    const { evaluator, rows } = res.value;
+    if (res.status !== 'fulfilled' || !res.value) return;
+    const { evaluator, rows, colIdx } = res.value;
 
-    // Pindai baris awal untuk menemukan indeks kolom staf target
-    let colIdx = -1;
-    const maxScan = Math.min(15, rows.length);
-    for (let r = 0; r < maxScan; r++) {
-      const row = rows[r];
-      for (let c = 0; c < row.length; c++) {
-        if (isStaffNameMatchingCol(staff.nama, row[c])) {
-          colIdx = c;
-          break;
-        }
-      }
-      if (colIdx !== -1) break;
-    }
+    const isSelf = evaluator.id === staff.id;
+    const isKab = ['Pimpinan', 'Wakil Pimpinan', 'Kabiro', 'Sekretaris'].includes(evaluator.roleCategory);
+    const grp = isSelf ? 'self' : (isKab ? 'kabinet' : 'staf');
 
-    if (colIdx === -1) return;
+    let evaluatorContributedScore = false;
 
-    // Pindai baris indikator & umpan balik
     for (let r = 0; r < rows.length; r++) {
       const row = rows[r];
       if (row.length <= colIdx) continue;
 
       const headerText = cleanTokenStr((row[0] || '') + ' ' + (row[1] || '') + ' ' + (row[2] || ''));
 
-      // Ekstraksi skor indikator
+      // Ekstraksi nilai indikator
       indicatorList.forEach(ind => {
         const indNameClean = cleanTokenStr(ind.name);
         const indKeyClean = cleanTokenStr(ind.key);
@@ -1732,44 +1768,100 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
           const rawCell = (row[colIdx] || '').trim().replace(',', '.');
           const numVal = parseFloat(rawCell);
           if (!isNaN(numVal) && numVal > 0 && numVal <= 20) {
-            // Normalisasi jika evaluator mengisi skala 20
             const normalized = numVal > 10 ? numVal / 2.0 : numVal;
-            collectedScores[ind.key].push({
-              evaluator: evaluator.nama,
-              score: normalized
-            });
+            scoresByGroup[ind.key][grp].push(normalized);
+            evaluatorContributedScore = true;
           }
         }
       });
 
-      // Ekstraksi umpan balik tertulis (Stop, Start, Continue, Pesan, Kesan, Harapan)
-      if (headerText.includes('stop') || headerText.includes('start') || headerText.includes('continue') ||
-          headerText.includes('pesan') || headerText.includes('kesan') || headerText.includes('harapan')) {
-        const fbContent = (row[colIdx] || '').trim();
-        if (fbContent.length > 8 && !fbContent.startsWith('#DIV') && !fbContent.startsWith('#REF')) {
+      // Ekstraksi catatan dan evaluasi kualitatif (ANONIM - TIDAK MENYIMPAN NAMA PENILAI)
+      const isFeedbackRow = headerText.includes('stop') || headerText.includes('start') || headerText.includes('continue') ||
+                            headerText.includes('pesan') || headerText.includes('kesan') || headerText.includes('harapan') ||
+                            r >= 48;
+
+      if (isFeedbackRow) {
+        const rawContent = (row[colIdx] || '').trim();
+        // Bersihkan template kosong
+        const cleaned = rawContent
+          .replace(/\[Stop\]\s*:/gi, '')
+          .replace(/\[Start\]\s*:/gi, '')
+          .replace(/\[Continue\]\s*:/gi, '')
+          .replace(/\r|\n/g, '')
+          .trim();
+
+        if (cleaned.length > 2 && !rawContent.startsWith('#DIV') && !rawContent.startsWith('#REF') && !rawContent.startsWith('#VALUE')) {
+          // Hanya simpan teks masukan agar 100% anonim (mencegah perselisihan)
           collectedFeedback.push({
-            evaluator: evaluator.nama,
-            text: fbContent
+            text: rawContent
           });
         }
       }
     }
+
+    if (evaluatorContributedScore) {
+      if (isSelf) {
+        hasSelfAssessment = true;
+      } else if (isKab) {
+        activeKabinetEvaluators.add(evaluator.id);
+      } else {
+        activeStafEvaluators.add(evaluator.id);
+      }
+    }
   });
 
-  // Hitung rata-rata matematis per indikator
+  // Bobot Resmi Sesuai Arahan:
+  // Untuk Menilai Staf: Kabinet = 0.55, Staf = 0.35, Diri Sendiri = 0.10 (Total = 1.0)
+  // Untuk Menilai Kabinet: Staf = 0.55, Kabinet = 0.35, Diri Sendiri = 0.10 (Total = 1.0)
+  const weightKabinet = isTargetKabinet ? 0.35 : 0.55;
+  const weightStaf = isTargetKabinet ? 0.55 : 0.35;
+  const weightSelf = 0.10;
+
   const calculatedScores = {};
-  let totalEvaluatorSet = new Set();
   let validIndicatorCount = 0;
 
   indicatorList.forEach(ind => {
-    const list = collectedScores[ind.key] || [];
-    if (list.length > 0) {
-      const avg = list.reduce((sum, item) => sum + item.score, 0) / list.length;
-      list.forEach(item => totalEvaluatorSet.add(item.evaluator));
+    const kabinetScores = scoresByGroup[ind.key]['kabinet'];
+    const stafScores = scoresByGroup[ind.key]['staf'];
+    const selfScores = scoresByGroup[ind.key]['self'];
+
+    const kabAvg = kabinetScores.length > 0 ? (kabinetScores.reduce((a, b) => a + b, 0) / kabinetScores.length) : null;
+    const stafAvg = stafScores.length > 0 ? (stafScores.reduce((a, b) => a + b, 0) / stafScores.length) : null;
+    const selfAvg = selfScores.length > 0 ? (selfScores.reduce((a, b) => a + b, 0) / selfScores.length) : null;
+
+    let activeWeights = 0;
+    let weightedSum = 0;
+
+    if (kabAvg !== null) {
+      weightedSum += weightKabinet * kabAvg;
+      activeWeights += weightKabinet;
+    }
+    if (stafAvg !== null) {
+      weightedSum += weightStaf * stafAvg;
+      activeWeights += weightStaf;
+    }
+    if (selfAvg !== null) {
+      weightedSum += weightSelf * selfAvg;
+      activeWeights += weightSelf;
+    }
+
+    if (activeWeights > 0) {
+      const finalScore = weightedSum / activeWeights;
       calculatedScores[ind.key] = {
-        average: parseFloat(avg.toFixed(1)),
-        count: list.length,
-        evaluators: list.map(i => i.evaluator)
+        average: parseFloat(finalScore.toFixed(1)),
+        rawScore: finalScore,
+        kabinetAvg: kabAvg !== null ? parseFloat(kabAvg.toFixed(1)) : null,
+        stafAvg: stafAvg !== null ? parseFloat(stafAvg.toFixed(1)) : null,
+        selfAvg: selfAvg !== null ? parseFloat(selfAvg.toFixed(1)) : null,
+        kabCount: kabinetScores.length,
+        stafCount: stafScores.length,
+        selfCount: selfScores.length,
+        isTargetKabinet,
+        weights: {
+          kabinet: weightKabinet,
+          staf: weightStaf,
+          self: weightSelf
+        }
       };
       validIndicatorCount++;
     }
@@ -1777,12 +1869,22 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
 
   const now = new Date();
   const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+  const totalEvaluatorCount = activeKabinetEvaluators.size + activeStafEvaluators.size + (hasSelfAssessment ? 1 : 0);
 
   const liveResult = {
     isLive: validIndicatorCount > 0,
     scores: calculatedScores,
     peerFeedback: collectedFeedback,
-    evaluatorCount: totalEvaluatorSet.size,
+    evaluatorCount: totalEvaluatorCount,
+    kabinetEvaluatorCount: activeKabinetEvaluators.size,
+    stafEvaluatorCount: activeStafEvaluators.size,
+    hasSelfAssessment,
+    isTargetKabinet,
+    weights: {
+      kabinet: weightKabinet,
+      staf: weightStaf,
+      self: weightSelf
+    },
     timestamp: timeStr,
     cachedAt: Date.now()
   };
@@ -1824,19 +1926,23 @@ async function refreshLiveScoreCurrentStaff() {
   }
 }
 
-// GENERATOR DATA REPORT & NILAI RESMI PA (MENDUKUNG DATA REAL-TIME GOOGLE SHEETS)
+// GENERATOR DATA REPORT & NILAI RESMI PA (MENDUKUNG DATA REAL-TIME GOOGLE SHEETS & PEMBOBOTAN 360°)
 function getStaffRubricData(staff, liveData = null) {
   const isKabinet = staff.roleCategory === 'Pimpinan' || staff.roleCategory === 'Wakil Pimpinan' || staff.roleCategory === 'Kabiro';
   const rubricTemplate = isKabinet ? RUBRIC_KABINET : RUBRIC_STAF;
 
   const seed = (staff.nrp ? parseInt(staff.nrp.slice(-4), 10) : 1000) || 1234;
 
-  // Skor per indikator 0 - 10 (Prioritas: Live Google Sheets > Custom Scores > Rubrik Terkalibrasi)
+  // Skor per indikator 0 - 10 (Prioritas: Live Google Sheets Terbobot > Custom Scores > Rubrik Terkalibrasi)
   const items = rubricTemplate.map((item, idx) => {
     let score;
     let isLive = false;
     let evalCount = 0;
-    let evaluators = [];
+    let kabinetAvg = null;
+    let stafAvg = null;
+    let selfAvg = null;
+    let breakdownHtml = "";
+    let breakdownTooltip = "";
 
     // 1. Cek apakah ada data skor real-time dari Google Sheets
     const matchKey = item.key;
@@ -1845,9 +1951,27 @@ function getStaffRubricData(staff, liveData = null) {
 
     if (liveScoreObj && typeof liveScoreObj.average === 'number') {
       score = liveScoreObj.average;
-      evalCount = liveScoreObj.count;
-      evaluators = liveScoreObj.evaluators || [];
+      evalCount = (liveScoreObj.kabCount || 0) + (liveScoreObj.stafCount || 0) + (liveScoreObj.selfCount || 0);
+      kabinetAvg = liveScoreObj.kabinetAvg;
+      stafAvg = liveScoreObj.stafAvg;
+      selfAvg = liveScoreObj.selfAvg;
       isLive = true;
+
+      if (isKabinet) {
+        breakdownHtml = `
+          <span class="pm-breakdown-item" title="Bobot Staf menilai Kabinet = 55%">Staf (55%): <strong class="pm-breakdown-val">${stafAvg !== null ? stafAvg.toFixed(1) : '-'}</strong></span>
+          <span class="pm-breakdown-item" title="Bobot Kabinet menilai Kabinet = 35%">Kabinet (35%): <strong class="pm-breakdown-val">${kabinetAvg !== null ? kabinetAvg.toFixed(1) : '-'}</strong></span>
+          <span class="pm-breakdown-item" title="Bobot Diri Sendiri = 10%">Diri Sendiri (10%): <strong class="pm-breakdown-val">${selfAvg !== null ? selfAvg.toFixed(1) : '-'}</strong></span>
+        `;
+        breakdownTooltip = `Staf 55% (${stafAvg !== null ? stafAvg.toFixed(1) : '-'}), Kabinet 35% (${kabinetAvg !== null ? kabinetAvg.toFixed(1) : '-'}), Diri Sendiri 10% (${selfAvg !== null ? selfAvg.toFixed(1) : '-'})`;
+      } else {
+        breakdownHtml = `
+          <span class="pm-breakdown-item" title="Bobot Kabinet menilai Staf = 55%">Kabinet (55%): <strong class="pm-breakdown-val">${kabinetAvg !== null ? kabinetAvg.toFixed(1) : '-'}</strong></span>
+          <span class="pm-breakdown-item" title="Bobot Staf menilai Staf = 35%">Staf (35%): <strong class="pm-breakdown-val">${stafAvg !== null ? stafAvg.toFixed(1) : '-'}</strong></span>
+          <span class="pm-breakdown-item" title="Bobot Diri Sendiri = 10%">Diri Sendiri (10%): <strong class="pm-breakdown-val">${selfAvg !== null ? selfAvg.toFixed(1) : '-'}</strong></span>
+        `;
+        breakdownTooltip = `Kabinet 55% (${kabinetAvg !== null ? kabinetAvg.toFixed(1) : '-'}), Staf 35% (${stafAvg !== null ? stafAvg.toFixed(1) : '-'}), Diri Sendiri 10% (${selfAvg !== null ? selfAvg.toFixed(1) : '-'})`;
+      }
     } else if (staff.customScores && (typeof staff.customScores[item.name] === 'number' || typeof staff.customScores[item.key] === 'number')) {
       // 2. Custom score manual jika didefinisikan
       score = typeof staff.customScores[item.name] === 'number' ? staff.customScores[item.name] : staff.customScores[item.key];
@@ -1883,7 +2007,11 @@ function getStaffRubricData(staff, liveData = null) {
       levelText: item.levels[levelKey] || item.desc,
       isLive,
       evalCount,
-      evaluators
+      kabinetAvg,
+      stafAvg,
+      selfAvg,
+      breakdownHtml,
+      breakdownTooltip
     };
   });
 
@@ -1943,6 +2071,9 @@ function getStaffRubricData(staff, liveData = null) {
     items,
     isLive,
     evaluatorCount,
+    kabinetEvaluatorCount: liveData ? (liveData.kabinetEvaluatorCount || 0) : 0,
+    stafEvaluatorCount: liveData ? (liveData.stafEvaluatorCount || 0) : 0,
+    hasSelfAssessment: liveData ? Boolean(liveData.hasSelfAssessment) : false,
     peerFeedback: liveData ? (liveData.peerFeedback || []) : [],
     timestamp: liveData ? liveData.timestamp : null
   };
@@ -2662,11 +2793,16 @@ function openProgressModal(staff, liveData = null) {
         liveBadge.innerText = `Live 360° • ${data.evaluatorCount} Penilai`;
         liveBadge.className = "pm-live-badge-chip";
       }
+      const isTargetKabinet = staff.roleCategory === 'Pimpinan' || staff.roleCategory === 'Wakil Pimpinan' || staff.roleCategory === 'Kabiro';
       if (liveDesc) {
-        liveDesc.innerHTML = `Skor dihitung otomatis dari rata-rata <strong>${data.evaluatorCount} lembar penilai</strong> di departemen ${staff.departemenBEMFull}. Sinkronisasi: <strong>${data.timestamp || 'Terkini'}</strong>.`;
+        const weightNote = !isTargetKabinet
+          ? "Pembobotan Resmi: <strong>55% Penilaian Kabinet</strong> + <strong>35% Rekan Sejawat Staf</strong> + <strong>10% Penilaian Diri Sendiri</strong>."
+          : "Pembobotan Resmi: <strong>55% Penilaian Staf</strong> + <strong>35% Rekan Kabinet</strong> + <strong>10% Penilaian Diri Sendiri</strong>.";
+        liveDesc.innerHTML = `Skor dihitung otomatis dari rata-rata terbobot <strong>${data.evaluatorCount} lembar penilaian aktif</strong> di departemen ${staff.departemenBEMFull}.<br>${weightNote} Sinkronisasi: <strong>${data.timestamp || 'Terkini'}</strong>.`;
       }
       if (refreshBtnText) refreshBtnText.innerText = "Sinkronkan Live";
     } else {
+      const isTargetKabinet = staff.roleCategory === 'Pimpinan' || staff.roleCategory === 'Wakil Pimpinan' || staff.roleCategory === 'Kabiro';
       liveBanner.classList.add("is-pending");
       if (liveTitle) liveTitle.innerText = "Google Sheets Terhubung (Standar Rubrik)";
       if (liveBadge) {
@@ -2674,7 +2810,10 @@ function openProgressModal(staff, liveData = null) {
         liveBadge.className = "pm-live-badge-chip";
       }
       if (liveDesc) {
-        liveDesc.innerHTML = `Belum ada masukan nilai penilai di Google Sheets — Menampilkan nilai rubrik resmi BEM FTEIC. Klik tombol di kanan jika spreadsheet baru saja diisi.`;
+        const weightNote = !isTargetKabinet
+          ? "Formula: 55% Kabinet + 35% Staf + 10% Diri Sendiri."
+          : "Formula: 55% Staf + 35% Kabinet + 10% Diri Sendiri.";
+        liveDesc.innerHTML = `Belum ada masukan nilai penilai di Google Sheets (${weightNote}) — Menampilkan nilai rubrik resmi BEM FTEIC. Klik tombol di kanan jika spreadsheet baru saja diisi.`;
       }
       if (refreshBtnText) refreshBtnText.innerText = "Cek Pembaruan";
     }
@@ -2717,7 +2856,7 @@ function openProgressModal(staff, liveData = null) {
             <span class="pm-ind-dot" style="background: ${item.color};"></span>
             <span class="pm-ind-name">${item.name}</span>
             ${item.isLive && item.evalCount > 0 ? `
-              <span class="pm-live-indicator-tag" title="Dihitung dari ${item.evalCount} penilai (${(item.evaluators || []).join(', ')})">
+              <span class="pm-live-indicator-tag" title="Dihitung dari ${item.evalCount} penilai terbobot">
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                 ${item.evalCount} Penilai
               </span>
@@ -2728,6 +2867,7 @@ function openProgressModal(staff, liveData = null) {
         <div class="pm-ind-track">
           <div class="pm-ind-fill" style="width: ${item.score * 10}%; background: linear-gradient(90deg, ${item.color} 0%, ${shadeColor(item.color, 25)} 100%);"></div>
         </div>
+        ${item.breakdownHtml ? `<div class="pm-breakdown-row">${item.breakdownHtml}</div>` : ''}
         <div class="pm-ind-desc">${item.desc}</div>
         <div class="pm-ind-param-box">
           <div class="pm-ind-param-tag">${item.levelBadge}</div>
@@ -2741,26 +2881,49 @@ function openProgressModal(staff, liveData = null) {
   const feedbackEl = document.getElementById("pmFeedbackText");
   if (feedbackEl) feedbackEl.innerText = data.feedback;
 
-  // Render Peer Feedback dari Google Sheets jika tersedia
+  // Render Peer Feedback dari Google Sheets (100% ANONIM - TANPA NAMA PENILAI)
   const peerBox = document.getElementById("pmPeerFeedbackBox");
   const peerCount = document.getElementById("pmPeerFeedbackCount");
   const peerList = document.getElementById("pmPeerFeedbackList");
 
   if (peerBox && peerList) {
+    // Pastikan card Catatan & Evaluasi Rekan SELALU tampil untuk semua fungsionaris
+    peerBox.classList.remove("hidden");
+
     if (data.peerFeedback && data.peerFeedback.length > 0) {
-      peerBox.classList.remove("hidden");
-      if (peerCount) peerCount.innerText = `${data.peerFeedback.length} Masukan Rekan`;
+      if (peerCount) peerCount.innerText = `${data.peerFeedback.length} Masukan (Anonim)`;
       peerList.innerHTML = data.peerFeedback.map((fb, fIdx) => `
         <div class="pm-peer-item-card">
           <div class="pm-peer-item-author">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <span>Penilai ${fIdx + 1}: ${escapeHtml(fb.evaluator)}</span>
+            <div class="pm-peer-author-left">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span>Catatan Rekan #${fIdx + 1}</span>
+            </div>
+            <span class="pm-peer-anon-badge">🔒 Anonim</span>
           </div>
           <div class="pm-peer-item-content">${escapeHtml(fb.text)}</div>
         </div>
       `).join('');
     } else {
-      peerBox.classList.add("hidden");
+      if (peerCount) peerCount.innerText = "0 Masukan (Anonim)";
+      peerList.innerHTML = `
+        <div class="pm-peer-empty-state">
+          <div class="pm-peer-empty-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              <line x1="9" y1="10" x2="15" y2="10"/>
+              <line x1="12" y1="7" x2="12" y2="13"/>
+            </svg>
+          </div>
+          <div class="pm-peer-empty-title">Belum Ada Catatan Tertulis</div>
+          <div class="pm-peer-empty-desc">
+            Evaluasi kualitatif (Stop, Start, Continue) dari rekan fungsionaris atau pimpinan di Google Sheets akan otomatis tersinkronisasi di sini secara <strong>100% Anonim</strong> setelah dituliskan pada lembar kerja.
+          </div>
+          <div class="pm-peer-anon-guarantee">
+            <span>🔒 Sistem menjamin kerahasiaan identitas penilai demi transparansi dan kenyamanan bersama.</span>
+          </div>
+        </div>
+      `;
     }
   }
 
