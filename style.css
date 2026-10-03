@@ -5649,7 +5649,7 @@ body::before {
 .timeline-card-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 12px;
@@ -6761,7 +6761,7 @@ body::before {
 .pillars-slider-topbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   margin-bottom: 16px;
   flex-wrap: wrap;
   gap: 12px;
@@ -7124,13 +7124,18 @@ body::before {
   }
 
   .pillars-slider-topbar {
+    justify-content: center;
     margin-bottom: 10px;
     gap: 8px;
   }
 
-  .slider-info-badge {
-    font-size: 0.72rem;
-    padding: 4px 10px;
+  .journey-slider-header {
+    margin-bottom: 12px;
+    gap: 8px;
+  }
+
+  .journey-slider-heading {
+    font-size: 1.05rem;
   }
 
   .journey-slider-track {
@@ -7247,6 +7252,25 @@ body::before {
   max-width: 100%;
 }
 
+.journey-slider-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 16px;
+  gap: 12px;
+}
+
+.journey-slider-heading {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-1);
+  margin: 0;
+  text-align: center;
+  letter-spacing: -0.01em;
+}
+
 .journey-slider-track {
   display: flex;
   gap: 16px;
@@ -7301,7 +7325,7 @@ body::before {
 .step-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   margin-bottom: 10px;
 }
 
