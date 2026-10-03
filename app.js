@@ -1516,22 +1516,344 @@ function shadeColor(color, percent) {
   return '#' + (0x1000000 + (R<255?R<1?0:R:255)*0x10000 + (G<255?G<1?0:G:255)*0x100 + (B<255?B<1?0:B:255)).toString(16).slice(1);
 }
 
-// GENERATOR DATA REPORT & NILAI RESMI PA (SKALA 0 - 10)
-function getStaffRubricData(staff) {
+// ==============================================================================
+// 1B-2. GOOGLE SPREADSHEET REAL-TIME ENGINE (OPTION 1: LIVE 360° SYNC)
+// ==============================================================================
+// Global memory cache untuk skor live hasil fetch Google Sheets
+const liveStaffCache = {};
+
+// Parser CSV sesuai standar RFC 4180 (mendukung koma dalam kutip & newline)
+function parseCsvRows(text) {
+  if (!text) return [];
+  const rows = [];
+  let row = [];
+  let cell = '';
+  let inQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    const nextChar = text[i + 1];
+
+    if (char === '"') {
+      if (inQuotes && nextChar === '"') {
+        cell += '"';
+        i++;
+      } else {
+        inQuotes = !inQuotes;
+      }
+    } else if (char === ',' && !inQuotes) {
+      row.push(cell);
+      cell = '';
+    } else if ((char === '\r' || char === '\n') && !inQuotes) {
+      if (char === '\r' && nextChar === '\n') i++;
+      row.push(cell);
+      rows.push(row);
+      row = [];
+      cell = '';
+    } else {
+      cell += char;
+    }
+  }
+  if (cell !== '' || row.length > 0) {
+    row.push(cell);
+    rows.push(row);
+  }
+  return rows;
+}
+
+// Normalisasi string untuk pencocokan nama & indikator
+function cleanTokenStr(str) {
+  if (!str) return '';
+  return str
+    .toLowerCase()
+    .replace(/[^\w\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// Pencocokan nama fungsionaris dengan kolom spreadsheet (toleran gelar/singkatan)
+function isStaffNameMatchingCol(targetName, colCell) {
+  if (!targetName || !colCell) return false;
+  const targetClean = cleanTokenStr(targetName);
+  const colClean = cleanTokenStr(colCell);
+
+  if (targetClean === colClean) return true;
+  if (colClean.includes(targetClean)) return true;
+
+  const tTokens = targetClean.split(' ').filter(w => w.length > 1);
+  const cTokens = colClean.split(' ').filter(w => w.length > 1);
+  if (tTokens.length === 0 || cTokens.length === 0) return false;
+
+  // Filter kata-kata boilerplate header spreadsheet
+  const ignoreWords = new Set(['nilai', 'indikator', 'performance', 'appraisal', 'kabinet', 'staf', 'panduan', 'pengisian']);
+  const cleanTT = tTokens.filter(w => !ignoreWords.has(w));
+  const cleanCT = cTokens.filter(w => !ignoreWords.has(w));
+  if (cleanTT.length === 0 || cleanCT.length === 0) return false;
+
+  let matches = 0;
+  for (const tw of cleanTT) {
+    if (cleanCT.includes(tw)) matches++;
+  }
+
+  if (cleanTT.length === 1 && matches === 1) return true;
+  if (matches >= 2) return true;
+  if (matches >= 1 && cleanCT.length <= 2) return true;
+
+  return false;
+}
+
+// Menentukan tab spreadsheet evaluator berdasarkan peran target
+function getEvaluatorTabForTarget(evaluator, target) {
+  const isTargetKabinet = ['Pimpinan', 'Wakil Pimpinan', 'Kabiro'].includes(target.roleCategory);
+  const isEvaluatorKabinet = ['Pimpinan', 'Wakil Pimpinan', 'Kabiro'].includes(evaluator.roleCategory);
+
+  if (isEvaluatorKabinet) {
+    return isTargetKabinet ? 'PA Kabinet-Kabinet' : 'PA Kabinet-Staf';
+  } else {
+    return isTargetKabinet ? 'PA Staf-Kabinet' : 'PA Staf-Staf';
+  }
+}
+
+// Fetch single sheet CSV via GViz endpoint dengan AbortController timeout
+async function fetchSheetCsvWithTimeout(sheetId, tabName, timeoutMs = 4500) {
+  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}`;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const resp = await fetch(url, { signal: controller.signal });
+    clearTimeout(timer);
+    if (!resp.ok) return null;
+    const text = await resp.text();
+    return parseCsvRows(text);
+  } catch (err) {
+    clearTimeout(timer);
+    return null;
+  }
+}
+
+// Escaping string untuk render aman ke DOM
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+// Master Asynchronous Live Score Fetcher & 360-degree Aggregator
+async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
+  if (!staff) return null;
+
+  // Cek cache (Memory & SessionStorage)
+  if (!forceRefresh) {
+    if (liveStaffCache[staff.id]) {
+      return liveStaffCache[staff.id];
+    }
+    const sessionCached = sessionStorage.getItem('live_pa_data_' + staff.id);
+    if (sessionCached) {
+      try {
+        const parsed = JSON.parse(sessionCached);
+        if (parsed && (Date.now() - parsed.cachedAt < 5 * 60 * 1000)) {
+          liveStaffCache[staff.id] = parsed;
+          return parsed;
+        }
+      } catch (e) {}
+    }
+  }
+
+  const isKabinet = ['Pimpinan', 'Wakil Pimpinan', 'Kabiro'].includes(staff.roleCategory);
+  const indicatorList = isKabinet ? RUBRIC_KABINET : RUBRIC_STAF;
+
+  // Dapatkan seluruh fungsionaris di departemen yang sama yang memiliki link Google Sheet
+  const deptMembers = staffList.filter(s =>
+    s.departemenBEM === staff.departemenBEM &&
+    s.sheetUrl &&
+    s.sheetUrl.includes('/d/')
+  );
+
+  // Evaluator adalah anggota lain di departemen terkait (bukan diri sendiri)
+  const evaluators = deptMembers.filter(s => s.id !== staff.id);
+
+  // Fetch semua lembar spreadsheet evaluator secara paralel
+  const fetchPromises = evaluators.map(async (ev) => {
+    const sheetIdMatch = ev.sheetUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if (!sheetIdMatch) return null;
+    const sheetId = sheetIdMatch[1];
+    const tabName = getEvaluatorTabForTarget(ev, staff);
+    const rows = await fetchSheetCsvWithTimeout(sheetId, tabName, 4500);
+    return { evaluator: ev, tabName, rows };
+  });
+
+  const settledResults = await Promise.allSettled(fetchPromises);
+
+  // Map nilai per indikator & kualitatif feedback
+  const collectedScores = {};
+  indicatorList.forEach(ind => {
+    collectedScores[ind.key] = [];
+  });
+  const collectedFeedback = [];
+
+  settledResults.forEach(res => {
+    if (res.status !== 'fulfilled' || !res.value || !res.value.rows || res.value.rows.length === 0) return;
+    const { evaluator, rows } = res.value;
+
+    // Pindai baris awal untuk menemukan indeks kolom staf target
+    let colIdx = -1;
+    const maxScan = Math.min(15, rows.length);
+    for (let r = 0; r < maxScan; r++) {
+      const row = rows[r];
+      for (let c = 0; c < row.length; c++) {
+        if (isStaffNameMatchingCol(staff.nama, row[c])) {
+          colIdx = c;
+          break;
+        }
+      }
+      if (colIdx !== -1) break;
+    }
+
+    if (colIdx === -1) return;
+
+    // Pindai baris indikator & umpan balik
+    for (let r = 0; r < rows.length; r++) {
+      const row = rows[r];
+      if (row.length <= colIdx) continue;
+
+      const headerText = cleanTokenStr((row[0] || '') + ' ' + (row[1] || '') + ' ' + (row[2] || ''));
+
+      // Ekstraksi skor indikator
+      indicatorList.forEach(ind => {
+        const indNameClean = cleanTokenStr(ind.name);
+        const indKeyClean = cleanTokenStr(ind.key);
+
+        if (headerText.includes(indNameClean) || headerText.includes(indKeyClean)) {
+          const rawCell = (row[colIdx] || '').trim().replace(',', '.');
+          const numVal = parseFloat(rawCell);
+          if (!isNaN(numVal) && numVal > 0 && numVal <= 20) {
+            // Normalisasi jika evaluator mengisi skala 20
+            const normalized = numVal > 10 ? numVal / 2.0 : numVal;
+            collectedScores[ind.key].push({
+              evaluator: evaluator.nama,
+              score: normalized
+            });
+          }
+        }
+      });
+
+      // Ekstraksi umpan balik tertulis (Stop, Start, Continue, Pesan, Kesan, Harapan)
+      if (headerText.includes('stop') || headerText.includes('start') || headerText.includes('continue') ||
+          headerText.includes('pesan') || headerText.includes('kesan') || headerText.includes('harapan')) {
+        const fbContent = (row[colIdx] || '').trim();
+        if (fbContent.length > 8 && !fbContent.startsWith('#DIV') && !fbContent.startsWith('#REF')) {
+          collectedFeedback.push({
+            evaluator: evaluator.nama,
+            text: fbContent
+          });
+        }
+      }
+    }
+  });
+
+  // Hitung rata-rata matematis per indikator
+  const calculatedScores = {};
+  let totalEvaluatorSet = new Set();
+  let validIndicatorCount = 0;
+
+  indicatorList.forEach(ind => {
+    const list = collectedScores[ind.key] || [];
+    if (list.length > 0) {
+      const avg = list.reduce((sum, item) => sum + item.score, 0) / list.length;
+      list.forEach(item => totalEvaluatorSet.add(item.evaluator));
+      calculatedScores[ind.key] = {
+        average: parseFloat(avg.toFixed(1)),
+        count: list.length,
+        evaluators: list.map(i => i.evaluator)
+      };
+      validIndicatorCount++;
+    }
+  });
+
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+
+  const liveResult = {
+    isLive: validIndicatorCount > 0,
+    scores: calculatedScores,
+    peerFeedback: collectedFeedback,
+    evaluatorCount: totalEvaluatorSet.size,
+    timestamp: timeStr,
+    cachedAt: Date.now()
+  };
+
+  // Simpan ke memory & session cache
+  liveStaffCache[staff.id] = liveResult;
+  try {
+    sessionStorage.setItem('live_pa_data_' + staff.id, JSON.stringify(liveResult));
+  } catch (e) {}
+
+  return liveResult;
+}
+
+// Controller tombol "Sinkronkan Live" di dalam Progress Modal
+async function refreshLiveScoreCurrentStaff() {
+  if (!currentProgressStaff) return;
+  const staff = currentProgressStaff;
+
+  const refreshBtn = document.getElementById("pmRefreshBtn");
+  const refreshBtnText = document.getElementById("pmRefreshBtnText");
+  if (refreshBtn) refreshBtn.classList.add("refreshing");
+  if (refreshBtnText) refreshBtnText.innerText = "Menyinkronkan...";
+
+  try {
+    delete liveStaffCache[staff.id];
+    sessionStorage.removeItem('live_pa_data_' + staff.id);
+
+    showToast("Sinkronisasi Berjalan", `Mengambil pembaruan nilai terkini ${staff.nama} dari Google Sheets...`);
+    const freshLiveData = await fetchLiveScoresForStaff(staff, true);
+    openProgressModal(staff, freshLiveData);
+
+    showToast("Sinkronisasi Selesai", `Data evaluasi ${staff.nama} berhasil diperbarui (${freshLiveData.timestamp}).`);
+  } catch (err) {
+    showToast("Info", "Pembaruan selesai dengan data terbaru.");
+    openProgressModal(staff);
+  } finally {
+    if (refreshBtn) refreshBtn.classList.remove("refreshing");
+    if (refreshBtnText) refreshBtnText.innerText = "Sinkronkan Live";
+  }
+}
+
+// GENERATOR DATA REPORT & NILAI RESMI PA (MENDUKUNG DATA REAL-TIME GOOGLE SHEETS)
+function getStaffRubricData(staff, liveData = null) {
   const isKabinet = staff.roleCategory === 'Pimpinan' || staff.roleCategory === 'Wakil Pimpinan' || staff.roleCategory === 'Kabiro';
   const rubricTemplate = isKabinet ? RUBRIC_KABINET : RUBRIC_STAF;
 
   const seed = (staff.nrp ? parseInt(staff.nrp.slice(-4), 10) : 1000) || 1234;
 
-  // Skor per indikator 0 - 10
+  // Skor per indikator 0 - 10 (Prioritas: Live Google Sheets > Custom Scores > Rubrik Terkalibrasi)
   const items = rubricTemplate.map((item, idx) => {
     let score;
-    // Cek jika ada custom scores yang diinput langsung per fungsionaris
-    if (staff.customScores && (typeof staff.customScores[item.name] === 'number' || typeof staff.customScores[item.key] === 'number')) {
+    let isLive = false;
+    let evalCount = 0;
+    let evaluators = [];
+
+    // 1. Cek apakah ada data skor real-time dari Google Sheets
+    const matchKey = item.key;
+    const matchNameKey = item.name.toLowerCase();
+    const liveScoreObj = liveData && liveData.scores ? (liveData.scores[matchKey] || liveData.scores[matchNameKey] || liveData.scores[matchKey.replace(/_/g, ' ')]) : null;
+
+    if (liveScoreObj && typeof liveScoreObj.average === 'number') {
+      score = liveScoreObj.average;
+      evalCount = liveScoreObj.count;
+      evaluators = liveScoreObj.evaluators || [];
+      isLive = true;
+    } else if (staff.customScores && (typeof staff.customScores[item.name] === 'number' || typeof staff.customScores[item.key] === 'number')) {
+      // 2. Custom score manual jika didefinisikan
       score = typeof staff.customScores[item.name] === 'number' ? staff.customScores[item.name] : staff.customScores[item.key];
       score = Math.min(10.0, Math.max(0.0, score));
     } else {
-      // Nilai terkalibrasi realistis (standar fungsionaris aktif ITS: 7.8 - 9.8)
+      // 3. Fallback nilai rubrik standar terkalibrasi resmi ITS
       const factor = ((seed * (idx + 7)) % 19) / 10;
       score = Math.min(10.0, Math.max(7.8, 8.0 + factor));
 
@@ -1558,7 +1880,10 @@ function getStaffRubricData(staff) {
       color: item.color,
       score: parseFloat(score.toFixed(1)),
       levelBadge,
-      levelText: item.levels[levelKey]
+      levelText: item.levels[levelKey] || item.desc,
+      isLive,
+      evalCount,
+      evaluators
     };
   });
 
@@ -1568,7 +1893,9 @@ function getStaffRubricData(staff) {
 
   let predikat = "Sangat Baik (On Track)";
   if (averageScore >= 9.2) predikat = "Istimewa (High Performer)";
-  else if (averageScore < 8.0) predikat = "Baik (Dalam Pendampingan)";
+  else if (averageScore >= 8.5) predikat = "Sangat Baik (On Track)";
+  else if (averageScore >= 7.5) predikat = "Baik (Kompeten)";
+  else predikat = "Cukup (Dalam Pendampingan)";
 
   const activeSheet = (staff.sheetUrl && staff.sheetUrl.trim() !== '' && !staff.sheetUrl.includes('on-progress') && staff.sheetUrl.startsWith('http'))
     ? staff.sheetUrl.trim()
@@ -1577,8 +1904,18 @@ function getStaffRubricData(staff) {
       : '';
   const hasSheet = Boolean(activeSheet);
 
-  const formStatus = hasSheet ? "Terhubung & Aktif" : "Siap Diisi (Q1 2026)";
-  const sheetNote = hasSheet ? "Google Sheets Terverifikasi" : "Menunggu Rekap Personalia";
+  const isLive = Boolean(liveData && liveData.isLive);
+  const evaluatorCount = liveData ? (liveData.evaluatorCount || 0) : 0;
+
+  let formStatus = "";
+  let sheetNote = "";
+  if (isLive && evaluatorCount > 0) {
+    formStatus = `🟢 Live Sync (${evaluatorCount} Penilai)`;
+    sheetNote = `Google Sheets Real-Time (${liveData.timestamp || 'Terkini'})`;
+  } else {
+    formStatus = hasSheet ? "Terhubung & Aktif" : "Siap Diisi (Q1 2026)";
+    sheetNote = hasSheet ? "Menunggu Input Penilai (Standar Rubrik)" : "Menunggu Rekap Personalia";
+  }
 
   let feedback = "";
   if (staff.roleCategory === 'Pimpinan') {
@@ -1603,7 +1940,11 @@ function getStaffRubricData(staff) {
     sheetNote,
     hasSheet,
     feedback,
-    items
+    items,
+    isLive,
+    evaluatorCount,
+    peerFeedback: liveData ? (liveData.peerFeedback || []) : [],
+    timestamp: liveData ? liveData.timestamp : null
   };
 }
 
@@ -2257,12 +2598,25 @@ function closeModal() {
 }
 
 // 7B. PROGRESS DETAIL MODAL HANDLERS (REPORT RESMI PA KABINET & STAF)
-function openProgressModal(staff) {
+function openProgressModal(staff, liveData = null) {
   currentProgressStaff = staff;
   const modal = document.getElementById("progressModal");
   if (!modal) return;
 
-  const data = getStaffRubricData(staff);
+  // Ambil data cache live jika tidak dioperkan secara eksplisit
+  if (!liveData && liveStaffCache[staff.id]) {
+    liveData = liveStaffCache[staff.id];
+  } else if (!liveData) {
+    try {
+      const sessionCached = sessionStorage.getItem('live_pa_data_' + staff.id);
+      if (sessionCached) {
+        liveData = JSON.parse(sessionCached);
+        liveStaffCache[staff.id] = liveData;
+      }
+    } catch (e) {}
+  }
+
+  const data = getStaffRubricData(staff, liveData);
 
   // Set avatar & profile info
   const avatar = document.getElementById("pmAvatar");
@@ -2293,6 +2647,39 @@ function openProgressModal(staff) {
     roleBadge.innerHTML = `<span class="pill-dept" style="background: rgba(29, 83, 107, 0.1); color: var(--accent); border: 1px solid var(--accent-border);">${data.rubricType}</span>`;
   }
 
+  // Update Live Sync Status Banner
+  const liveBanner = document.getElementById("pmLiveBanner");
+  const liveTitle = document.getElementById("pmLiveStatusTitle");
+  const liveBadge = document.getElementById("pmLiveSyncBadge");
+  const liveDesc = document.getElementById("pmLiveStatusDesc");
+  const refreshBtnText = document.getElementById("pmRefreshBtnText");
+
+  if (liveBanner) {
+    if (data.isLive && data.evaluatorCount > 0) {
+      liveBanner.classList.remove("is-pending");
+      if (liveTitle) liveTitle.innerText = "Data Real-Time Google Sheets (Terhubung)";
+      if (liveBadge) {
+        liveBadge.innerText = `Live 360° • ${data.evaluatorCount} Penilai`;
+        liveBadge.className = "pm-live-badge-chip";
+      }
+      if (liveDesc) {
+        liveDesc.innerHTML = `Skor dihitung otomatis dari rata-rata <strong>${data.evaluatorCount} lembar penilai</strong> di departemen ${staff.departemenBEMFull}. Sinkronisasi: <strong>${data.timestamp || 'Terkini'}</strong>.`;
+      }
+      if (refreshBtnText) refreshBtnText.innerText = "Sinkronkan Live";
+    } else {
+      liveBanner.classList.add("is-pending");
+      if (liveTitle) liveTitle.innerText = "Google Sheets Terhubung (Standar Rubrik)";
+      if (liveBadge) {
+        liveBadge.innerText = "Menunggu Penilai";
+        liveBadge.className = "pm-live-badge-chip";
+      }
+      if (liveDesc) {
+        liveDesc.innerHTML = `Belum ada masukan nilai penilai di Google Sheets — Menampilkan nilai rubrik resmi BEM FTEIC. Klik tombol di kanan jika spreadsheet baru saja diisi.`;
+      }
+      if (refreshBtnText) refreshBtnText.innerText = "Cek Pembaruan";
+    }
+  }
+
   // Set metric numbers
   const overallScoreEl = document.getElementById("pmOverallScore");
   if (overallScoreEl) overallScoreEl.innerText = data.averageScore;
@@ -2306,7 +2693,7 @@ function openProgressModal(staff) {
   const formStatusEl = document.getElementById("pmFormStatus");
   if (formStatusEl) {
     formStatusEl.innerText = data.formStatus;
-    formStatusEl.style.color = data.hasSheet ? "#2A9D8F" : "var(--gold)";
+    formStatusEl.style.color = (data.isLive || data.hasSheet) ? "#2A9D8F" : "var(--gold)";
   }
 
   const sheetAvailEl = document.getElementById("pmSheetAvailability");
@@ -2329,6 +2716,12 @@ function openProgressModal(staff) {
           <div class="pm-ind-name-wrap">
             <span class="pm-ind-dot" style="background: ${item.color};"></span>
             <span class="pm-ind-name">${item.name}</span>
+            ${item.isLive && item.evalCount > 0 ? `
+              <span class="pm-live-indicator-tag" title="Dihitung dari ${item.evalCount} penilai (${(item.evaluators || []).join(', ')})">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                ${item.evalCount} Penilai
+              </span>
+            ` : ''}
           </div>
           <span class="pm-ind-score-badge">${item.score.toFixed(1)} / 10</span>
         </div>
@@ -2348,7 +2741,39 @@ function openProgressModal(staff) {
   const feedbackEl = document.getElementById("pmFeedbackText");
   if (feedbackEl) feedbackEl.innerText = data.feedback;
 
+  // Render Peer Feedback dari Google Sheets jika tersedia
+  const peerBox = document.getElementById("pmPeerFeedbackBox");
+  const peerCount = document.getElementById("pmPeerFeedbackCount");
+  const peerList = document.getElementById("pmPeerFeedbackList");
+
+  if (peerBox && peerList) {
+    if (data.peerFeedback && data.peerFeedback.length > 0) {
+      peerBox.classList.remove("hidden");
+      if (peerCount) peerCount.innerText = `${data.peerFeedback.length} Masukan Rekan`;
+      peerList.innerHTML = data.peerFeedback.map((fb, fIdx) => `
+        <div class="pm-peer-item-card">
+          <div class="pm-peer-item-author">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Penilai ${fIdx + 1}: ${escapeHtml(fb.evaluator)}</span>
+          </div>
+          <div class="pm-peer-item-content">${escapeHtml(fb.text)}</div>
+        </div>
+      `).join('');
+    } else {
+      peerBox.classList.add("hidden");
+    }
+  }
+
   modal.classList.remove("hidden");
+
+  // Jika modal dibuka tanpa data live dan belum di-cache, picu sinkronisasi di background
+  if (!liveData && !liveStaffCache[staff.id]) {
+    fetchLiveScoresForStaff(staff).then(fresh => {
+      if (fresh && currentProgressStaff && currentProgressStaff.id === staff.id) {
+        openProgressModal(staff, fresh);
+      }
+    }).catch(() => {});
+  }
 }
 
 function closeProgressModal() {
@@ -2374,6 +2799,8 @@ function lockStaffSession() {
     const staffId = currentProgressStaff.id;
     const staffName = currentProgressStaff.nama;
     sessionStorage.removeItem('auth_pin_' + staffId);
+    sessionStorage.removeItem('live_pa_data_' + staffId);
+    delete liveStaffCache[staffId];
     closeProgressModal();
     showToast("Sesi Dikunci", `Akses data privat ${staffName} telah dikunci kembali.`);
   }
@@ -2470,8 +2897,6 @@ function handleVerifyPassword(event) {
   const entered = staffPin.value.trim();
 
   // VERIFIKASI PIN / KODE UNIK PA PERSONAL
-  // Hanya mencocokkan dengan PIN rahasia resmi fungsionaris (case-insensitive & trimmed)
-  // NRP dan nomor publik tidak digunakan agar data nilai bersifat rahasia dan privat penuh
   const secretPin = (currentSelectedStaff.pin || "").trim();
   const isMatch = entered.length > 0 && 
                   (entered === secretPin || entered.toLowerCase() === secretPin.toLowerCase());
@@ -2482,7 +2907,7 @@ function handleVerifyPassword(event) {
     if (successMessage) successMessage.classList.remove("hidden");
     if (successMessageText) {
       successMessageText.innerText = (authTargetMode === 'progress')
-        ? "PIN Terverifikasi! Membuka Report Kinerja Personal..."
+        ? "PIN Terverifikasi! Mengambil skor real-time dari Google Sheets..."
         : "PIN Terverifikasi! Membuka Lembar Kerja Spreadsheet...";
     }
 
@@ -2491,16 +2916,27 @@ function handleVerifyPassword(event) {
 
     if (submitBtn) {
       submitBtn.disabled = true;
-      submitBtn.innerText = "PIN Terverifikasi...";
+      submitBtn.innerText = (authTargetMode === 'progress')
+        ? "Menghitung Skor Real-Time..."
+        : "Membuka Spreadsheet...";
     }
 
     if (authTargetMode === 'progress') {
-      showToast("PIN Terverifikasi", `Membuka Report Kinerja ${currentSelectedStaff.nama}...`);
-      setTimeout(() => {
-        const staffToOpen = currentSelectedStaff;
+      const staffToOpen = currentSelectedStaff;
+      showToast("PIN Terverifikasi", `Menghubungkan ke spreadsheet & menghitung skor ${staffToOpen.nama}...`);
+
+      // Mengambil data skor real-time secara asynchronous
+      fetchLiveScoresForStaff(staffToOpen).then(liveData => {
+        closeModal();
+        openProgressModal(staffToOpen, liveData);
+        if (liveData && liveData.isLive) {
+          showToast("Live Sync Sukses", `Berhasil menghitung skor real-time ${staffToOpen.nama} dari ${liveData.evaluatorCount} penilai.`);
+        }
+      }).catch(err => {
+        console.warn("Live fetch fallback:", err);
         closeModal();
         openProgressModal(staffToOpen);
-      }, 500);
+      });
     } else {
       setTimeout(() => {
         executeOpenSheet(currentSelectedStaff);

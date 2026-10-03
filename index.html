@@ -154,7 +154,7 @@
               <!-- 3 Core Metric Highlights -->
               <div class="magic-term-metrics-grid">
                 <div class="magic-term-metric-box">
-                  <div class="magic-term-metric-num">94</div>
+                  <div class="magic-term-metric-num" id="statTotalStaff">94</div>
                   <div class="magic-term-metric-lbl">Fungsionaris</div>
                 </div>
                 <div class="magic-term-metric-box">
@@ -494,7 +494,10 @@
 
         <h3 id="modalName" class="modal-name">Nama Staf</h3>
         <p id="modalRole" class="modal-role">Jabatan Staf</p>
-
+        <div class="modal-tags-row" style="display: flex; justify-content: center; gap: 8px; margin: 4px 0 8px; flex-wrap: wrap;">
+          <span id="modalBiroTag" class="modal-biro-tag"></span>
+          <span id="modalNrpTag" class="modal-nrp-tag" style="font-size: 0.72rem; color: var(--text-3); font-family: var(--font-mono); align-self: center;"></span>
+        </div>
 
         <div id="authTargetBadge" class="auth-target-badge">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -631,6 +634,31 @@
         </div>
       </div>
 
+      <!-- ── LIVE SYNC STATUS BANNER (REAL-TIME GOOGLE SPREADSHEET ENGINE) ── -->
+      <div id="pmLiveBanner" class="pm-live-banner">
+        <div class="pm-live-banner-left">
+          <div class="pm-live-dot-wrap">
+            <span id="pmLiveDotPulse" class="pm-live-dot-pulse"></span>
+            <span id="pmLiveDotCenter" class="pm-live-dot-center"></span>
+          </div>
+          <div class="pm-live-banner-text">
+            <div class="pm-live-title-row">
+              <span id="pmLiveStatusTitle" class="pm-live-status-title">Sinkronisasi Real-Time Google Sheets</span>
+              <span id="pmLiveSyncBadge" class="pm-live-badge-chip">Live 360°</span>
+            </div>
+            <div id="pmLiveStatusDesc" class="pm-live-status-desc">
+              Memuat skor rata-rata langsung dari Google Spreadsheet evaluasi...
+            </div>
+          </div>
+        </div>
+        <button type="button" id="pmRefreshBtn" class="pm-live-refresh-btn" onclick="refreshLiveScoreCurrentStaff()" title="Ambil pembaruan skor terbaru langsung dari Google Sheets">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" class="refresh-icon">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+          </svg>
+          <span id="pmRefreshBtnText">Sinkronkan Live</span>
+        </button>
+      </div>
+
       <!-- Bento Metric Highlights -->
       <div class="pm-bento-grid">
         <div class="pm-bento-card">
@@ -701,6 +729,21 @@
           Fungsionaris menunjukkan dedikasi dan dinamika kerja yang positif. Harap pastikan lembar evaluasi berkala
           diisi secara lengkap untuk pemantauan optimal.
         </p>
+      </div>
+
+      <!-- ── UMPAN BALIK PEER DARI GOOGLE SPREADSHEETS ── -->
+      <div id="pmPeerFeedbackBox" class="pm-peer-feedback-box hidden">
+        <div class="pm-feedback-header">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          <span>Catatan &amp; Evaluasi Rekan (Dari Google Sheets)</span>
+          <span id="pmPeerFeedbackCount" class="pm-peer-count-badge">0 Masukan</span>
+        </div>
+        <div id="pmPeerFeedbackList" class="pm-peer-feedback-list"></div>
       </div>
 
       <!-- Action Footer -->
