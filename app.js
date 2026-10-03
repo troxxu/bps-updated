@@ -1933,9 +1933,9 @@ function getStaffRubricData(staff, liveData = null) {
 
   const seed = (staff.nrp ? parseInt(staff.nrp.slice(-4), 10) : 1000) || 1234;
 
-  // Skor per indikator 0 - 10 (Prioritas: Live Google Sheets Terbobot > Custom Scores > Rubrik Terkalibrasi)
+  // Skor per indikator 0 - 10 (Hanya dari penilaian asli Google Sheets. JIKA BELUM DINILAI = SKOR 0.0)
   const items = rubricTemplate.map((item, idx) => {
-    let score;
+    let score = 0;
     let isLive = false;
     let evalCount = 0;
     let kabinetAvg = null;
@@ -1949,7 +1949,7 @@ function getStaffRubricData(staff, liveData = null) {
     const matchNameKey = item.name.toLowerCase();
     const liveScoreObj = liveData && liveData.scores ? (liveData.scores[matchKey] || liveData.scores[matchNameKey] || liveData.scores[matchKey.replace(/_/g, ' ')]) : null;
 
-    if (liveScoreObj && typeof liveScoreObj.average === 'number') {
+    if (liveScoreObj && typeof liveScoreObj.average === 'number' && (liveScoreObj.kabCount > 0 || liveScoreObj.stafCount > 0 || liveScoreObj.selfCount > 0)) {
       score = liveScoreObj.average;
       evalCount = (liveScoreObj.kabCount || 0) + (liveScoreObj.stafCount || 0) + (liveScoreObj.selfCount || 0);
       kabinetAvg = liveScoreObj.kabinetAvg;
@@ -1972,30 +1972,37 @@ function getStaffRubricData(staff, liveData = null) {
         `;
         breakdownTooltip = `Kabinet 55% (${kabinetAvg !== null ? kabinetAvg.toFixed(1) : '-'}), Staf 35% (${stafAvg !== null ? stafAvg.toFixed(1) : '-'}), Diri Sendiri 10% (${selfAvg !== null ? selfAvg.toFixed(1) : '-'})`;
       }
-    } else if (staff.customScores && (typeof staff.customScores[item.name] === 'number' || typeof staff.customScores[item.key] === 'number')) {
-      // 2. Custom score manual jika didefinisikan
-      score = typeof staff.customScores[item.name] === 'number' ? staff.customScores[item.name] : staff.customScores[item.key];
-      score = Math.min(10.0, Math.max(0.0, score));
     } else {
-      // 3. Fallback nilai rubrik standar terkalibrasi resmi ITS
-      const factor = ((seed * (idx + 7)) % 19) / 10;
-      score = Math.min(10.0, Math.max(7.8, 8.0 + factor));
-
-      if (isKabinet && idx === 0) score = Math.max(8.8, score);
-      if (isKabinet && idx === 2) score = Math.max(9.0, score);
+      // Belum ada penilai yang menilai sama sekali: HARUS 0!
+      score = 0;
+      evalCount = 0;
+      isLive = false;
+      kabinetAvg = null;
+      stafAvg = null;
+      selfAvg = null;
+      breakdownHtml = "";
+      breakdownTooltip = "Belum ada penilaian";
     }
 
-    let levelKey = "9-10";
-    let levelBadge = "Sangat Baik (9-10)";
-    if (score < 3.0) {
-      levelKey = "1-2";
-      levelBadge = "Kurang (1-2)";
-    } else if (score < 6.0) {
-      levelKey = "3-5";
-      levelBadge = "Cukup (3-5)";
-    } else if (score < 9.0) {
-      levelKey = "6-8";
-      levelBadge = "Baik (6-8)";
+    let levelKey = "0";
+    let levelBadge = "Belum Dinilai (0 / 10)";
+    let levelText = "Belum ada masukan penilaian untuk indikator ini di Google Sheets.";
+
+    if (score > 0) {
+      if (score < 3.0) {
+        levelKey = "1-2";
+        levelBadge = "Kurang (1-2)";
+      } else if (score < 6.0) {
+        levelKey = "3-5";
+        levelBadge = "Cukup (3-5)";
+      } else if (score < 9.0) {
+        levelKey = "6-8";
+        levelBadge = "Baik (6-8)";
+      } else {
+        levelKey = "9-10";
+        levelBadge = "Sangat Baik (9-10)";
+      }
+      levelText = item.levels[levelKey] || item.desc;
     }
 
     return {
@@ -2004,7 +2011,7 @@ function getStaffRubricData(staff, liveData = null) {
       color: item.color,
       score: parseFloat(score.toFixed(1)),
       levelBadge,
-      levelText: item.levels[levelKey] || item.desc,
+      levelText,
       isLive,
       evalCount,
       kabinetAvg,
@@ -2016,14 +2023,17 @@ function getStaffRubricData(staff, liveData = null) {
   });
 
   const totalScore = items.reduce((sum, it) => sum + it.score, 0);
-  const averageScore = (totalScore / items.length).toFixed(1);
-  const achievementPct = Math.round((averageScore / 10) * 100);
+  const scoredItems = items.filter(it => it.score > 0);
+  const averageScore = scoredItems.length > 0 ? (totalScore / items.length).toFixed(1) : "0.0";
+  const achievementPct = scoredItems.length > 0 ? Math.round((parseFloat(averageScore) / 10) * 100) : 0;
 
-  let predikat = "Sangat Baik (On Track)";
-  if (averageScore >= 9.2) predikat = "Istimewa (High Performer)";
-  else if (averageScore >= 8.5) predikat = "Sangat Baik (On Track)";
-  else if (averageScore >= 7.5) predikat = "Baik (Kompeten)";
-  else predikat = "Cukup (Dalam Pendampingan)";
+  let predikat = "Belum Ada Penilaian";
+  if (parseFloat(averageScore) > 0) {
+    if (parseFloat(averageScore) >= 9.2) predikat = "Istimewa (High Performer)";
+    else if (parseFloat(averageScore) >= 8.5) predikat = "Sangat Baik (On Track)";
+    else if (parseFloat(averageScore) >= 7.5) predikat = "Baik (Kompeten)";
+    else predikat = "Cukup (Dalam Pendampingan)";
+  }
 
   const activeSheet = (staff.sheetUrl && staff.sheetUrl.trim() !== '' && !staff.sheetUrl.includes('on-progress') && staff.sheetUrl.startsWith('http'))
     ? staff.sheetUrl.trim()
@@ -2041,12 +2051,14 @@ function getStaffRubricData(staff, liveData = null) {
     formStatus = `🟢 Live Sync (${evaluatorCount} Penilai)`;
     sheetNote = `Google Sheets Real-Time (${liveData.timestamp || 'Terkini'})`;
   } else {
-    formStatus = hasSheet ? "Terhubung & Aktif" : "Siap Diisi (Q1 2026)";
-    sheetNote = hasSheet ? "Menunggu Input Penilai (Standar Rubrik)" : "Menunggu Rekap Personalia";
+    formStatus = hasSheet ? "Menunggu Penilai (0 Penilai)" : "Siap Diisi (Q1 2026)";
+    sheetNote = hasSheet ? "Google Sheets Terhubung (Belum Ada Penilai)" : "Menunggu Rekap Personalia";
   }
 
   let feedback = "";
-  if (staff.roleCategory === 'Pimpinan') {
+  if (evaluatorCount === 0 || scoredItems.length === 0) {
+    feedback = `Belum ada masukan penilaian untuk ${staff.nama}. Skor capaian seluruh indikator dan catatan evaluasi rekan akan otomatis terisi serta diperbarui secara real-time setelah penilai mengisi formulir Performance Appraisal di Google Sheets.`;
+  } else if (staff.roleCategory === 'Pimpinan') {
     feedback = `Menunjukkan kapabilitas kepemimpinan terarah (Structured Direction), adaptif terhadap dinamika kampus, serta mengawal sinergi ${staff.departemenBEMFull} selaras dengan visi Kabinet Polaris dan tata kelola Good Student Governance.`;
   } else if (staff.roleCategory === 'Wakil Pimpinan') {
     feedback = `Eksekusi program kerja dan pendampingan teknis ${staff.departemenBEMFull} berjalan adaptif dan terukur. Menjadi penghubung harmonis bagi staf dalam akselerasi kapasitas fungsionaris.`;
@@ -2107,9 +2119,13 @@ function init3DPieChart(canvas, dataItems) {
   ctx.scale(dpr, dpr);
 
   const total = dataItems.reduce((acc, d) => acc + d.score, 0);
+  const isZeroState = (total <= 0);
+
   let currentAngle = -Math.PI / 2;
   currentPieSlices = dataItems.map(d => {
-    const sliceAngle = (d.score / total) * Math.PI * 2;
+    const sliceAngle = isZeroState
+      ? (Math.PI * 2) / dataItems.length
+      : (d.score / total) * Math.PI * 2;
     const start = currentAngle;
     const end = currentAngle + sliceAngle;
     currentAngle = end;
@@ -2118,7 +2134,7 @@ function init3DPieChart(canvas, dataItems) {
       start,
       end,
       mid: (start + end) / 2,
-      percent: ((d.score / total) * 100).toFixed(1)
+      percent: isZeroState ? "0.0" : ((d.score / total) * 100).toFixed(1)
     };
   });
 
@@ -2138,7 +2154,7 @@ function init3DPieChart(canvas, dataItems) {
     ctx.save();
     ctx.beginPath();
     ctx.ellipse(cx, cy + depth + 14, rx * 1.05, ry * 1.05, 0, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(15, 23, 42, 0.1)';
+    ctx.fillStyle = isZeroState ? 'rgba(15, 23, 42, 0.05)' : 'rgba(15, 23, 42, 0.1)';
     ctx.fill();
     ctx.restore();
 
@@ -2150,16 +2166,21 @@ function init3DPieChart(canvas, dataItems) {
         const currentEnd = Math.min(s.end, sweepEnd);
 
         const isHover = idx === hoveredPieIndex;
-        const offX = isHover ? Math.cos(s.mid) * 12 : 0;
-        const offY = isHover ? Math.sin(s.mid) * 12 * 0.52 - 4 : 0;
+        const offX = isHover ? Math.cos(s.mid) * 10 : 0;
+        const offY = isHover ? Math.sin(s.mid) * 10 * 0.52 - 3 : 0;
 
         ctx.beginPath();
         ctx.ellipse(cx + offX, cy + y + offY, rx, ry, 0, s.start, currentEnd);
         ctx.lineTo(cx + offX, cy + y + offY);
         ctx.closePath();
 
-        const shade = -35 + (y / depth) * 15 + Math.cos(s.mid) * 8;
-        ctx.fillStyle = shadeColor(s.color, Math.max(-50, Math.min(20, shade)));
+        if (isZeroState) {
+          const shade = -20 + (y / depth) * 12;
+          ctx.fillStyle = shadeColor("#94A3B8", shade);
+        } else {
+          const shade = -35 + (y / depth) * 15 + Math.cos(s.mid) * 8;
+          ctx.fillStyle = shadeColor(s.color, Math.max(-50, Math.min(20, shade)));
+        }
         ctx.fill();
       });
     }
@@ -2171,8 +2192,8 @@ function init3DPieChart(canvas, dataItems) {
       const currentEnd = Math.min(s.end, sweepEnd);
 
       const isHover = idx === hoveredPieIndex;
-      const offX = isHover ? Math.cos(s.mid) * 12 : 0;
-      const offY = isHover ? Math.sin(s.mid) * 12 * 0.52 - 4 : 0;
+      const offX = isHover ? Math.cos(s.mid) * 10 : 0;
+      const offY = isHover ? Math.sin(s.mid) * 10 * 0.52 - 3 : 0;
 
       ctx.save();
       ctx.beginPath();
@@ -2180,37 +2201,90 @@ function init3DPieChart(canvas, dataItems) {
       ctx.lineTo(cx + offX, cy + offY);
       ctx.closePath();
 
-      const grad = ctx.createRadialGradient(
-        cx + offX - 30, cy + offY - 20, 10,
-        cx + offX, cy + offY, rx
-      );
-      grad.addColorStop(0, shadeColor(s.color, isHover ? 35 : 20));
-      grad.addColorStop(0.85, s.color);
-      grad.addColorStop(1, shadeColor(s.color, -10));
+      if (isZeroState) {
+        const grad = ctx.createRadialGradient(
+          cx + offX - 25, cy + offY - 15, 10,
+          cx + offX, cy + offY, rx
+        );
+        grad.addColorStop(0, isHover ? "#E2E8F0" : "#F8FAFC");
+        grad.addColorStop(0.85, isHover ? "#CBD5E1" : "#E2E8F0");
+        grad.addColorStop(1, "#94A3B8");
+        ctx.fillStyle = grad;
+        ctx.fill();
 
-      ctx.fillStyle = grad;
-      ctx.fill();
+        ctx.strokeStyle = isHover ? '#0284C7' : 'rgba(255, 255, 255, 0.7)';
+        ctx.lineWidth = isHover ? 2 : 1;
+        ctx.stroke();
 
-      ctx.strokeStyle = isHover ? '#FFFFFF' : 'rgba(255, 255, 255, 0.4)';
-      ctx.lineWidth = isHover ? 2.5 : 1.2;
-      ctx.stroke();
+        // Tampilkan 0.0 di setiap slice
+        if (s.end - s.start > 0.35 && progress >= 0.8) {
+          const textDist = rx * 0.65;
+          const tx = cx + offX + Math.cos(s.mid) * textDist;
+          const ty = cy + offY + Math.sin(s.mid) * textDist * 0.52;
+          ctx.font = '600 10px system-ui, -apple-system, sans-serif';
+          ctx.fillStyle = '#64748B';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText("0.0", tx, ty);
+        }
+      } else {
+        const grad = ctx.createRadialGradient(
+          cx + offX - 30, cy + offY - 20, 10,
+          cx + offX, cy + offY, rx
+        );
+        grad.addColorStop(0, shadeColor(s.color, isHover ? 35 : 20));
+        grad.addColorStop(0.85, s.color);
+        grad.addColorStop(1, shadeColor(s.color, -10));
 
-      if (s.end - s.start > 0.45 && progress >= 0.8) {
-        const textDist = rx * 0.65;
-        const tx = cx + offX + Math.cos(s.mid) * textDist;
-        const ty = cy + offY + Math.sin(s.mid) * textDist * 0.52;
-        ctx.font = 'bold 11px system-ui, -apple-system, sans-serif';
-        ctx.fillStyle = '#FFFFFF';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.shadowColor = 'rgba(0,0,0,0.6)';
-        ctx.shadowBlur = 4;
-        ctx.fillText(s.score.toFixed(1), tx, ty);
-        ctx.shadowBlur = 0;
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        ctx.strokeStyle = isHover ? '#FFFFFF' : 'rgba(255, 255, 255, 0.4)';
+        ctx.lineWidth = isHover ? 2.5 : 1.2;
+        ctx.stroke();
+
+        if (s.end - s.start > 0.45 && progress >= 0.8) {
+          const textDist = rx * 0.65;
+          const tx = cx + offX + Math.cos(s.mid) * textDist;
+          const ty = cy + offY + Math.sin(s.mid) * textDist * 0.52;
+          ctx.font = 'bold 11px system-ui, -apple-system, sans-serif';
+          ctx.fillStyle = '#FFFFFF';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.shadowColor = 'rgba(0,0,0,0.6)';
+          ctx.shadowBlur = 4;
+          ctx.fillText(s.score.toFixed(1), tx, ty);
+          ctx.shadowBlur = 0;
+        }
       }
 
       ctx.restore();
     });
+
+    // Jika isZeroState: Tambahkan label tengah 3D disk
+    if (isZeroState && progress >= 0.85) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, rx * 0.35, ry * 0.35, 0, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.92)';
+      ctx.shadowColor = 'rgba(15, 23, 42, 0.12)';
+      ctx.shadowBlur = 8;
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(148, 163, 184, 0.4)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.font = 'bold 14px system-ui, -apple-system, sans-serif';
+      ctx.fillStyle = '#475569';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText("0.0", cx, cy - 5);
+
+      ctx.font = '600 8.5px system-ui, -apple-system, sans-serif';
+      ctx.fillStyle = '#94A3B8';
+      ctx.fillText("BELUM DINILAI", cx, cy + 8);
+      ctx.restore();
+    }
   }
 
   function animate(timestamp) {
@@ -2266,12 +2340,12 @@ function init3DPieChart(canvas, dataItems) {
     if (found >= 0 && tooltip) {
       const s = currentPieSlices[found];
       tooltip.innerHTML = `
-        <div class="pie-tooltip-title" style="color: ${s.color};">
-          <span class="pie-tooltip-dot" style="background: ${s.color};"></span>
+        <div class="pie-tooltip-title" style="color: ${isZeroState ? '#64748B' : s.color};">
+          <span class="pie-tooltip-dot" style="background: ${isZeroState ? '#94A3B8' : s.color};"></span>
           ${s.name}
         </div>
-        <div class="pie-tooltip-score">Skor: <strong>${s.score.toFixed(1)}</strong> / 10 (${s.percent}%)</div>
-        <div class="pie-tooltip-sub">${s.desc}</div>
+        <div class="pie-tooltip-score">Skor: <strong>${s.score.toFixed(1)}</strong> / 10 ${isZeroState ? '(Belum Dinilai)' : `(${s.percent}%)`}</div>
+        <div class="pie-tooltip-sub">${isZeroState ? 'Belum ada penilaian masuk di Google Sheets' : s.desc}</div>
       `;
       tooltip.style.left = `${Math.min(canvasRect.width - 200, Math.max(10, x - 100))}px`;
       tooltip.style.top = `${Math.max(10, y - 80)}px`;
@@ -2312,10 +2386,10 @@ function renderLegend(slices, redrawFn) {
   if (!container) return;
 
   container.innerHTML = slices.map((s, idx) => `
-    <div class="pie-legend-item" data-index="${idx}">
-      <span class="pie-legend-color" style="background: ${s.color};"></span>
+    <div class="pie-legend-item ${s.score === 0 ? 'is-zero' : ''}" data-index="${idx}">
+      <span class="pie-legend-color" style="background: ${s.score === 0 ? '#94A3B8' : s.color};"></span>
       <span class="pie-legend-name">${s.name}</span>
-      <span class="pie-legend-val">${s.score.toFixed(1)}</span>
+      <span class="pie-legend-val ${s.score === 0 ? 'is-zero' : ''}">${s.score.toFixed(1)}</span>
     </div>
   `).join('');
 
@@ -2804,16 +2878,16 @@ function openProgressModal(staff, liveData = null) {
     } else {
       const isTargetKabinet = staff.roleCategory === 'Pimpinan' || staff.roleCategory === 'Wakil Pimpinan' || staff.roleCategory === 'Kabiro';
       liveBanner.classList.add("is-pending");
-      if (liveTitle) liveTitle.innerText = "Google Sheets Terhubung (Standar Rubrik)";
+      if (liveTitle) liveTitle.innerText = "Belum Ada Nilai Masuk (Menunggu Penilai)";
       if (liveBadge) {
-        liveBadge.innerText = "Menunggu Penilai";
+        liveBadge.innerText = "Skor 0.0 • 0 Penilai";
         liveBadge.className = "pm-live-badge-chip";
       }
       if (liveDesc) {
         const weightNote = !isTargetKabinet
           ? "Formula: 55% Kabinet + 35% Staf + 10% Diri Sendiri."
           : "Formula: 55% Staf + 35% Kabinet + 10% Diri Sendiri.";
-        liveDesc.innerHTML = `Belum ada masukan nilai penilai di Google Sheets (${weightNote}) — Menampilkan nilai rubrik resmi BEM FTEIC. Klik tombol di kanan jika spreadsheet baru saja diisi.`;
+        liveDesc.innerHTML = `Belum ada lembar penilaian yang terisi di Google Sheets (${weightNote}) — Seluruh capaian indikator berada pada skor 0.0 sampai formulir PA diisi. Klik tombol di kanan jika baru saja ada penilai yang mengisi.`;
       }
       if (refreshBtnText) refreshBtnText.innerText = "Cek Pembaruan";
     }
@@ -2850,26 +2924,30 @@ function openProgressModal(staff, liveData = null) {
   const indContainer = document.getElementById("pmIndicatorsList");
   if (indContainer) {
     indContainer.innerHTML = data.items.map((item, idx) => `
-      <div class="pm-indicator-card" id="ind-card-${idx}">
+      <div class="pm-indicator-card ${item.score === 0 ? 'is-zero-score' : ''}" id="ind-card-${idx}">
         <div class="pm-ind-header">
           <div class="pm-ind-name-wrap">
-            <span class="pm-ind-dot" style="background: ${item.color};"></span>
+            <span class="pm-ind-dot" style="background: ${item.score === 0 ? '#94A3B8' : item.color};"></span>
             <span class="pm-ind-name">${item.name}</span>
             ${item.isLive && item.evalCount > 0 ? `
               <span class="pm-live-indicator-tag" title="Dihitung dari ${item.evalCount} penilai terbobot">
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                 ${item.evalCount} Penilai
               </span>
-            ` : ''}
+            ` : `
+              <span class="pm-zero-indicator-tag">
+                Belum Dinilai
+              </span>
+            `}
           </div>
-          <span class="pm-ind-score-badge">${item.score.toFixed(1)} / 10</span>
+          <span class="pm-ind-score-badge ${item.score === 0 ? 'is-zero' : ''}">${item.score.toFixed(1)} / 10</span>
         </div>
         <div class="pm-ind-track">
-          <div class="pm-ind-fill" style="width: ${item.score * 10}%; background: linear-gradient(90deg, ${item.color} 0%, ${shadeColor(item.color, 25)} 100%);"></div>
+          <div class="pm-ind-fill" style="width: ${item.score * 10}%; background: ${item.score === 0 ? '#CBD5E1' : `linear-gradient(90deg, ${item.color} 0%, ${shadeColor(item.color, 25)} 100%)`};"></div>
         </div>
         ${item.breakdownHtml ? `<div class="pm-breakdown-row">${item.breakdownHtml}</div>` : ''}
         <div class="pm-ind-desc">${item.desc}</div>
-        <div class="pm-ind-param-box">
+        <div class="pm-ind-param-box ${item.score === 0 ? 'is-zero' : ''}">
           <div class="pm-ind-param-tag">${item.levelBadge}</div>
           <p class="pm-ind-param-text">${item.levelText}</p>
         </div>

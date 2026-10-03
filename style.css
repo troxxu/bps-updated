@@ -3021,6 +3021,41 @@ body::before {
   font-weight: 700;
 }
 
+.pm-zero-indicator-tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #64748B;
+  background: rgba(148, 163, 184, 0.12);
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-left: 6px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.pm-ind-score-badge.is-zero {
+  background: rgba(148, 163, 184, 0.12);
+  color: #64748B;
+  border-color: rgba(148, 163, 184, 0.25);
+}
+
+.pm-ind-param-box.is-zero {
+  background: rgba(148, 163, 184, 0.04);
+  border-color: rgba(148, 163, 184, 0.2);
+}
+
+.pm-ind-param-box.is-zero .pm-ind-param-tag {
+  background: rgba(148, 163, 184, 0.15);
+  color: #475569;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.pie-legend-item.is-zero .pie-legend-val {
+  color: #94A3B8;
+  font-weight: 600;
+}
+
 @media (max-width: 640px) {
   .pm-live-banner {
     flex-direction: column;
