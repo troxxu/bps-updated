@@ -2766,7 +2766,7 @@ function openModal(staff, mode = 'sheet') {
   if (authTargetText) {
     authTargetText.innerText = (authTargetMode === 'progress')
       ? "PIN Diperlukan: Membuka Report Kinerja Personal"
-      : "PIN Diperlukan: Mengisi Lembar Kerja Spreadsheet";
+      : "PIN Diperlukan: Mengisi Lembar Kerja PA Agustus";
   }
 
   if (staffPin) {
@@ -2774,7 +2774,7 @@ function openModal(staff, mode = 'sheet') {
     staffPin.type = "password";
     staffPin.placeholder = (authTargetMode === 'progress')
       ? "Masukkan PIN untuk melihat nilai personal..."
-      : "Masukkan PIN untuk mengisi form spreadsheet...";
+      : "Masukkan PIN untuk mengisi form PA Agustus...";
   }
   isPasswordVisible = false;
   updateEyeIcon();
@@ -2785,7 +2785,7 @@ function openModal(staff, mode = 'sheet') {
     submitBtn.disabled = false;
     submitBtn.innerText = (authTargetMode === 'progress')
       ? "Verifikasi & Buka Report"
-      : "Verifikasi & Buka Spreadsheet";
+      : "Verifikasi & Buka PA Agustus";
   }
 
   modal.classList.remove("hidden");
@@ -2878,7 +2878,7 @@ function openProgressModal(staff, liveData = null) {
         liveBadge.className = "pm-live-badge-chip";
       }
       if (liveDesc) {
-        liveDesc.innerHTML = `Skor dihitung otomatis dari rata-rata terbobot <strong>${data.evaluatorCount} lembar penilaian aktif</strong> di departemen ${staff.departemenBEMFull}. Sinkronisasi: <strong>${data.timestamp || 'Terkini'}</strong>.`;
+        liveDesc.innerHTML = `Skor dihitung otomatis dari rata-rata terbobot <strong>${data.evaluatorCount} lembar penilaian aktif</strong> (Periode PA Agustus 2026) di ${staff.departemenBEMFull}. Sinkronisasi: <strong>${data.timestamp || 'Terkini'}</strong>.`;
       }
       if (refreshBtnText) refreshBtnText.innerText = "Sinkronkan Live";
     } else {
@@ -2889,7 +2889,7 @@ function openProgressModal(staff, liveData = null) {
         liveBadge.className = "pm-live-badge-chip";
       }
       if (liveDesc) {
-        liveDesc.innerHTML = `Belum ada lembar penilaian yang terisi di Google Sheets — Seluruh capaian indikator berada pada skor 0.0 sampai formulir PA diisi. Klik tombol di kanan jika baru saja ada penilai yang mengisi.`;
+        liveDesc.innerHTML = `Saat ini sedang berlangsung <strong>Periode Pengisian PA Agustus (04 – 07 Oktober 2026)</strong>. Seluruh capaian indikator akan terisi secara otomatis begitu penilai mengisi formulir Google Sheets sebelum deadline <strong>Rabu, 7 Oktober 2026 pukul 23.59 WIB</strong>.`;
       }
       if (refreshBtnText) refreshBtnText.innerText = "Cek Pembaruan";
     }
