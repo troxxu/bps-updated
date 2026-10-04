@@ -1572,65 +1572,94 @@ function cleanTokenStr(str) {
     .trim();
 }
 
-// Pencocokan nama fungsionaris dengan kolom spreadsheet (toleran gelar/singkatan)
+// Pencocokan nama fungsionaris dengan kolom spreadsheet (toleran gelar/singkatan/panggilan)
 function isStaffNameMatchingCol(targetName, colCell) {
   if (!targetName || !colCell) return false;
   const targetClean = cleanTokenStr(targetName);
   const colClean = cleanTokenStr(colCell);
 
   if (targetClean === colClean) return true;
-  if (colClean.includes(targetClean)) return true;
+  if (targetClean.length >= 3 && colClean.length >= 3) {
+    if (colClean.includes(targetClean) || targetClean.includes(colClean)) {
+      const shorter = colClean.length < targetClean.length ? colClean : targetClean;
+      if (shorter.length >= 4) return true;
+    }
+  }
 
   const tTokens = targetClean.split(' ').filter(w => w.length > 1);
   const cTokens = colClean.split(' ').filter(w => w.length > 1);
   if (tTokens.length === 0 || cTokens.length === 0) return false;
 
   // Filter kata-kata boilerplate header spreadsheet
-  const ignoreWords = new Set(['nilai', 'indikator', 'performance', 'appraisal', 'kabinet', 'staf', 'panduan', 'pengisian']);
+  const ignoreWords = new Set(['nilai', 'indikator', 'performance', 'appraisal', 'kabinet', 'staf', 'staff', 'panduan', 'pengisian', 'biro', 'dept', 'departemen']);
   const cleanTT = tTokens.filter(w => !ignoreWords.has(w));
   const cleanCT = cTokens.filter(w => !ignoreWords.has(w));
   if (cleanTT.length === 0 || cleanCT.length === 0) return false;
+
+  // Single token match (misal di sheet hanya ditulis "Keindra" atau "Alvia" atau "Janice")
+  if (cleanCT.length === 1 && cleanTT.includes(cleanCT[0])) return true;
+  if (cleanTT.length === 1 && cleanCT.includes(cleanTT[0])) return true;
 
   let matches = 0;
   for (const tw of cleanTT) {
     if (cleanCT.includes(tw)) matches++;
   }
 
-  if (cleanTT.length === 1 && matches === 1) return true;
   if (matches >= 2) return true;
-  if (matches >= 1 && cleanCT.length <= 2) return true;
+  if (matches >= 1 && (cleanCT.length <= 2 || cleanTT.length <= 2)) return true;
 
   return false;
 }
 
-// Menentukan daftar tab kandidat spreadsheet evaluator berdasarkan peran target
-function getCandidateTabsForTarget(evaluator, target) {
+// Menentukan daftar tab deterministik spreadsheet evaluator berdasarkan peran target
+// Template organisasi memiliki tepat 2 tab:
+// - Evaluator Kabinet: 'PA Kabinet-Staf' & 'PA Kabinet-Kabinet'
+// - Evaluator Staf / Sekretaris: 'PA Staf-Staf' & 'PA Staf-Kabinet'
+function getDeterministicTabsForTarget(evaluator, target) {
   const isTargetKabinet = ['Pimpinan', 'Wakil Pimpinan', 'Kabiro'].includes(target.roleCategory);
-  const isEvaluatorKabinet = ['Pimpinan', 'Wakil Pimpinan', 'Kabiro', 'Sekretaris'].includes(evaluator.roleCategory);
+  const isEvaluatorKabinet = ['Pimpinan', 'Wakil Pimpinan', 'Kabiro'].includes(evaluator.roleCategory);
 
   if (isTargetKabinet) {
-    if (isEvaluatorKabinet) {
-      return ['PA Kabinet-Kabinet', 'PA Staf-Kabinet', 'PA', 'Sheet1'];
-    } else {
-      return ['PA Staf-Kabinet', 'PA Kabinet-Kabinet', 'PA', 'Sheet1'];
-    }
+    return isEvaluatorKabinet
+      ? ['PA Kabinet-Kabinet', 'PA Staf-Kabinet']
+      : ['PA Staf-Kabinet', 'PA Kabinet-Kabinet'];
   } else {
-    if (isEvaluatorKabinet) {
-      return ['PA Kabinet-Staf', 'PA Staf-Staf', 'PA', 'Sheet1'];
-    } else {
-      return ['PA Staf-Staf', 'PA Kabinet-Staf', 'PA', 'Sheet1'];
-    }
+    return isEvaluatorKabinet
+      ? ['PA Kabinet-Staf', 'PA Staf-Staf']
+      : ['PA Staf-Staf', 'PA Kabinet-Staf'];
   }
 }
 
-// Fetch single sheet CSV via GViz endpoint dengan AbortController timeout
-async function fetchSheetCsvWithTimeout(sheetId, tabName, timeoutMs = 4500) {
-  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}`;
+// Throttling concurrency untuk request HTTP paralel di browser (mencegah bottleneck antrean)
+async function mapConcurrent(items, limit, fn) {
+  const results = new Array(items.length);
+  let currentIndex = 0;
+
+  async function worker() {
+    while (currentIndex < items.length) {
+      const idx = currentIndex++;
+      try {
+        results[idx] = await fn(items[idx], idx);
+      } catch (err) {
+        results[idx] = null;
+      }
+    }
+  }
+
+  const workerCount = Math.min(limit, items.length);
+  const workers = Array.from({ length: workerCount }, () => worker());
+  await Promise.all(workers);
+  return results;
+}
+
+// Fetch single sheet CSV via GViz endpoint dengan AbortController timeout & anti-cache timestamp
+async function fetchSheetCsvWithTimeout(sheetId, tabName, timeoutMs = 9000) {
+  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}&t=${Date.now()}`;
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
-    const resp = await fetch(url, { signal: controller.signal });
+    const resp = await fetch(url, { signal: controller.signal, cache: 'no-store' });
     clearTimeout(timer);
     if (!resp.ok) return null;
     const text = await resp.text();
@@ -1659,16 +1688,19 @@ function escapeHtml(str) {
 async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
   if (!staff) return null;
 
-  // Cek cache (Memory & SessionStorage)
+  // Cek cache (Memory & SessionStorage) - hanya gunakan jika data terbukti berisi skor dan berumur < 30 detik
   if (!forceRefresh) {
     if (liveStaffCache[staff.id]) {
-      return liveStaffCache[staff.id];
+      const cached = liveStaffCache[staff.id];
+      if (cached && cached.evaluatorCount > 0 && (Date.now() - (cached.cachedAt || 0) < 30 * 1000)) {
+        return cached;
+      }
     }
     const sessionCached = sessionStorage.getItem('live_pa_data_' + staff.id);
     if (sessionCached) {
       try {
         const parsed = JSON.parse(sessionCached);
-        if (parsed && (Date.now() - parsed.cachedAt < 5 * 60 * 1000)) {
+        if (parsed && parsed.evaluatorCount > 0 && (Date.now() - (parsed.cachedAt || 0) < 30 * 1000)) {
           liveStaffCache[staff.id] = parsed;
           return parsed;
         }
@@ -1686,22 +1718,21 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
     s.sheetUrl.includes('/d/')
   );
 
-  // Evaluator mencakup seluruh anggota departemen TERMASUK diri sendiri untuk penilaian mandiri (Self-Assessment)
   const evaluators = deptMembers;
 
-  // Fetch semua lembar spreadsheet evaluator secara paralel dengan tab fallback
-  const fetchPromises = evaluators.map(async (ev) => {
+  // Fetch lembar spreadsheet evaluator secara ter-throttle (maks 5 koneksi simultan)
+  const settledResults = await mapConcurrent(evaluators, 5, async (ev) => {
     const sheetIdMatch = ev.sheetUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
     if (!sheetIdMatch) return null;
     const sheetId = sheetIdMatch[1];
-    const candidateTabs = getCandidateTabsForTarget(ev, staff);
+    const candidateTabs = getDeterministicTabsForTarget(ev, staff);
 
     let foundRows = null;
     let targetColIdx = -1;
     let matchedTab = null;
 
     for (const tab of candidateTabs) {
-      const rows = await fetchSheetCsvWithTimeout(sheetId, tab, 4500);
+      const rows = await fetchSheetCsvWithTimeout(sheetId, tab, 9000);
       if (!rows || rows.length === 0) continue;
 
       const maxScan = Math.min(15, rows.length);
@@ -1719,15 +1750,13 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
       if (targetColIdx !== -1) {
         foundRows = rows;
         matchedTab = tab;
-        break;
+        break; // Hentikan loop tab begitu kolom target ditemukan di tab utama
       }
     }
 
     if (!foundRows || targetColIdx === -1) return null;
     return { evaluator: ev, tabName: matchedTab, rows: foundRows, colIdx: targetColIdx };
   });
-
-  const settledResults = await Promise.allSettled(fetchPromises);
 
   // Map nilai per indikator dikelompokkan ke dalam 3 tier: kabinet, staf, self
   const scoresByGroup = {};
@@ -1744,12 +1773,12 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
   const activeStafEvaluators = new Set();
   let hasSelfAssessment = false;
 
-  settledResults.forEach(res => {
-    if (res.status !== 'fulfilled' || !res.value) return;
-    const { evaluator, rows, colIdx } = res.value;
+  settledResults.forEach(item => {
+    if (!item) return;
+    const { evaluator, rows, colIdx } = item;
 
     const isSelf = evaluator.id === staff.id;
-    const isKab = ['Pimpinan', 'Wakil Pimpinan', 'Kabiro', 'Sekretaris'].includes(evaluator.roleCategory);
+    const isKab = ['Pimpinan', 'Wakil Pimpinan', 'Kabiro'].includes(evaluator.roleCategory);
     const grp = isSelf ? 'self' : (isKab ? 'kabinet' : 'staf');
 
     let evaluatorContributedScore = false;
@@ -1758,14 +1787,20 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
       const row = rows[r];
       if (row.length <= colIdx) continue;
 
-      const headerText = cleanTokenStr((row[0] || '') + ' ' + (row[1] || '') + ' ' + (row[2] || ''));
+      // Pencocokan indikator spesifik pada kolom nama indikator (row[1] atau row[0])
+      // Menghindari false positive terhadap kata kunci di dalam deskripsi panjang indikator (row[2])
+      const indCell = cleanTokenStr(row[1] || row[0] || '');
 
-      // Ekstraksi nilai indikator
       indicatorList.forEach(ind => {
         const indNameClean = cleanTokenStr(ind.name);
         const indKeyClean = cleanTokenStr(ind.key);
 
-        if (headerText.includes(indNameClean) || headerText.includes(indKeyClean)) {
+        const isMatch = indCell === indNameClean ||
+                        indCell.startsWith(indNameClean) ||
+                        indCell === indKeyClean ||
+                        (indCell.length > 2 && indNameClean.startsWith(indCell));
+
+        if (isMatch) {
           const rawCell = (row[colIdx] || '').trim().replace(',', '.');
           const numVal = parseFloat(rawCell);
           if (!isNaN(numVal) && numVal > 0 && numVal <= 20) {
@@ -1777,6 +1812,7 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
       });
 
       // Ekstraksi catatan dan evaluasi kualitatif (ANONIM - TIDAK MENYIMPAN NAMA PENILAI)
+      const headerText = cleanTokenStr((row[0] || '') + ' ' + (row[1] || '') + ' ' + (row[2] || ''));
       const isFeedbackRow = headerText.includes('stop') || headerText.includes('start') || headerText.includes('continue') ||
                             headerText.includes('pesan') || headerText.includes('kesan') || headerText.includes('harapan') ||
                             r >= 48;
@@ -1792,7 +1828,7 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
           .trim();
 
         if (cleaned.length > 2 && !rawContent.startsWith('#DIV') && !rawContent.startsWith('#REF') && !rawContent.startsWith('#VALUE')) {
-          // Hanya simpan teks masukan agar 100% anonim (mencegah perselisihan)
+          // Hanya simpan teks masukan agar 100% anonim
           collectedFeedback.push({
             text: rawContent
           });
@@ -1890,11 +1926,18 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
     cachedAt: Date.now()
   };
 
-  // Simpan ke memory & session cache
-  liveStaffCache[staff.id] = liveResult;
-  try {
-    sessionStorage.setItem('live_pa_data_' + staff.id, JSON.stringify(liveResult));
-  } catch (e) {}
+  // Simpan ke memory & session cache hanya jika sudah ada evaluator yang mengisi
+  if (totalEvaluatorCount > 0 && validIndicatorCount > 0) {
+    liveStaffCache[staff.id] = liveResult;
+    try {
+      sessionStorage.setItem('live_pa_data_' + staff.id, JSON.stringify(liveResult));
+    } catch (e) {}
+  } else {
+    delete liveStaffCache[staff.id];
+    try {
+      sessionStorage.removeItem('live_pa_data_' + staff.id);
+    } catch (e) {}
+  }
 
   return liveResult;
 }
@@ -2025,7 +2068,8 @@ function getStaffRubricData(staff, liveData = null) {
 
   const totalScore = items.reduce((sum, it) => sum + it.score, 0);
   const scoredItems = items.filter(it => it.score > 0);
-  const averageScore = scoredItems.length > 0 ? (totalScore / items.length).toFixed(1) : "0.0";
+  // Hitung rata-rata berdasarkan indikator yang sudah dinilai agar penilaian berjalan tidak terdepresiasi
+  const averageScore = scoredItems.length > 0 ? (totalScore / scoredItems.length).toFixed(1) : "0.0";
   const achievementPct = scoredItems.length > 0 ? Math.round((parseFloat(averageScore) / 10) * 100) : 0;
 
   // Status Mahasiswa: Normal / SP1 / SP2 / ST1 / ST2
@@ -2053,7 +2097,9 @@ function getStaffRubricData(staff, liveData = null) {
   let formStatus = "";
   let sheetNote = "";
   if (isLive && evaluatorCount > 0) {
-    formStatus = `🟢 Live Sync (${evaluatorCount} Penilai)`;
+    const isFull = scoredItems.length === items.length;
+    const completeness = isFull ? "Lengkap" : `${scoredItems.length}/${items.length} Indikator`;
+    formStatus = `🟢 Live Sync (${evaluatorCount} Penilai • ${completeness})`;
     sheetNote = `Google Sheets Real-Time (${liveData.timestamp || 'Terkini'})`;
   } else {
     formStatus = hasSheet ? "Menunggu Penilai (0 Penilai)" : "Siap Diisi (Q1 2026)";
@@ -2815,15 +2861,21 @@ function openProgressModal(staff, liveData = null) {
   const modal = document.getElementById("progressModal");
   if (!modal) return;
 
-  // Ambil data cache live jika tidak dioperkan secara eksplisit
+  // Ambil data cache live jika valid (< 30 detik dan terdapat skor)
   if (!liveData && liveStaffCache[staff.id]) {
-    liveData = liveStaffCache[staff.id];
+    const cached = liveStaffCache[staff.id];
+    if (cached && cached.evaluatorCount > 0 && (Date.now() - (cached.cachedAt || 0) < 30 * 1000)) {
+      liveData = cached;
+    }
   } else if (!liveData) {
     try {
       const sessionCached = sessionStorage.getItem('live_pa_data_' + staff.id);
       if (sessionCached) {
-        liveData = JSON.parse(sessionCached);
-        liveStaffCache[staff.id] = liveData;
+        const parsed = JSON.parse(sessionCached);
+        if (parsed && parsed.evaluatorCount > 0 && (Date.now() - (parsed.cachedAt || 0) < 30 * 1000)) {
+          liveData = parsed;
+          liveStaffCache[staff.id] = liveData;
+        }
       }
     } catch (e) {}
   }
@@ -3049,13 +3101,26 @@ function openProgressModal(staff, liveData = null) {
 
   modal.classList.remove("hidden");
 
-  // Jika modal dibuka tanpa data live dan belum di-cache, picu sinkronisasi di background
-  if (!liveData && !liveStaffCache[staff.id]) {
-    fetchLiveScoresForStaff(staff).then(fresh => {
+  // Selalu picu sinkronisasi live secara proaktif jika data belum ada atau sudah lebih dari 30 detik
+  const isCacheFresh = liveData && liveData.cachedAt && (Date.now() - liveData.cachedAt < 30 * 1000) && (liveData.evaluatorCount > 0);
+  if (!isCacheFresh) {
+    const refreshBtn = document.getElementById("pmRefreshBtn");
+    const refreshBtnText = document.getElementById("pmRefreshBtnText");
+    if (refreshBtn) refreshBtn.classList.add("refreshing");
+    if (refreshBtnText) refreshBtnText.innerText = "Sinkronisasi Live...";
+
+    fetchLiveScoresForStaff(staff, true).then(fresh => {
       if (fresh && currentProgressStaff && currentProgressStaff.id === staff.id) {
         openProgressModal(staff, fresh);
       }
-    }).catch(() => {});
+    }).catch(err => {
+      console.warn("Live fetch error:", err);
+    }).finally(() => {
+      const rb = document.getElementById("pmRefreshBtn");
+      const rbt = document.getElementById("pmRefreshBtnText");
+      if (rb) rb.classList.remove("refreshing");
+      if (rbt) rbt.innerText = "Sinkronkan Live";
+    });
   }
 }
 
@@ -3208,8 +3273,8 @@ function handleVerifyPassword(event) {
       const staffToOpen = currentSelectedStaff;
       showToast("PIN Terverifikasi", `Menghubungkan ke spreadsheet & menghitung skor ${staffToOpen.nama}...`);
 
-      // Mengambil data skor real-time secara asynchronous
-      fetchLiveScoresForStaff(staffToOpen).then(liveData => {
+      // Mengambil data skor real-time secara asynchronous (force fresh)
+      fetchLiveScoresForStaff(staffToOpen, true).then(liveData => {
         closeModal();
         openProgressModal(staffToOpen, liveData);
         if (liveData && liveData.isLive) {
