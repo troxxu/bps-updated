@@ -2977,6 +2977,130 @@ body::before {
   white-space: pre-line;
 }
 
+/* ── Evaluasi Stop, Start, Continue & Komentar Penilai ── */
+.pm-ssc-container {
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.pm-ssc-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #64748B;
+  margin-bottom: 6px;
+}
+
+.pm-ssc-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pm-ssc-item {
+  padding: 8px 11px;
+  border-radius: 7px;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  transition: all 0.2s ease;
+}
+
+.pm-ssc-item.pm-ssc-stop {
+  background: rgba(244, 63, 94, 0.05);
+  border: 1px solid rgba(244, 63, 94, 0.22);
+}
+
+.pm-ssc-item.pm-ssc-start {
+  background: rgba(14, 165, 233, 0.05);
+  border: 1px solid rgba(14, 165, 233, 0.22);
+}
+
+.pm-ssc-item.pm-ssc-continue {
+  background: rgba(42, 157, 143, 0.05);
+  border: 1px solid rgba(42, 157, 143, 0.22);
+}
+
+.pm-ssc-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin-bottom: 3px;
+}
+
+.pm-ssc-stop .pm-ssc-tag {
+  color: #E11D48;
+}
+
+.pm-ssc-start .pm-ssc-tag {
+  color: #0284C7;
+}
+
+.pm-ssc-continue .pm-ssc-tag {
+  color: #0D9488;
+}
+
+.pm-ssc-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.pm-ssc-dot.dot-stop {
+  background: #F43F5E;
+  box-shadow: 0 0 5px rgba(244, 63, 94, 0.5);
+}
+
+.pm-ssc-dot.dot-start {
+  background: #0EA5E9;
+  box-shadow: 0 0 5px rgba(14, 165, 233, 0.5);
+}
+
+.pm-ssc-dot.dot-continue {
+  background: #10B981;
+  box-shadow: 0 0 5px rgba(16, 185, 129, 0.5);
+}
+
+.pm-ssc-desc {
+  color: var(--text-2, #334155);
+  white-space: pre-line;
+  word-break: break-word;
+}
+
+.pm-pesan-box {
+  margin-top: 8px;
+  background: rgba(99, 102, 241, 0.05);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-left: 3.5px solid #6366F1;
+  border-radius: 7px;
+  padding: 8px 12px;
+}
+
+.pm-pesan-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.67rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #4F46E5;
+  margin-bottom: 4px;
+}
+
+.pm-pesan-content {
+  font-size: 0.77rem;
+  line-height: 1.5;
+  color: #1E293B;
+  font-style: italic;
+  white-space: pre-line;
+  word-break: break-word;
+}
+
 .pm-peer-empty-state {
   background: #FFFFFF;
   border: 1px dashed rgba(14, 165, 233, 0.35);

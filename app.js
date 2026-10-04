@@ -1684,18 +1684,36 @@ function escapeHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
-// Validasi teks catatan/feedback agar tidak menyimpan angka rata-rata formula (seperti 8.75) atau teks boilerplate
-function isValidFeedbackText(text) {
+// Validasi teks catatan/feedback agar tidak menyimpan angka rata-rata formula (seperti 8.75), teks boilerplate, atau nama fungsionaris
+function isValidFeedbackText(text, targetStaff = null) {
   if (!text) return false;
   const trimmed = String(text).trim();
   if (trimmed.length <= 2) return false;
+
   // Lewati jika hanya angka/formula rata-rata (misal: "8.75", "9", "8,833333333")
   const isNumericOnly = !isNaN(parseFloat(trimmed.replace(',', '.'))) && !/[a-zA-Z]{3,}/.test(trimmed);
   if (isNumericOnly) return false;
-  // Lewati teks petunjuk/contoh pengisian Google Sheets
-  if (trimmed.includes('Contoh pengisian') || trimmed.includes('Contoh pengsisian') || trimmed.includes('Makasih banget udah sering backup')) {
+
+  // Lewati jika teks adalah nama target fungsionaris yang sedang dinilai
+  if (targetStaff && isStaffNameMatchingCol(targetStaff.nama, trimmed)) {
     return false;
   }
+
+  // Lewati teks judul spreadsheet, panduan, atau contoh petunjuk pengisian
+  const lower = trimmed.toLowerCase();
+  if (lower.includes('performance appraisal') || lower.includes('panduan pengisian') ||
+      lower.includes('contoh pengisian') || lower.includes('contoh pengsisian') || 
+      lower.includes('makasih banget udah sering backup') || lower.includes('wajib diisi') ||
+      lower.includes('tuliskan kebiasaan') || lower.includes('tuliskan kesan')) {
+    return false;
+  }
+
+  // Lewati jika teks persis sama dengan nama salah satu fungsionaris di daftar organisasi
+  if (typeof staffList !== 'undefined' && Array.isArray(staffList)) {
+    const isExactName = staffList.some(s => s.nama.toLowerCase() === lower);
+    if (isExactName) return false;
+  }
+
   // Lewati error formula spreadsheet
   if (trimmed.startsWith('#DIV') || trimmed.startsWith('#REF') || trimmed.startsWith('#VALUE') || trimmed.startsWith('#NAME?')) {
     return false;
@@ -1939,13 +1957,11 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
     }
 
     // 2. Ekstraksi catatan dan evaluasi kualitatif (ANONIM - TIDAK MENYIMPAN NAMA PENILAI)
-    // Cek feedbackRows terlebih dahulu (range murni string), lalu fallback ke rows utama jika perlu
+    // Cek feedbackRows (range khusus kualitatif di bagian bawah spreadsheet yang bebas dari tipe data angka)
     let sscText = "";
     let pesanText = "";
 
-    const candidateSources = [];
-    if (feedbackRows && feedbackRows.length > 0) candidateSources.push(feedbackRows);
-    if (rows && rows.length > 0) candidateSources.push(rows);
+    const candidateSources = (feedbackRows && feedbackRows.length > 0) ? [feedbackRows] : [];
 
     for (const rList of candidateSources) {
       if (sscText && pesanText) break;
@@ -1957,9 +1973,10 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
         const headerText = cleanTokenStr((row[0] || '') + ' ' + (row[1] || '') + ' ' + (row[2] || ''));
         const rawContent = (row[colIdx] || '').trim();
 
-        if (!isValidFeedbackText(rawContent)) continue;
+        if (!isValidFeedbackText(rawContent, staff)) continue;
 
         const isSscRow = headerText.includes('stop') || headerText.includes('start') || headerText.includes('continue') ||
+                         headerText.includes('kebiasaan') || headerText.includes('dihentikan') ||
                          rawContent.toLowerCase().includes('[stop]') || rawContent.toLowerCase().includes('[start]') || rawContent.toLowerCase().includes('[continue]');
 
         if (isSscRow && !sscText) {
@@ -1971,21 +1988,10 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
 
         const isPesanRow = headerText.includes('pesan') || headerText.includes('kesan') || headerText.includes('harapan');
         if (isPesanRow && !pesanText) {
-          pesanText = rawContent;
-          continue;
-        }
-
-        // Fallback untuk baris catatan kualitatif jika header tidak memiliki kata kunci standar
-        if (!isSscRow && !isPesanRow) {
-          if (sscText && !pesanText && !isTemplateOnly(rawContent)) {
+          if (!isTemplateOnly(rawContent)) {
             pesanText = rawContent;
-          } else if (!sscText && !pesanText) {
-            if (rawContent.toLowerCase().includes('stop') || rawContent.toLowerCase().includes('start')) {
-              if (!isTemplateOnly(rawContent)) sscText = rawContent;
-            } else {
-              pesanText = rawContent;
-            }
           }
+          continue;
         }
       }
     }
@@ -2305,11 +2311,29 @@ function getStaffRubricData(staff, liveData = null) {
     hasSelfAssessment: liveData ? Boolean(liveData.hasSelfAssessment) : false,
     peerFeedback: (liveData && liveData.peerFeedback ? liveData.peerFeedback : []).filter(fb => {
       if (!fb) return false;
-      const txt = (fb.text || fb.pesanKesan || fb.stopStartContinue || '').trim();
+      const ssc = (fb.stopStartContinue || '').trim();
+      const pesan = (fb.pesanKesan || '').trim();
+      const txt = (fb.text || pesan || ssc || '').trim();
       if (!txt) return false;
+
       // Filter keluar jika konten hanya angka (misal formula 8.75)
       const isNumOnly = !isNaN(parseFloat(txt.replace(',', '.'))) && !/[a-zA-Z]{3,}/.test(txt);
-      return !isNumOnly;
+      if (isNumOnly) return false;
+
+      // Filter keluar jika teks sama dengan nama target fungsionaris yang sedang dinilai
+      if (isStaffNameMatchingCol(staff.nama, txt)) return false;
+
+      // Filter keluar jika teks adalah nama salah satu fungsionaris lain di organisasi
+      if (typeof staffList !== 'undefined' && Array.isArray(staffList)) {
+        if (staffList.some(s => s.nama.toLowerCase() === txt.toLowerCase())) return false;
+      }
+
+      // Filter keluar jika teks adalah judul spreadsheet atau template pengisian
+      const lower = txt.toLowerCase();
+      if (lower.includes('performance appraisal') || lower.includes('panduan pengisian')) return false;
+      if (isTemplateOnly(txt)) return false;
+
+      return true;
     }),
     timestamp: liveData ? liveData.timestamp : null
   };
@@ -3233,9 +3257,24 @@ function openProgressModal(staff, liveData = null) {
     // Pastikan card Catatan & Evaluasi Rekan SELALU tampil untuk semua fungsionaris
     peerBox.classList.remove("hidden");
 
-    if (data.peerFeedback && data.peerFeedback.length > 0) {
-      if (peerCount) peerCount.innerText = `${data.peerFeedback.length} Masukan (Anonim)`;
-      peerList.innerHTML = data.peerFeedback.map((fb, fIdx) => {
+    const validFeedback = (data.peerFeedback || []).filter(fb => {
+      if (!fb) return false;
+      const ssc = (fb.stopStartContinue || '').trim();
+      const pesan = (fb.pesanKesan || '').trim();
+      const txt = (fb.text || pesan || ssc || '').trim();
+      if (!txt) return false;
+      if (isStaffNameMatchingCol(staff.nama, txt)) return false;
+      if (typeof staffList !== 'undefined' && Array.isArray(staffList)) {
+        if (staffList.some(s => s.nama.toLowerCase() === txt.toLowerCase())) return false;
+      }
+      if (txt.toLowerCase().includes('performance appraisal')) return false;
+      if (isTemplateOnly(txt)) return false;
+      return true;
+    });
+
+    if (validFeedback && validFeedback.length > 0) {
+      if (peerCount) peerCount.innerText = `${validFeedback.length} Masukan (Anonim)`;
+      peerList.innerHTML = validFeedback.map((fb, fIdx) => {
         const sscHtml = fb.stopStartContinue ? formatSscHtml(fb.stopStartContinue) : '';
         const pesanHtml = fb.pesanKesan ? formatPesanHtml(fb.pesanKesan) : '';
 
