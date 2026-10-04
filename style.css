@@ -2630,6 +2630,23 @@ body::before {
   margin-top: 4px;
 }
 
+.pm-status-badge-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.pm-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 6px currentColor;
+}
+
 /* GDPS Pillars Breakdown */
 .pm-section-block {
   margin-bottom: 20px;

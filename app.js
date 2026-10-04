@@ -684,7 +684,8 @@ const staffList = [
     "asalDepartemen": "Sistem Informasi",
     "pin": "Ryukennnn",
     "foto": "assets/foto-staf/staf-050.jpg",
-    "sheetUrl": "https://docs.google.com/spreadsheets/d/1n5945rq1eOzVjX8WrG-YeA2kxaOzZ_L3ouqxDFVH8aI/edit?gid=346760844#gid=346760844"
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1n5945rq1eOzVjX8WrG-YeA2kxaOzZ_L3ouqxDFVH8aI/edit?gid=346760844#gid=346760844",
+    "statusMahasiswa": "SP2"
   },
   {
     "id": "staf-051",
@@ -2027,6 +2028,10 @@ function getStaffRubricData(staff, liveData = null) {
   const averageScore = scoredItems.length > 0 ? (totalScore / items.length).toFixed(1) : "0.0";
   const achievementPct = scoredItems.length > 0 ? Math.round((parseFloat(averageScore) / 10) * 100) : 0;
 
+  // Status Mahasiswa: Normal / SP1 / SP2 / ST1 / ST2
+  // Muhammad Sandhika Setiawan (staf-050) berstatus SP2, fungsionaris lain Normal
+  const statusMahasiswa = staff.statusMahasiswa || (staff.id === 'staf-050' || (staff.nama && staff.nama.toLowerCase().includes("sandhika")) ? "SP2" : "Normal");
+
   let predikat = "Belum Ada Penilaian";
   if (parseFloat(averageScore) > 0) {
     if (parseFloat(averageScore) >= 9.2) predikat = "Istimewa (High Performer)";
@@ -2076,6 +2081,7 @@ function getStaffRubricData(staff, liveData = null) {
     rubricTypeFull: isKabinet ? "Evaluasi Kepemimpinan Kabinet (7 Indikator) — Polaris Leadership" : "Evaluasi Kinerja Staf (12 Indikator) — Elevator Kapasitas Insan",
     averageScore,
     achievementPct: `${achievementPct}%`,
+    statusMahasiswa,
     predikat,
     formStatus,
     sheetNote,
@@ -2871,16 +2877,11 @@ function openProgressModal(staff, liveData = null) {
         liveBadge.innerText = `Live 360° • ${data.evaluatorCount} Penilai`;
         liveBadge.className = "pm-live-badge-chip";
       }
-      const isTargetKabinet = staff.roleCategory === 'Pimpinan' || staff.roleCategory === 'Wakil Pimpinan' || staff.roleCategory === 'Kabiro';
       if (liveDesc) {
-        const weightNote = !isTargetKabinet
-          ? "Pembobotan Resmi: <strong>55% Penilaian Kabinet</strong> + <strong>35% Rekan Sejawat Staf</strong> + <strong>10% Penilaian Diri Sendiri</strong>."
-          : "Pembobotan Resmi: <strong>55% Penilaian Staf</strong> + <strong>35% Rekan Kabinet</strong> + <strong>10% Penilaian Diri Sendiri</strong>.";
-        liveDesc.innerHTML = `Skor dihitung otomatis dari rata-rata terbobot <strong>${data.evaluatorCount} lembar penilaian aktif</strong> di departemen ${staff.departemenBEMFull}.<br>${weightNote} Sinkronisasi: <strong>${data.timestamp || 'Terkini'}</strong>.`;
+        liveDesc.innerHTML = `Skor dihitung otomatis dari rata-rata terbobot <strong>${data.evaluatorCount} lembar penilaian aktif</strong> di departemen ${staff.departemenBEMFull}. Sinkronisasi: <strong>${data.timestamp || 'Terkini'}</strong>.`;
       }
       if (refreshBtnText) refreshBtnText.innerText = "Sinkronkan Live";
     } else {
-      const isTargetKabinet = staff.roleCategory === 'Pimpinan' || staff.roleCategory === 'Wakil Pimpinan' || staff.roleCategory === 'Kabiro';
       liveBanner.classList.add("is-pending");
       if (liveTitle) liveTitle.innerText = "Belum Ada Nilai Masuk (Menunggu Penilai)";
       if (liveBadge) {
@@ -2888,10 +2889,7 @@ function openProgressModal(staff, liveData = null) {
         liveBadge.className = "pm-live-badge-chip";
       }
       if (liveDesc) {
-        const weightNote = !isTargetKabinet
-          ? "Formula: 55% Kabinet + 35% Staf + 10% Diri Sendiri."
-          : "Formula: 55% Staf + 35% Kabinet + 10% Diri Sendiri.";
-        liveDesc.innerHTML = `Belum ada lembar penilaian yang terisi di Google Sheets (${weightNote}) — Seluruh capaian indikator berada pada skor 0.0 sampai formulir PA diisi. Klik tombol di kanan jika baru saja ada penilai yang mengisi.`;
+        liveDesc.innerHTML = `Belum ada lembar penilaian yang terisi di Google Sheets — Seluruh capaian indikator berada pada skor 0.0 sampai formulir PA diisi. Klik tombol di kanan jika baru saja ada penilai yang mengisi.`;
       }
       if (refreshBtnText) refreshBtnText.innerText = "Cek Pembaruan";
     }
@@ -2903,6 +2901,46 @@ function openProgressModal(staff, liveData = null) {
 
   const scoreCatEl = document.getElementById("pmScoreCategory");
   if (scoreCatEl) scoreCatEl.innerText = `Predikat: ${data.predikat}`;
+
+  // Set Status Mahasiswa (Normal / SP1 / SP2 / ST1 / ST2)
+  const statusEl = document.getElementById("pmStudentStatus");
+  const statusSubEl = document.getElementById("pmStudentStatusSub");
+  if (statusEl) {
+    const rawStatus = (data.statusMahasiswa || "Normal").toUpperCase().trim();
+    
+    let dotColor = "#16A34A";
+    let textColor = "#16A34A";
+    let subText = "Kondisi Aktif & Tertib";
+    let subColor = "";
+
+    if (rawStatus === "SP2") {
+      dotColor = "#DC2626";
+      textColor = "#DC2626";
+      subText = "Surat Peringatan 2";
+      subColor = "#EF4444";
+    } else if (rawStatus === "SP1") {
+      dotColor = "#D97706";
+      textColor = "#D97706";
+      subText = "Surat Peringatan 1";
+      subColor = "#F59E0B";
+    } else if (rawStatus === "ST2") {
+      dotColor = "#E11D48";
+      textColor = "#E11D48";
+      subText = "Surat Teguran 2";
+      subColor = "#FB7185";
+    } else if (rawStatus === "ST1") {
+      dotColor = "#EA580C";
+      textColor = "#EA580C";
+      subText = "Surat Teguran 1";
+      subColor = "#FB923C";
+    }
+
+    statusEl.innerHTML = `<span class="pm-status-badge-chip" style="color: ${textColor};"><span class="pm-status-dot" style="background: ${dotColor};"></span>${rawStatus}</span>`;
+    if (statusSubEl) {
+      statusSubEl.innerText = subText;
+      statusSubEl.style.color = subColor;
+    }
+  }
 
   const achieveEl = document.getElementById("pmAchievementPct");
   if (achieveEl) achieveEl.innerText = data.achievementPct;
