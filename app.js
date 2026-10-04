@@ -1652,9 +1652,12 @@ async function mapConcurrent(items, limit, fn) {
   return results;
 }
 
-// Fetch single sheet CSV via GViz endpoint dengan AbortController timeout & anti-cache timestamp
-async function fetchSheetCsvWithTimeout(sheetId, tabName, timeoutMs = 9000) {
-  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}&t=${Date.now()}`;
+// Fetch single sheet CSV via GViz endpoint dengan AbortController timeout, anti-cache timestamp, dan opsi range
+async function fetchSheetCsvWithTimeout(sheetId, tabName, timeoutMs = 9000, range = '') {
+  let url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}&t=${Date.now()}`;
+  if (range) {
+    url += `&range=${encodeURIComponent(range)}&headers=0`;
+  }
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
 
@@ -1679,6 +1682,111 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
+}
+
+// Validasi teks catatan/feedback agar tidak menyimpan angka rata-rata formula (seperti 8.75) atau teks boilerplate
+function isValidFeedbackText(text) {
+  if (!text) return false;
+  const trimmed = String(text).trim();
+  if (trimmed.length <= 2) return false;
+  // Lewati jika hanya angka/formula rata-rata (misal: "8.75", "9", "8,833333333")
+  const isNumericOnly = !isNaN(parseFloat(trimmed.replace(',', '.'))) && !/[a-zA-Z]{3,}/.test(trimmed);
+  if (isNumericOnly) return false;
+  // Lewati teks petunjuk/contoh pengisian Google Sheets
+  if (trimmed.includes('Contoh pengisian') || trimmed.includes('Contoh pengsisian') || trimmed.includes('Makasih banget udah sering backup')) {
+    return false;
+  }
+  // Lewati error formula spreadsheet
+  if (trimmed.startsWith('#DIV') || trimmed.startsWith('#REF') || trimmed.startsWith('#VALUE') || trimmed.startsWith('#NAME?')) {
+    return false;
+  }
+  return true;
+}
+
+// Periksa apakah input hanya berupa template [Stop]: [Start]: [Continue]: tanpa tulisan apapun dari penilai
+function isTemplateOnly(text) {
+  if (!text) return true;
+  const cleaned = String(text)
+    .replace(/\[Stop\]\s*:?/gi, '')
+    .replace(/\[Start\]\s*:?/gi, '')
+    .replace(/\[Continue\]\s*:?/gi, '')
+    .replace(/•\s*(Stop|Start|Continue)\s*:?/gi, '')
+    .replace(/-\s*(Stop|Start|Continue)\s*:?/gi, '')
+    .replace(/\r|\n|\t/g, '')
+    .trim();
+  return cleaned.length <= 2;
+}
+
+// Parser universal komponen Stop, Start, Continue
+function parseSscSections(text) {
+  if (!text) return null;
+  let norm = text
+    .replace(/(?:^|\n)\s*[•\-*]?\s*(?:\[Stop\]|Stop)\s*:?/gi, '\n[Stop]:')
+    .replace(/(?:^|\n)\s*[•\-*]?\s*(?:\[Start\]|Start)\s*:?/gi, '\n[Start]:')
+    .replace(/(?:^|\n)\s*[•\-*]?\s*(?:\[Continue\]|Continue)\s*:?/gi, '\n[Continue]:');
+
+  const stopMatch = norm.match(/\[Stop\]\s*:?\s*([^\[]+?)(?=\[(?:Start|Continue)\]|$)/i);
+  const startMatch = norm.match(/\[Start\]\s*:?\s*([^\[]+?)(?=\[(?:Stop|Continue)\]|$)/i);
+  const contMatch = norm.match(/\[Continue\]\s*:?\s*([^\[]+?)(?=\[(?:Stop|Start)\]|$)/i);
+
+  const stopText = stopMatch ? stopMatch[1].trim() : '';
+  const startText = startMatch ? startMatch[1].trim() : '';
+  const contText = contMatch ? contMatch[1].trim() : '';
+
+  if (!stopText && !startText && !contText) return null;
+  return { stop: stopText, start: startText, continue: contText };
+}
+
+// Renderer HTML terstruktur untuk evaluasi Stop, Start, Continue
+function formatSscHtml(text) {
+  if (!text) return '';
+  const parsed = parseSscSections(text);
+  if (parsed && (parsed.stop || parsed.start || parsed.continue)) {
+    let html = `<div class="pm-ssc-container">`;
+    html += `<div class="pm-ssc-title">Evaluasi Kinerja (Stop, Start, Continue):</div>`;
+    html += `<div class="pm-ssc-grid">`;
+    if (parsed.stop) {
+      html += `
+        <div class="pm-ssc-item pm-ssc-stop">
+          <div class="pm-ssc-tag"><span class="pm-ssc-dot dot-stop"></span> STOP (Hentikan)</div>
+          <div class="pm-ssc-desc">${escapeHtml(parsed.stop)}</div>
+        </div>
+      `;
+    }
+    if (parsed.start) {
+      html += `
+        <div class="pm-ssc-item pm-ssc-start">
+          <div class="pm-ssc-tag"><span class="pm-ssc-dot dot-start"></span> START (Mulai Coba)</div>
+          <div class="pm-ssc-desc">${escapeHtml(parsed.start)}</div>
+        </div>
+      `;
+    }
+    if (parsed.continue) {
+      html += `
+        <div class="pm-ssc-item pm-ssc-continue">
+          <div class="pm-ssc-tag"><span class="pm-ssc-dot dot-continue"></span> CONTINUE (Pertahankan)</div>
+          <div class="pm-ssc-desc">${escapeHtml(parsed.continue)}</div>
+        </div>
+      `;
+    }
+    html += `</div></div>`;
+    return html;
+  }
+  return `<div class="pm-ssc-container"><div class="pm-ssc-title">Evaluasi Kinerja (Stop, Start, Continue):</div><div class="pm-peer-item-content">${escapeHtml(text)}</div></div>`;
+}
+
+// Renderer HTML terstruktur untuk Komentar Penilai (Pesan, Kesan & Harapan)
+function formatPesanHtml(text) {
+  if (!text) return '';
+  return `
+    <div class="pm-pesan-box">
+      <div class="pm-pesan-header">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Kesan, Pesan &amp; Harapan:</span>
+      </div>
+      <div class="pm-pesan-content">"${escapeHtml(text)}"</div>
+    </div>
+  `;
 }
 
 // Master Asynchronous Live Score Fetcher & Weighted 360-degree Aggregator
@@ -1755,7 +1863,25 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
     }
 
     if (!foundRows || targetColIdx === -1) return null;
-    return { evaluator: ev, tabName: matchedTab, rows: foundRows, colIdx: targetColIdx };
+
+    // Fetch range khusus feedback kualitatif (A54:Z75 untuk Staf, A34:Z48 untuk Kabinet)
+    // Range ini memuat teks kualitatif Stop/Start/Continue dan Kesan/Pesan tanpa dominasi angka skor,
+    // sehingga Google Visualization API tidak mengubah teks menjadi null.
+    let feedbackRows = null;
+    try {
+      const isKabTargetTab = isTargetKabinet || matchedTab.endsWith('Kabinet') || (foundRows && foundRows.length < 45);
+      const primaryRange = isKabTargetTab ? 'A34:Z48' : 'A54:Z75';
+      const secondaryRange = isKabTargetTab ? 'A54:Z75' : 'A34:Z48';
+
+      feedbackRows = await fetchSheetCsvWithTimeout(sheetId, matchedTab, 6000, primaryRange);
+      if (!feedbackRows || feedbackRows.length === 0) {
+        feedbackRows = await fetchSheetCsvWithTimeout(sheetId, matchedTab, 5000, secondaryRange);
+      }
+    } catch (e) {
+      console.warn("Feedback range fetch notice:", e);
+    }
+
+    return { evaluator: ev, tabName: matchedTab, rows: foundRows, feedbackRows, colIdx: targetColIdx };
   });
 
   // Map nilai per indikator dikelompokkan ke dalam 3 tier: kabinet, staf, self
@@ -1775,7 +1901,7 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
 
   settledResults.forEach(item => {
     if (!item) return;
-    const { evaluator, rows, colIdx } = item;
+    const { evaluator, rows, feedbackRows, colIdx } = item;
 
     const isSelf = evaluator.id === staff.id;
     const isKab = ['Pimpinan', 'Wakil Pimpinan', 'Kabiro'].includes(evaluator.roleCategory);
@@ -1783,12 +1909,12 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
 
     let evaluatorContributedScore = false;
 
+    // 1. Ekstraksi skor indikator numerik dari tabel utama
     for (let r = 0; r < rows.length; r++) {
       const row = rows[r];
       if (row.length <= colIdx) continue;
 
       // Pencocokan indikator spesifik pada kolom nama indikator (row[1] atau row[0])
-      // Menghindari false positive terhadap kata kunci di dalam deskripsi panjang indikator (row[2])
       const indCell = cleanTokenStr(row[1] || row[0] || '');
 
       indicatorList.forEach(ind => {
@@ -1810,30 +1936,68 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
           }
         }
       });
+    }
 
-      // Ekstraksi catatan dan evaluasi kualitatif (ANONIM - TIDAK MENYIMPAN NAMA PENILAI)
-      const headerText = cleanTokenStr((row[0] || '') + ' ' + (row[1] || '') + ' ' + (row[2] || ''));
-      const isFeedbackRow = headerText.includes('stop') || headerText.includes('start') || headerText.includes('continue') ||
-                            headerText.includes('pesan') || headerText.includes('kesan') || headerText.includes('harapan') ||
-                            r >= 48;
+    // 2. Ekstraksi catatan dan evaluasi kualitatif (ANONIM - TIDAK MENYIMPAN NAMA PENILAI)
+    // Cek feedbackRows terlebih dahulu (range murni string), lalu fallback ke rows utama jika perlu
+    let sscText = "";
+    let pesanText = "";
 
-      if (isFeedbackRow) {
+    const candidateSources = [];
+    if (feedbackRows && feedbackRows.length > 0) candidateSources.push(feedbackRows);
+    if (rows && rows.length > 0) candidateSources.push(rows);
+
+    for (const rList of candidateSources) {
+      if (sscText && pesanText) break;
+
+      for (let r = 0; r < rList.length; r++) {
+        const row = rList[r];
+        if (row.length <= colIdx) continue;
+
+        const headerText = cleanTokenStr((row[0] || '') + ' ' + (row[1] || '') + ' ' + (row[2] || ''));
         const rawContent = (row[colIdx] || '').trim();
-        // Bersihkan template kosong
-        const cleaned = rawContent
-          .replace(/\[Stop\]\s*:/gi, '')
-          .replace(/\[Start\]\s*:/gi, '')
-          .replace(/\[Continue\]\s*:/gi, '')
-          .replace(/\r|\n/g, '')
-          .trim();
 
-        if (cleaned.length > 2 && !rawContent.startsWith('#DIV') && !rawContent.startsWith('#REF') && !rawContent.startsWith('#VALUE')) {
-          // Hanya simpan teks masukan agar 100% anonim
-          collectedFeedback.push({
-            text: rawContent
-          });
+        if (!isValidFeedbackText(rawContent)) continue;
+
+        const isSscRow = headerText.includes('stop') || headerText.includes('start') || headerText.includes('continue') ||
+                         rawContent.toLowerCase().includes('[stop]') || rawContent.toLowerCase().includes('[start]') || rawContent.toLowerCase().includes('[continue]');
+
+        if (isSscRow && !sscText) {
+          if (!isTemplateOnly(rawContent)) {
+            sscText = rawContent;
+          }
+          continue;
+        }
+
+        const isPesanRow = headerText.includes('pesan') || headerText.includes('kesan') || headerText.includes('harapan');
+        if (isPesanRow && !pesanText) {
+          pesanText = rawContent;
+          continue;
+        }
+
+        // Fallback untuk baris catatan kualitatif jika header tidak memiliki kata kunci standar
+        if (!isSscRow && !isPesanRow) {
+          if (sscText && !pesanText && !isTemplateOnly(rawContent)) {
+            pesanText = rawContent;
+          } else if (!sscText && !pesanText) {
+            if (rawContent.toLowerCase().includes('stop') || rawContent.toLowerCase().includes('start')) {
+              if (!isTemplateOnly(rawContent)) sscText = rawContent;
+            } else {
+              pesanText = rawContent;
+            }
+          }
         }
       }
+    }
+
+    // Hanya masukkan masukan dari rekan (evaluasi orang lain ke fungsionaris ini)
+    if (!isSelf && (sscText || pesanText)) {
+      collectedFeedback.push({
+        evaluatorRole: isKab ? 'Kabinet' : 'Staf',
+        stopStartContinue: sscText,
+        pesanKesan: pesanText,
+        text: [sscText, pesanText].filter(Boolean).join('\n\n')
+      });
     }
 
     if (evaluatorContributedScore) {
@@ -2139,7 +2303,14 @@ function getStaffRubricData(staff, liveData = null) {
     kabinetEvaluatorCount: liveData ? (liveData.kabinetEvaluatorCount || 0) : 0,
     stafEvaluatorCount: liveData ? (liveData.stafEvaluatorCount || 0) : 0,
     hasSelfAssessment: liveData ? Boolean(liveData.hasSelfAssessment) : false,
-    peerFeedback: liveData ? (liveData.peerFeedback || []) : [],
+    peerFeedback: (liveData && liveData.peerFeedback ? liveData.peerFeedback : []).filter(fb => {
+      if (!fb) return false;
+      const txt = (fb.text || fb.pesanKesan || fb.stopStartContinue || '').trim();
+      if (!txt) return false;
+      // Filter keluar jika konten hanya angka (misal formula 8.75)
+      const isNumOnly = !isNaN(parseFloat(txt.replace(',', '.'))) && !/[a-zA-Z]{3,}/.test(txt);
+      return !isNumOnly;
+    }),
     timestamp: liveData ? liveData.timestamp : null
   };
 }
@@ -3064,18 +3235,30 @@ function openProgressModal(staff, liveData = null) {
 
     if (data.peerFeedback && data.peerFeedback.length > 0) {
       if (peerCount) peerCount.innerText = `${data.peerFeedback.length} Masukan (Anonim)`;
-      peerList.innerHTML = data.peerFeedback.map((fb, fIdx) => `
-        <div class="pm-peer-item-card">
-          <div class="pm-peer-item-author">
-            <div class="pm-peer-author-left">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              <span>Catatan Rekan #${fIdx + 1}</span>
+      peerList.innerHTML = data.peerFeedback.map((fb, fIdx) => {
+        const sscHtml = fb.stopStartContinue ? formatSscHtml(fb.stopStartContinue) : '';
+        const pesanHtml = fb.pesanKesan ? formatPesanHtml(fb.pesanKesan) : '';
+
+        let contentHtml = '';
+        if (sscHtml || pesanHtml) {
+          contentHtml = `${sscHtml}${pesanHtml}`;
+        } else if (fb.text) {
+          contentHtml = `<div class="pm-peer-item-content">${escapeHtml(fb.text)}</div>`;
+        }
+
+        return `
+          <div class="pm-peer-item-card">
+            <div class="pm-peer-item-author">
+              <div class="pm-peer-author-left">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>Catatan Rekan #${fIdx + 1}</span>
+              </div>
+              <span class="pm-peer-anon-badge">🔒 Anonim</span>
             </div>
-            <span class="pm-peer-anon-badge">🔒 Anonim</span>
+            ${contentHtml}
           </div>
-          <div class="pm-peer-item-content">${escapeHtml(fb.text)}</div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     } else {
       if (peerCount) peerCount.innerText = "0 Masukan (Anonim)";
       peerList.innerHTML = `
