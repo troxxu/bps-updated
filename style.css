@@ -180,28 +180,7 @@ body::before {
 }
 
 .section-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent);
-  background: var(--accent-ghost);
-  border: 1px solid var(--accent-border);
-  padding: 6px 14px;
-  border-radius: 100px;
-  margin-bottom: 18px;
-  box-shadow: 0 1px 2px rgba(29, 83, 107, 0.05);
-}
-
-.section-label::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  background: var(--accent);
-  border-radius: 50%;
+  display: none !important;
 }
 
 .section-title {
@@ -578,32 +557,164 @@ body::before {
   overflow: hidden;
 }
 
-.hero::before {
-  content: '';
-  position: absolute;
-  top: -10%;
-  right: -5%;
-  width: 55vw;
-  height: 55vw;
-  max-width: 700px;
-  max-height: 700px;
-  background: radial-gradient(ellipse at center, rgba(29, 83, 107, 0.12) 0%, rgba(214, 148, 21, 0.05) 50%, transparent 75%);
-  border-radius: 50%;
-  pointer-events: none;
+/* ── HERO DENGAN BACKGROUND FOTO BERSAMA INTERNALISASI ── */
+.hero-internalisasi-bg {
+  min-height: 94vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 140px 0 90px;
+  position: relative;
+  overflow: hidden;
+  background-color: #0b1320;
 }
 
-.hero::after {
-  content: '';
+.hero-internalisasi-bg::before,
+.hero-internalisasi-bg::after {
+  display: none !important;
+}
+
+.hero-bg-photo-wrapper {
   position: absolute;
-  bottom: -15%;
-  left: -8%;
-  width: 40vw;
-  height: 40vw;
-  max-width: 500px;
-  max-height: 500px;
-  background: radial-gradient(ellipse at center, rgba(214, 148, 21, 0.08) 0%, transparent 70%);
-  border-radius: 50%;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
   pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-bg-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 60%;
+  transform-origin: center center;
+  transition: opacity 0.1s ease-out, transform 0.1s ease-out;
+  will-change: opacity, transform;
+}
+
+.hero-bg-photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(11, 19, 32, 0.78) 0%,
+    rgba(11, 19, 32, 0.48) 35%,
+    rgba(11, 19, 32, 0.68) 75%,
+    var(--bg, #FAF8F5) 100%
+  );
+  pointer-events: none;
+  transition: opacity 0.1s ease-out;
+}
+
+.hero-inner-editorial {
+  position: relative;
+  max-width: 880px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+
+.hero-internalisasi-bg .magic-pill-badge {
+  margin-bottom: 22px;
+  background: rgba(15, 23, 42, 0.68);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.hero-internalisasi-bg .magic-pill-title {
+  color: #E2E8F0;
+}
+
+.hero-internalisasi-bg .magic-pill-desc {
+  color: #CBD5E1;
+}
+
+.hero-internalisasi-bg .hero-title {
+  color: #FFFFFF;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.65);
+  font-size: clamp(2.3rem, 4.8vw, 3.9rem);
+  line-height: 1.15;
+  margin-bottom: 22px;
+}
+
+.hero-internalisasi-bg .magic-shiny-text {
+  background: linear-gradient(135deg, #FDE047 0%, #EAB308 45%, #38BDF8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 12px rgba(234, 179, 8, 0.35));
+}
+
+.hero-internalisasi-bg .hero-sub {
+  color: rgba(241, 245, 249, 0.94);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.7);
+  max-width: 740px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 34px;
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.hero-internalisasi-bg .hero-actions {
+  justify-content: center;
+  gap: 16px;
+}
+
+.btn-hero-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 28px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  color: #FFFFFF !important;
+  font-weight: 600;
+  font-size: 0.92rem;
+  text-decoration: none;
+  transition: all 0.3s var(--silk);
+}
+
+.btn-hero-secondary:hover {
+  background: rgba(255, 255, 255, 0.24);
+  border-color: rgba(255, 255, 255, 0.7);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Navbar contrast when sitting above internalisasi hero */
+.nav:not(.scrolled) .nav-links a {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.nav:not(.scrolled) .nav-links a:hover {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.nav:not(.scrolled) .status-chip {
+  background: rgba(15, 23, 42, 0.58);
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #FFFFFF;
+}
+
+.nav:not(.scrolled) .logo-badge {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+}
+
+.nav:not(.scrolled) .nav-hamburger span {
+  background: #FFFFFF;
 }
 
 .hero-polaris-star {
@@ -1721,18 +1832,7 @@ body::before {
 }
 
 .cta-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--gold-light);
-  border: 1px solid rgba(247, 192, 66, 0.3);
-  padding: 6px 14px;
-  border-radius: 100px;
-  margin-bottom: 18px;
+  display: none !important;
 }
 
 .cta-title {
@@ -4395,24 +4495,7 @@ body::before {
 }
 
 .team-photo-tag {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  background: rgba(15, 23, 42, 0.78);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #FFFFFF;
-  padding: 6px 14px;
-  border-radius: 100px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  z-index: 2;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  display: none !important;
 }
 
 .team-photo-caption-bar {
@@ -4438,19 +4521,7 @@ body::before {
 }
 
 .team-showcase-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent);
-  background: var(--accent-ghost);
-  border: 1px solid var(--accent-border);
-  padding: 5px 12px;
-  border-radius: 100px;
-  margin-bottom: 12px;
+  display: none !important;
 }
 
 .team-showcase-title {
@@ -4927,13 +4998,12 @@ body::before {
   }
 }
 
-/* ── 3. SHIMMER BUTTON (MAGIC UI) ── */
+/* ── 3. ELEGANT BUTTON (NO SPINNING GRADIENT) ── */
 .magic-shimmer-btn {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
   padding: 13px 28px;
   border-radius: 100px;
   font-size: 0.92rem;
@@ -4952,52 +5022,28 @@ body::before {
 .magic-shimmer-btn::before {
   content: '';
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 350%;
-  height: 350%;
-  aspect-ratio: 1 / 1;
-  transform: translate(-50%, -50%) rotate(0deg);
-  background: conic-gradient(from 0deg, transparent 0deg, rgba(247, 192, 66, 0.6) 55deg, transparent 110deg);
-  animation: magic-spin 4s linear infinite;
-  z-index: -1;
-}
-
-.magic-shimmer-btn::after {
-  content: '';
-  position: absolute;
-  inset: 1.5px;
-  background: var(--accent);
-  border-radius: 98px;
-  z-index: -1;
-  transition: background 0.3s var(--silk);
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+  transition: left 0.6s ease;
+  z-index: 1;
 }
 
 .magic-shimmer-btn:hover {
   transform: translateY(-2px);
+  background: var(--accent-mid);
   box-shadow: 0 8px 30px rgba(29, 83, 107, 0.44);
 }
 
-.magic-shimmer-btn:hover::after {
-  background: var(--accent-mid);
+.magic-shimmer-btn:hover::before {
+  left: 100%;
 }
 
-.magic-shimmer-btn svg {
-  transition: transform 0.3s var(--silk);
-}
-
-.magic-shimmer-btn:hover svg {
-  transform: translateX(3px);
-}
-
-@keyframes magic-spin {
-  0% {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-
-  100% {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
+.magic-shimmer-btn span {
+  position: relative;
+  z-index: 2;
 }
 
 /* ── 4. SHINY TEXT EFFECT ── */
@@ -5475,10 +5521,10 @@ body::before {
   font-size: 0.78rem;
 }
 
-/* ── 9. MAGIC UI BORDER BEAM & MICRO-INTERACTIONS ── */
+/* ── 9. AMBIENT AURA BREATHE (REPLACED SPINNING GRADIENT) ── */
 .magic-border-beam {
   position: absolute;
-  inset: -1.5px;
+  inset: 0;
   border-radius: inherit;
   overflow: hidden;
   pointer-events: none;
@@ -5488,28 +5534,25 @@ body::before {
 .magic-border-beam::after {
   content: '';
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 350%;
-  height: 350%;
-  aspect-ratio: 1 / 1;
-  transform: translate(-50%, -50%) rotate(0deg);
-  background: conic-gradient(from 0deg,
-      transparent 0deg,
-      transparent 135deg,
-      rgba(201, 138, 44, 0.85) 170deg,
-      rgba(46, 139, 154, 0.95) 195deg,
-      transparent 230deg);
-  animation: magicBorderSpin 8s linear infinite;
+  inset: 0;
+  background: radial-gradient(700px circle at 0% 0%, rgba(201, 138, 44, 0.09), transparent 60%),
+              radial-gradient(700px circle at 100% 100%, rgba(46, 139, 154, 0.11), transparent 60%);
+  opacity: 0.65;
+  animation: ambientAuraBreathe 7s ease-in-out infinite alternate;
 }
 
-@keyframes magicBorderSpin {
+@keyframes ambientAuraBreathe {
   0% {
-    transform: translate(-50%, -50%) rotate(0deg);
+    opacity: 0.35;
+    transform: scale(0.99);
   }
-
+  50% {
+    opacity: 0.85;
+    transform: scale(1.01);
+  }
   100% {
-    transform: translate(-50%, -50%) rotate(360deg);
+    opacity: 0.35;
+    transform: scale(0.99);
   }
 }
 

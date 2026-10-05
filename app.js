@@ -2672,6 +2672,7 @@ function initApp() {
   initFaqAccordion();
   initStatCounters();
   initScrollReveal();
+  initHeroScrollFade();
 
   // Global Keyboard Listener (Escape to close any modal)
   document.addEventListener("keydown", (e) => {
@@ -3641,6 +3642,44 @@ function initNavScroll() {
   }, { passive: true });
 }
 
+// 11B. HERO BACKGROUND PHOTO SCROLL-DRIVEN FADE OUT
+function initHeroScrollFade() {
+  const hero = document.getElementById('beranda');
+  const photo = document.getElementById('heroBgPhoto');
+  const overlay = document.querySelector('.hero-bg-photo-overlay');
+  if (!hero || !photo) return;
+
+  let ticking = false;
+
+  function updateHeroFade() {
+    const scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+    const heroHeight = hero.offsetHeight || 600;
+
+    // Fades smoothly from 1 to 0 as user scrolls through the hero section
+    const fadeDistance = heroHeight * 0.85;
+    const progress = Math.min(1, Math.max(0, scrollY / fadeDistance));
+    const opacity = (1 - progress);
+
+    photo.style.opacity = opacity.toFixed(3);
+    if (overlay) {
+      overlay.style.opacity = opacity.toFixed(3);
+    }
+    // Subtle scale and translateY for smooth, natural parallax
+    photo.style.transform = `scale(${1 + progress * 0.08}) translateY(${progress * 28}px)`;
+
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(updateHeroFade);
+      ticking = true;
+    }
+  }, { passive: true });
+
+  updateHeroFade();
+}
+
 // 12. MOBILE MENU
 function toggleMobileMenu() {
   const hamburger = document.getElementById('hamburger');
@@ -3815,6 +3854,7 @@ function bootstrapApp() {
   initNavScroll();
   initMobileMenu();
   if (typeof initStatCounters === 'function') initStatCounters();
+  if (typeof initHeroScrollFade === 'function') initHeroScrollFade();
   initHorizontalSliders();
 }
 
