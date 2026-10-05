@@ -4540,6 +4540,10 @@ body::before {
   margin-bottom: 22px;
 }
 
+.team-showcase-desc:last-child {
+  margin-bottom: 0;
+}
+
 .team-stats-mini {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -8783,5 +8787,1071 @@ body::before {
     font-size: 0.76rem;
   }
 }
+
+/* ==========================================================================
+   DEDICATED BUREAU ROSTER & STRUCTURE (ANTI-AI HUMAN EDITORIAL DESIGN)
+   ========================================================================== */
+
+.bureau-roster-section {
+  padding: 45px 0 25px;
+}
+
+.bureau-roster-header {
+  margin-bottom: 28px;
+}
+
+.bureau-roster-header .section-title {
+  margin-bottom: 8px;
+}
+
+.bureau-roster-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.bureau-roster-grid.keorg-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.bureau-roster-grid.personalia-grid {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+@media (max-width: 1100px) {
+  .bureau-roster-grid.personalia-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .bureau-roster-grid.keorg-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .bureau-roster-grid.personalia-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .bureau-roster-grid.keorg-grid,
+  .bureau-roster-grid.personalia-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Bureau Member Card */
+.bureau-member-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 26px 18px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: all 0.35s var(--silk);
+  position: relative;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+}
+
+.bureau-member-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent-border);
+  box-shadow: 0 14px 32px rgba(29, 83, 107, 0.12);
+}
+
+/* Leadership Card Accent */
+.bureau-member-card.roster-card-lead {
+  border-color: rgba(214, 148, 21, 0.35);
+  background: linear-gradient(180deg, #FFFFFF 0%, rgba(254, 249, 238, 0.55) 100%);
+}
+
+.bureau-member-card.roster-card-lead:hover {
+  border-color: var(--gold-accent);
+  box-shadow: 0 14px 32px rgba(214, 148, 21, 0.18);
+}
+
+/* Avatar / Sunburst Insignia Container */
+.member-avatar-wrap,
+.member-emblem-wrap {
+  position: relative;
+  width: 92px;
+  height: 92px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.member-sunburst-gear {
+  position: absolute;
+  inset: -10px;
+  width: calc(100% + 20px);
+  height: calc(100% + 20px);
+  opacity: 0.35;
+  pointer-events: none;
+  transition: transform 0.6s var(--silk), opacity 0.35s ease;
+}
+
+.bureau-member-card:hover .member-sunburst-gear {
+  opacity: 0.9;
+  transform: scale(1.15) rotate(22deg);
+}
+
+.member-photo-frame {
+  position: relative;
+  z-index: 1;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--bg);
+  border: 2.5px solid #FFFFFF;
+  box-shadow: 0 4px 14px rgba(29, 83, 107, 0.22);
+  transition: all 0.35s var(--silk);
+}
+
+.bureau-member-card.roster-card-lead .member-photo-frame {
+  border-color: #D69415;
+  box-shadow: 0 6px 18px rgba(214, 148, 21, 0.32);
+}
+
+.bureau-member-card:hover .member-photo-frame {
+  transform: scale(1.05);
+  box-shadow: 0 8px 22px rgba(29, 83, 107, 0.3);
+}
+
+.bureau-member-card.roster-card-lead:hover .member-photo-frame {
+  box-shadow: 0 8px 24px rgba(214, 148, 21, 0.42);
+}
+
+.member-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.bureau-member-card:hover .member-photo-img {
+  transform: scale(1.08);
+}
+
+.member-initial-badge {
+  position: relative;
+  z-index: 1;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent) 0%, #0F3242 100%);
+  color: #FFFFFF;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(29, 83, 107, 0.25);
+  border: 2px solid #FFFFFF;
+}
+
+.bureau-member-card.roster-card-lead .member-initial-badge {
+  background: linear-gradient(135deg, #1D536B 0%, #D69415 100%);
+  border-color: #FFFDF7;
+}
+
+/* Member Role Badge */
+.member-role-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(29, 83, 107, 0.08);
+  padding: 4px 12px;
+  border-radius: 100px;
+  margin-bottom: 10px;
+}
+
+.member-role-badge.lead-badge {
+  color: #8C5F05;
+  background: rgba(214, 148, 21, 0.14);
+  border: 1px solid rgba(214, 148, 21, 0.25);
+}
+
+/* Member Name */
+.member-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-1);
+  line-height: 1.25;
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+}
+
+.member-fullname {
+  font-size: 0.85rem;
+  color: var(--text-2);
+  margin-bottom: 8px;
+  line-height: 1.35;
+}
+
+.member-dept {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: rgba(29, 83, 107, 0.05);
+  padding: 3px 8px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  display: inline-block;
+}
+
+.member-biro-tag {
+  font-size: 0.74rem;
+  color: var(--text-3);
+}
+
+/* Editorial Scope Box for Showcase (Replaces SaaS metric boxes & pill clutter) */
+.editorial-scope-box {
+  background: rgba(29, 83, 107, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+}
+
+.editorial-scope-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.editorial-scope-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.editorial-scope-item {
+  font-size: 0.88rem;
+  color: var(--text-2);
+  line-height: 1.5;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.editorial-scope-item::before {
+  content: '—';
+  color: var(--gold-accent);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.editorial-showcase-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* Bureau Roster Preview (Mini Avatar Strip) */
+.bureau-roster-preview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  margin-bottom: 22px;
+  padding: 10px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.bureau-roster-avatars {
+  display: flex;
+  align-items: center;
+}
+
+.bureau-mini-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid #FFFFFF;
+  object-fit: cover;
+  margin-left: -8px;
+  transition: transform 0.25s ease, z-index 0.25s ease;
+  position: relative;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.bureau-mini-avatar:first-child {
+  margin-left: 0;
+}
+
+.bureau-mini-avatar:hover {
+  transform: translateY(-3px) scale(1.18);
+  z-index: 5;
+}
+
+.bureau-roster-count {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+/* ── 2. Why OKR Cards ── */
+.why-okr-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-top: 28px;
+}
+
+@media (max-width: 1024px) {
+  .why-okr-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .why-okr-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.why-okr-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s var(--silk);
+  position: relative;
+}
+
+.why-okr-card:hover {
+  border-color: var(--accent-border);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.why-okr-num {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 14px;
+}
+
+.why-okr-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 10px;
+  line-height: 1.35;
+}
+
+.why-okr-desc {
+  font-size: 0.86rem;
+  line-height: 1.65;
+  color: var(--text-2);
+}
+
+/* ── 3. OKR Cascading Hierarchy Flow ── */
+.okr-hierarchy-wrapper {
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 32px 28px;
+  margin-top: 28px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.okr-hierarchy-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+  position: relative;
+}
+
+@media (max-width: 900px) {
+  .okr-hierarchy-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+
+.hierarchy-step-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 18px;
+  position: relative;
+  transition: all 0.3s var(--silk);
+}
+
+.hierarchy-step-card:hover {
+  background: #FFFFFF;
+  border-color: var(--accent-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.hierarchy-step-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.hierarchy-step-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.hierarchy-step-desc {
+  font-size: 0.83rem;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+/* ── 4. Spreadsheet Matrix Pipeline ── */
+.matrix-pipeline-box {
+  background: rgba(29, 83, 107, 0.03);
+  border: 1px solid rgba(29, 83, 107, 0.12);
+  border-radius: 14px;
+  padding: 20px;
+  margin-top: 24px;
+}
+
+.matrix-pipeline-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.matrix-pipeline-flow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scrollbar-width: thin;
+}
+
+.matrix-flow-node {
+  flex-shrink: 0;
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-1);
+  white-space: nowrap;
+}
+
+.matrix-flow-node.highlight {
+  background: var(--accent);
+  color: #FFFFFF;
+  border-color: var(--accent);
+}
+
+.matrix-flow-node.gold {
+  background: rgba(214, 148, 21, 0.15);
+  color: var(--gold-hover);
+  border-color: rgba(214, 148, 21, 0.3);
+}
+
+.matrix-flow-arrow {
+  color: var(--text-3);
+  font-weight: 700;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+/* ── 5. Case Study OKR Implementation ── */
+.okr-cases-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 28px;
+}
+
+@media (max-width: 860px) {
+  .okr-cases-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.okr-case-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 28px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+}
+
+.case-card-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 16px;
+  margin-bottom: 18px;
+}
+
+.case-dept-tag {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+
+.case-obj-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-1);
+  line-height: 1.35;
+}
+
+.case-kr-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-grow: 1;
+}
+
+.case-kr-item {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.case-kr-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.case-kr-name {
+  color: var(--text-1);
+  font-size: 0.85rem;
+}
+
+.case-kr-target {
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.case-initiative-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--text-2);
+  margin-top: 4px;
+}
+
+/* ── 6. Project Lens Core Hub Section ── */
+.project-lens-hub {
+  background: linear-gradient(135deg, rgba(29, 83, 107, 0.06) 0%, rgba(214, 148, 21, 0.04) 100%);
+  border: 1.5px solid rgba(29, 83, 107, 0.18);
+  border-radius: 22px;
+  padding: 36px 32px;
+  margin-top: 36px;
+  position: relative;
+  overflow: hidden;
+}
+
+.lens-hub-header {
+  max-width: 800px;
+  margin-bottom: 28px;
+}
+
+.lens-hub-title {
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: var(--text-1);
+  margin-bottom: 12px;
+  line-height: 1.25;
+}
+
+.lens-hub-desc {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-2);
+}
+
+.lens-features-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 960px) {
+  .lens-features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .lens-features-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.lens-feature-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+  transition: all 0.3s var(--silk);
+}
+
+.lens-feature-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.lens-feature-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 6px;
+}
+
+.lens-feature-desc {
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+.lens-formula-box {
+  background: #FFFFFF;
+  border: 1px solid rgba(29, 83, 107, 0.2);
+  border-radius: 14px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.lens-formula-math {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.lens-formula-note {
+  font-size: 0.84rem;
+  color: var(--text-2);
+  line-height: 1.5;
+  max-width: 560px;
+}
+
+/* ── 7. Period Cycle Timeline (Quartal 1 & 2 - 8 Months) ── */
+.period-timeline-section {
+  margin-top: 40px;
+}
+
+.quartal-wrap {
+  margin-bottom: 30px;
+}
+
+.quartal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1.5px solid var(--border);
+}
+
+.quartal-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-1);
+}
+
+.quartal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .quartal-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .quartal-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cycle-month-card {
+  background: #FFFFFF;
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s var(--silk);
+  position: relative;
+}
+
+.cycle-month-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.cycle-month-card.keorg {
+  border-top: 4px solid var(--gold);
+  background: linear-gradient(180deg, rgba(214, 148, 21, 0.04) 0%, #FFFFFF 30%);
+}
+
+.cycle-month-card.personalia {
+  border-top: 4px solid var(--accent);
+  background: linear-gradient(180deg, rgba(29, 83, 107, 0.04) 0%, #FFFFFF 30%);
+}
+
+.cycle-month-num {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 8px;
+}
+
+.cycle-month-actor {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.cycle-month-card.keorg .cycle-month-actor {
+  color: var(--gold-hover);
+}
+
+.cycle-month-card.personalia .cycle-month-actor {
+  color: var(--accent);
+}
+
+.cycle-month-timing {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-2);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.cycle-month-focus {
+  font-size: 0.76rem;
+  color: var(--text-3);
+  line-height: 1.45;
+  margin-top: auto;
+}
+
+/* ── 8. Simulated Spreadsheet Viewer ── */
+.spreadsheet-sim-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+  margin-top: 28px;
+}
+
+.spreadsheet-topbar {
+  background: #F8FAFC;
+  border-bottom: 1px solid var(--border);
+  padding: 16px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.spreadsheet-meta-title {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--text-1);
+}
+
+.spreadsheet-meta-sub {
+  font-size: 0.78rem;
+  color: var(--text-3);
+  margin-top: 2px;
+}
+
+.spreadsheet-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-spreadsheet-direct {
+  background: #0F9D58;
+  color: #FFFFFF !important;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 9px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.btn-spreadsheet-direct:hover {
+  background: #0B8043;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(15, 157, 88, 0.25);
+}
+
+.btn-spreadsheet-copy {
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  color: var(--text-1);
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 9px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-spreadsheet-copy:hover {
+  border-color: var(--accent-border);
+  background: var(--bg);
+}
+
+.spreadsheet-table-container {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.mock-sheet-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  text-align: left;
+}
+
+.mock-sheet-table th {
+  background: #F1F5F9;
+  color: var(--text-1);
+  font-weight: 700;
+  padding: 12px 14px;
+  border-bottom: 1.5px solid #CBD5E1;
+  border-right: 1px solid #E2E8F0;
+  white-space: nowrap;
+}
+
+.mock-sheet-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #E2E8F0;
+  border-right: 1px solid #E2E8F0;
+  color: var(--text-2);
+  vertical-align: top;
+  line-height: 1.45;
+}
+
+.mock-sheet-table tbody tr:hover td {
+  background: rgba(241, 245, 249, 0.5);
+}
+
+.sheet-badge-dept {
+  font-weight: 700;
+  color: var(--accent);
+  background: rgba(29, 83, 107, 0.08);
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  font-size: 0.72rem;
+}
+
+.sheet-num {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+/* ── 9. ASIK & Quote Banner ── */
+.asik-quote-banner {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+  border-radius: 20px;
+  padding: 38px 32px;
+  margin-top: 50px;
+  color: #FFFFFF;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.asik-tagline {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--gold-light);
+  margin-bottom: 14px;
+  text-transform: uppercase;
+}
+
+.asik-quote-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.2rem, 2.8vw, 1.65rem);
+  font-style: italic;
+  line-height: 1.45;
+  max-width: 760px;
+  margin: 0 auto 14px;
+  color: #F8FAFC;
+}
+
+.asik-quote-author {
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94A3B8;
+}
+
+/* ── 10. BEM FTEIC ITS BRAND ELEMENTS STYLING ── */
+.bem-element {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  object-fit: contain;
+  transition: transform 0.4s var(--silk), opacity 0.4s ease;
+}
+
+/* Floating animation for brand elements (calm, subtle, non-spinning) */
+.elem-float-slow {
+  animation: elemFloatSlow 6s ease-in-out infinite alternate;
+}
+
+.elem-float-med {
+  animation: elemFloatMed 4.5s ease-in-out infinite alternate;
+}
+
+@keyframes elemFloatSlow {
+  0% { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(-8px) rotate(3deg); }
+}
+
+@keyframes elemFloatMed {
+  0% { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(-6px) rotate(-3deg); }
+}
+
+/* Large Watermark Element */
+.elem-watermark-lg {
+  position: absolute;
+  opacity: 0.07;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.elem-watermark-md {
+  position: absolute;
+  opacity: 0.12;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Section Title Accents */
+.section-title-with-elem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.title-elem-icon {
+  width: 28px;
+  height: auto;
+  vertical-align: middle;
+  display: inline-block;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 8px rgba(214, 148, 21, 0.3));
+}
+
+/* Card Badge Accents */
+.card-brand-decor {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 48px;
+  height: 48px;
+  opacity: 0.8;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 12px rgba(214, 148, 21, 0.25));
+  z-index: 1;
+}
+
+/* Leadership Sunburst Gear (from Slide 2) */
+.roster-sunburst-backdrop {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 60px;
+  height: 60px;
+  opacity: 0.25;
+  pointer-events: none;
+  transition: transform 0.5s ease, opacity 0.3s ease;
+}
+
+.keorg-member-card:hover .roster-sunburst-backdrop {
+  opacity: 0.65;
+  transform: scale(1.12) rotate(15deg);
+}
+
+/* Timeline Triad & Pathway Connector */
+.timeline-triad-elem {
+  width: 32px;
+  height: auto;
+  opacity: 0.85;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+
 
 
