@@ -1199,6 +1199,38 @@
         </div>
       </div>
 
+      <!-- ── PERIODE SELECTOR SWITCHER (PA SEPTEMBER LIVE VS ARSIP PA AGUSTUS) ── -->
+      <div class="pm-period-selector-bar">
+        <div class="pm-period-tabs" role="tablist" aria-label="Pilih Periode Penilaian">
+          <button type="button" id="pmTabSeptember" class="pm-period-tab active" role="tab" aria-selected="true"
+            onclick="switchModalPeriod('september')" title="Tampilkan evaluasi PA September yang sedang berjalan live dari Google Sheets">
+            <div class="pm-period-tab-header">
+              <span class="pm-tab-dot september"></span>
+              <span class="pm-tab-label">PA September 2026</span>
+              <span class="pm-tab-badge live">Live 24/7</span>
+            </div>
+            <span class="pm-tab-subtext">Periode Berjalan (08 – 12 Okt 2026)</span>
+          </button>
+          <button type="button" id="pmTabAgustus" class="pm-period-tab" role="tab" aria-selected="false"
+            onclick="switchModalPeriod('agustus')" title="Tampilkan hasil rekapitulasi resmi PA Agustus yang telah selesai (arsip permanen)">
+            <div class="pm-period-tab-header">
+              <span class="pm-tab-dot agustus"></span>
+              <span class="pm-tab-label">Arsip PA Agustus 2026</span>
+              <span class="pm-tab-badge final">Rekap Selesai</span>
+            </div>
+            <span class="pm-tab-subtext">Hasil Resmi Terkunci Biro Personalia</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Switch Hint Link -->
+      <div id="pmPeriodSwitchHint" class="pm-period-switch-hint">
+        <button type="button" class="pm-hint-btn" onclick="switchModalPeriod('agustus')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+          Ingin melihat hasil rekapitulasi resmi PA Agustus? <strong>Buka Arsip PA Agustus &rarr;</strong>
+        </button>
+      </div>
+
       <!-- ── LIVE SYNC STATUS BANNER (REAL-TIME GOOGLE SPREADSHEET ENGINE) ── -->
       <div id="pmLiveBanner" class="pm-live-banner">
         <div class="pm-live-banner-left">

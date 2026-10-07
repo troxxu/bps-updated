@@ -2841,6 +2841,153 @@ body::before {
   margin: 0;
 }
 
+/* ── 8B-2. PERIODE SELECTOR SWITCHER (PA SEPTEMBER LIVE VS ARSIP PA AGUSTUS) ── */
+.pm-period-selector-bar {
+  margin-bottom: 12px;
+  background: var(--bg-alt);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+.pm-period-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.pm-period-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 14px;
+  border-radius: calc(var(--radius-sm) - 2px);
+  border: 1.5px solid transparent;
+  background: transparent;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: all 0.22s var(--silk);
+  text-align: center;
+  font-family: inherit;
+  outline: none;
+}
+
+.pm-period-tab:hover {
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--text-1);
+}
+
+.pm-period-tab.active {
+  background: #FFFFFF;
+  color: var(--text-1);
+  border-color: var(--accent-border);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
+.pm-period-tab-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.pm-tab-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.pm-tab-dot.september {
+  background: #10B981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+}
+
+.pm-tab-dot.agustus {
+  background: #6366F1;
+  box-shadow: 0 0 6px rgba(99, 102, 241, 0.6);
+}
+
+.pm-tab-label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--text-1);
+}
+
+.pm-tab-badge {
+  font-size: 0.64rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 100px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.pm-tab-badge.live {
+  background: rgba(16, 185, 129, 0.14);
+  color: #047857;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.pm-tab-badge.final {
+  background: rgba(99, 102, 241, 0.12);
+  color: #4338CA;
+  border: 1px solid rgba(99, 102, 241, 0.28);
+}
+
+.pm-tab-subtext {
+  font-size: 0.68rem;
+  color: var(--text-3);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.pm-period-tab.active .pm-tab-subtext {
+  color: var(--text-2);
+}
+
+/* Quick Switch Hint */
+.pm-period-switch-hint {
+  margin-top: 2px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.pm-hint-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(99, 102, 241, 0.06);
+  border: 1px dashed rgba(99, 102, 241, 0.32);
+  color: #4338CA;
+  border-radius: 100px;
+  padding: 6px 14px;
+  font-size: 0.73rem;
+  cursor: pointer;
+  transition: all 0.2s var(--silk);
+  font-family: inherit;
+}
+
+.pm-hint-btn:hover {
+  background: rgba(99, 102, 241, 0.14);
+  border-color: #6366F1;
+  transform: translateY(-1px);
+}
+
+.pm-hint-btn.active-september {
+  background: rgba(16, 185, 129, 0.06);
+  border: 1px dashed rgba(16, 185, 129, 0.32);
+  color: #047857;
+}
+
+.pm-hint-btn.active-september:hover {
+  background: rgba(16, 185, 129, 0.14);
+  border-color: #10B981;
+}
+
 /* ── 8C. REAL-TIME GOOGLE SHEETS LIVE SYNC ENGINE STYLES ── */
 .pm-live-banner {
   display: flex;
@@ -2858,6 +3005,27 @@ body::before {
 .pm-live-banner.is-pending {
   background: rgba(214, 148, 21, 0.08);
   border-color: rgba(214, 148, 21, 0.3);
+}
+
+.pm-live-banner.is-archived {
+  background: rgba(99, 102, 241, 0.07);
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+.pm-live-banner.is-archived .pm-live-dot-pulse {
+  background: #6366F1;
+  animation: none;
+  opacity: 0.3;
+}
+
+.pm-live-banner.is-archived .pm-live-dot-center {
+  background: #6366F1;
+}
+
+.pm-live-banner.is-archived .pm-live-badge-chip {
+  background: rgba(99, 102, 241, 0.14);
+  color: #4338CA;
+  border: 1px solid rgba(99, 102, 241, 0.25);
 }
 
 .pm-live-banner-left {
@@ -3448,6 +3616,23 @@ body::before {
     margin: 8px auto 0 auto;
     font-size: 0.68rem;
     padding: 3px 10px;
+  }
+
+  /* Period Switcher on Mobile */
+  .pm-period-tabs {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .pm-period-tab {
+    padding: 8px 10px;
+  }
+
+  .pm-hint-btn {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.7rem;
+    padding: 6px 10px;
   }
 
   /* Real-Time Live Sync Banner on Mobile */

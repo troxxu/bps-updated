@@ -1520,22 +1520,21 @@ function shadeColor(color, percent) {
 // ==============================================================================
 // 1B-2. GOOGLE SPREADSHEET REAL-TIME ENGINE (OPTION 1: LIVE 360° SYNC)
 // ==============================================================================
-// Global memory cache untuk skor live hasil fetch Google Sheets
-const liveStaffCache = {};
-let paRekapData = {};
+// Global memory cache untuk skor live PA September hasil fetch Google Sheets
+const liveStaffCache = {}; // Kept for backward compatibility
+const liveSeptemberCache = {};
+let paAgustusRekapData = {};
+let paRekapData = paAgustusRekapData;
+let currentModalPeriod = 'september'; // Default modal period: 'september' (Live 24/7)
 
-// Load precomputed official PA Agustus 360° Rekapitulasi Data (94 fungsionaris)
+// Load precomputed official PA Agustus 360° Rekapitulasi Data (Arsip Resmi Statis 94 fungsionaris)
 async function loadPaRekapData() {
   try {
     const res = await fetch('pa_agustus_rekap.json');
     if (res.ok) {
-      paRekapData = await res.json();
-      for (const [id, item] of Object.entries(paRekapData)) {
-        if (!liveStaffCache[id]) {
-          liveStaffCache[id] = item;
-        }
-      }
-      console.log('Rekapitulasi PA Agustus 360° berhasil dimuat untuk 94 fungsionaris.');
+      paAgustusRekapData = await res.json();
+      paRekapData = paAgustusRekapData;
+      console.log('Arsip Rekapitulasi PA Agustus 360° berhasil dimuat untuk 94 fungsionaris (Tersimpan Permanen).');
     }
   } catch (e) {
     console.warn('Gagal memuat pa_agustus_rekap.json:', e);
@@ -1834,20 +1833,20 @@ function formatPesanHtml(text) {
 async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
   if (!staff) return null;
 
-  // Cek cache (Memory & SessionStorage) - hanya gunakan jika data terbukti berisi skor dan berumur < 30 detik
+  // Cek cache live PA September (Memory & SessionStorage) - berlaku 30 detik
   if (!forceRefresh) {
-    if (liveStaffCache[staff.id]) {
-      const cached = liveStaffCache[staff.id];
-      if (cached && cached.evaluatorCount > 0 && (Date.now() - (cached.cachedAt || 0) < 30 * 1000)) {
+    if (liveSeptemberCache[staff.id]) {
+      const cached = liveSeptemberCache[staff.id];
+      if (cached && (Date.now() - (cached.cachedAt || 0) < 30 * 1000)) {
         return cached;
       }
     }
-    const sessionCached = sessionStorage.getItem('live_pa_data_' + staff.id);
+    const sessionCached = sessionStorage.getItem('live_pa_september_' + staff.id) || sessionStorage.getItem('live_pa_data_' + staff.id);
     if (sessionCached) {
       try {
         const parsed = JSON.parse(sessionCached);
-        if (parsed && parsed.evaluatorCount > 0 && (Date.now() - (parsed.cachedAt || 0) < 30 * 1000)) {
-          liveStaffCache[staff.id] = parsed;
+        if (parsed && (Date.now() - (parsed.cachedAt || 0) < 30 * 1000)) {
+          liveSeptemberCache[staff.id] = parsed;
           return parsed;
         }
       } catch (e) {}
@@ -2116,18 +2115,13 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
     cachedAt: Date.now()
   };
 
-  // Simpan ke memory & session cache hanya jika sudah ada evaluator yang mengisi
-  if (totalEvaluatorCount > 0 && validIndicatorCount > 0) {
-    liveStaffCache[staff.id] = liveResult;
-    try {
-      sessionStorage.setItem('live_pa_data_' + staff.id, JSON.stringify(liveResult));
-    } catch (e) {}
-  } else {
-    delete liveStaffCache[staff.id];
-    try {
-      sessionStorage.removeItem('live_pa_data_' + staff.id);
-    } catch (e) {}
-  }
+  // Simpan ke memory & session cache untuk live PA September
+  liveSeptemberCache[staff.id] = liveResult;
+  liveStaffCache[staff.id] = liveResult;
+  try {
+    sessionStorage.setItem('live_pa_september_' + staff.id, JSON.stringify(liveResult));
+    sessionStorage.setItem('live_pa_data_' + staff.id, JSON.stringify(liveResult));
+  } catch (e) {}
 
   return liveResult;
 }
@@ -2137,23 +2131,35 @@ async function refreshLiveScoreCurrentStaff() {
   if (!currentProgressStaff) return;
   const staff = currentProgressStaff;
 
+  // Jika sedang berada di tab arsip Agustus, otomatis alihkan ke tab live September
+  if (currentModalPeriod === 'agustus') {
+    switchModalPeriod('september');
+    return;
+  }
+
   const refreshBtn = document.getElementById("pmRefreshBtn");
   const refreshBtnText = document.getElementById("pmRefreshBtnText");
   if (refreshBtn) refreshBtn.classList.add("refreshing");
   if (refreshBtnText) refreshBtnText.innerText = "Menyinkronkan...";
 
   try {
+    delete liveSeptemberCache[staff.id];
     delete liveStaffCache[staff.id];
+    sessionStorage.removeItem('live_pa_september_' + staff.id);
     sessionStorage.removeItem('live_pa_data_' + staff.id);
 
-    showToast("Sinkronisasi Berjalan", `Mengambil pembaruan nilai terkini ${staff.nama} dari Google Sheets...`);
+    showToast("Sinkronisasi Berjalan", `Mengambil pembaruan nilai terkini PA September ${staff.nama} dari Google Sheets...`);
     const freshLiveData = await fetchLiveScoresForStaff(staff, true);
-    openProgressModal(staff, freshLiveData);
+    openProgressModal(staff, freshLiveData, 'september');
 
-    showToast("Sinkronisasi Selesai", `Data evaluasi ${staff.nama} berhasil diperbarui (${freshLiveData.timestamp}).`);
+    if (freshLiveData && freshLiveData.evaluatorCount > 0) {
+      showToast("Sinkronisasi Selesai", `Data evaluasi PA September ${staff.nama} berhasil diperbarui (${freshLiveData.timestamp}).`);
+    } else {
+      showToast("Live Sync Terhubung", `Spreadsheet terhubung. Belum ada pengisian baru untuk periode PA September.`);
+    }
   } catch (err) {
     showToast("Info", "Pembaruan selesai dengan data terbaru.");
-    openProgressModal(staff);
+    openProgressModal(staff, null, 'september');
   } finally {
     if (refreshBtn) refreshBtn.classList.remove("refreshing");
     if (refreshBtnText) refreshBtnText.innerText = "Sinkronkan Live";
@@ -2996,7 +3002,7 @@ function requestPinAccess(staffId, mode) {
   const isSessionAuthed = sessionStorage.getItem('auth_pin_' + staff.id) === 'true';
   if (isSessionAuthed) {
     if (authTargetMode === 'progress') {
-      openProgressModal(staff);
+      openProgressModal(staff, null, 'september');
     } else {
       executeOpenSheet(staff);
     }
@@ -3097,31 +3103,76 @@ function closeModal() {
 }
 
 // 7B. PROGRESS DETAIL MODAL HANDLERS (REPORT RESMI PA KABINET & STAF)
-function openProgressModal(staff, liveData = null) {
+function openProgressModal(staff, liveData = null, period = null) {
+  if (!staff) return;
   currentProgressStaff = staff;
   const modal = document.getElementById("progressModal");
   if (!modal) return;
 
-  // Ambil data cache live jika valid (< 30 detik atau data rekapitulasi tersimpan)
-  if (!liveData && (liveStaffCache[staff.id] || paRekapData[staff.id])) {
-    const cached = liveStaffCache[staff.id] || paRekapData[staff.id];
-    if (cached && (cached.evaluatorCount > 0 || cached.isLive || cached.scores)) {
-      liveData = cached;
-    }
-  } else if (!liveData) {
-    try {
-      const sessionCached = sessionStorage.getItem('live_pa_data_' + staff.id);
-      if (sessionCached) {
-        const parsed = JSON.parse(sessionCached);
-        if (parsed && (parsed.evaluatorCount > 0 || parsed.scores)) {
-          liveData = parsed;
-          liveStaffCache[staff.id] = liveData;
-        }
-      }
-    } catch (e) {}
+  // Tentukan periode yang aktif (default: 'september' live 24/7)
+  if (period && (period === 'september' || period === 'agustus')) {
+    currentModalPeriod = period;
+  } else if (!currentModalPeriod) {
+    currentModalPeriod = 'september';
   }
 
-  const data = getStaffRubricData(staff, liveData);
+  // Update State Period Switcher Tab & Hint
+  const tabSeptember = document.getElementById("pmTabSeptember");
+  const tabAgustus = document.getElementById("pmTabAgustus");
+  const switchHint = document.getElementById("pmPeriodSwitchHint");
+
+  if (tabSeptember) {
+    const isSep = (currentModalPeriod === 'september');
+    tabSeptember.classList.toggle("active", isSep);
+    tabSeptember.setAttribute("aria-selected", isSep ? "true" : "false");
+  }
+  if (tabAgustus) {
+    const isAug = (currentModalPeriod === 'agustus');
+    tabAgustus.classList.toggle("active", isAug);
+    tabAgustus.setAttribute("aria-selected", isAug ? "true" : "false");
+  }
+
+  if (switchHint) {
+    if (currentModalPeriod === 'september') {
+      switchHint.innerHTML = `
+        <button type="button" class="pm-hint-btn" onclick="switchModalPeriod('agustus')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+          Ingin melihat hasil rekapitulasi resmi PA Agustus? <strong>Buka Arsip PA Agustus &rarr;</strong>
+        </button>
+      `;
+    } else {
+      switchHint.innerHTML = `
+        <button type="button" class="pm-hint-btn active-september" onclick="switchModalPeriod('september')">
+          <span class="pm-tab-dot september" style="width:7px;height:7px;display:inline-block;margin-right:6px;border-radius:50%;background:#10B981;box-shadow:0 0 6px rgba(16,185,129,0.7);"></span>
+          Kembali ke penilaian berjalan? <strong>Buka PA September (Live 24/7) &rarr;</strong>
+        </button>
+      `;
+    }
+  }
+
+  let activeData = null;
+
+  if (currentModalPeriod === 'agustus') {
+    // Mode Arsip Rekapitulasi PA Agustus: 100% Statis & Frozen dari paAgustusRekapData (kebal hapus spreadsheet)
+    activeData = paAgustusRekapData[staff.id] || paRekapData[staff.id] || null;
+  } else {
+    // Mode Live PA September (Google Sheets 24/7 Sync)
+    if (liveData) {
+      activeData = liveData;
+    } else if (liveSeptemberCache[staff.id]) {
+      activeData = liveSeptemberCache[staff.id];
+    } else {
+      try {
+        const sessionCached = sessionStorage.getItem('live_pa_september_' + staff.id) || sessionStorage.getItem('live_pa_data_' + staff.id);
+        if (sessionCached) {
+          activeData = JSON.parse(sessionCached);
+          liveSeptemberCache[staff.id] = activeData;
+        }
+      } catch (e) {}
+    }
+  }
+
+  const data = getStaffRubricData(staff, activeData);
 
   // Set avatar & profile info
   const avatar = document.getElementById("pmAvatar");
@@ -3143,7 +3194,11 @@ function openProgressModal(staff, liveData = null) {
 
   const periodEl = document.getElementById("pmPeriodText");
   if (periodEl) {
-    periodEl.innerText = "Periode: PA September 2026 (08 – 12 Okt)";
+    if (currentModalPeriod === 'agustus') {
+      periodEl.innerText = "Periode: PA Agustus 2026 (Arsip Rekapitulasi Final)";
+    } else {
+      periodEl.innerText = "Periode: PA September 2026 (08 – 12 Okt)";
+    }
   }
 
   const deptBadge = document.getElementById("pmDeptBadge");
@@ -3165,31 +3220,49 @@ function openProgressModal(staff, liveData = null) {
   const liveTitle = document.getElementById("pmLiveStatusTitle");
   const liveBadge = document.getElementById("pmLiveSyncBadge");
   const liveDesc = document.getElementById("pmLiveStatusDesc");
+  const refreshBtn = document.getElementById("pmRefreshBtn");
   const refreshBtnText = document.getElementById("pmRefreshBtnText");
 
   if (liveBanner) {
-    if (data.isLive && data.evaluatorCount > 0) {
-      liveBanner.classList.remove("is-pending");
-      if (liveTitle) liveTitle.innerText = "Data Real-Time Google Sheets (Terhubung)";
+    if (currentModalPeriod === 'agustus') {
+      liveBanner.className = "pm-live-banner is-archived";
+      if (liveTitle) liveTitle.innerText = "Hasil Rekapitulasi Resmi PA Agustus 2026 (Final)";
       if (liveBadge) {
-        liveBadge.innerText = `Live 360° • ${data.evaluatorCount} Penilai`;
-        liveBadge.className = "pm-live-badge-chip";
+        liveBadge.innerText = "Arsip Final • Terkunci";
+        liveBadge.className = "pm-live-badge-chip final";
       }
       if (liveDesc) {
-        liveDesc.innerHTML = `Skor dihitung otomatis dari rata-rata terbobot <strong>${data.evaluatorCount} lembar penilaian aktif</strong> (Rekapitulasi PA Agustus Selesai &bull; <strong>Periode Pengisian PA September Sedang Berlangsung</strong>) di ${staff.departemenBEMFull}. Sinkronisasi: <strong>${data.timestamp || 'Terkini'}</strong>.`;
+        liveDesc.innerHTML = `Data evaluasi resmi PA Agustus 2026 telah ditutup dan direkapitulasi secara permanen oleh Biro Personalia BEM FTEIC ITS Kabinet Polaris berdasarkan <strong>${data.evaluatorCount || 15} lembar penilaian terbobot 360°</strong>. Nilai ini bersifat permanen dan tidak terpengaruh perubahan lembar kerja.`;
       }
-      if (refreshBtnText) refreshBtnText.innerText = "Sinkronkan Live";
+      if (refreshBtnText) refreshBtnText.innerText = "Lihat PA September";
+      if (refreshBtn) refreshBtn.title = "Beralih ke penilaian live PA September";
     } else {
-      liveBanner.classList.add("is-pending");
-      if (liveTitle) liveTitle.innerText = "Belum Ada Nilai Masuk (Menunggu Penilai)";
-      if (liveBadge) {
-        liveBadge.innerText = "Skor 0.0 • 0 Penilai";
-        liveBadge.className = "pm-live-badge-chip";
+      liveBanner.classList.remove("is-archived");
+      if (data.isLive && data.evaluatorCount > 0) {
+        liveBanner.classList.remove("is-pending");
+        if (liveTitle) liveTitle.innerText = "Data Real-Time PA September (Terhubung)";
+        if (liveBadge) {
+          liveBadge.innerText = `Live 360° • ${data.evaluatorCount} Penilai`;
+          liveBadge.className = "pm-live-badge-chip";
+        }
+        if (liveDesc) {
+          liveDesc.innerHTML = `Skor dihitung otomatis dari rata-rata terbobot <strong>${data.evaluatorCount} lembar penilaian aktif</strong> (Periode Pengisian PA September Sedang Berlangsung) di ${staff.departemenBEMFull}. Sinkronisasi: <strong>${data.timestamp || 'Terkini'}</strong>.`;
+        }
+        if (refreshBtnText) refreshBtnText.innerText = "Sinkronkan Live";
+        if (refreshBtn) refreshBtn.title = "Ambil data terbaru dari Google Sheets";
+      } else {
+        liveBanner.classList.add("is-pending");
+        if (liveTitle) liveTitle.innerText = "Belum Ada Nilai Masuk (Periode PA September)";
+        if (liveBadge) {
+          liveBadge.innerText = "Skor 0.0 • 0 Penilai";
+          liveBadge.className = "pm-live-badge-chip";
+        }
+        if (liveDesc) {
+          liveDesc.innerHTML = `Periode PA Agustus telah resmi selesai direkap dan saat ini sedang berlangsung <strong>Periode Pengisian PA September (08 – 12 Oktober 2026)</strong>. Seluruh capaian indikator akan terisi secara otomatis begitu fungsionaris mengisi lembar kerja Google Sheets sebelum deadline <strong>Senin, 12 Oktober 2026 pukul 23.59 WIB</strong>.`;
+        }
+        if (refreshBtnText) refreshBtnText.innerText = "Cek Pembaruan";
+        if (refreshBtn) refreshBtn.title = "Cek apakah ada nilai baru masuk";
       }
-      if (liveDesc) {
-        liveDesc.innerHTML = `Periode PA Agustus telah resmi selesai direkap dan saat ini sedang berlangsung <strong>Periode Pengisian PA September (08 – 12 Oktober 2026)</strong>. Seluruh capaian indikator akan terisi secara otomatis begitu penilai mengisi formulir Google Sheets sebelum deadline <strong>Senin, 12 Oktober 2026 pukul 23.59 WIB</strong>.`;
-      }
-      if (refreshBtnText) refreshBtnText.innerText = "Cek Pembaruan";
     }
   }
 
@@ -3200,12 +3273,11 @@ function openProgressModal(staff, liveData = null) {
   const scoreCatEl = document.getElementById("pmScoreCategory");
   if (scoreCatEl) scoreCatEl.innerText = `Predikat: ${data.predikat}`;
 
-  // Set Status Mahasiswa (Normal / SP1 / SP2 / ST1 / ST2)
+  // Set Status Mahasiswa
   const statusEl = document.getElementById("pmStudentStatus");
   const statusSubEl = document.getElementById("pmStudentStatusSub");
   if (statusEl) {
     const rawStatus = (data.statusMahasiswa || "Normal").toUpperCase().trim();
-    
     let dotColor = "#16A34A";
     let textColor = "#16A34A";
     let subText = "Kondisi Aktif & Tertib";
@@ -3245,12 +3317,26 @@ function openProgressModal(staff, liveData = null) {
 
   const formStatusEl = document.getElementById("pmFormStatus");
   if (formStatusEl) {
-    formStatusEl.innerText = data.formStatus;
-    formStatusEl.style.color = (data.isLive || data.hasSheet) ? "#2A9D8F" : "var(--gold)";
+    if (currentModalPeriod === 'agustus') {
+      formStatusEl.innerText = `🟢 Selesai Direkap (${data.evaluatorCount || 15} Penilai • Lengkap)`;
+      formStatusEl.style.color = "#2A9D8F";
+    } else if (data.isLive && data.evaluatorCount > 0) {
+      formStatusEl.innerText = data.formStatus;
+      formStatusEl.style.color = "#2A9D8F";
+    } else {
+      formStatusEl.innerText = "Sedang Berlangsung (0 Penilai)";
+      formStatusEl.style.color = "var(--gold)";
+    }
   }
 
   const sheetAvailEl = document.getElementById("pmSheetAvailability");
-  if (sheetAvailEl) sheetAvailEl.innerText = data.sheetNote;
+  if (sheetAvailEl) {
+    if (currentModalPeriod === 'agustus') {
+      sheetAvailEl.innerText = "Arsip Permanen Biro Personalia (07 Okt 2026)";
+    } else {
+      sheetAvailEl.innerText = data.sheetNote;
+    }
+  }
 
   // Render 3D Animated Pie Chart
   setTimeout(() => {
@@ -3299,13 +3385,12 @@ function openProgressModal(staff, liveData = null) {
   const feedbackEl = document.getElementById("pmFeedbackText");
   if (feedbackEl) feedbackEl.innerText = data.feedback;
 
-  // Render Peer Feedback dari Google Sheets (100% ANONIM - TANPA NAMA PENILAI)
+  // Render Peer Feedback dari Google Sheets (100% ANONIM)
   const peerBox = document.getElementById("pmPeerFeedbackBox");
   const peerCount = document.getElementById("pmPeerFeedbackCount");
   const peerList = document.getElementById("pmPeerFeedbackList");
 
   if (peerBox && peerList) {
-    // Pastikan card Catatan & Evaluasi Rekan SELALU tampil untuk semua fungsionaris
     peerBox.classList.remove("hidden");
 
     const validFeedback = (data.peerFeedback || []).filter(fb => {
@@ -3351,6 +3436,7 @@ function openProgressModal(staff, liveData = null) {
       }).join('');
     } else {
       if (peerCount) peerCount.innerText = "0 Masukan (Anonim)";
+      const isAug = (currentModalPeriod === 'agustus');
       peerList.innerHTML = `
         <div class="pm-peer-empty-state">
           <div class="pm-peer-empty-icon">
@@ -3360,9 +3446,11 @@ function openProgressModal(staff, liveData = null) {
               <line x1="12" y1="7" x2="12" y2="13"/>
             </svg>
           </div>
-          <div class="pm-peer-empty-title">Belum Ada Catatan Tertulis</div>
+          <div class="pm-peer-empty-title">${isAug ? "Tidak Ada Catatan Tertulis Tambahan" : "Belum Ada Catatan Tertulis"}</div>
           <div class="pm-peer-empty-desc">
-            Evaluasi kualitatif (Stop, Start, Continue) dari rekan fungsionaris atau pimpinan di Google Sheets akan otomatis tersinkronisasi di sini secara <strong>100% Anonim</strong> setelah dituliskan pada lembar kerja.
+            ${isAug 
+              ? "Seluruh evaluasi angka telah resmi direkapitulasi secara komprehensif pada tabel indikator di atas untuk periode PA Agustus." 
+              : "Evaluasi kualitatif (Stop, Start, Continue) dari rekan fungsionaris atau pimpinan di Google Sheets akan otomatis tersinkronisasi di sini secara <strong>100% Anonim</strong> setelah dituliskan pada lembar kerja PA September."}
           </div>
           <div class="pm-peer-anon-guarantee">
             <span>🔒 Sistem menjamin kerahasiaan identitas penilai demi transparansi dan kenyamanan bersama.</span>
@@ -3374,28 +3462,39 @@ function openProgressModal(staff, liveData = null) {
 
   modal.classList.remove("hidden");
 
-  // Selalu picu sinkronisasi live secara proaktif jika data belum ada atau sudah lebih dari 30 detik
-  const isCacheFresh = liveData && liveData.cachedAt && (Date.now() - liveData.cachedAt < 30 * 1000) && (liveData.evaluatorCount > 0);
-  if (!isCacheFresh) {
-    const refreshBtn = document.getElementById("pmRefreshBtn");
-    const refreshBtnText = document.getElementById("pmRefreshBtnText");
-    if (refreshBtn) refreshBtn.classList.add("refreshing");
-    if (refreshBtnText) refreshBtnText.innerText = "Sinkronisasi Live...";
+  // HANYA picu sinkronisasi live Google Sheets secara proaktif jika berada di mode 'september'
+  if (currentModalPeriod === 'september') {
+    const isCacheFresh = activeData && activeData.cachedAt && (Date.now() - activeData.cachedAt < 30 * 1000) && (activeData.evaluatorCount > 0);
+    if (!isCacheFresh) {
+      const refreshBtn = document.getElementById("pmRefreshBtn");
+      const refreshBtnText = document.getElementById("pmRefreshBtnText");
+      if (refreshBtn) refreshBtn.classList.add("refreshing");
+      if (refreshBtnText) refreshBtnText.innerText = "Sinkronisasi Live...";
 
-    fetchLiveScoresForStaff(staff, true).then(fresh => {
-      if (fresh && currentProgressStaff && currentProgressStaff.id === staff.id) {
-        openProgressModal(staff, fresh);
-      }
-    }).catch(err => {
-      console.warn("Live fetch error:", err);
-    }).finally(() => {
-      const rb = document.getElementById("pmRefreshBtn");
-      const rbt = document.getElementById("pmRefreshBtnText");
-      if (rb) rb.classList.remove("refreshing");
-      if (rbt) rbt.innerText = "Sinkronkan Live";
-    });
+      fetchLiveScoresForStaff(staff, true).then(fresh => {
+        if (fresh && currentProgressStaff && currentProgressStaff.id === staff.id && currentModalPeriod === 'september') {
+          openProgressModal(staff, fresh, 'september');
+        }
+      }).catch(err => {
+        console.warn("Live fetch error:", err);
+      }).finally(() => {
+        const rb = document.getElementById("pmRefreshBtn");
+        const rbt = document.getElementById("pmRefreshBtnText");
+        if (rb) rb.classList.remove("refreshing");
+        if (rbt) rbt.innerText = "Sinkronkan Live";
+      });
+    }
   }
 }
+
+// Function untuk beralih antara PA September (Live) dan Arsip PA Agustus (Rekap Final)
+function switchModalPeriod(targetPeriod) {
+  if (!currentProgressStaff) return;
+  if (targetPeriod !== 'september' && targetPeriod !== 'agustus') return;
+  currentModalPeriod = targetPeriod;
+  openProgressModal(currentProgressStaff, null, targetPeriod);
+}
+window.switchModalPeriod = switchModalPeriod;
 
 function closeProgressModal() {
   const modal = document.getElementById("progressModal");
@@ -3420,7 +3519,9 @@ function lockStaffSession() {
     const staffId = currentProgressStaff.id;
     const staffName = currentProgressStaff.nama;
     sessionStorage.removeItem('auth_pin_' + staffId);
+    sessionStorage.removeItem('live_pa_september_' + staffId);
     sessionStorage.removeItem('live_pa_data_' + staffId);
+    delete liveSeptemberCache[staffId];
     delete liveStaffCache[staffId];
     closeProgressModal();
     showToast("Sesi Dikunci", `Akses data privat ${staffName} telah dikunci kembali.`);
@@ -3432,7 +3533,7 @@ function openProgressModalFromProgressState() {
   const staff = currentSelectedStaff;
   closeModal();
   setTimeout(() => {
-    openProgressModal(staff);
+    openProgressModal(staff, null, 'september');
   }, 150);
 }
 
@@ -3544,19 +3645,20 @@ function handleVerifyPassword(event) {
 
     if (authTargetMode === 'progress') {
       const staffToOpen = currentSelectedStaff;
-      showToast("PIN Terverifikasi", `Menghubungkan ke spreadsheet & menghitung skor ${staffToOpen.nama}...`);
+      currentModalPeriod = 'september';
+      showToast("PIN Terverifikasi", `Menghubungkan ke spreadsheet & menghitung skor PA September ${staffToOpen.nama}...`);
 
       // Mengambil data skor real-time secara asynchronous (force fresh)
       fetchLiveScoresForStaff(staffToOpen, true).then(liveData => {
         closeModal();
-        openProgressModal(staffToOpen, liveData);
-        if (liveData && liveData.isLive) {
-          showToast("Live Sync Sukses", `Berhasil menghitung skor real-time ${staffToOpen.nama} dari ${liveData.evaluatorCount} penilai.`);
+        openProgressModal(staffToOpen, liveData, 'september');
+        if (liveData && liveData.isLive && liveData.evaluatorCount > 0) {
+          showToast("Live Sync Sukses", `Berhasil menghitung skor real-time PA September ${staffToOpen.nama} dari ${liveData.evaluatorCount} penilai.`);
         }
       }).catch(err => {
         console.warn("Live fetch fallback:", err);
         closeModal();
-        openProgressModal(staffToOpen);
+        openProgressModal(staffToOpen, null, 'september');
       });
     } else {
       setTimeout(() => {
