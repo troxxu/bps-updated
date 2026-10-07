@@ -1598,6 +1598,12 @@ function isStaffNameMatchingCol(targetName, colCell) {
   const colClean = cleanTokenStr(colCell);
 
   if (targetClean === colClean) return true;
+
+  // Penanganan khusus panggilan/alias resmi yang berbeda dari nama lengkap:
+  // Ramandita Ahmad Saguna dipanggil "Manta" di lembar penilaian KWU
+  if ((targetClean.includes('ramandita') || targetClean.includes('saguna')) && colClean.includes('manta')) return true;
+  if (targetClean.includes('manta') && (colClean.includes('ramandita') || colClean.includes('saguna'))) return true;
+
   if (targetClean.length >= 3 && colClean.length >= 3) {
     if (colClean.includes(targetClean) || targetClean.includes(colClean)) {
       const shorter = colClean.length < targetClean.length ? colClean : targetClean;
