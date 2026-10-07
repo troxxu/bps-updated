@@ -3437,10 +3437,11 @@ body::before {
   .pm-nrp-row {
     justify-content: center;
     flex-wrap: wrap;
-    gap: 6px 10px;
+    gap: 4px 8px;
     font-size: 0.72rem;
     margin-top: 2px;
-    white-space: nowrap;
+    white-space: normal;
+    text-align: center;
   }
 
   .pm-privacy-verified-badge {
@@ -6728,8 +6729,39 @@ body::before {
   overflow: hidden;
   text-overflow: ellipsis;
   min-height: 2.4em;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   width: 100%;
+}
+
+.card-period-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #047857;
+  background: #ECFDF5;
+  border: 1px solid #A7F3D0;
+  padding: 2px 8px;
+  border-radius: 100px;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+  transition: all 0.2s ease;
+}
+
+.card-period-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+  display: inline-block;
+  animation: pulseDot 2s infinite ease-in-out;
+}
+
+.staff-card:hover .card-period-tag {
+  background: #D1FAE5;
+  border-color: #6EE7B7;
 }
 
 .card-hint-badge {
@@ -6906,7 +6938,19 @@ body::before {
   .card-role {
     font-size: 0.68rem !important;
     min-height: 2.2em !important;
-    margin-bottom: 6px !important;
+    margin-bottom: 5px !important;
+  }
+
+  .card-period-tag {
+    font-size: 0.58rem !important;
+    padding: 1px 6px !important;
+    gap: 3px !important;
+    margin-bottom: 5px !important;
+  }
+
+  .card-period-dot {
+    width: 4px !important;
+    height: 4px !important;
   }
 
   .card-hint-badge {

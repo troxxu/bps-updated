@@ -2854,12 +2854,17 @@ function renderStaffGrid() {
       <h3 class="card-name" title="${staff.nama}">${staff.nama}</h3>
       <p class="card-role" title="${staff.role}">${staff.role}</p>
 
+      <div class="card-period-tag" title="Periode Pengisian PA September 2026 sedang aktif">
+        <span class="card-period-dot"></span>
+        <span>PA September</span>
+      </div>
+
       <div class="card-hint-badge">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
           <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
           <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
         </svg>
-        <span>Masukkan PIN</span>
+        <span>Akses PA September</span>
       </div>
     `;
 
@@ -3047,7 +3052,7 @@ function openModal(staff, mode = 'sheet') {
 
   if (authTargetText) {
     authTargetText.innerText = (authTargetMode === 'progress')
-      ? "PIN Diperlukan: Membuka Report Kinerja Personal"
+      ? "PIN Diperlukan: Akses Rapor & Evaluasi PA September"
       : "PIN Diperlukan: Mengisi Lembar Kerja PA September (Sedang Berlangsung)";
   }
 
@@ -3055,7 +3060,7 @@ function openModal(staff, mode = 'sheet') {
     staffPin.value = "";
     staffPin.type = "password";
     staffPin.placeholder = (authTargetMode === 'progress')
-      ? "Masukkan PIN untuk melihat nilai personal..."
+      ? "Masukkan PIN untuk akses PA September..."
       : "Masukkan PIN untuk mengisi form PA September...";
   }
   isPasswordVisible = false;
@@ -3066,7 +3071,7 @@ function openModal(staff, mode = 'sheet') {
   if (submitBtn) {
     submitBtn.disabled = false;
     submitBtn.innerText = (authTargetMode === 'progress')
-      ? "Verifikasi & Buka Report"
+      ? "Verifikasi & Buka Evaluasi"
       : "Verifikasi & Buka PA September";
   }
 
@@ -3136,6 +3141,11 @@ function openProgressModal(staff, liveData = null) {
   const nrpEl = document.getElementById("pmNrp");
   if (nrpEl) nrpEl.innerText = `NRP: ${staff.nrp}`;
 
+  const periodEl = document.getElementById("pmPeriodText");
+  if (periodEl) {
+    periodEl.innerText = "Periode: PA September 2026 (08 – 12 Okt)";
+  }
+
   const deptBadge = document.getElementById("pmDeptBadge");
   if (deptBadge) {
     deptBadge.innerText = staff.departemenBEMFull || staff.departemenBEM;
@@ -3166,7 +3176,7 @@ function openProgressModal(staff, liveData = null) {
         liveBadge.className = "pm-live-badge-chip";
       }
       if (liveDesc) {
-        liveDesc.innerHTML = `Skor dihitung otomatis dari rata-rata terbobot <strong>${data.evaluatorCount} lembar penilaian aktif</strong> (Rekapitulasi Resmi PA Agustus 2026 • Periode PA September Sedang Berlangsung) di ${staff.departemenBEMFull}. Sinkronisasi: <strong>${data.timestamp || 'Terkini'}</strong>.`;
+        liveDesc.innerHTML = `Skor dihitung otomatis dari rata-rata terbobot <strong>${data.evaluatorCount} lembar penilaian aktif</strong> (Rekapitulasi PA Agustus Selesai &bull; <strong>Periode Pengisian PA September Sedang Berlangsung</strong>) di ${staff.departemenBEMFull}. Sinkronisasi: <strong>${data.timestamp || 'Terkini'}</strong>.`;
       }
       if (refreshBtnText) refreshBtnText.innerText = "Sinkronkan Live";
     } else {
