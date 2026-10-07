@@ -1522,6 +1522,26 @@ function shadeColor(color, percent) {
 // ==============================================================================
 // Global memory cache untuk skor live hasil fetch Google Sheets
 const liveStaffCache = {};
+let paRekapData = {};
+
+// Load precomputed official PA Agustus 360° Rekapitulasi Data (94 fungsionaris)
+async function loadPaRekapData() {
+  try {
+    const res = await fetch('pa_agustus_rekap.json');
+    if (res.ok) {
+      paRekapData = await res.json();
+      for (const [id, item] of Object.entries(paRekapData)) {
+        if (!liveStaffCache[id]) {
+          liveStaffCache[id] = item;
+        }
+      }
+      console.log('Rekapitulasi PA Agustus 360° berhasil dimuat untuk 94 fungsionaris.');
+    }
+  } catch (e) {
+    console.warn('Gagal memuat pa_agustus_rekap.json:', e);
+  }
+}
+loadPaRekapData();
 
 // Parser CSV sesuai standar RFC 4180 (mendukung koma dalam kutip & newline)
 function parseCsvRows(text) {
@@ -2203,18 +2223,24 @@ function getStaffRubricData(staff, liveData = null) {
     let levelText = "Belum ada masukan penilaian untuk indikator ini di Google Sheets.";
 
     if (score > 0) {
-      if (score < 3.0) {
+      if (score <= 3.0) {
         levelKey = "1-2";
-        levelBadge = "Kurang (1-2)";
-      } else if (score < 6.0) {
+        levelBadge = "BURUK (E)";
+      } else if (score <= 5.5) {
         levelKey = "3-5";
-        levelBadge = "Cukup (3-5)";
-      } else if (score < 9.0) {
+        levelBadge = "Kurang Mampu (D)";
+      } else if (score <= 6.5) {
+        levelKey = "3-5";
+        levelBadge = "Cukup (C)";
+      } else if (score <= 7.5) {
         levelKey = "6-8";
-        levelBadge = "Baik (6-8)";
+        levelBadge = "Baik (B)";
+      } else if (score < 9.0) {
+        levelKey = "9-10";
+        levelBadge = "Sangat Baik (AB)";
       } else {
         levelKey = "9-10";
-        levelBadge = "Sangat Baik (9-10)";
+        levelBadge = "EXCELLENT (A)";
       }
       levelText = item.levels[levelKey] || item.desc;
     }
@@ -2246,12 +2272,25 @@ function getStaffRubricData(staff, liveData = null) {
   // Muhammad Sandhika Setiawan (staf-050) berstatus SP2, fungsionaris lain Normal
   const statusMahasiswa = staff.statusMahasiswa || (staff.id === 'staf-050' || (staff.nama && staff.nama.toLowerCase().includes("sandhika")) ? "SP2" : "Normal");
 
+  // Predikat Kinerja Resmi Berdasarkan Skala Parameter Baru:
+  // 0.0 - 3.0 BURUK (E) | 3.1 - 5.5 Kurang Mampu (D) | 5.6 - 6.5 Cukup (C)
+  // 6.6 - 7.5 Baik (B) | 7.5 - 8.9 Sangat Baik (AB) | 9.0 - 10.0 EXCELLENT (A)
   let predikat = "Belum Ada Penilaian";
-  if (parseFloat(averageScore) > 0) {
-    if (parseFloat(averageScore) >= 9.2) predikat = "Istimewa (High Performer)";
-    else if (parseFloat(averageScore) >= 8.5) predikat = "Sangat Baik (On Track)";
-    else if (parseFloat(averageScore) >= 7.5) predikat = "Baik (Kompeten)";
-    else predikat = "Cukup (Dalam Pendampingan)";
+  const numAvg = parseFloat(averageScore);
+  if (numAvg > 0) {
+    if (numAvg >= 9.0) {
+      predikat = "EXCELLENT (A)";
+    } else if (numAvg >= 7.5) {
+      predikat = "Sangat Baik (AB)";
+    } else if (numAvg >= 6.6) {
+      predikat = "Baik (B)";
+    } else if (numAvg >= 5.6) {
+      predikat = "Cukup (C)";
+    } else if (numAvg >= 3.1) {
+      predikat = "Kurang Mampu (D)";
+    } else {
+      predikat = "BURUK (E)";
+    }
   }
 
   const activeSheet = (staff.sheetUrl && staff.sheetUrl.trim() !== '' && !staff.sheetUrl.includes('on-progress') && staff.sheetUrl.startsWith('http'))
@@ -2962,6 +3001,7 @@ function requestPinAccess(staffId, mode) {
   // Jika belum, tampilkan modal PIN dengan instruksi sesuai tujuan
   openModal(staff, authTargetMode);
 }
+window.requestPinAccess = requestPinAccess;
 
 function openModal(staff, mode = 'sheet') {
   currentSelectedStaff = staff;
@@ -3008,7 +3048,7 @@ function openModal(staff, mode = 'sheet') {
   if (authTargetText) {
     authTargetText.innerText = (authTargetMode === 'progress')
       ? "PIN Diperlukan: Membuka Report Kinerja Personal"
-      : "PIN Diperlukan: Mengisi Lembar Kerja PA Agustus";
+      : "PIN Diperlukan: Mengisi Lembar Kerja PA September (Sedang Berlangsung)";
   }
 
   if (staffPin) {
@@ -3016,7 +3056,7 @@ function openModal(staff, mode = 'sheet') {
     staffPin.type = "password";
     staffPin.placeholder = (authTargetMode === 'progress')
       ? "Masukkan PIN untuk melihat nilai personal..."
-      : "Masukkan PIN untuk mengisi form PA Agustus...";
+      : "Masukkan PIN untuk mengisi form PA September...";
   }
   isPasswordVisible = false;
   updateEyeIcon();
@@ -3027,7 +3067,7 @@ function openModal(staff, mode = 'sheet') {
     submitBtn.disabled = false;
     submitBtn.innerText = (authTargetMode === 'progress')
       ? "Verifikasi & Buka Report"
-      : "Verifikasi & Buka PA Agustus";
+      : "Verifikasi & Buka PA September";
   }
 
   modal.classList.remove("hidden");
@@ -3057,10 +3097,10 @@ function openProgressModal(staff, liveData = null) {
   const modal = document.getElementById("progressModal");
   if (!modal) return;
 
-  // Ambil data cache live jika valid (< 30 detik dan terdapat skor)
-  if (!liveData && liveStaffCache[staff.id]) {
-    const cached = liveStaffCache[staff.id];
-    if (cached && cached.evaluatorCount > 0 && (Date.now() - (cached.cachedAt || 0) < 30 * 1000)) {
+  // Ambil data cache live jika valid (< 30 detik atau data rekapitulasi tersimpan)
+  if (!liveData && (liveStaffCache[staff.id] || paRekapData[staff.id])) {
+    const cached = liveStaffCache[staff.id] || paRekapData[staff.id];
+    if (cached && (cached.evaluatorCount > 0 || cached.isLive || cached.scores)) {
       liveData = cached;
     }
   } else if (!liveData) {
@@ -3068,7 +3108,7 @@ function openProgressModal(staff, liveData = null) {
       const sessionCached = sessionStorage.getItem('live_pa_data_' + staff.id);
       if (sessionCached) {
         const parsed = JSON.parse(sessionCached);
-        if (parsed && parsed.evaluatorCount > 0 && (Date.now() - (parsed.cachedAt || 0) < 30 * 1000)) {
+        if (parsed && (parsed.evaluatorCount > 0 || parsed.scores)) {
           liveData = parsed;
           liveStaffCache[staff.id] = liveData;
         }
@@ -3126,7 +3166,7 @@ function openProgressModal(staff, liveData = null) {
         liveBadge.className = "pm-live-badge-chip";
       }
       if (liveDesc) {
-        liveDesc.innerHTML = `Skor dihitung otomatis dari rata-rata terbobot <strong>${data.evaluatorCount} lembar penilaian aktif</strong> (Periode PA Agustus 2026) di ${staff.departemenBEMFull}. Sinkronisasi: <strong>${data.timestamp || 'Terkini'}</strong>.`;
+        liveDesc.innerHTML = `Skor dihitung otomatis dari rata-rata terbobot <strong>${data.evaluatorCount} lembar penilaian aktif</strong> (Rekapitulasi Resmi PA Agustus 2026 • Periode PA September Sedang Berlangsung) di ${staff.departemenBEMFull}. Sinkronisasi: <strong>${data.timestamp || 'Terkini'}</strong>.`;
       }
       if (refreshBtnText) refreshBtnText.innerText = "Sinkronkan Live";
     } else {
@@ -3137,7 +3177,7 @@ function openProgressModal(staff, liveData = null) {
         liveBadge.className = "pm-live-badge-chip";
       }
       if (liveDesc) {
-        liveDesc.innerHTML = `Saat ini sedang berlangsung <strong>Periode Pengisian PA Agustus (04 – 07 Oktober 2026)</strong>. Seluruh capaian indikator akan terisi secara otomatis begitu penilai mengisi formulir Google Sheets sebelum deadline <strong>Rabu, 7 Oktober 2026 pukul 23.59 WIB</strong>.`;
+        liveDesc.innerHTML = `Periode PA Agustus telah resmi selesai direkap dan saat ini sedang berlangsung <strong>Periode Pengisian PA September (08 – 12 Oktober 2026)</strong>. Seluruh capaian indikator akan terisi secara otomatis begitu penilai mengisi formulir Google Sheets sebelum deadline <strong>Senin, 12 Oktober 2026 pukul 23.59 WIB</strong>.`;
       }
       if (refreshBtnText) refreshBtnText.innerText = "Cek Pembaruan";
     }
