@@ -4380,8 +4380,24 @@ function getNineBoxPosition(staff, rubricData) {
   };
 }
 
-// Render visualisasi 9-Box Grid di dalam modal rapor personal
+// Render visualisasi 9-Box Grid di dalam modal rapor personal (Khusus Staff)
 function renderNineBoxMatrix(staff, rubricData) {
+  const section = document.getElementById("pmNineBoxSection");
+  if (!section) return;
+
+  // 9-Box Talent Matrix HANYA untuk fungsionaris jenjang Staff.
+  // BPH dan Kabinet (Kadep, Wakadep, Kabiro) tidak menggunakan 9-Box Matrix.
+  const isBPH = staff.departemenBEM === 'BPH' || staff.roleCategory === 'BPH' || (staff.id && staff.id.startsWith('bph-'));
+  const isKabinet = !isBPH && (staff.roleCategory === 'Pimpinan' || staff.roleCategory === 'Wakil Pimpinan' || staff.roleCategory === 'Kabiro');
+
+  if (isBPH || isKabinet) {
+    section.classList.add("hidden");
+    return;
+  }
+
+  // Jika fungsionaris Staff, tampilkan seksi 9-Box Matrix
+  section.classList.remove("hidden");
+
   const position = getNineBoxPosition(staff, rubricData);
   const { quadrantKey, quadrantInfo, perfScore, potScore, perfTag, potTag } = position;
 
@@ -4442,7 +4458,7 @@ function showQuadrantInfo(quadrantKey) {
 }
 window.showQuadrantInfo = showQuadrantInfo;
 
-// Handler Modal Global Overview 9-Box Talent Matrix
+// Handler Modal Global Overview 9-Box Talent Matrix (Khusus Fungsionaris Staff)
 function openNineBoxOverviewModal() {
   const modal = document.getElementById("nineBoxOverviewModal");
   if (!modal) return;
@@ -4454,8 +4470,15 @@ function openNineBoxOverviewModal() {
     quadrantStaffMap[k] = [];
   });
 
-  // Hitung distribusi 9-Box seluruh fungsionaris (berdasarkan data PA Agustus atau live)
-  staffList.forEach(s => {
+  // Filter HANYA untuk staf (BPH dan Kabinet Kadep/Wakadep/Kabiro tidak masuk pemetaan 9-box)
+  const staffOnly = staffList.filter(s => {
+    const isBPH = s.departemenBEM === 'BPH' || s.roleCategory === 'BPH' || (s.id && s.id.startsWith('bph-'));
+    const isKabinet = !isBPH && (s.roleCategory === 'Pimpinan' || s.roleCategory === 'Wakil Pimpinan' || s.roleCategory === 'Kabiro');
+    return !isBPH && !isKabinet;
+  });
+
+  // Hitung distribusi 9-Box fungsionaris staf (berdasarkan data PA Agustus atau live)
+  staffOnly.forEach(s => {
     const augData = paAgustusRekapData[s.id] || paRekapData[s.id] || null;
     const rData = getStaffRubricData(s, augData);
     const pos = getNineBoxPosition(s, rData);
@@ -4471,13 +4494,13 @@ function openNineBoxOverviewModal() {
       const staffInQuad = quadrantStaffMap[k] || [];
       const sampleNames = staffInQuad.slice(0, 3).map(s => s.nama.split(' ')[0]).join(', ');
       const moreCount = staffInQuad.length > 3 ? ` +${staffInQuad.length - 3} lainnya` : '';
-      const samplePreview = staffInQuad.length > 0 ? `<div style="font-size:0.7rem; color:var(--text-3); margin-top:4px;">Contoh: ${escapeHtml(sampleNames)}${moreCount}</div>` : '';
+      const samplePreview = staffInQuad.length > 0 ? `<div style="font-size:0.7rem; color:var(--text-3); margin-top:4px;">Contoh Staf: ${escapeHtml(sampleNames)}${moreCount}</div>` : '';
 
       return `
         <div class="nb-quad-card" style="border-left: 4px solid ${q.color};">
           <div class="nb-quad-top">
             <span class="nb-quad-name">${q.title}</span>
-            <span class="nb-quad-count">${counts[k] || 0} Fungsionaris</span>
+            <span class="nb-quad-count">${counts[k] || 0} Staf</span>
           </div>
           <div class="nb-quad-desc">
             ${q.desc}
