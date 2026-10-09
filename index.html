@@ -326,31 +326,38 @@
                   🏆
                 </div>
                 <div>
-                  <h4 class="pa-best-dept-name">Departemen Dalam Negeri</h4>
+                  <h4 class="pa-best-dept-name" id="bestDeptName">Departemen Dalam Negeri</h4>
                   <div class="pa-best-dept-sub">BEM FTEIC ITS • Kabinet Polaris 2026</div>
                 </div>
               </div>
 
               <div class="pa-dept-score-box">
                 <div class="pa-dept-score-val-wrap">
-                  <span class="pa-dept-score-val">8.59</span>
+                  <span class="pa-dept-score-val" id="bestDeptScoreVal">8.59</span>
                   <span class="pa-dept-score-max">/ 10.0</span>
                 </div>
                 <span class="pa-dept-predikat-pill">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <polyline points="20 6 9 17 4 12"></polyline>
                   </svg>
-                  Sangat Baik (AB)
+                  <span id="bestDeptPredikatText">Sangat Baik (AB)</span>
                 </span>
               </div>
 
-              <p class="pa-best-dept-desc">
+              <!-- Pembobotan Resmi Department of the Month: 60% BPH + 40% Internal -->
+              <div class="pa-dept-weight-breakdown" id="bestDeptWeightBreakdown" style="margin: 10px 0 12px; font-size: 0.77rem; color: #475569; background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.2); padding: 5px 10px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                <span style="color: #4F46E5; font-weight: 700;">⚖️ Pembobotan:</span>
+                <span><strong>60% Evaluasi BPH</strong> + <strong>40% Rata-rata Internal</strong></span>
+                <span id="bestDeptScoreComponents" style="color: #64748B;">• (Internal: 8.59 | BPH: Menunggu)</span>
+              </div>
+
+              <p class="pa-best-dept-desc" id="bestDeptDesc">
                 Departemen Dalam Negeri (DAGRI) berhasil meraih nilai rata-rata fungsionaris tertinggi di lingkungan BEM FTEIC ITS. Dengan partisipasi 100% dari seluruh 15 anggota (Pimpinan, Kabiro, Sekdep, dan Staf), DAGRI menunjukkan sinergi internal yang solid, akuntabilitas tinggi, serta kedisiplinan pengisian evaluasi.
               </p>
             </div>
 
             <div class="pa-dept-stats-row">
-              <div class="pa-dept-stat-box">
+              <div class="pa-dept-stat-box" id="bestDeptStaffCount">
                 <strong>15 / 15</strong>
                 Fungsionaris Dinilai
               </div>
@@ -364,13 +371,20 @@
           <!-- Department Ranking Leaderboard Card (Highest to Lowest) -->
           <div class="pa-dept-ranking-card">
             <div class="pa-ranking-header">
-              <h4 class="pa-ranking-title">Peringkat Rata-rata Nilai Departemen</h4>
-              <p class="pa-ranking-sub">
-                Akumulasi nilai seluruh fungsionaris (Pimpinan, Sekdep, dan Staf) per departemen:
-              </p>
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; flex-wrap: wrap;">
+                <div>
+                  <h4 class="pa-ranking-title">Peringkat Rata-rata Nilai Departemen</h4>
+                  <p class="pa-ranking-sub">
+                    Akumulasi Pembobotan: <strong>60% Evaluasi BPH ke Departemen</strong> + <strong>40% Rata-rata Internal Departemen</strong>
+                  </p>
+                </div>
+                <span style="font-size: 0.72rem; font-weight: 700; color: #4338CA; background: #EEF2FF; border: 1px solid #C7D2FE; padding: 4px 10px; border-radius: 999px;">
+                  Bobot: 60% BPH • 40% Internal
+                </span>
+              </div>
             </div>
 
-            <div class="pa-ranking-list">
+            <div class="pa-ranking-list" id="paDeptRankingList">
               
               <!-- Rank 1: DAGRI -->
               <div class="pa-ranking-item rank-1">
@@ -824,17 +838,6 @@
             <button id="clearSearchBtn" class="clear-search-btn" style="display:none;" onclick="clearSearchInput()"
               title="Hapus pencarian">✕</button>
           </div>
-
-          <!-- 9-Box Talent Matrix Trigger Button (Khusus Staf) -->
-          <button type="button" class="btn-ninebox-trigger" onclick="openNineBoxOverviewModal()" title="Buka 9-Box Talent Matrix Staf Biro Personalia">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-              <rect x="3" y="3" width="7" height="7"></rect>
-              <rect x="14" y="3" width="7" height="7"></rect>
-              <rect x="14" y="14" width="7" height="7"></rect>
-              <rect x="3" y="14" width="7" height="7"></rect>
-            </svg>
-            <span>9-Box Matrix Staf</span>
-          </button>
 
         </div>
       </div>
@@ -1351,123 +1354,6 @@
         </p>
       </div>
 
-      <!-- ── 9-BOX TALENT MATRIX SECTION (BIRO PERSONALIA) ── -->
-      <div id="pmNineBoxSection" class="pm-ninebox-section">
-        <div class="pm-ninebox-header">
-          <div class="pm-ninebox-title-wrap">
-            <div class="pm-ninebox-badge-row">
-              <span class="pm-ninebox-badge">Biro Personalia BEM FTEIC 2026</span>
-              <span class="pm-ninebox-badge-sub">Talent Assessment Framework</span>
-            </div>
-            <h4 class="pm-ninebox-title">Pemetaan 9-Box Matrix (Staf)</h4>
-            <p class="pm-ninebox-desc">
-              Klasifikasi posisi staf berdasarkan perpotongan <strong>Performance</strong> (Sumbu X) dan <strong>Potential</strong> (Sumbu Y).
-            </p>
-          </div>
-          <div class="pm-ninebox-status-tag">
-            <span class="pm-ninebox-current-pill" id="pmNbCurrentPill">
-              <span class="pm-ninebox-dot"></span>
-              <span id="pmNbCurrentTitle">Core Employee</span>
-            </span>
-          </div>
-        </div>
-
-        <div class="ninebox-grid-wrapper">
-          <div class="ninebox-y-axis-container">
-            <span class="ninebox-axis-arrow">▲</span>
-            <span class="ninebox-axis-text">Potential & Interest</span>
-          </div>
-          <div class="ninebox-matrix-outer">
-            <div class="ninebox-grid" id="pmNineBoxGrid">
-              <!-- Baris 1: High Potential & Interest -->
-              <div class="ninebox-cell enigma" data-quadrant="enigma" onclick="showQuadrantInfo('enigma')">
-                <span class="ninebox-cell-title">Enigma</span>
-                <span class="ninebox-cell-sub">High Pot • Low Perf</span>
-              </div>
-              <div class="ninebox-cell growth-employee" data-quadrant="growth-employee" onclick="showQuadrantInfo('growth-employee')">
-                <span class="ninebox-cell-title">Growth Employee</span>
-                <span class="ninebox-cell-sub">High Pot • Med Perf</span>
-              </div>
-              <div class="ninebox-cell future-leader" data-quadrant="future-leader" onclick="showQuadrantInfo('future-leader')">
-                <span class="ninebox-cell-title">Future Leader</span>
-                <span class="ninebox-cell-sub">High Pot • High Perf</span>
-              </div>
-
-              <!-- Baris 2: Medium Potential & Interest -->
-              <div class="ninebox-cell dilemma" data-quadrant="dilemma" onclick="showQuadrantInfo('dilemma')">
-                <span class="ninebox-cell-title">Dilemma</span>
-                <span class="ninebox-cell-sub">Med Pot • Low Perf</span>
-              </div>
-              <div class="ninebox-cell core-employee" data-quadrant="core-employee" onclick="showQuadrantInfo('core-employee')">
-                <span class="ninebox-cell-title">Core Employee</span>
-                <span class="ninebox-cell-sub">Med Pot • Med Perf</span>
-              </div>
-              <div class="ninebox-cell high-impact" data-quadrant="high-impact" onclick="showQuadrantInfo('high-impact')">
-                <span class="ninebox-cell-title">High Impact Performance</span>
-                <span class="ninebox-cell-sub">Med Pot • High Perf</span>
-              </div>
-
-              <!-- Baris 3: Low Potential & Interest -->
-              <div class="ninebox-cell under-performer" data-quadrant="under-performer" onclick="showQuadrantInfo('under-performer')">
-                <span class="ninebox-cell-title">Under Performer</span>
-                <span class="ninebox-cell-sub">Low Pot • Low Perf</span>
-              </div>
-              <div class="ninebox-cell effective" data-quadrant="effective" onclick="showQuadrantInfo('effective')">
-                <span class="ninebox-cell-title">Effective</span>
-                <span class="ninebox-cell-sub">Low Pot • Med Perf</span>
-              </div>
-              <div class="ninebox-cell trusted-professional" data-quadrant="trusted-professional" onclick="showQuadrantInfo('trusted-professional')">
-                <span class="ninebox-cell-title">Trusted Professional</span>
-                <span class="ninebox-cell-sub">Low Pot • High Perf</span>
-              </div>
-            </div>
-            <div class="ninebox-x-axis-container">
-              <span class="ninebox-axis-text">Performance</span>
-              <span class="ninebox-axis-arrow">►</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="pm-ninebox-insight-card" id="pmNbInsightCard">
-          <div class="pm-nb-metrics-row">
-            <div class="pm-nb-metric-chip">
-              <div class="pm-nb-metric-label">Performance (PA Score)</div>
-              <div class="pm-nb-metric-val">
-                <span id="pmNbPerfScore">8.2</span>
-                <span class="pm-nb-metric-tag" id="pmNbPerfTag">Medium</span>
-              </div>
-            </div>
-            <div class="pm-nb-metric-chip">
-              <div class="pm-nb-metric-label">Potential & Interest (Sumbu Y)</div>
-              <div class="pm-nb-metric-val">
-                <span id="pmNbPotScore">8.4</span>
-                <span class="pm-nb-metric-tag" id="pmNbPotTag">Medium</span>
-              </div>
-            </div>
-          </div>
-          <div class="pm-nb-desc-box" id="pmNbDescBox">
-            Fungsionaris konsisten menjalankan peran inti organisasi dengan baik dan menjadi pilar keandalan tim.
-          </div>
-          <div class="pm-nb-action-box" id="pmNbActionBox">
-            <strong>Rekomendasi Biro Personalia:</strong> Berikan pengayaan wawasan manajerial dan rotasi tanggung jawab kepanitiaan untuk memicu potensi kepemimpinan ke tingkat berikutnya.
-          </div>
-        </div>
-
-        <!-- ── KARTU REKAP KONSELING & MINAT STAF (BIRO PERSONALIA) ── -->
-        <div class="pm-counseling-card" id="pmCounselingCard">
-          <div class="pm-counseling-header">
-            <div class="pm-counseling-title-row">
-              <span class="pm-counseling-badge">Biro Personalia</span>
-              <span class="pm-counseling-title">Hasil Konseling & Aspirasi Minat</span>
-            </div>
-            <span class="pm-counseling-status-tag" id="pmCounselingStatusTag">Terdata</span>
-          </div>
-          <div class="pm-counseling-body" id="pmCounselingBody">
-            <!-- Diisi otomatis oleh JavaScript -->
-          </div>
-        </div>
-      </div>
-
       <!-- ── EVALUASI & CATATAN BPH UNTUK DEPARTEMEN ── -->
       <div id="pmBphFeedbackBox" class="pm-bph-feedback-box">
         <div class="pm-bph-feedback-header">
@@ -1537,41 +1423,6 @@
     <div class="toast-body">
       <div id="toastTitle" class="toast-title">Notifikasi</div>
       <div id="toastMessage" class="toast-message">Pesan notifikasi</div>
-    </div>
-  </div>
-
-  <!-- ── 10. 9-BOX TALENT MATRIX OVERVIEW MODAL ── -->
-  <div id="nineBoxOverviewModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="nbOverviewTitle">
-    <div class="modal-card modal-card-wide ninebox-overview-card">
-      <button class="modal-close-btn" onclick="closeNineBoxOverviewModal()" aria-label="Tutup Dialog">✕</button>
-
-      <div class="nb-modal-header">
-        <div class="nb-modal-badge-row">
-          <span class="nb-modal-badge">Biro Personalia BEM FTEIC 2026</span>
-          <span class="nb-modal-badge-sub">Pedoman Manajemen Talenta Staf</span>
-        </div>
-        <h3 id="nbOverviewTitle" class="nb-modal-title">9-Box Talent Matrix (Staf BEM FTEIC)</h3>
-        <p class="nb-modal-desc">
-          Instrumen evaluasi strategis Biro Personalia untuk memetakan fungsionaris jenjang <strong>Staf</strong> BEM FTEIC ITS Kabinet Polaris 2026 berdasarkan tingkat <strong>Kinerja (Performance)</strong> dan <strong>Potensi Pengembangan (Potential)</strong>.
-        </p>
-      </div>
-
-      <div class="nb-modal-content">
-        <div class="nb-diagram-container">
-          <img src="assets/nine-box-grid.png" alt="The 9-Box Grid Reference" class="nb-diagram-img" />
-          <div class="nb-diagram-caption">Standar Acuan 9-Box Grid Staf Biro Personalia BEM FTEIC 2026</div>
-        </div>
-
-        <div class="nb-quadrants-grid" id="nbQuadrantsList">
-          <!-- Di-generate otomatis oleh app.js berisi kuadran dan jumlah fungsionaris -->
-        </div>
-      </div>
-
-      <div class="pm-modal-actions" style="margin-top:16px;">
-        <button type="button" class="btn-modal-cancel" style="width:100%;" onclick="closeNineBoxOverviewModal()">
-          Tutup Panduan
-        </button>
-      </div>
     </div>
   </div>
 

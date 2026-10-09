@@ -1964,6 +1964,23 @@ function isValidFeedbackText(text, targetStaff = null) {
   return true;
 }
 
+// Bersihkan nilai teks catatan agar tidak hanya berupa dash (-), titik, atau kata placeholder kosong
+function cleanSscVal(val) {
+  if (!val) return '';
+  const trimmed = String(val).trim();
+  // Hilangkan bullet, dash, atau punctuation di awal & akhir
+  const stripped = trimmed.replace(/^[\s•\-\*:,.;_~/\\]+|[\s•\-\*:,.;_~/\\]+$/g, '').trim();
+  if (!stripped || stripped.length < 2) return '';
+  const lower = stripped.toLowerCase();
+  const invalidPlaceholders = [
+    '-', '--', '---', '.', '..', '...', 'none', 'null', 'n/a', 'na', 
+    'tidak ada', 'tdk ada', 'ga ada', 'gak ada', 'belum ada', 'blm ada',
+    'nihil', 'kosong', 'skip', 'tidak', 'tdk', 'aman', '-'
+  ];
+  if (invalidPlaceholders.includes(lower)) return '';
+  return stripped;
+}
+
 // Periksa apakah input hanya berupa template [Stop]: [Start]: [Continue]: tanpa tulisan apapun dari penilai
 function isTemplateOnly(text) {
   if (!text) return true;
@@ -1973,12 +1990,12 @@ function isTemplateOnly(text) {
     .replace(/\[Continue\]\s*:?/gi, '')
     .replace(/•\s*(Stop|Start|Continue)\s*:?/gi, '')
     .replace(/-\s*(Stop|Start|Continue)\s*:?/gi, '')
-    .replace(/\r|\n|\t/g, '')
+    .replace(/[-_.*•;:~/\\,\s'"()\[\]]/g, '')
     .trim();
-  return cleaned.length <= 2;
+  return cleaned.length <= 1;
 }
 
-// Parser universal komponen Stop, Start, Continue
+// Parser universal komponen Stop, Start, Continue yang mengabaikan isi kosong seperti '-'
 function parseSscSections(text) {
   if (!text) return null;
   let norm = text
@@ -1990,62 +2007,66 @@ function parseSscSections(text) {
   const startMatch = norm.match(/\[Start\]\s*:?\s*([^\[]+?)(?=\[(?:Stop|Continue)\]|$)/i);
   const contMatch = norm.match(/\[Continue\]\s*:?\s*([^\[]+?)(?=\[(?:Stop|Start)\]|$)/i);
 
-  const stopText = stopMatch ? stopMatch[1].trim() : '';
-  const startText = startMatch ? startMatch[1].trim() : '';
-  const contText = contMatch ? contMatch[1].trim() : '';
+  const stopText = cleanSscVal(stopMatch ? stopMatch[1] : '');
+  const startText = cleanSscVal(startMatch ? startMatch[1] : '');
+  const contText = cleanSscVal(contMatch ? contMatch[1] : '');
 
   if (!stopText && !startText && !contText) return null;
   return { stop: stopText, start: startText, continue: contText };
 }
 
-// Renderer HTML terstruktur untuk evaluasi Stop, Start, Continue
+// Renderer HTML terstruktur untuk evaluasi Stop, Start, Continue (hanya tampilkan seksi yang benar-benar terisi)
 function formatSscHtml(text) {
   if (!text) return '';
   const parsed = parseSscSections(text);
-  if (parsed && (parsed.stop || parsed.start || parsed.continue)) {
-    let html = `<div class="pm-ssc-container">`;
-    html += `<div class="pm-ssc-title">Evaluasi Kinerja (Stop, Start, Continue):</div>`;
-    html += `<div class="pm-ssc-grid">`;
-    if (parsed.stop) {
-      html += `
-        <div class="pm-ssc-item pm-ssc-stop">
-          <div class="pm-ssc-tag"><span class="pm-ssc-dot dot-stop"></span> STOP (Hentikan)</div>
-          <div class="pm-ssc-desc">${escapeHtml(parsed.stop)}</div>
-        </div>
-      `;
-    }
-    if (parsed.start) {
-      html += `
-        <div class="pm-ssc-item pm-ssc-start">
-          <div class="pm-ssc-tag"><span class="pm-ssc-dot dot-start"></span> START (Mulai Coba)</div>
-          <div class="pm-ssc-desc">${escapeHtml(parsed.start)}</div>
-        </div>
-      `;
-    }
-    if (parsed.continue) {
-      html += `
-        <div class="pm-ssc-item pm-ssc-continue">
-          <div class="pm-ssc-tag"><span class="pm-ssc-dot dot-continue"></span> CONTINUE (Pertahankan)</div>
-          <div class="pm-ssc-desc">${escapeHtml(parsed.continue)}</div>
-        </div>
-      `;
-    }
-    html += `</div></div>`;
-    return html;
+  if (!parsed) return '';
+
+  const hasAny = Boolean(parsed.stop || parsed.start || parsed.continue);
+  if (!hasAny) return '';
+
+  let html = `<div class="pm-ssc-container">`;
+  html += `<div class="pm-ssc-title">Evaluasi Kinerja (Stop, Start, Continue):</div>`;
+  html += `<div class="pm-ssc-grid">`;
+  if (parsed.stop) {
+    html += `
+      <div class="pm-ssc-item pm-ssc-stop">
+        <div class="pm-ssc-tag"><span class="pm-ssc-dot dot-stop"></span> STOP (Hentikan)</div>
+        <div class="pm-ssc-desc">${escapeHtml(parsed.stop)}</div>
+      </div>
+    `;
   }
-  return `<div class="pm-ssc-container"><div class="pm-ssc-title">Evaluasi Kinerja (Stop, Start, Continue):</div><div class="pm-peer-item-content">${escapeHtml(text)}</div></div>`;
+  if (parsed.start) {
+    html += `
+      <div class="pm-ssc-item pm-ssc-start">
+        <div class="pm-ssc-tag"><span class="pm-ssc-dot dot-start"></span> START (Mulai Coba)</div>
+        <div class="pm-ssc-desc">${escapeHtml(parsed.start)}</div>
+      </div>
+    `;
+  }
+  if (parsed.continue) {
+    html += `
+      <div class="pm-ssc-item pm-ssc-continue">
+        <div class="pm-ssc-tag"><span class="pm-ssc-dot dot-continue"></span> CONTINUE (Pertahankan)</div>
+        <div class="pm-ssc-desc">${escapeHtml(parsed.continue)}</div>
+      </div>
+    `;
+  }
+  html += `</div></div>`;
+  return html;
 }
 
 // Renderer HTML terstruktur untuk Komentar Penilai (Pesan, Kesan & Harapan)
 function formatPesanHtml(text) {
   if (!text) return '';
+  const cleaned = cleanSscVal(text);
+  if (!cleaned) return '';
   return `
     <div class="pm-pesan-box">
       <div class="pm-pesan-header">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         <span>Kesan, Pesan &amp; Harapan:</span>
       </div>
-      <div class="pm-pesan-content">"${escapeHtml(text)}"</div>
+      <div class="pm-pesan-content">"${escapeHtml(cleaned)}"</div>
     </div>
   `;
 }
@@ -3128,43 +3149,6 @@ function renderStaffGrid() {
         <span>PA September</span>
       </div>
 
-      ${(() => {
-        const isExecutive = ['DAGRI', 'LUGRI', 'PSDM', 'SOSMAS', 'RISTEK', 'KWU'].includes(staff.departemenBEM);
-        if (isExecutive) {
-          const deptData = (window.bphDepartemenData && window.bphDepartemenData[staff.departemenBEM]) || null;
-          const evals = deptData ? (deptData.evaluations || {}) : {};
-          const isFilled = Object.values(evals).some(ev => ev && (ev.isFilled || (ev.ssc && ev.ssc.hasContent) || (ev.kesanPesan && ev.kesanPesan.trim())));
-
-          return `
-            <div class="card-bph-feature-box" onclick="event.stopPropagation(); openBphDepartemenModal('${staff.departemenBEM}', '${staff.id}')" title="Buka Catatan &amp; Evaluasi BPH (Ketua BEM &amp; Sekjen) untuk ${escapeHtml(staff.departemenBEMFull || staff.departemenBEM)}">
-              <div class="card-bph-header-row">
-                <span class="card-bph-icon">🏛️</span>
-                <span class="card-bph-title">Evaluasi BPH Departemen</span>
-                <span class="card-bph-status-chip ${isFilled ? 'filled' : 'pending'}">${isFilled ? '● Terisi' : '○ Proses'}</span>
-              </div>
-              <div class="card-bph-desc-snippet">
-                <span>Start, Stop, Continue &amp; Pesan</span>
-                <span class="card-bph-arrow">↗</span>
-              </div>
-            </div>
-          `;
-        } else if (staff.departemenBEM === 'BPH') {
-          return `
-            <div class="card-bph-feature-box is-bph" onclick="event.stopPropagation(); openBphPresidiumModal('${staff.id}')" title="Portal Evaluasi Presidium BPH: Penilaian 6 Departemen Eksekutif">
-              <div class="card-bph-header-row">
-                <span class="card-bph-icon">👑</span>
-                <span class="card-bph-title">Presidium Evaluator</span>
-                <span class="card-bph-status-chip bph">3 Sheets</span>
-              </div>
-              <div class="card-bph-desc-snippet">
-                <span>Kelola Nilai &amp; SSC 6 Departemen</span>
-                <span class="card-bph-arrow">↗</span>
-              </div>
-            </div>
-          `;
-        }
-        return '';
-      })()}
 
       <div class="card-hint-badge">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
@@ -3694,8 +3678,7 @@ function openProgressModal(staff, liveData = null, period = null) {
   const feedbackEl = document.getElementById("pmFeedbackText");
   if (feedbackEl) feedbackEl.innerText = data.feedback;
 
-  // Render 9-Box Talent Matrix Biro Personalia
-  renderNineBoxMatrix(staff, data);
+  // Catatan: 9-Box Talent Matrix dinonaktifkan sementara untuk PA September 2026 sesuai arahan BPS
 
   // Render Catatan & Evaluasi BPH untuk Departemen (Start, Stop, Continue, Kesan Pesan)
   renderBphDepartemenFeedback(staff);
@@ -3710,9 +3693,17 @@ function openProgressModal(staff, liveData = null, period = null) {
 
     const validFeedback = (data.peerFeedback || []).filter(fb => {
       if (!fb) return false;
-      const ssc = (fb.stopStartContinue || '').trim();
-      const pesan = (fb.pesanKesan || '').trim();
-      const txt = (fb.text || pesan || ssc || '').trim();
+      const sscParsed = fb.stopStartContinue ? parseSscSections(fb.stopStartContinue) : null;
+      const hasSsc = Boolean(sscParsed && (sscParsed.stop || sscParsed.start || sscParsed.continue));
+      const cleanPesan = fb.pesanKesan ? cleanSscVal(fb.pesanKesan) : '';
+      const hasPesan = Boolean(cleanPesan);
+      const cleanTxt = fb.text ? cleanSscVal(fb.text) : '';
+      const hasTxt = Boolean(cleanTxt && !isTemplateOnly(cleanTxt));
+
+      // HANYA tampilkan catatan jika ada evaluasi tertulis bermakna (bukan hanya tanda strip '-' atau template kosong)
+      if (!hasSsc && !hasPesan && !hasTxt) return false;
+
+      const txt = (cleanPesan || cleanTxt || (hasSsc ? `${sscParsed.stop || ''} ${sscParsed.start || ''} ${sscParsed.continue || ''}` : '')).trim();
       if (!txt) return false;
       if (cleanTokenStr(txt) === cleanTokenStr(staff.nama)) return false;
       if (typeof staffList !== 'undefined' && Array.isArray(staffList)) {
@@ -3723,32 +3714,34 @@ function openProgressModal(staff, liveData = null, period = null) {
       return true;
     });
 
-    if (validFeedback && validFeedback.length > 0) {
-      if (peerCount) peerCount.innerText = `${validFeedback.length} Masukan (Anonim)`;
-      peerList.innerHTML = validFeedback.map((fb, fIdx) => {
-        const sscHtml = fb.stopStartContinue ? formatSscHtml(fb.stopStartContinue) : '';
-        const pesanHtml = fb.pesanKesan ? formatPesanHtml(fb.pesanKesan) : '';
+    const renderedCards = [];
+    validFeedback.forEach(fb => {
+      const sscHtml = fb.stopStartContinue ? formatSscHtml(fb.stopStartContinue) : '';
+      const pesanHtml = fb.pesanKesan ? formatPesanHtml(fb.pesanKesan) : '';
+      const cleanRaw = (!sscHtml && !pesanHtml && fb.text) ? cleanSscVal(fb.text) : '';
+      const rawHtml = cleanRaw ? `<div class="pm-peer-item-content">${escapeHtml(cleanRaw)}</div>` : '';
 
-        let contentHtml = '';
-        if (sscHtml || pesanHtml) {
-          contentHtml = `${sscHtml}${pesanHtml}`;
-        } else if (fb.text) {
-          contentHtml = `<div class="pm-peer-item-content">${escapeHtml(fb.text)}</div>`;
-        }
+      const contentHtml = `${sscHtml}${pesanHtml}${rawHtml}`.trim();
+      if (!contentHtml) return; // Lewati jika tidak ada konten visual setelah dibersihkan
 
-        return `
-          <div class="pm-peer-item-card">
-            <div class="pm-peer-item-author">
-              <div class="pm-peer-author-left">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                <span>Catatan Rekan #${fIdx + 1}</span>
-              </div>
-              <span class="pm-peer-anon-badge">🔒 Anonim</span>
+      const cardIdx = renderedCards.length + 1;
+      renderedCards.push(`
+        <div class="pm-peer-item-card">
+          <div class="pm-peer-item-author">
+            <div class="pm-peer-author-left">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span>Catatan Rekan #${cardIdx}</span>
             </div>
-            ${contentHtml}
+            <span class="pm-peer-anon-badge">🔒 Anonim</span>
           </div>
-        `;
-      }).join('');
+          ${contentHtml}
+        </div>
+      `);
+    });
+
+    if (renderedCards.length > 0) {
+      if (peerCount) peerCount.innerText = `${renderedCards.length} Masukan (Anonim)`;
+      peerList.innerHTML = renderedCards.join('');
     } else {
       if (peerCount) peerCount.innerText = "0 Masukan (Anonim)";
       const isAug = (currentModalPeriod === 'agustus');
@@ -5360,12 +5353,183 @@ async function syncLiveBphDepartemenSheets(showFeedbackToast = false) {
   }
 
   updateCardBphStatusBadges();
+  updateDepartmentLeaderboard();
 
   if (showFeedbackToast) {
     showToast("Sinkronisasi Selesai", "Data evaluasi BPH dari Google Sheets berhasil diperbarui secara real-time.");
   }
 }
 window.syncLiveBphDepartemenSheets = syncLiveBphDepartemenSheets;
+
+// 14B. LEADERBOARD DEPARTMENT OF THE MONTH (60% EVALUASI BPH + 40% INTERNAL DEPARTEMEN)
+const BEM_DEPARTMENTS_CONFIG = {
+  DAGRI: {
+    code: 'DAGRI',
+    name: 'Departemen Dalam Negeri',
+    shortName: 'Dalam Negeri (DAGRI)',
+    memberCount: 15,
+    internalScore: 8.59,
+    desc: 'Departemen Dalam Negeri (DAGRI) menunjukkan sinergi internal yang solid, akuntabilitas tinggi, serta kedisiplinan pengisian evaluasi di lingkungan BEM FTEIC ITS.'
+  },
+  LUGRI: {
+    code: 'LUGRI',
+    name: 'Departemen Luar Negeri',
+    shortName: 'Luar Negeri (LUGRI)',
+    memberCount: 18,
+    internalScore: 8.21,
+    desc: 'Departemen Luar Negeri (LUGRI) konsisten dalam ekspansi relasi eksternal, kolaborasi strategis, dan koordinasi tim yang solid.'
+  },
+  KWU: {
+    code: 'KWU',
+    name: 'Departemen Kewirausahaan',
+    shortName: 'Kewirausahaan (KWU)',
+    memberCount: 14,
+    internalScore: 8.19,
+    desc: 'Departemen Kewirausahaan (KWU) menunjukkan performa tangguh dalam pengelolaan unit usaha dan inisiatif kemandirian finansial kabinet.'
+  },
+  SOSMAS: {
+    code: 'SOSMAS',
+    name: 'Departemen Sosial Masyarakat',
+    shortName: 'Sosial Masyarakat (SOSMAS)',
+    memberCount: 18,
+    internalScore: 8.08,
+    desc: 'Departemen Sosial Masyarakat (SOSMAS) memiliki daya gerak sosial yang tinggi dan dampak kebermanfaatan nyata bagi masyarakat.'
+  },
+  PSDM: {
+    code: 'PSDM',
+    name: 'Departemen Pengembangan Sumber Daya Mahasiswa',
+    shortName: 'Pengembangan SDM (PSDM)',
+    memberCount: 13,
+    internalScore: 8.03,
+    desc: 'Departemen PSDM konsisten mengawal kaderisasi, pengembangan kapasitas fungsionaris, dan iklim kerja organisasi.'
+  },
+  RISTEK: {
+    code: 'RISTEK',
+    name: 'Departemen Riset dan Teknologi',
+    shortName: 'Riset dan Teknologi (RISTEK)',
+    memberCount: 15,
+    internalScore: 7.89,
+    desc: 'Departemen Riset dan Teknologi (RISTEK) aktif menghadirkan inovasi teknologi, digitalisasi, dan karya keilmiahan.'
+  }
+};
+
+// Hitung skor akhir departemen berdasarkan pembobotan resmi: 60% BPH + 40% Internal
+function calculateDepartmentFinalScores() {
+  const results = [];
+  const deptKeys = Object.keys(BEM_DEPARTMENTS_CONFIG);
+
+  deptKeys.forEach(code => {
+    const cfg = BEM_DEPARTMENTS_CONFIG[code];
+    let bphAvg = null;
+    let bphCount = 0;
+
+    const deptBph = (window.bphDepartemenData && window.bphDepartemenData[code]) || null;
+    if (deptBph && deptBph.evaluations) {
+      const validScores = [];
+      Object.values(deptBph.evaluations).forEach(ev => {
+        if (ev && typeof ev.averageScore === 'number' && !isNaN(ev.averageScore) && ev.averageScore > 0) {
+          validScores.push(ev.averageScore);
+        }
+      });
+      if (validScores.length > 0) {
+        bphAvg = Number((validScores.reduce((a, b) => a + b, 0) / validScores.length).toFixed(2));
+        bphCount = validScores.length;
+      }
+    }
+
+    const internalScore = cfg.internalScore;
+    let finalScore = internalScore;
+    let hasBph = false;
+
+    if (bphAvg !== null) {
+      hasBph = true;
+      finalScore = Number(((bphAvg * 0.60) + (internalScore * 0.40)).toFixed(2));
+    }
+
+    results.push({
+      ...cfg,
+      internalScore,
+      bphAvg,
+      bphCount,
+      hasBph,
+      finalScore
+    });
+  });
+
+  // Urutkan peringkat tertinggi ke terendah berdasarkan skor pembobotan
+  results.sort((a, b) => b.finalScore - a.finalScore);
+  return results;
+}
+
+// Render peringkat departemen dan kartu piala Department of the Month
+function updateDepartmentLeaderboard() {
+  const rankingListEl = document.getElementById("paDeptRankingList");
+  if (!rankingListEl) return;
+
+  const rankedDepts = calculateDepartmentFinalScores();
+  if (!rankedDepts || rankedDepts.length === 0) return;
+
+  const topDept = rankedDepts[0];
+
+  // 1. Update Best Department of the Month Trophy Card
+  const bestNameEl = document.getElementById("bestDeptName");
+  const bestScoreEl = document.getElementById("bestDeptScoreVal");
+  const bestPredikatEl = document.getElementById("bestDeptPredikatText");
+  const bestComponentsEl = document.getElementById("bestDeptScoreComponents");
+  const bestDescEl = document.getElementById("bestDeptDesc");
+  const bestStaffCountEl = document.getElementById("bestDeptStaffCount");
+
+  if (bestNameEl) bestNameEl.innerText = topDept.name;
+  if (bestScoreEl) bestScoreEl.innerText = topDept.finalScore.toFixed(2);
+  if (bestPredikatEl) {
+    bestPredikatEl.innerText = topDept.finalScore >= 8.5 ? 'Sangat Baik (A)' : (topDept.finalScore >= 8.0 ? 'Sangat Baik (AB)' : 'Baik (B)');
+  }
+  if (bestComponentsEl) {
+    if (topDept.hasBph) {
+      bestComponentsEl.innerHTML = `• (BPH: <strong>${topDept.bphAvg}</strong> [60%] | Internal: <strong>${topDept.internalScore}</strong> [40%])`;
+    } else {
+      bestComponentsEl.innerHTML = `• (Internal: <strong>${topDept.internalScore}</strong> [40%] | BPH: <em>Menunggu Penilaian</em> [60%])`;
+    }
+  }
+  if (bestDescEl) {
+    bestDescEl.innerText = `${topDept.name} (${topDept.code}) berhasil meraih nilai akumulasi tertinggi di lingkungan BEM FTEIC ITS berdasarkan pembobotan 60% evaluasi BPH dan 40% nilai internal fungsionaris. ${topDept.desc}`;
+  }
+  if (bestStaffCountEl) {
+    bestStaffCountEl.innerHTML = `<strong>${topDept.memberCount} / ${topDept.memberCount}</strong> Fungsionaris Dinilai`;
+  }
+
+  // 2. Update Leaderboard List (Rank 1 sampai 6)
+  rankingListEl.innerHTML = rankedDepts.map((dept, idx) => {
+    const rankNum = idx + 1;
+    const rankClass = rankNum === 1 ? 'rank-1' : (rankNum === 2 ? 'rank-2' : (rankNum === 3 ? 'rank-3' : ''));
+    const barWidth = Math.min(100, Math.round((dept.finalScore / 10) * 100));
+    const predikat = dept.finalScore >= 8.5 ? 'Sangat Baik (A)' : (dept.finalScore >= 8.0 ? 'Sangat Baik (AB)' : 'Baik (B)');
+    const scoreColor = rankNum === 1 ? 'color: #B45309; font-weight: 800;' : 'color: var(--text-1); font-weight: 700;';
+
+    const bphMeta = dept.hasBph 
+      ? `BPH: <strong>${dept.bphAvg}</strong> (60%) • Internal: <strong>${dept.internalScore}</strong> (40%)` 
+      : `Internal: <strong>${dept.internalScore}</strong> (40%) • BPH: <em>Proses (60%)</em>`;
+
+    return `
+      <div class="pa-ranking-item ${rankClass}">
+        <div class="pa-rank-pos-wrap">
+          <span class="pa-rank-num">${rankNum}</span>
+          <div class="pa-rank-dept-info">
+            <span class="pa-rank-dept-name">${escapeHtml(dept.shortName)} ${rankNum === 1 ? '🏆' : ''}</span>
+            <span class="pa-rank-dept-meta">${dept.memberCount} Fungsionaris • ${bphMeta} • ${predikat}</span>
+          </div>
+        </div>
+        <div class="pa-rank-score-wrap">
+          <div class="pa-rank-bar-bg" title="Akumulasi: 60% BPH + 40% Internal">
+            <div class="pa-rank-bar-fill" style="width: ${barWidth}%;"></div>
+          </div>
+          <span class="pa-rank-score-text" style="${scoreColor}">${dept.finalScore.toFixed(2)}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+window.updateDepartmentLeaderboard = updateDepartmentLeaderboard;
 
 // 15. GLOBAL BOOTSTRAP INITIALIZER
 function bootstrapApp() {
@@ -5375,6 +5539,7 @@ function bootstrapApp() {
   if (typeof initStatCounters === 'function') initStatCounters();
   if (typeof initHeroScrollFade === 'function') initHeroScrollFade();
   initHorizontalSliders();
+  updateDepartmentLeaderboard();
   setTimeout(() => syncLiveBphDepartemenSheets(false), 800);
 }
 
