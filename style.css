@@ -11621,6 +11621,404 @@ body::before {
   font-style: italic;
 }
 
+/* ── 9. EVALUASI & CATATAN BPH UNTUK DEPARTEMEN ── */
+.pm-bph-feedback-box {
+  margin-top: 18px;
+  background: var(--surface-2, rgba(248, 250, 252, 0.95));
+  border: 1px solid var(--border, rgba(226, 232, 240, 0.9));
+  border-radius: var(--radius-md, 14px);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.03));
+}
+
+[data-theme="dark"] .pm-bph-feedback-box {
+  background: rgba(17, 24, 39, 0.75);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.pm-bph-feedback-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed rgba(226, 232, 240, 0.8);
+}
+
+[data-theme="dark"] .pm-bph-feedback-header {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.pm-bph-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pm-bph-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  background: rgba(245, 158, 11, 0.12);
+  color: #D97706;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.pm-bph-title {
+  font-size: 0.96rem;
+  font-weight: 800;
+  color: var(--text-1, #0f172a);
+  margin: 0;
+}
+
+.pm-bph-status-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 9999px;
+}
+
+.pm-bph-status-tag.status-done {
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.pm-bph-status-tag.status-pending {
+  background: rgba(245, 158, 11, 0.12);
+  color: #D97706;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.pm-bph-status-tag.status-bph {
+  background: rgba(99, 102, 241, 0.12);
+  color: #4F46E5;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.pm-bph-status-tag.status-biro {
+  background: rgba(59, 130, 246, 0.12);
+  color: #2563EB;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.pm-bph-desc {
+  font-size: 0.8rem;
+  color: var(--text-2, #64748b);
+  margin: 8px 0 14px;
+  line-height: 1.5;
+}
+
+/* Grid of 3 BPH cards */
+.pm-bph-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 14px;
+}
+
+.bph-eval-card {
+  background: var(--card-bg, #ffffff);
+  border: 1px solid var(--border-color, rgba(226, 232, 240, 0.85));
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bph-eval-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .bph-eval-card {
+  background: #0f172a;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.bph-eval-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.bph-eval-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bph-avatar-wrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1.5px solid var(--border, rgba(226, 232, 240, 0.8));
+  flex-shrink: 0;
+}
+
+.bph-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bph-author-name {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--text-1, #0f172a);
+  margin: 0;
+  line-height: 1.25;
+}
+
+.bph-author-role {
+  font-size: 0.7rem;
+  color: var(--text-3, #94a3b8);
+  margin: 2px 0 0;
+  line-height: 1.2;
+}
+
+.bph-card-status-badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+.bph-card-status-badge.status-filled {
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.bph-card-status-badge.status-pending {
+  background: rgba(245, 158, 11, 0.12);
+  color: #D97706;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.bph-score-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: rgba(241, 245, 249, 0.7);
+  border-radius: 8px;
+  font-size: 0.75rem;
+}
+
+[data-theme="dark"] .bph-score-banner {
+  background: rgba(30, 41, 59, 0.6);
+}
+
+.bph-score-label {
+  color: var(--text-2, #64748b);
+  font-weight: 600;
+}
+
+.bph-score-val {
+  font-family: var(--font-mono, monospace);
+  font-weight: 800;
+  color: var(--accent, #1d536b);
+}
+
+.bph-score-scale {
+  font-size: 0.65rem;
+  color: var(--text-3, #94a3b8);
+  font-weight: normal;
+}
+
+.bph-ssc-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bph-ssc-title {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-3, #94a3b8);
+}
+
+.bph-ssc-item {
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.bph-ssc-item.stop {
+  background: rgba(239, 68, 68, 0.06);
+  border-left: 3px solid #EF4444;
+}
+
+.bph-ssc-item.start {
+  background: rgba(2, 132, 199, 0.06);
+  border-left: 3px solid #0284C7;
+}
+
+.bph-ssc-item.continue {
+  background: rgba(16, 185, 129, 0.06);
+  border-left: 3px solid #10B981;
+}
+
+.bph-ssc-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.bph-ssc-badge {
+  font-size: 0.6rem;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.bph-ssc-badge.stop { background: rgba(239, 68, 68, 0.15); color: #DC2626; }
+.bph-ssc-badge.start { background: rgba(2, 132, 199, 0.15); color: #0284C7; }
+.bph-ssc-badge.continue { background: rgba(16, 185, 129, 0.15); color: #059669; }
+
+.bph-ssc-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-3, #94a3b8);
+}
+
+.bph-ssc-content {
+  color: var(--text-1, #0f172a);
+  white-space: pre-line;
+}
+
+.bph-ssc-empty {
+  padding: 12px;
+  text-align: center;
+  background: rgba(241, 245, 249, 0.5);
+  border-radius: 8px;
+  font-size: 0.75rem;
+  color: var(--text-2, #64748b);
+}
+
+.bph-empty-icon {
+  font-size: 1.2rem;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.bph-kesan-container {
+  margin-top: 6px;
+  padding: 8px 10px;
+  background: rgba(245, 158, 11, 0.06);
+  border-radius: 8px;
+  border: 1px dashed rgba(245, 158, 11, 0.3);
+}
+
+.bph-kesan-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #B45309;
+  margin-bottom: 4px;
+}
+
+.bph-kesan-content {
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--text-1, #0f172a);
+  font-style: italic;
+  white-space: pre-line;
+}
+
+/* Card sync badge on staff directory */
+.card-bph-sync-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  color: #B45309;
+  font-size: 0.67rem;
+  font-weight: 700;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.card-bph-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #F59E0B;
+  box-shadow: 0 0 5px #F59E0B;
+}
+
+.pm-bph-special-notice {
+  display: flex;
+  gap: 12px;
+  padding: 14px;
+  background: rgba(241, 245, 249, 0.8);
+  border-radius: 10px;
+  align-items: flex-start;
+}
+
+[data-theme="dark"] .pm-bph-special-notice {
+  background: rgba(30, 41, 59, 0.7);
+}
+
+.pm-bph-notice-icon {
+  font-size: 1.5rem;
+}
+
+.pm-bph-notice-content h4 {
+  margin: 0 0 6px;
+  font-size: 0.92rem;
+  color: var(--text-1);
+}
+
+.pm-bph-notice-content p {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--text-2);
+}
+
+.pm-bph-links-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-bph-link {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.btn-bph-link:hover {
+  opacity: 0.85;
+}
+
 /* ── RESPONSIVE MOBILE OPTIMIZATIONS (Enak dilihat & tidak sesak memenuhi layar) ── */
 @media (max-width: 640px) {
   /* Modal Card Wrapper: Padding lebih proporsional & tidak terlalu mepet */
@@ -11825,5 +12223,77 @@ body::before {
   .nb-quad-desc {
     font-size: 0.7rem !important;
   }
+
+  /* BPH Department Feedback Box di Mobile */
+  .pm-bph-feedback-box {
+    padding: 12px 10px !important;
+    margin-top: 12px !important;
+    border-radius: 12px !important;
+  }
+
+  .pm-bph-feedback-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
+    padding-bottom: 6px !important;
+  }
+
+  .pm-bph-title-row {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+
+  .pm-bph-title {
+    font-size: 0.85rem !important;
+  }
+
+  .pm-bph-status-tag {
+    font-size: 0.62rem !important;
+    padding: 2px 7px !important;
+  }
+
+  .pm-bph-desc {
+    font-size: 0.72rem !important;
+    line-height: 1.35 !important;
+    margin: 6px 0 10px !important;
+  }
+
+  .pm-bph-cards-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .bph-eval-card {
+    padding: 10px 10px !important;
+    border-radius: 10px !important;
+  }
+
+  .bph-author-name {
+    font-size: 0.82rem !important;
+  }
+
+  .bph-author-role {
+    font-size: 0.65rem !important;
+  }
+
+  .bph-ssc-item {
+    padding: 6px 8px !important;
+    font-size: 0.72rem !important;
+  }
+
+  .bph-ssc-content {
+    font-size: 0.72rem !important;
+  }
+
+  .bph-kesan-container {
+    padding: 6px 8px !important;
+  }
+
+  .bph-kesan-content {
+    font-size: 0.72rem !important;
+  }
 }
+
 
