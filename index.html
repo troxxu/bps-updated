@@ -1371,11 +1371,11 @@
         <div class="ninebox-grid-wrapper">
           <div class="ninebox-y-axis-container">
             <span class="ninebox-axis-arrow">▲</span>
-            <span class="ninebox-axis-text">Potential</span>
+            <span class="ninebox-axis-text">Potential & Interest</span>
           </div>
           <div class="ninebox-matrix-outer">
             <div class="ninebox-grid" id="pmNineBoxGrid">
-              <!-- Baris 1: High Potential -->
+              <!-- Baris 1: High Potential & Interest -->
               <div class="ninebox-cell enigma" data-quadrant="enigma" onclick="showQuadrantInfo('enigma')">
                 <span class="ninebox-cell-title">Enigma</span>
                 <span class="ninebox-cell-sub">High Pot • Low Perf</span>
@@ -1389,7 +1389,7 @@
                 <span class="ninebox-cell-sub">High Pot • High Perf</span>
               </div>
 
-              <!-- Baris 2: Medium Potential -->
+              <!-- Baris 2: Medium Potential & Interest -->
               <div class="ninebox-cell dilemma" data-quadrant="dilemma" onclick="showQuadrantInfo('dilemma')">
                 <span class="ninebox-cell-title">Dilemma</span>
                 <span class="ninebox-cell-sub">Med Pot • Low Perf</span>
@@ -1403,7 +1403,7 @@
                 <span class="ninebox-cell-sub">Med Pot • High Perf</span>
               </div>
 
-              <!-- Baris 3: Low Potential -->
+              <!-- Baris 3: Low Potential & Interest -->
               <div class="ninebox-cell under-performer" data-quadrant="under-performer" onclick="showQuadrantInfo('under-performer')">
                 <span class="ninebox-cell-title">Under Performer</span>
                 <span class="ninebox-cell-sub">Low Pot • Low Perf</span>
@@ -1434,7 +1434,7 @@
               </div>
             </div>
             <div class="pm-nb-metric-chip">
-              <div class="pm-nb-metric-label">Potential (Kapasitas Strategis)</div>
+              <div class="pm-nb-metric-label">Potential & Interest (Sumbu Y)</div>
               <div class="pm-nb-metric-val">
                 <span id="pmNbPotScore">8.4</span>
                 <span class="pm-nb-metric-tag" id="pmNbPotTag">Medium</span>
@@ -1446,6 +1446,20 @@
           </div>
           <div class="pm-nb-action-box" id="pmNbActionBox">
             <strong>Rekomendasi Biro Personalia:</strong> Berikan pengayaan wawasan manajerial dan rotasi tanggung jawab kepanitiaan untuk memicu potensi kepemimpinan ke tingkat berikutnya.
+          </div>
+        </div>
+
+        <!-- ── KARTU REKAP KONSELING & MINAT STAF (BIRO PERSONALIA) ── -->
+        <div class="pm-counseling-card" id="pmCounselingCard">
+          <div class="pm-counseling-header">
+            <div class="pm-counseling-title-row">
+              <span class="pm-counseling-badge">Biro Personalia</span>
+              <span class="pm-counseling-title">Hasil Konseling & Aspirasi Minat</span>
+            </div>
+            <span class="pm-counseling-status-tag" id="pmCounselingStatusTag">Terdata</span>
+          </div>
+          <div class="pm-counseling-body" id="pmCounselingBody">
+            <!-- Diisi otomatis oleh JavaScript -->
           </div>
         </div>
       </div>
@@ -1573,6 +1587,7 @@
       });
     });
   </script>
+  <script src="counseling_data.js"></script>
   <script src="app.js" defer></script>
 </body>
 

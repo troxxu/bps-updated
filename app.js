@@ -4266,7 +4266,161 @@ function initHorizontalSliders() {
 // 14B. 9-BOX TALENT MATRIX ENGINE (BIRO PERSONALIA BEM FTEIC ITS 2026)
 // ==============================================================================
 
-// Menghitung posisi koordinat dan kuadran fungsionaris pada 9-Box Grid
+// ==============================================================================
+// 14B. 9-BOX TALENT MATRIX ENGINE (BIRO PERSONALIA BEM FTEIC ITS 2026)
+// ==============================================================================
+
+// Data Konseling Staf (Sinkronisasi dari Google Sheets Konseling Biro Personalia)
+let staffCounselingData = (typeof window !== 'undefined' && window.COUNSELING_INITIAL_DATA) ? Object.assign({}, window.COUNSELING_INITIAL_DATA) : {};
+
+// Konfigurasi Google Spreadsheet Konseling Per Departemen
+const COUNSELING_SHEET_CONFIG = {
+  'KWU': {
+    docId: '10s_3MCc0ANPxo4BjDlVi9T6EaLhpQCHkVsRA8Clbdh8',
+    aliases: [
+      ['mahdy', 'staf-089'],
+      ['nayaka', 'staf-086'],
+      ['nabila', 'staf-092'],
+      ['nabil', 'staf-085'],
+      ['oci', 'staf-087'],
+      ['arel', 'staf-093'],
+      ['vanya', 'staf-090'],
+      ['ahnaf', 'staf-094'],
+      ['salma', 'staf-088']
+    ]
+  },
+  'LUGRI': {
+    docId: '1JKsdm_A0hRj6EDmYWfWNO1q7T5apGZ-NnNXhaFKtdtk',
+    aliases: [
+      ['valerine', 'staf-077'],
+      ['darlene', 'staf-067'],
+      ['bagas', 'staf-068'],
+      ['hady', 'staf-070'],
+      ['nindita', 'staf-066'],
+      ['faiz', 'staf-072'],
+      ['adel', 'staf-076'],
+      ['fayola', 'staf-069']
+    ]
+  },
+  'PSDM': {
+    docId: '1W6pYk16v0s0Bsq7LH27G4ZCnbiBnpfvtrzrU-gMgG9c',
+    aliases: [
+      ['munazalty', 'staf-024'],
+      ['rakha', 'staf-025'],
+      ['fika', 'staf-021'],
+      ['alya', 'staf-018'],
+      ['justin', 'staf-027'],
+      ['andrya', 'staf-023'],
+      ['rasya iza', 'staf-028']
+    ]
+  },
+  'RISTEK': {
+    docId: '1cszEbpOAs13u7J1WXbow4NMbvyYPTLkaHpiRNhAeAlw',
+    aliases: [
+      ['reta', 'staf-038'],
+      ['juki', 'staf-041'],
+      ['nasywa', 'staf-035'],
+      ['via', 'staf-034'],
+      ['farrel', 'staf-037'],
+      ['syifa', 'staf-039'],
+      ['vio', 'staf-043']
+    ]
+  },
+  'SOSMAS': {
+    docId: '1VbTBl5oJoLCi3huaijTlIN_0J-dIOkXf6UaJe_STCQY',
+    aliases: [
+      ['sela', 'staf-059'],
+      ['anisa', 'staf-051'],
+      ['silvina', 'staf-055'],
+      ['amar', 'staf-053'],
+      ['agha', 'staf-054'],
+      ['irfan', 'staf-056'],
+      ['gabriel', 'staf-061'],
+      ['ajeng', 'staf-049'],
+      ['sandika', 'staf-050'],
+      ['ernest', 'staf-057'],
+      ['naya', 'staf-052'],
+      ['ivo', 'staf-058']
+    ]
+  }
+};
+
+// Fungsi Sinkronisasi Live Data Konseling dari Google Sheets
+async function syncLiveCounselingSheets() {
+  const depts = Object.keys(COUNSELING_SHEET_CONFIG);
+  for (const dept of depts) {
+    const cfg = COUNSELING_SHEET_CONFIG[dept];
+    if (!cfg || !cfg.docId) continue;
+    try {
+      const url = `https://docs.google.com/spreadsheets/d/${cfg.docId}/gviz/tq?tqx=out:csv`;
+      const res = await fetch(url, { headers: { 'Accept': 'text/csv' } });
+      if (!res.ok) continue;
+      const text = await res.text();
+      const rows = parseCsvRows(text);
+      if (!rows || rows.length < 2) continue;
+      const header = rows[0];
+
+      for (let c = 2; c < header.length; c++) {
+        const cell = (header[c] || '').trim();
+        const cellClean = cell.toLowerCase().replace(/\n/g, ' ');
+        if (!cellClean) continue;
+
+        let matchedId = null;
+        for (const [alias, sid] of cfg.aliases) {
+          if (cellClean.includes(alias)) {
+            matchedId = sid;
+            break;
+          }
+        }
+        if (!matchedId) continue;
+
+        const q1 = rows[1] && rows[1][c] ? rows[1][c].trim() : '';
+        const q2 = rows[2] && rows[2][c] ? rows[2][c].trim() : '';
+        const q4 = rows[4] && rows[4][c] ? rows[4][c].trim() : '';
+        const q5 = rows[5] && rows[5][c] ? rows[5][c].trim() : '';
+        const q6 = rows[6] && rows[6][c] ? rows[6][c].trim() : '';
+
+        let scoreMatch = q1.match(/(\d+(?:\.\d+)?)\s*(?:\/10|kwu|ristek|psdm|lugri|sosmas|bem|kepuasan|\s+di\b|\s+lah\b)/i);
+        let foundNum = scoreMatch ? parseFloat(scoreMatch[1]) : null;
+        if (!foundNum) {
+          let simpleMatch = q1.match(/\b([1-9]|10)\b/);
+          if (simpleMatch) foundNum = parseFloat(simpleMatch[1]);
+        }
+
+        let interestScore = 7.5;
+        const q4Low = q4.toLowerCase();
+        if (/0 minat|ngga ada|gaada|tidak minat|skip|cape/i.test(q4Low)) interestScore = 6.2;
+        else if (/mau jadi kadep|pengen|minat|besar menerima|lanjut|50 50/i.test(q4Low)) interestScore = 8.8;
+
+        let leadershipScore = 7.8;
+        const q5Low = q5.toLowerCase();
+        if (/kadep|wakadep|kabiro|bph|petinggi|struktural/i.test(q5Low)) leadershipScore = 8.7;
+        else if (/gaada samsek|gamau|takut|ga pede/i.test(q5Low)) leadershipScore = 6.8;
+
+        const potInterestScore = Number((((foundNum || 7.8) * 0.3) + (interestScore * 0.4) + (leadershipScore * 0.3)).toFixed(1));
+
+        staffCounselingData[matchedId] = {
+          staffId: matchedId,
+          dept: dept,
+          headerCell: cell,
+          kepuasanText: q1,
+          pembelajaranText: q2,
+          minatLanjutText: q4,
+          posisiDiminatiText: q5,
+          pesanLegacyText: q6,
+          skorRefleksi: foundNum,
+          skorPotentialInterest: potInterestScore,
+          status: (q1 || q2 || q4 || q5) ? 'Terdata' : 'Belum Mengisi'
+        };
+      }
+    } catch (e) {
+      // Abaikan issue koneksi Google Spreadsheet sementara
+    }
+  }
+}
+setTimeout(syncLiveCounselingSheets, 2500);
+
+// Menghitung posisi koordinat dan kuadran fungsionaris staf pada 9-Box Grid
 function getNineBoxPosition(staff, rubricData) {
   if (!staff || !rubricData) {
     return {
@@ -4278,7 +4432,8 @@ function getNineBoxPosition(staff, rubricData) {
       perfTag: 'Medium',
       potLevel: 'Medium',
       potTag: 'Medium',
-      isZeroState: true
+      isZeroState: true,
+      counselingInfo: null
     };
   }
 
@@ -4288,8 +4443,9 @@ function getNineBoxPosition(staff, rubricData) {
   // 1. PERFORMANCE SCORE (Sumbu X: 0 - 10):
   const perfScore = parseFloat(rubricData.averageScore) || 0.0;
 
-  // 2. POTENTIAL SCORE (Sumbu Y: 0 - 10):
-  let potScore = 0.0;
+  // 2. POTENTIAL & INTEREST SCORE (Sumbu Y: 0 - 10):
+  // Menghitung baseline potensi dari rubrik PA fungsionaris
+  let rubricPotScore = 0.0;
   if (rubricData && rubricData.items && rubricData.items.length > 0) {
     let potItems = [];
     if (isBPH) {
@@ -4302,10 +4458,27 @@ function getNineBoxPosition(staff, rubricData) {
 
     const scoredPot = potItems.filter(it => it.score > 0);
     if (scoredPot.length > 0) {
-      potScore = scoredPot.reduce((acc, it) => acc + it.score, 0) / scoredPot.length;
+      rubricPotScore = scoredPot.reduce((acc, it) => acc + it.score, 0) / scoredPot.length;
     } else if (perfScore > 0) {
-      potScore = perfScore;
+      rubricPotScore = perfScore;
     }
+  }
+
+  // Integrasikan dengan Hasil Konseling Staf dari Google Sheets (Potential & Interest)
+  const cData = staffCounselingData[staff.id] || null;
+  let potScore = 0.0;
+
+  if (cData && cData.status === 'Terdata' && cData.skorPotentialInterest) {
+    const cScore = parseFloat(cData.skorPotentialInterest) || 7.8;
+    if (rubricPotScore > 0) {
+      // Bobot: 60% Hasil Sesi Konseling & Minat Staf + 40% Evaluasi Rubrik Potensi PA
+      potScore = Number(((cScore * 0.6) + (rubricPotScore * 0.4)).toFixed(1));
+    } else {
+      potScore = cScore;
+    }
+  } else {
+    // Jika sesi konseling masih kosong / belum mengisi, gunakan baseline rubrik potensi staf
+    potScore = rubricPotScore > 0 ? Number(rubricPotScore.toFixed(1)) : (perfScore > 0 ? Number(perfScore.toFixed(1)) : 7.8);
   }
 
   const isZeroState = (perfScore <= 0 && potScore <= 0);
@@ -4327,7 +4500,7 @@ function getNineBoxPosition(staff, rubricData) {
     perfTag = 'High';
   }
 
-  // Klasifikasi Sumbu Potential: Low (< 7.5), Medium (7.5 - 8.6), High (> 8.6)
+  // Klasifikasi Sumbu Potential & Interest: Low (< 7.5), Medium (7.5 - 8.6), High (> 8.6)
   let potLevel = 'Medium';
   let potTag = 'Medium';
   if (potScore <= 0) {
@@ -4376,7 +4549,8 @@ function getNineBoxPosition(staff, rubricData) {
     perfTag,
     potLevel,
     potTag,
-    isZeroState
+    isZeroState,
+    counselingInfo: cData
   };
 }
 
@@ -4399,7 +4573,7 @@ function renderNineBoxMatrix(staff, rubricData) {
   section.classList.remove("hidden");
 
   const position = getNineBoxPosition(staff, rubricData);
-  const { quadrantKey, quadrantInfo, perfScore, potScore, perfTag, potTag } = position;
+  const { quadrantKey, quadrantInfo, perfScore, potScore, perfTag, potTag, counselingInfo } = position;
 
   const currentTitle = document.getElementById("pmNbCurrentTitle");
   if (currentTitle) currentTitle.innerText = quadrantInfo.title;
@@ -4445,6 +4619,84 @@ function renderNineBoxMatrix(staff, rubricData) {
   if (actionEl) {
     actionEl.innerHTML = `<strong>Rekomendasi Biro Personalia:</strong> ${quadrantInfo.action}`;
   }
+
+  // Render Rangkuman Hasil Konseling & Minat Staf
+  renderCounselingInsight(staff, counselingInfo);
+}
+
+// Render Card Rangkuman Hasil Konseling Staf di Modal Personal
+function renderCounselingInsight(staff, cData) {
+  const card = document.getElementById("pmCounselingCard");
+  const body = document.getElementById("pmCounselingBody");
+  const tag = document.getElementById("pmCounselingStatusTag");
+  if (!card || !body) return;
+
+  if (!cData || cData.status !== 'Terdata' || (!cData.kepuasanText && !cData.minatLanjutText && !cData.posisiDiminatiText)) {
+    if (tag) {
+      tag.innerText = "Belum Mengisi / Terjadwal";
+      tag.className = "pm-counseling-status-tag status-pending";
+    }
+    body.innerHTML = `
+      <div class="pm-counseling-empty">
+        <p>Data sesi konseling staf ini belum terdata pada spreadsheet Biro Personalia (masih kosong/dalam proses penjadwalan).</p>
+        <span class="pm-counseling-hint">Sumbu Potential & Interest dihitung menggunakan baseline rubrik evaluasi kompetensi fungsionaris staf.</span>
+      </div>
+    `;
+    return;
+  }
+
+  if (tag) {
+    tag.innerText = "Terdata (Konseling Selesai)";
+    tag.className = "pm-counseling-status-tag status-done";
+  }
+
+  const itemsHtml = [];
+
+  if (cData.kepuasanText) {
+    itemsHtml.push(`
+      <div class="pm-counseling-item">
+        <div class="pm-counseling-item-label">
+          <span class="pm-counseling-icon">💬</span> Refleksi & Kepuasan di Departemen
+        </div>
+        <div class="pm-counseling-item-val">${escapeHtml(cData.kepuasanText)}</div>
+      </div>
+    `);
+  }
+
+  if (cData.minatLanjutText) {
+    itemsHtml.push(`
+      <div class="pm-counseling-item">
+        <div class="pm-counseling-item-label">
+          <span class="pm-counseling-icon">🎯</span> Minat Berkontribusi Tahun Depan
+        </div>
+        <div class="pm-counseling-item-val">${escapeHtml(cData.minatLanjutText)}</div>
+      </div>
+    `);
+  }
+
+  if (cData.posisiDiminatiText) {
+    itemsHtml.push(`
+      <div class="pm-counseling-item">
+        <div class="pm-counseling-item-label">
+          <span class="pm-counseling-icon">🚀</span> Aspirasi Posisi / Peran yang Diminati
+        </div>
+        <div class="pm-counseling-item-val">${escapeHtml(cData.posisiDiminatiText)}</div>
+      </div>
+    `);
+  }
+
+  if (cData.pembelajaranText) {
+    itemsHtml.push(`
+      <div class="pm-counseling-item">
+        <div class="pm-counseling-item-label">
+          <span class="pm-counseling-icon">💡</span> Pembelajaran & Kendala Terbesar
+        </div>
+        <div class="pm-counseling-item-val">${escapeHtml(cData.pembelajaranText)}</div>
+      </div>
+    `);
+  }
+
+  body.innerHTML = itemsHtml.join('');
 }
 
 // Handler interaktif ketika pengguna mengklik kuadran tertentu pada grid

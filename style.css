@@ -11491,3 +11491,339 @@ body::before {
   line-height: 1.4;
 }
 
+/* ── KARTU REKAP HASIL KONSELING STAF ── */
+.pm-counseling-card {
+  margin-top: 14px;
+  background: rgba(248, 250, 252, 0.9);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+[data-theme="dark"] .pm-counseling-card {
+  background: rgba(17, 24, 39, 0.7);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.pm-counseling-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(226, 232, 240, 0.8);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+[data-theme="dark"] .pm-counseling-header {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.pm-counseling-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pm-counseling-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  background: rgba(16, 185, 129, 0.1);
+  color: #10B981;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.pm-counseling-title {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--text-1, #0f172a);
+}
+
+.pm-counseling-status-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 9999px;
+}
+
+.pm-counseling-status-tag.status-done {
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.pm-counseling-status-tag.status-pending {
+  background: rgba(245, 158, 11, 0.12);
+  color: #D97706;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.pm-counseling-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pm-counseling-item {
+  background: var(--card-bg, #ffffff);
+  border: 1px solid var(--border-color, rgba(226, 232, 240, 0.8));
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+[data-theme="dark"] .pm-counseling-item {
+  background: #0f172a;
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+.pm-counseling-item-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-2, #475569);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.pm-counseling-item-val {
+  font-size: 0.8rem;
+  color: var(--text-1, #0f172a);
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+.pm-counseling-empty {
+  padding: 14px;
+  text-align: center;
+  background: rgba(241, 245, 249, 0.6);
+  border-radius: 10px;
+  font-size: 0.8rem;
+  color: var(--text-2);
+}
+
+.pm-counseling-hint {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.72rem;
+  color: var(--text-3);
+  font-style: italic;
+}
+
+/* ── RESPONSIVE MOBILE OPTIMIZATIONS (Enak dilihat & tidak sesak memenuhi layar) ── */
+@media (max-width: 640px) {
+  /* Modal Card Wrapper: Padding lebih proporsional & tidak terlalu mepet */
+  .modal-card-wide {
+    width: 92% !important;
+    max-width: 92vw !important;
+    padding: 20px 14px 18px !important;
+    border-radius: 16px !important;
+    max-height: 88vh !important;
+  }
+
+  .ninebox-overview-card {
+    width: 92% !important;
+    max-width: 92vw !important;
+    padding: 18px 14px 16px !important;
+    border-radius: 16px !important;
+  }
+
+  /* 9-Box Section in Progress Modal */
+  .pm-ninebox-section {
+    padding: 12px 10px !important;
+    margin: 14px 0 10px !important;
+    border-radius: 12px !important;
+  }
+
+  .pm-ninebox-header {
+    margin-bottom: 10px !important;
+    gap: 8px !important;
+  }
+
+  .pm-ninebox-title {
+    font-size: 0.95rem !important;
+  }
+
+  .pm-ninebox-desc {
+    font-size: 0.72rem !important;
+    line-height: 1.35 !important;
+  }
+
+  .pm-ninebox-current-pill {
+    padding: 5px 10px !important;
+    font-size: 0.72rem !important;
+  }
+
+  /* Matrix Grid Wrapper */
+  .ninebox-grid-wrapper {
+    margin: 8px 0 10px !important;
+    gap: 6px !important;
+  }
+
+  .ninebox-y-axis-container {
+    width: 18px !important;
+  }
+
+  .ninebox-y-axis-container .ninebox-axis-text {
+    font-size: 0.58rem !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  .ninebox-axis-arrow {
+    font-size: 0.65rem !important;
+  }
+
+  .ninebox-x-axis-container .ninebox-axis-text {
+    font-size: 0.58rem !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  /* Cells: Dibuat kompak agar tidak menelan layar vertikal */
+  .ninebox-grid {
+    gap: 5px !important;
+  }
+
+  .ninebox-cell {
+    min-height: 52px !important;
+    padding: 4px 2px !important;
+    border-radius: 8px !important;
+  }
+
+  .ninebox-cell-title {
+    font-size: 0.65rem !important;
+    line-height: 1.15 !important;
+    margin-bottom: 1px !important;
+  }
+
+  .ninebox-cell-sub {
+    font-size: 0.52rem !important;
+    line-height: 1.1 !important;
+  }
+
+  .ninebox-cell-pin-badge {
+    font-size: 0.5rem !important;
+    padding: 1px 5px !important;
+    top: -6px !important;
+    right: -3px !important;
+  }
+
+  /* Insight Card & Metrics */
+  .pm-ninebox-insight-card {
+    padding: 10px 8px !important;
+    margin-top: 10px !important;
+    border-radius: 10px !important;
+  }
+
+  .pm-nb-metrics-row {
+    gap: 6px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .pm-nb-metric-chip {
+    padding: 6px 8px !important;
+    min-width: 110px !important;
+    border-radius: 8px !important;
+  }
+
+  .pm-nb-metric-label {
+    font-size: 0.6rem !important;
+  }
+
+  .pm-nb-metric-val {
+    font-size: 0.95rem !important;
+  }
+
+  .pm-nb-metric-tag {
+    font-size: 0.62rem !important;
+    padding: 1px 4px !important;
+  }
+
+  .pm-nb-desc-box {
+    font-size: 0.74rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 6px !important;
+  }
+
+  .pm-nb-action-box {
+    font-size: 0.72rem !important;
+    padding: 8px 10px !important;
+    line-height: 1.35 !important;
+  }
+
+  /* Card Konseling di Mobile */
+  .pm-counseling-card {
+    padding: 10px 8px !important;
+    margin-top: 10px !important;
+    border-radius: 10px !important;
+  }
+
+  .pm-counseling-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
+    padding-bottom: 6px !important;
+  }
+
+  .pm-counseling-title-row {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+
+  .pm-counseling-title {
+    font-size: 0.82rem !important;
+  }
+
+  .pm-counseling-status-tag {
+    font-size: 0.62rem !important;
+    padding: 2px 7px !important;
+  }
+
+  .pm-counseling-item {
+    padding: 7px 8px !important;
+    border-radius: 8px !important;
+  }
+
+  .pm-counseling-item-label {
+    font-size: 0.66rem !important;
+  }
+
+  .pm-counseling-item-val {
+    font-size: 0.74rem !important;
+    line-height: 1.35 !important;
+  }
+
+  /* Overview Modal di Mobile */
+  .nb-diagram-container {
+    padding: 8px !important;
+  }
+
+  .nb-diagram-img {
+    max-width: 220px !important;
+  }
+
+  .nb-quad-card {
+    padding: 8px 10px !important;
+  }
+
+  .nb-quad-name {
+    font-size: 0.78rem !important;
+  }
+
+  .nb-quad-desc {
+    font-size: 0.7rem !important;
+  }
+}
+
