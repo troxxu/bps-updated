@@ -1243,6 +1243,10 @@
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
           Ingin melihat hasil rekapitulasi resmi PA Agustus? <strong>Buka Arsip PA Agustus &rarr;</strong>
         </button>
+        <button type="button" class="pm-hint-btn pm-hint-bph" onclick="scrollToBphFeedback()" title="Gulir langsung ke Catatan Evaluasi BPH (Ketua BEM &amp; Sekjen)">
+          <span>🏛️</span>
+          <span>Catatan BPH Departemen &darr;</span>
+        </button>
       </div>
 
       <!-- ── LIVE SYNC STATUS BANNER (REAL-TIME GOOGLE SPREADSHEET ENGINE) ── -->
@@ -1566,6 +1570,49 @@
       <div class="pm-modal-actions" style="margin-top:16px;">
         <button type="button" class="btn-modal-cancel" style="width:100%;" onclick="closeNineBoxOverviewModal()">
           Tutup Panduan
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 11. BPH DEPARTEMEN EVALUATION MODAL (STANDALONE QUICK VIEW) ── -->
+  <div id="bphDepartemenModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="bphDeptModalTitle">
+    <div class="modal-card bph-dept-modal-card">
+      <div class="pm-modal-header bph-modal-header">
+        <div class="pm-title-row">
+          <div class="bph-modal-icon-badge">🏛️</div>
+          <div>
+            <div class="bph-modal-sub-badge">BPH KABINET POLARIS 2026 • EVALUASI DEPARTEMEN</div>
+            <h3 id="bphDeptModalTitle" class="pm-name">Evaluasi BPH untuk Departemen</h3>
+            <p id="bphDeptModalSubtitle" class="pm-role">Catatan Langsung dari Ketua BEM, Sekjen 1, dan Sekjen 2</p>
+          </div>
+        </div>
+        <button type="button" class="btn-close-modal" onclick="closeBphDepartemenModal()" aria-label="Tutup modal evaluasi BPH">✕</button>
+      </div>
+
+      <div class="bph-modal-body">
+        <div class="bph-modal-intro-banner">
+          <div class="bph-intro-icon">📌</div>
+          <div class="bph-intro-text">
+            <strong>Keterbukaan &amp; Sinergi Kabinet:</strong> Seluruh fungsionaris di departemen ini dapat melihat langsung evaluasi berkala (Start, Stop, Continue serta Kesan &amp; Pesan) dari jajaran Presidium BPH (Ketua BEM &amp; Sekjen) untuk akselerasi performa bersama.
+          </div>
+          <button type="button" class="btn-bph-sync-now" onclick="syncLiveBphDepartemenSheets(true)" title="Perbarui data langsung dari Google Sheets BPH">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+            </svg>
+            <span>Sinkronkan Live BPH</span>
+          </button>
+        </div>
+
+        <div id="bphDeptModalCardsGrid" class="pm-bph-cards-grid">
+          <!-- Diisi otomatis oleh JavaScript: Card Ilman, Mirza, Bramantio -->
+        </div>
+      </div>
+
+      <div class="pm-modal-actions">
+        <button type="button" class="btn-modal-cancel" onclick="closeBphDepartemenModal()">Tutup</button>
+        <button type="button" id="bphDeptOpenPersonalBtn" class="btn-modal-submit" onclick="openPersonalFromBphModal()">
+          <span>Buka Rapor Personal Fungsionaris ↗</span>
         </button>
       </div>
     </div>

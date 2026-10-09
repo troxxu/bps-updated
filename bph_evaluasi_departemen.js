@@ -266,7 +266,7 @@ window.bphDepartemenData = {
   },
   "PSDM": {
     "deptCode": "PSDM",
-    "deptName": "Departemen Pengembangan SDM",
+    "deptName": "Departemen Pengembangan Sumber Daya Mahasiswa",
     "evaluations": {
       "ilman": {
         "bphKey": "ilman",
