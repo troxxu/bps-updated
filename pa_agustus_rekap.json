@@ -23072,9 +23072,9 @@
       },
       {
         "evaluatorRole": "Staf",
-        "stopStartContinue": "",
+        "stopStartContinue": "[Stop] : slow respon\n[Start] : ketika meminta sesuatu jauh2 hari, jangan mendadak\n[Continue] : semangatnya",
         "pesanKesan": "Ceria setiap saat, temannya ada di mana2. Keep it up van, tetap jadi vanya yg kita kenal yapss",
-        "text": "Ceria setiap saat, temannya ada di mana2. Keep it up van, tetap jadi vanya yg kita kenal yapss"
+        "text": "[Stop] : slow respon\n[Start] : ketika meminta sesuatu jauh2 hari, jangan mendadak\n[Continue] : semangatnya\n\nCeria setiap saat, temannya ada di mana2. Keep it up van, tetap jadi vanya yg kita kenal yapss"
       },
       {
         "evaluatorRole": "Staf",

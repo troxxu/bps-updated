@@ -1719,8 +1719,8 @@ function isValidFeedbackText(text, targetStaff = null) {
   const isNumericOnly = !isNaN(parseFloat(trimmed.replace(',', '.'))) && !/[a-zA-Z]{3,}/.test(trimmed);
   if (isNumericOnly) return false;
 
-  // Lewati jika teks adalah nama target fungsionaris yang sedang dinilai
-  if (targetStaff && isStaffNameMatchingCol(targetStaff.nama, trimmed)) {
+  // Lewati jika teks persis sama dengan nama target fungsionaris (header kolom yang tidak sengaja terbaca)
+  if (targetStaff && cleanTokenStr(trimmed) === cleanTokenStr(targetStaff.nama)) {
     return false;
   }
 
@@ -2371,8 +2371,8 @@ function getStaffRubricData(staff, liveData = null) {
       const isNumOnly = !isNaN(parseFloat(txt.replace(',', '.'))) && !/[a-zA-Z]{3,}/.test(txt);
       if (isNumOnly) return false;
 
-      // Filter keluar jika teks sama dengan nama target fungsionaris yang sedang dinilai
-      if (isStaffNameMatchingCol(staff.nama, txt)) return false;
+      // Filter keluar jika teks persis sama dengan nama target fungsionaris (header kolom yang tidak sengaja terbaca)
+      if (cleanTokenStr(txt) === cleanTokenStr(staff.nama)) return false;
 
       // Filter keluar jika teks adalah nama salah satu fungsionaris lain di organisasi
       if (typeof staffList !== 'undefined' && Array.isArray(staffList)) {
@@ -3405,7 +3405,7 @@ function openProgressModal(staff, liveData = null, period = null) {
       const pesan = (fb.pesanKesan || '').trim();
       const txt = (fb.text || pesan || ssc || '').trim();
       if (!txt) return false;
-      if (isStaffNameMatchingCol(staff.nama, txt)) return false;
+      if (cleanTokenStr(txt) === cleanTokenStr(staff.nama)) return false;
       if (typeof staffList !== 'undefined' && Array.isArray(staffList)) {
         if (staffList.some(s => s.nama.toLowerCase() === txt.toLowerCase())) return false;
       }
