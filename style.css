@@ -12130,45 +12130,78 @@ body::before {
   margin: 0;
 }
 
-.pm-bph-status-tag {
-  font-size: 0.68rem;
-  font-weight: 700;
-  padding: 3px 10px;
-  border-radius: 9999px;
+/* ── KESAN PESAN HARAPAN DARI BPH SECTION (ANONIM & CLEAN) ── */
+.pm-bph-kesan-section {
+  margin-top: 14px;
 }
 
-.pm-bph-status-tag.status-done {
-  background: rgba(16, 185, 129, 0.12);
-  color: #059669;
-  border: 1px solid rgba(16, 185, 129, 0.3);
-}
-
-.pm-bph-status-tag.status-pending {
-  background: rgba(245, 158, 11, 0.12);
-  color: #D97706;
-  border: 1px solid rgba(245, 158, 11, 0.3);
-}
-
-.pm-bph-status-tag.status-bph {
-  background: rgba(99, 102, 241, 0.12);
-  color: #4F46E5;
-  border: 1px solid rgba(99, 102, 241, 0.3);
-}
-
-.pm-bph-status-tag.status-biro {
-  background: rgba(59, 130, 246, 0.12);
-  color: #2563EB;
-  border: 1px solid rgba(59, 130, 246, 0.3);
-}
-
-.pm-bph-desc {
+.pm-bph-kesan-heading {
   font-size: 0.8rem;
-  color: var(--text-2, #64748b);
-  margin: 8px 0 14px;
-  line-height: 1.5;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #B45309;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-/* Grid of 3 BPH cards */
+[data-theme="dark"] .pm-bph-kesan-heading {
+  color: #FBBF24;
+}
+
+.pm-bph-comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pm-bph-empty-box {
+  background: rgba(241, 245, 249, 0.6);
+  border: 1px dashed rgba(226, 232, 240, 0.9);
+  border-radius: 10px;
+  padding: 14px 18px;
+  text-align: center;
+}
+
+[data-theme="dark"] .pm-bph-empty-box {
+  background: rgba(30, 41, 59, 0.45);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.pm-bph-empty-text {
+  margin: 0;
+  font-size: 0.84rem;
+  color: var(--text-3, #64748b);
+  font-style: italic;
+}
+
+.pm-bph-comment-card {
+  background: var(--card-bg, #ffffff);
+  border: 1px solid var(--border-color, rgba(226, 232, 240, 0.9));
+  border-left: 3.5px solid #F59E0B;
+  border-radius: 10px;
+  padding: 14px 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+[data-theme="dark"] .pm-bph-comment-card {
+  background: #111827;
+  border-color: rgba(255, 255, 255, 0.08);
+  border-left-color: #F59E0B;
+}
+
+.pm-bph-comment-text {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: var(--text-1, #0f172a);
+  font-style: italic;
+  white-space: pre-line;
+}
+
+/* Grid of 3 BPH cards (legacy fallback) */
 .pm-bph-cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));

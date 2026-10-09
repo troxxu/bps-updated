@@ -4913,201 +4913,77 @@ function parseBphSscBlock(raw) {
 }
 window.parseBphSscBlock = parseBphSscBlock;
 
-// Render 3 Card Evaluator BPH (Ilman, Mirza, Bramantio) ke container target
+// Render Catatan/Komentar BPH (100% Anonim, tanpa nama, foto, jabatan, dan TANPA link spreadsheet)
 function renderBphCardsIntoContainer(deptCode, containerEl, isStandalone = false) {
   if (!containerEl) return;
 
   const deptData = (window.bphDepartemenData && window.bphDepartemenData[deptCode]) || null;
   const evals = deptData ? (deptData.evaluations || {}) : {};
 
-  const bphList = [
-    evals.ilman || {
-      evaluatorName: "Ilman Afif Al Arif",
-      evaluatorRole: "Ketua BEM FTEIC 2026",
-      evaluatorFoto: "assets/foto-staf/bph-001.jpg",
-      isFilled: false,
-      averageScore: null,
-      ssc: { stop: '', start: '', continue: '', hasContent: false },
-      kesanPesan: '',
-      sheetUrl: "https://docs.google.com/spreadsheets/d/1RXy_XyeSlQrlfYWjO5EEHXZzYCajZNQYeXKasfA31_w/edit#gid=619966376"
-    },
-    evals.mirza || {
-      evaluatorName: "Muhammad Mirza Zaidan 'Ilma",
-      evaluatorRole: "Sekretaris Jenderal 1",
-      evaluatorFoto: "assets/foto-staf/bph-002.jpg",
-      isFilled: false,
-      averageScore: null,
-      ssc: { stop: '', start: '', continue: '', hasContent: false },
-      kesanPesan: '',
-      sheetUrl: "https://docs.google.com/spreadsheets/d/19n67m57FSuNN-vl0URbHYG5fuCBDmIok4mTwzcMsQQU/edit#gid=619966376"
-    },
-    evals.bramantio || {
-      evaluatorName: "Bramantio Ramayudha",
-      evaluatorRole: "Sekretaris Jenderal 2",
-      evaluatorFoto: "assets/foto-staf/bph-003.jpg",
-      isFilled: false,
-      averageScore: null,
-      ssc: { stop: '', start: '', continue: '', hasContent: false },
-      kesanPesan: '',
-      sheetUrl: "https://docs.google.com/spreadsheets/d/13JA9jiN_Hq5mcz8_R1YC2jvtHnTncwxqBEoIuLpS7VY/edit#gid=619966376"
+  // Kumpulkan pesan / kesan / catatan masukan dari BPH
+  const comments = [];
+  ['ilman', 'mirza', 'bramantio'].forEach(key => {
+    const ev = evals[key];
+    if (!ev) return;
+    const kp = (ev.kesanPesan || '').trim();
+    if (kp && !isTemplateOnly(kp) && kp !== '-' && kp !== '--') {
+      comments.push(kp);
     }
-  ];
+  });
 
-  containerEl.innerHTML = bphList.map(ev => {
-    const isFilled = Boolean(ev.isFilled || (ev.ssc && ev.ssc.hasContent) || (ev.kesanPesan && ev.kesanPesan.trim()) || (ev.averageScore !== null && !isNaN(ev.averageScore)));
-    const ssc = ev.ssc || { stop: '', start: '', continue: '', hasContent: false };
+  // Jika kesan pesan belum diisi, cek apakah ada catatan SSC tertulis dari BPH
+  if (comments.length === 0) {
+    ['ilman', 'mirza', 'bramantio'].forEach(key => {
+      const ev = evals[key];
+      if (!ev || !ev.ssc || !ev.ssc.hasContent) return;
+      const sscParts = [];
+      if (ev.ssc.stop) sscParts.push(`Stop: ${ev.ssc.stop}`);
+      if (ev.ssc.start) sscParts.push(`Start: ${ev.ssc.start}`);
+      if (ev.ssc.continue) sscParts.push(`Continue: ${ev.ssc.continue}`);
+      if (sscParts.length > 0) {
+        comments.push(sscParts.join(' • '));
+      }
+    });
+  }
 
-    return `
-      <div class="bph-eval-card">
-        <div class="bph-eval-card-header">
-          <div class="bph-eval-author">
-            <div class="bph-avatar-wrap">
-              <img src="${ev.evaluatorFoto}" alt="${escapeHtml(ev.evaluatorName)}" class="bph-avatar-img" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(ev.evaluatorName)}&background=1D536B&color=fff&size=100&bold=true'" />
-            </div>
-            <div>
-              <h5 class="bph-author-name">${escapeHtml(ev.evaluatorName)}</h5>
-              <p class="bph-author-role">${escapeHtml(ev.evaluatorRole)}</p>
-            </div>
-          </div>
-          <span class="bph-card-status-badge ${isFilled ? 'status-filled' : 'status-pending'}">
-            ${isFilled ? '● Terisi (Live)' : '○ Dalam Proses'}
-          </span>
-        </div>
-
-        ${ev.averageScore !== null && !isNaN(ev.averageScore) ? `
-          <div class="bph-score-banner">
-            <span class="bph-score-label">Skor Rata-Rata Departemen:</span>
-            <span class="bph-score-val">${Number(ev.averageScore).toFixed(1)} <span class="bph-score-scale">/ 10</span></span>
-          </div>
-        ` : ''}
-
-        <div class="bph-ssc-container">
-          <span class="bph-ssc-title">Catatan Start, Stop, Continue:</span>
-          ${ssc.hasContent ? `
-            ${ssc.stop ? `
-              <div class="bph-ssc-item stop">
-                <div class="bph-ssc-badge-row">
-                  <span class="bph-ssc-badge stop">STOP</span>
-                  <span class="bph-ssc-label">Hal yang perlu dihentikan/dikurangi</span>
-                </div>
-                <div class="bph-ssc-content">${escapeHtml(ssc.stop)}</div>
-              </div>
-            ` : ''}
-            ${ssc.start ? `
-              <div class="bph-ssc-item start">
-                <div class="bph-ssc-badge-row">
-                  <span class="bph-ssc-badge start">START</span>
-                  <span class="bph-ssc-label">Hal baru yang perlu dimulai/diinisiasi</span>
-                </div>
-                <div class="bph-ssc-content">${escapeHtml(ssc.start)}</div>
-              </div>
-            ` : ''}
-            ${ssc.continue ? `
-              <div class="bph-ssc-item continue">
-                <div class="bph-ssc-badge-row">
-                  <span class="bph-ssc-badge continue">CONTINUE</span>
-                  <span class="bph-ssc-label">Hal baik yang harus dipertahankan</span>
-                </div>
-                <div class="bph-ssc-content">${escapeHtml(ssc.continue)}</div>
-              </div>
-            ` : ''}
-          ` : `
-            <div class="bph-ssc-empty">
-              <span class="bph-empty-icon">⏳</span>
-              <span>Pimpinan BPH sedang menyusun catatan evaluasi khusus untuk departemen ini di Google Sheets.</span>
-            </div>
-          `}
-        </div>
-
-        <div class="bph-kesan-container">
-          <div class="bph-kesan-label">Kesan, Pesan &amp; Harapan BPH:</div>
-          ${ev.kesanPesan && ev.kesanPesan.trim() ? `
-            <div class="bph-kesan-content">“${escapeHtml(ev.kesanPesan.trim())}”</div>
-          ` : `
-            <div class="bph-kesan-empty">
-              <span>Menunggu pesan, kesan, atau harapan dari evaluator di Google Sheets...</span>
-            </div>
-          `}
-        </div>
-
-        <div style="margin-top: auto; padding-top: 8px; display: flex; justify-content: flex-end;">
-          <a href="${ev.sheetUrl}" target="_blank" rel="noopener noreferrer" class="btn-bph-link" title="Buka lembar penilaian BPH di Google Sheets">
-            Buka Lembar PA BPH ↗
-          </a>
-        </div>
+  // Jika belum ada komentar sama sekali dari BPH
+  if (comments.length === 0) {
+    containerEl.innerHTML = `
+      <div class="pm-bph-empty-box">
+        <p class="pm-bph-empty-text">Belum ada komentar</p>
       </div>
     `;
-  }).join('');
+    return;
+  }
+
+  // Jika ada komentar: tampilkan komentar BPH secara bersih, elegan, dan anonim
+  containerEl.innerHTML = comments.map((text, idx) => `
+    <div class="pm-bph-comment-card">
+      <p class="pm-bph-comment-text">“${escapeHtml(text)}”</p>
+    </div>
+  `).join('');
 }
 window.renderBphCardsIntoContainer = renderBphCardsIntoContainer;
 
-// Render evaluasi & catatan BPH ke departemen di dalam Progress Modal
+// Render Catatan Dari BPH di dalam Progress Modal Personal (Hanya untuk 6 Departemen Eksekutif)
 function renderBphDepartemenFeedback(staff) {
   const box = document.getElementById("pmBphFeedbackBox");
   if (!box) return;
 
-  const deptNameEl = document.getElementById("pmBphDeptName");
-  const statusTagEl = document.getElementById("pmBphStatusTag");
   const cardsContainer = document.getElementById("pmBphFeedbackCards");
   if (!cardsContainer) return;
 
   const deptCode = staff.departemenBEM;
   const isExecutiveDept = ['DAGRI', 'LUGRI', 'PSDM', 'SOSMAS', 'RISTEK', 'KWU'].includes(deptCode);
-  const isBPH = (deptCode === 'BPH') || (staff.roleCategory === 'BPH') || (staff.id && staff.id.startsWith('bph-'));
 
-  if (!isExecutiveDept && !isBPH) {
+  // Privasi: HANYA tampilkan Catatan Dari BPH untuk 6 Departemen Eksekutif
+  // BPH dan Biro tidak menampilkan seksi ini (dan link PA BPH 100% dirahasiakan)
+  if (!isExecutiveDept) {
     box.classList.add("hidden");
     return;
   }
 
   box.classList.remove("hidden");
-
-  // Jika fungsionaris adalah anggota BPH itu sendiri
-  if (isBPH) {
-    if (deptNameEl) deptNameEl.innerText = "Presidium BPH";
-    if (statusTagEl) {
-      statusTagEl.className = "pm-bph-status-tag status-bph";
-      statusTagEl.innerText = "Presidium Evaluator";
-    }
-    cardsContainer.innerHTML = `
-      <div class="pm-bph-special-notice" style="grid-column: 1 / -1;">
-        <div class="pm-bph-notice-icon">👑</div>
-        <div class="pm-bph-notice-content">
-          <h4>Portal Evaluasi Presidium BPH Kabinet Polaris 2026</h4>
-          <p>Sebagai Presidium BPH (Ketua BEM dan Sekretaris Jenderal), Anda adalah evaluator utama untuk keenam Departemen Eksekutif (DAGRI, LUGRI, PSDM, SOSMAS, RISTEK, KWU). Silakan buka tautan Google Sheets masing-masing di bawah ini untuk mengisi atau meninjau penilaian:</p>
-          <div class="pm-bph-links-row">
-            <a href="https://docs.google.com/spreadsheets/d/1RXy_XyeSlQrlfYWjO5EEHXZzYCajZNQYeXKasfA31_w/edit#gid=619966376" target="_blank" rel="noopener noreferrer" class="btn-bph-link">PA Ilman (Ketua BEM) ↗</a>
-            <a href="https://docs.google.com/spreadsheets/d/19n67m57FSuNN-vl0URbHYG5fuCBDmIok4mTwzcMsQQU/edit#gid=619966376" target="_blank" rel="noopener noreferrer" class="btn-bph-link">PA Mirza (Sekjen 1) ↗</a>
-            <a href="https://docs.google.com/spreadsheets/d/13JA9jiN_Hq5mcz8_R1YC2jvtHnTncwxqBEoIuLpS7VY/edit#gid=619966376" target="_blank" rel="noopener noreferrer" class="btn-bph-link">PA Bramantio (Sekjen 2) ↗</a>
-          </div>
-        </div>
-      </div>
-    `;
-    return;
-  }
-
-  // Fungsionaris 6 Departemen Eksekutif
-  const deptDisplayName = staff.departemenBEMFull || DEPT_NAMES_MAP[deptCode] || (`Departemen ${deptCode}`);
-  if (deptNameEl) {
-    deptNameEl.innerText = deptDisplayName;
-  }
-
-  const deptData = (window.bphDepartemenData && window.bphDepartemenData[deptCode]) || null;
-  const evals = deptData ? (deptData.evaluations || {}) : {};
-
-  // Cek apakah ada evaluator yang telah mengisi
-  const hasAnyFilled = Object.values(evals).some(ev => ev && (ev.isFilled || (ev.ssc && ev.ssc.hasContent) || (ev.kesanPesan && ev.kesanPesan.trim()) || (ev.averageScore !== null && !isNaN(ev.averageScore))));
-
-  if (statusTagEl) {
-    if (hasAnyFilled) {
-      statusTagEl.className = "pm-bph-status-tag status-filled";
-      statusTagEl.innerText = "Tersinkronisasi (Live Sheets)";
-    } else {
-      statusTagEl.className = "pm-bph-status-tag status-pending";
-      statusTagEl.innerText = "Dalam Proses Pengisian BPH";
-    }
-  }
-
   renderBphCardsIntoContainer(deptCode, cardsContainer, false);
 }
 window.renderBphDepartemenFeedback = renderBphDepartemenFeedback;
