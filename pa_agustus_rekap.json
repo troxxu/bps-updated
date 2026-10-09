@@ -24218,5 +24218,68 @@
     "isTargetKabinet": false,
     "timestamp": "07 Okt 2026, 23:59 WIB",
     "periodName": "PA Agustus 2026"
+  },
+  "bph-001": {
+    "isLive": false,
+    "averageScore": 0.0,
+    "scores": {
+      "leadership": 0.0,
+      "open_communication": 0.0,
+      "development": 0.0,
+      "governance": 0.0,
+      "administration": 0.0,
+      "exemplary": 0.0
+    },
+    "peerFeedback": [],
+    "evaluatorCount": 0,
+    "kabinetEvaluatorCount": 0,
+    "stafEvaluatorCount": 0,
+    "hasSelfAssessment": false,
+    "isTargetKabinet": true,
+    "timestamp": null,
+    "periodName": "Agustus 2026",
+    "note": "Instrumen penilaian BPH resmi diimplementasikan pada periode September 2026."
+  },
+  "bph-002": {
+    "isLive": false,
+    "averageScore": 0.0,
+    "scores": {
+      "leadership": 0.0,
+      "open_communication": 0.0,
+      "development": 0.0,
+      "governance": 0.0,
+      "administration": 0.0,
+      "exemplary": 0.0
+    },
+    "peerFeedback": [],
+    "evaluatorCount": 0,
+    "kabinetEvaluatorCount": 0,
+    "stafEvaluatorCount": 0,
+    "hasSelfAssessment": false,
+    "isTargetKabinet": true,
+    "timestamp": null,
+    "periodName": "Agustus 2026",
+    "note": "Instrumen penilaian BPH resmi diimplementasikan pada periode September 2026."
+  },
+  "bph-003": {
+    "isLive": false,
+    "averageScore": 0.0,
+    "scores": {
+      "leadership": 0.0,
+      "open_communication": 0.0,
+      "development": 0.0,
+      "governance": 0.0,
+      "administration": 0.0,
+      "exemplary": 0.0
+    },
+    "peerFeedback": [],
+    "evaluatorCount": 0,
+    "kabinetEvaluatorCount": 0,
+    "stafEvaluatorCount": 0,
+    "hasSelfAssessment": false,
+    "isTargetKabinet": true,
+    "timestamp": null,
+    "periodName": "Agustus 2026",
+    "note": "Instrumen penilaian BPH resmi diimplementasikan pada periode September 2026."
   }
 }

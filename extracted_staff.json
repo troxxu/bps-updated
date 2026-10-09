@@ -1,5 +1,44 @@
 [
   {
+    "id": "bph-001",
+    "nama": "Ilman Afif Al Arif",
+    "role": "Ketua BEM FTEIC 2026",
+    "roleCategory": "BPH",
+    "departemenBEM": "BPH",
+    "departemenBEMFull": "Badan Pengurus Harian",
+    "nrp": "5022231021",
+    "asalDepartemen": "Teknik Elektro",
+    "pin": "kabempolarissukses",
+    "foto": "assets/foto-staf/bph-001.jpg",
+    "sheetUrl": ""
+  },
+  {
+    "id": "bph-002",
+    "nama": "Muhammad Mirza Zaidan 'Ilma",
+    "role": "Sekretaris Jendral 1",
+    "roleCategory": "BPH",
+    "departemenBEM": "BPH",
+    "departemenBEMFull": "Badan Pengurus Harian",
+    "nrp": "5023231046",
+    "asalDepartemen": "Teknik Biomedik",
+    "pin": "sekjen1internal",
+    "foto": "assets/foto-staf/bph-002.jpg",
+    "sheetUrl": ""
+  },
+  {
+    "id": "bph-003",
+    "nama": "Bramantio Ramayudha",
+    "role": "Sekretaris Jendral 2",
+    "roleCategory": "BPH",
+    "departemenBEM": "BPH",
+    "departemenBEMFull": "Badan Pengurus Harian",
+    "nrp": "5022231203",
+    "asalDepartemen": "Teknik Elektro",
+    "pin": "sekjen2external",
+    "foto": "assets/foto-staf/bph-003.jpg",
+    "sheetUrl": ""
+  },
+  {
     "id": "staf-001",
     "nama": "Hasan",
     "role": "Kepala Departemen Dalam Negeri",

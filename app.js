@@ -34,8 +34,47 @@ const MASTER_PA_SPREADSHEET_URL = "";
 //    }
 // ==============================================================================
 
-// 1. DATA SELURUH ANGGOTA KABINET (94 ORANG)
+// 1. DATA SELURUH ANGGOTA KABINET & BPH (97 ORANG)
 const staffList = [
+  {
+    "id": "bph-001",
+    "nama": "Ilman Afif Al Arif",
+    "role": "Ketua BEM FTEIC 2026",
+    "roleCategory": "BPH",
+    "departemenBEM": "BPH",
+    "departemenBEMFull": "Badan Pengurus Harian",
+    "nrp": "5022231021",
+    "asalDepartemen": "Teknik Elektro",
+    "pin": "kabempolarissukses",
+    "foto": "assets/foto-staf/bph-001.jpg",
+    "sheetUrl": ""
+  },
+  {
+    "id": "bph-002",
+    "nama": "Muhammad Mirza Zaidan 'Ilma",
+    "role": "Sekretaris Jendral 1",
+    "roleCategory": "BPH",
+    "departemenBEM": "BPH",
+    "departemenBEMFull": "Badan Pengurus Harian",
+    "nrp": "5023231046",
+    "asalDepartemen": "Teknik Biomedik",
+    "pin": "sekjen1internal",
+    "foto": "assets/foto-staf/bph-002.jpg",
+    "sheetUrl": ""
+  },
+  {
+    "id": "bph-003",
+    "nama": "Bramantio Ramayudha",
+    "role": "Sekretaris Jendral 2",
+    "roleCategory": "BPH",
+    "departemenBEM": "BPH",
+    "departemenBEMFull": "Badan Pengurus Harian",
+    "nrp": "5022231203",
+    "asalDepartemen": "Teknik Elektro",
+    "pin": "sekjen2external",
+    "foto": "assets/foto-staf/bph-003.jpg",
+    "sheetUrl": ""
+  },
   {
     "id": "staf-001",
     "nama": "Hasan",
@@ -1271,6 +1310,177 @@ let authTargetMode = 'sheet'; // 'sheet' | 'progress'
 let currentPage = 1;
 const ITEMS_PER_PAGE = 12;
 
+// 1B-0. MASTER RUBRIK RESMI BPH (BADAN PENGURUS HARIAN) BEM FTEIC ITS 2026
+// Berdasarkan Pedoman Penilaian Resmi Tab PA Kabinet-BPH & PA Staf-BPH (6 Indikator, Skala 0 - 10)
+const RUBRIC_BPH = [
+  {
+    key: "leadership",
+    name: "Leadership",
+    desc: "BPH menunjukkan integritas tinggi, sikap profesional, etika kerja yang konsisten, serta mampu merepresentasikan nilai-nilai organisasi dan menjadi figur panutan bagi seluruh fungsionaris.",
+    color: "#1D536B",
+    levels: {
+      "9-10": "BPH sangat konsisten menunjukkan integritas tinggi dan profesionalisme prima, serta menjadi teladan inspiratif dalam merepresentasikan nilai-nilai organisasi di setiap kesempatan.",
+      "6-8": "BPH mampu menunjukkan integritas, sikap profesional, dan etika kerja yang baik, serta dapat menjadi figur panutan bagi seluruh fungsionaris.",
+      "3-5": "BPH kurang konsisten dalam menunjukkan etika kerja profesional dan integritas, serta belum optimal merepresentasikan nilai organisasi sebagai figur panutan.",
+      "1-2": "BPH tidak mampu menunjukkan integritas dan etika kerja profesional, serta gagal merepresentasikan nilai-nilai organisasi sebagai figur panutan bagi fungsionaris."
+    }
+  },
+  {
+    key: "open_communication",
+    name: "Open Communication",
+    desc: "BPH terbuka terhadap masukan, kritik, maupun aspirasi kabinet dan staf, mudah dihubungi ketika dibutuhkan pandangan strategis, serta rutin menyampaikan pembaruan isu internal maupun eksternal secara berkala.",
+    color: "#0EA5E9",
+    levels: {
+      "9-10": "BPH sangat proaktif menampung aspirasi, sangat mudah dijangkau dan komunikatif, serta transparan dan konsisten dalam memperbarui isu strategis internal/eksternal.",
+      "6-8": "BPH terbuka menerima masukan/kritik, cukup responsif dan mudah dihubungi saat dibutuhkan pandangan strategis, serta rutin memberikan pembaruan isu organisasi.",
+      "3-5": "BPH kurang terbuka terhadap masukan/kritik, lambat merespons ketika dihubungi, serta jarang menyampaikan pembaruan isu secara berkala.",
+      "1-2": "BPH tertutup terhadap masukan/kritik staf, sangat sulit dihubungi, dan tidak pernah menyampaikan pembaruan isu internal maupun eksternal."
+    }
+  },
+  {
+    key: "development",
+    name: "Development",
+    desc: "BPH memberikan contoh, menjalankan transfer knowledge dengan baik, dan mengapresiasi pencapaian staf dalam mendukung tujuan program kerja.",
+    color: "#2A9D8F",
+    levels: {
+      "9-10": "BPH menjadi mentor yang berdedikasi tinggi, mentransfer wawasan secara komprehensif, serta sangat apresiatif dan suportif terhadap perkembangan kinerja staf.",
+      "6-8": "BPH mampu memberikan contoh yang baik, menjalankan transfer knowledge secara terarah, dan mengapresiasi pencapaian staf.",
+      "3-5": "BPH kurang memberikan contoh nyata, transfer knowledge berjalan terbatas/minim, dan jarang mengapresiasi pencapaian staf.",
+      "1-2": "BPH tidak mampu memberikan contoh, tidak menjalankan transfer knowledge, dan mengabaikan apresiasi terhadap pencapaian staf."
+    }
+  },
+  {
+    key: "good_student_governance",
+    name: "Good Student Governance",
+    desc: "BPH menjaga ritme kerja dan keteraturan administrasi-birokrasi organisasi secara keseluruhan, memastikan transparansi regulasi internal, serta mengawal timeline besar kepengurusan agar program kerja tetap selaras dengan target tahunan.",
+    color: "#D69415",
+    levels: {
+      "9-10": "BPH sangat disiplin dan presisi dalam mengelola tata kelola organisasi, menegakkan regulasi secara transparan dan solutif, serta proaktif memastikan seluruh target strategis tahunan tercapai tepat waktu.",
+      "6-8": "BPH mampu menjaga ritme kerja dan keteraturan birokrasi organisasi, menjamin transparansi regulasi internal, serta mengawal timeline besar program kerja dengan baik.",
+      "3-5": "BPH kurang konsisten menjaga keteraturan birokrasi, transparansi regulasi masih minim, dan kurang cermat mengawal timeline besar kepengurusan.",
+      "1-2": "BPH tidak mampu menjaga ritme kerja organisasi, mengabaikan transparansi regulasi internal, dan gagal mengawal keselarasan timeline besar program kerja."
+    }
+  },
+  {
+    key: "administration",
+    name: "Administration",
+    desc: "BPH menjalankan tugas administratif, mendukung operasional departemen, dan memfasilitasi kegiatan sehari-hari.",
+    color: "#8B5CF6",
+    levels: {
+      "9-10": "BPH menjalankan administrasi secara rapi, cepat, dan presisi, serta sangat responsif dalam memfasilitasi dan memastikan seluruh operasional harian berjalan lancar tanpa kendala.",
+      "6-8": "BPH mampu menjalankan tugas administratif secara tertib, mendukung operasional departemen/biro, dan memfasilitasi kegiatan sehari-hari dengan baik.",
+      "3-5": "BPH lambat dalam penyelesaian administrasi dan kurang optimal dalam mendukung operasional harian departemen/biro.",
+      "1-2": "BPH tidak menjalankan tugas administratif dengan benar, sering menghambat proses operasional, dan tidak memfasilitasi kebutuhan kegiatan organisasi."
+    }
+  },
+  {
+    key: "exemplary",
+    name: "Exemplary",
+    desc: "BPH menjadi teladan dalam perilaku dan profesionalisme, memotivasi kabinet serta staff-staff nya, dan membangun kolaborasi yang solid di BEM FTEIC ITS.",
+    color: "#EC4899",
+    levels: {
+      "9-10": "BPH menjadi role model kepemimpinan yang berintegritas tinggi, sangat menginspirasi dan membakar semangat fungsionaris, serta sukses merekatkan sinergi kolaboratif yang harmonis di BEM FTEIC ITS.",
+      "6-8": "BPH mampu menjadi teladan dalam perilaku dan profesionalisme, memotivasi staf, serta membangun kolaborasi kerja yang solid di seluruh lingkup BEM.",
+      "3-5": "BPH kurang konsisten menunjukkan keteladanan, kurang memotivasi fungsionaris, dan kolaborasi yang terbangun antar-elemen masih terkotak-kotak.",
+      "1-2": "BPH tidak mampu menjadi teladan perilaku/profesionalisme, bersikap pasif, serta gagal membangun iklim kolaborasi yang sehat di kabinet."
+    }
+  }
+];
+
+// 1B-0B. DEFINISI MASTER 9-BOX TALENT MATRIX BIRO PERSONALIA BEM FTEIC 2026
+const NINE_BOX_QUADRANTS = {
+  "enigma": {
+    title: "Enigma",
+    potentialLevel: "High",
+    performanceLevel: "Low",
+    row: 0,
+    col: 0,
+    desc: "Memiliki kapasitas dan potensi kepemimpinan tinggi namun capaian kinerja saat ini belum optimal.",
+    action: "Identifikasi hambatan personal/peran, sesuaikan penugasan dengan minat utama, dan berikan pendampingan intensif dari mentor.",
+    color: "#1E293B"
+  },
+  "growth-employee": {
+    title: "Growth Employee",
+    potentialLevel: "High",
+    performanceLevel: "Medium",
+    row: 0,
+    col: 1,
+    desc: "Menunjukkan potensi besar untuk berkembang dengan capaian kinerja yang solid dan konsisten.",
+    action: "Tantang dengan proyek baru berkala, perluas peran dalam kepanitiaan strategis, dan dorong inisiatif mandiri.",
+    color: "#2563EB"
+  },
+  "future-leader": {
+    title: "Future Leader",
+    potentialLevel: "High",
+    performanceLevel: "High",
+    row: 0,
+    col: 2,
+    desc: "Fungsionaris bintang dengan performa kerja unggul dan potensi kepemimpinan masa depan yang sangat matang.",
+    action: "Prioritaskan untuk jalur suksesi kepemimpinan tingkat tinggi, berikan otonomi proyek strategis, dan libatkan dalam pengambilan keputusan krusial.",
+    color: "#0F172A"
+  },
+  "dilemma": {
+    title: "Dilemma",
+    potentialLevel: "Medium",
+    performanceLevel: "Low",
+    row: 1,
+    col: 0,
+    desc: "Memiliki potensi rata-rata namun mengalami penurunan atau hambatan dalam penyelesaian tugas.",
+    action: "Evaluasi beban kerja dan komitmen waktu, tetapkan target terukur jangka pendek, serta lakukan coaching berkala.",
+    color: "#60A5FA"
+  },
+  "core-employee": {
+    title: "Core Employee",
+    potentialLevel: "Medium",
+    performanceLevel: "Medium",
+    row: 1,
+    col: 1,
+    desc: "Pilar keandalan organisasi yang konsisten menjaga dinamika kerja dan ritme departemen tetap stabil.",
+    action: "Berikan apresiasi berkala, rotasi peran antar-proker untuk mencegah kejenuhan, dan kembangkan keahlian spesifik.",
+    color: "#475569"
+  },
+  "high-impact": {
+    title: "High Impact Performance",
+    potentialLevel: "Medium",
+    performanceLevel: "High",
+    row: 1,
+    col: 2,
+    desc: "Eksekutor andal dengan produktivitas tinggi dalam merealisasikan program kerja.",
+    action: "Berikan ruang mentoring bagi rekan lain, libatkan dalam perumusan solusi teknis, dan pertahankan motivasi kerja.",
+    color: "#1D536B"
+  },
+  "under-performer": {
+    title: "Under Performer",
+    potentialLevel: "Low",
+    performanceLevel: "Low",
+    row: 2,
+    col: 0,
+    desc: "Performa kerja dan potensi masih membutuhkan perhatian serta pendampingan mendasar.",
+    action: "Lakukan konseling personal Biro Personalia, tentukan ekspektasi minimal, dan pantau melalui evaluasi mingguan.",
+    color: "#2563EB"
+  },
+  "effective": {
+    title: "Effective",
+    potentialLevel: "Low",
+    performanceLevel: "Medium",
+    row: 2,
+    col: 1,
+    desc: "Mampu memenuhi standar kerja rutin dengan baik pada lingkup peran yang telah ditentukan.",
+    action: "Pertahankan konsistensi kerja, berikan pengakuan atas ketelitian tugas rutin, dan optimalkan peran fungsionalnya.",
+    color: "#475569"
+  },
+  "trusted-professional": {
+    title: "Trusted Professional",
+    potentialLevel: "Low",
+    performanceLevel: "High",
+    row: 2,
+    col: 2,
+    desc: "Sangat ahli dan profesional dalam bidang kerjanya saat ini dengan keandalan eksekusi tanpa cela.",
+    action: "Jadikan spesialis rujukan teknis departemen, berikan apresiasi atas dedikasi tinggi, dan jadikan teladan kedisiplinan.",
+    color: "#050811"
+  }
+};
+
 // 1B. MASTER RUBRIK RESMI KABINET & STAF BEM FTEIC ITS 2026
 // Berdasarkan Pedoman Penilaian Resmi Biro Personalia Kabinet Polaris 2026 (Skala 0 - 10)
 const RUBRIC_KABINET = [
@@ -1637,10 +1847,18 @@ function isStaffNameMatchingCol(targetName, colCell) {
 }
 
 // Menentukan daftar tab deterministik spreadsheet evaluator berdasarkan peran target
-// Template organisasi memiliki tepat 2 tab:
+// Template organisasi memiliki tab evaluasi:
+// - Untuk Target BPH: 'PA Kabinet-BPH' & 'PA Staf-BPH'
 // - Evaluator Kabinet: 'PA Kabinet-Staf' & 'PA Kabinet-Kabinet'
 // - Evaluator Staf / Sekretaris: 'PA Staf-Staf' & 'PA Staf-Kabinet'
 function getDeterministicTabsForTarget(evaluator, target) {
+  if (target.departemenBEM === 'BPH') {
+    const isEvaluatorKabinet = ['Pimpinan', 'Wakil Pimpinan', 'Kabiro'].includes(evaluator.roleCategory);
+    return isEvaluatorKabinet
+      ? ['PA Kabinet-BPH', 'PA Staf-BPH']
+      : ['PA Staf-BPH', 'PA Kabinet-BPH'];
+  }
+
   const isTargetKabinet = ['Pimpinan', 'Wakil Pimpinan', 'Kabiro'].includes(target.roleCategory);
   const isEvaluatorKabinet = ['Pimpinan', 'Wakil Pimpinan', 'Kabiro'].includes(evaluator.roleCategory);
 
@@ -1859,17 +2077,16 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
     }
   }
 
-  const isTargetKabinet = ['Pimpinan', 'Wakil Pimpinan', 'Kabiro'].includes(staff.roleCategory);
-  const indicatorList = isTargetKabinet ? RUBRIC_KABINET : RUBRIC_STAF;
+  const isTargetBPH = staff.departemenBEM === 'BPH';
+  const isTargetKabinet = !isTargetBPH && ['Pimpinan', 'Wakil Pimpinan', 'Kabiro'].includes(staff.roleCategory);
+  const indicatorList = isTargetBPH ? RUBRIC_BPH : (isTargetKabinet ? RUBRIC_KABINET : RUBRIC_STAF);
 
-  // Dapatkan seluruh fungsionaris di departemen yang sama yang memiliki link Google Sheet
-  const deptMembers = staffList.filter(s =>
-    s.departemenBEM === staff.departemenBEM &&
-    s.sheetUrl &&
-    s.sheetUrl.includes('/d/')
-  );
-
-  const evaluators = deptMembers;
+  // Dapatkan evaluator:
+  // Untuk BPH: dievaluasi oleh seluruh 94 fungsionaris dari seluruh departemen yang memiliki link sheet
+  // Untuk Staf/Kabinet lain: dievaluasi oleh fungsionaris di departemen yang sama
+  const evaluators = isTargetBPH
+    ? staffList.filter(s => s.departemenBEM !== 'BPH' && s.sheetUrl && s.sheetUrl.includes('/d/'))
+    : staffList.filter(s => s.departemenBEM === staff.departemenBEM && s.sheetUrl && s.sheetUrl.includes('/d/'));
 
   // Fetch lembar spreadsheet evaluator secara ter-throttle (maks 5 koneksi simultan)
   const settledResults = await mapConcurrent(evaluators, 5, async (ev) => {
@@ -1898,6 +2115,15 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
         if (targetColIdx !== -1) break;
       }
 
+      // Fallback index kolom untuk BPH jika nama di baris header tidak cocok persis:
+      // Tab PA Kabinet-BPH & PA Staf-BPH: Kolom C (idx 3) = Ilman, Kolom D (idx 4) = Bramantio, Kolom E (idx 5) = Mirza
+      if (targetColIdx === -1 && isTargetBPH) {
+        const tClean = cleanTokenStr(staff.nama);
+        if (staff.id === 'bph-001' || tClean.includes('ilman')) targetColIdx = 3;
+        else if (staff.id === 'bph-003' || tClean.includes('bramantio') || tClean.includes('ramayudha')) targetColIdx = 4;
+        else if (staff.id === 'bph-002' || tClean.includes('mirza') || tClean.includes('zaidan')) targetColIdx = 5;
+      }
+
       if (targetColIdx !== -1) {
         foundRows = rows;
         matchedTab = tab;
@@ -1907,14 +2133,14 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
 
     if (!foundRows || targetColIdx === -1) return null;
 
-    // Fetch range khusus feedback kualitatif (A54:Z75 untuk Staf, A34:Z48 untuk Kabinet)
-    // Range ini memuat teks kualitatif Stop/Start/Continue dan Kesan/Pesan tanpa dominasi angka skor,
-    // sehingga Google Visualization API tidak mengubah teks menjadi null.
+    // Fetch range khusus feedback kualitatif
+    // Untuk BPH: Row 28-39 (Stop/Start/Continue) dan Row 49-50 (Pesan/Kesan) -> Range A28:Z52
+    // Untuk Staf: A54:Z75 | Untuk Kabinet: A34:Z48
     let feedbackRows = null;
     try {
-      const isKabTargetTab = isTargetKabinet || matchedTab.endsWith('Kabinet') || (foundRows && foundRows.length < 45);
-      const primaryRange = isKabTargetTab ? 'A34:Z48' : 'A54:Z75';
-      const secondaryRange = isKabTargetTab ? 'A54:Z75' : 'A34:Z48';
+      const isKabTargetTab = isTargetBPH ? false : (isTargetKabinet || matchedTab.endsWith('Kabinet') || (foundRows && foundRows.length < 45));
+      const primaryRange = isTargetBPH ? 'A28:Z52' : (isKabTargetTab ? 'A34:Z48' : 'A54:Z75');
+      const secondaryRange = isTargetBPH ? 'A1:Z55' : (isKabTargetTab ? 'A54:Z75' : 'A34:Z48');
 
       feedbackRows = await fetchSheetCsvWithTimeout(sheetId, matchedTab, 6000, primaryRange);
       if (!feedbackRows || feedbackRows.length === 0) {
@@ -2043,11 +2269,18 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
   });
 
   // Bobot Resmi Sesuai Arahan:
+  // Untuk Menilai BPH: Kabinet = 0.50, Staf = 0.50, Diri Sendiri = 0.0 (Total = 1.0)
   // Untuk Menilai Staf: Kabinet = 0.55, Staf = 0.35, Diri Sendiri = 0.10 (Total = 1.0)
   // Untuk Menilai Kabinet: Staf = 0.55, Kabinet = 0.35, Diri Sendiri = 0.10 (Total = 1.0)
-  const weightKabinet = isTargetKabinet ? 0.35 : 0.55;
-  const weightStaf = isTargetKabinet ? 0.55 : 0.35;
-  const weightSelf = 0.10;
+  let weightKabinet = isTargetKabinet ? 0.35 : 0.55;
+  let weightStaf = isTargetKabinet ? 0.55 : 0.35;
+  let weightSelf = 0.10;
+
+  if (isTargetBPH) {
+    weightKabinet = 0.50;
+    weightStaf = 0.50;
+    weightSelf = 0.00;
+  }
 
   const calculatedScores = {};
   let validIndicatorCount = 0;
@@ -2089,6 +2322,7 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
         stafCount: stafScores.length,
         selfCount: selfScores.length,
         isTargetKabinet,
+        isTargetBPH,
         weights: {
           kabinet: weightKabinet,
           staf: weightStaf,
@@ -2112,6 +2346,7 @@ async function fetchLiveScoresForStaff(staff, forceRefresh = false) {
     stafEvaluatorCount: activeStafEvaluators.size,
     hasSelfAssessment,
     isTargetKabinet,
+    isTargetBPH,
     weights: {
       kabinet: weightKabinet,
       staf: weightStaf,
@@ -2174,8 +2409,9 @@ async function refreshLiveScoreCurrentStaff() {
 
 // GENERATOR DATA REPORT & NILAI RESMI PA (MENDUKUNG DATA REAL-TIME GOOGLE SHEETS & PEMBOBOTAN 360°)
 function getStaffRubricData(staff, liveData = null) {
-  const isKabinet = staff.roleCategory === 'Pimpinan' || staff.roleCategory === 'Wakil Pimpinan' || staff.roleCategory === 'Kabiro';
-  const rubricTemplate = isKabinet ? RUBRIC_KABINET : RUBRIC_STAF;
+  const isBPH = staff.departemenBEM === 'BPH';
+  const isKabinet = !isBPH && (staff.roleCategory === 'Pimpinan' || staff.roleCategory === 'Wakil Pimpinan' || staff.roleCategory === 'Kabiro');
+  const rubricTemplate = isBPH ? RUBRIC_BPH : (isKabinet ? RUBRIC_KABINET : RUBRIC_STAF);
 
   const seed = (staff.nrp ? parseInt(staff.nrp.slice(-4), 10) : 1000) || 1234;
 
@@ -2203,7 +2439,13 @@ function getStaffRubricData(staff, liveData = null) {
       selfAvg = liveScoreObj.selfAvg;
       isLive = true;
 
-      if (isKabinet) {
+      if (isBPH) {
+        breakdownHtml = `
+          <span class="pm-breakdown-item" title="Bobot Kabinet menilai BPH = 50%">Kabinet (50%): <strong class="pm-breakdown-val">${kabinetAvg !== null ? kabinetAvg.toFixed(1) : '-'}</strong></span>
+          <span class="pm-breakdown-item" title="Bobot Staf menilai BPH = 50%">Staf (50%): <strong class="pm-breakdown-val">${stafAvg !== null ? stafAvg.toFixed(1) : '-'}</strong></span>
+        `;
+        breakdownTooltip = `Kabinet 50% (${kabinetAvg !== null ? kabinetAvg.toFixed(1) : '-'}), Staf 50% (${stafAvg !== null ? stafAvg.toFixed(1) : '-'})`;
+      } else if (isKabinet) {
         breakdownHtml = `
           <span class="pm-breakdown-item" title="Bobot Staf menilai Kabinet = 55%">Staf (55%): <strong class="pm-breakdown-val">${stafAvg !== null ? stafAvg.toFixed(1) : '-'}</strong></span>
           <span class="pm-breakdown-item" title="Bobot Kabinet menilai Kabinet = 35%">Kabinet (35%): <strong class="pm-breakdown-val">${kabinetAvg !== null ? kabinetAvg.toFixed(1) : '-'}</strong></span>
@@ -2330,6 +2572,12 @@ function getStaffRubricData(staff, liveData = null) {
   let feedback = "";
   if (evaluatorCount === 0 || scoredItems.length === 0) {
     feedback = `Belum ada masukan penilaian untuk ${staff.nama}. Skor capaian seluruh indikator dan catatan evaluasi rekan akan otomatis terisi serta diperbarui secara real-time setelah penilai mengisi formulir Performance Appraisal di Google Sheets.`;
+  } else if (isBPH) {
+    if (staff.role.includes('Ketua')) {
+      feedback = `Mengemban amanah nakhoda tertinggi BEM FTEIC ITS 2026. Memimpin pergerakan strategis Kabinet Polaris, merepresentasikan lembaga di kancah institut maupun eksternal, dan menjaga integritas Good Student Governance bagi kemaslahatan seluruh civitas akademika FTEIC.`;
+    } else {
+      feedback = `Mengawal denyut nadi birokrasi, konsolidasi internal, harmonisasi lintas bidang, serta stabilitas operasional organisasi BEM FTEIC ITS 2026. Memastikan tata kelola administrasi dan ritme kerja kabinet berjalan teratur, adaptif, dan akuntabel.`;
+    }
   } else if (staff.roleCategory === 'Pimpinan') {
     feedback = `Menunjukkan kapabilitas kepemimpinan terarah (Structured Direction), adaptif terhadap dinamika kampus, serta mengawal sinergi ${staff.departemenBEMFull} selaras dengan visi Kabinet Polaris dan tata kelola Good Student Governance.`;
   } else if (staff.roleCategory === 'Wakil Pimpinan') {
@@ -2344,8 +2592,9 @@ function getStaffRubricData(staff, liveData = null) {
 
   return {
     isKabinet,
-    rubricType: isKabinet ? "Evaluasi Kabinet (7 Indikator)" : "Evaluasi Staf (12 Indikator)",
-    rubricTypeFull: isKabinet ? "Evaluasi Kepemimpinan Kabinet (7 Indikator) — Polaris Leadership" : "Evaluasi Kinerja Staf (12 Indikator) — Elevator Kapasitas Insan",
+    isBPH,
+    rubricType: isBPH ? "Evaluasi BPH (6 Indikator)" : (isKabinet ? "Evaluasi Kabinet (7 Indikator)" : "Evaluasi Staf (12 Indikator)"),
+    rubricTypeFull: isBPH ? "Evaluasi Pimpinan Tertinggi BPH (6 Indikator) — Good Student Governance" : (isKabinet ? "Evaluasi Kepemimpinan Kabinet (7 Indikator) — Polaris Leadership" : "Evaluasi Kinerja Staf (12 Indikator) — Elevator Kapasitas Insan"),
     averageScore,
     achievementPct: `${achievementPct}%`,
     statusMahasiswa,
@@ -2746,7 +2995,7 @@ function updateCounts() {
   const countAllEl = document.getElementById("countAll");
   if (countAllEl) countAllEl.innerText = total;
 
-  const depts = ['DAGRI', 'PSDM', 'RISTEK', 'SOSMAS', 'LUGRI', 'KWU'];
+  const depts = ['BPH', 'DAGRI', 'PSDM', 'RISTEK', 'SOSMAS', 'LUGRI', 'KWU'];
   depts.forEach(d => {
     const el = document.getElementById(`count_${d}`);
     if (el) {
@@ -2777,6 +3026,7 @@ function getFilteredStaff() {
 
 function getDeptBadgeClass(dept) {
   const map = {
+    'BPH': 'dept-bph',
     'DAGRI': 'dept-dagri',
     'PSDM': 'dept-psdm',
     'RISTEK': 'dept-ristek',
@@ -2788,7 +3038,9 @@ function getDeptBadgeClass(dept) {
 }
 
 function getRoleBadge(role, cat) {
-  if (cat === 'Pimpinan') {
+  if (cat === 'BPH') {
+    return `<span class="pill-role pill-bph"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> BPH</span>`;
+  } else if (cat === 'Pimpinan') {
     const isBadan = role.includes('Badan');
     return `<span class="pill-role pill-kadep"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> ${isBadan ? 'Kepala Badan' : 'Kepala Dept'}</span>`;
   } else if (cat === 'Wakil Pimpinan') {
@@ -2832,10 +3084,11 @@ function renderStaffGrid() {
   const pagedStaff = filtered.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   pagedStaff.forEach(staff => {
-    const isLeadership = staff.roleCategory === 'Pimpinan' || staff.roleCategory === 'Wakil Pimpinan';
+    const isBPH = staff.departemenBEM === 'BPH';
+    const isLeadership = isBPH || staff.roleCategory === 'Pimpinan' || staff.roleCategory === 'Wakil Pimpinan';
 
     const card = document.createElement("div");
-    card.className = `staff-card ${isLeadership ? 'card-leadership' : ''}`;
+    card.className = `staff-card ${isLeadership ? 'card-leadership' : ''} ${isBPH ? 'bph-card' : ''}`;
     card.setAttribute("tabindex", "0");
     card.setAttribute("role", "button");
     card.setAttribute("aria-label", `Akses detail evaluasi dan kinerja ${staff.nama}`);
@@ -3390,6 +3643,9 @@ function openProgressModal(staff, liveData = null, period = null) {
   // Contextual feedback text
   const feedbackEl = document.getElementById("pmFeedbackText");
   if (feedbackEl) feedbackEl.innerText = data.feedback;
+
+  // Render 9-Box Talent Matrix Biro Personalia
+  renderNineBoxMatrix(staff, data);
 
   // Render Peer Feedback dari Google Sheets (100% ANONIM)
   const peerBox = document.getElementById("pmPeerFeedbackBox");
@@ -4005,6 +4261,242 @@ function initHorizontalSliders() {
     updateCounter();
   });
 }
+
+// ==============================================================================
+// 14B. 9-BOX TALENT MATRIX ENGINE (BIRO PERSONALIA BEM FTEIC ITS 2026)
+// ==============================================================================
+
+// Menghitung posisi koordinat dan kuadran fungsionaris pada 9-Box Grid
+function getNineBoxPosition(staff, rubricData) {
+  if (!staff || !rubricData) {
+    return {
+      quadrantKey: 'core-employee',
+      quadrantInfo: NINE_BOX_QUADRANTS['core-employee'],
+      perfScore: '0.0',
+      potScore: '7.8',
+      perfLevel: 'Medium',
+      perfTag: 'Medium',
+      potLevel: 'Medium',
+      potTag: 'Medium',
+      isZeroState: true
+    };
+  }
+
+  const isBPH = staff.departemenBEM === 'BPH';
+  const isKabinet = !isBPH && (staff.roleCategory === 'Pimpinan' || staff.roleCategory === 'Wakil Pimpinan' || staff.roleCategory === 'Kabiro');
+
+  // 1. PERFORMANCE SCORE (Sumbu X: 0 - 10):
+  const perfScore = parseFloat(rubricData.averageScore) || 0.0;
+
+  // 2. POTENTIAL SCORE (Sumbu Y: 0 - 10):
+  let potScore = 0.0;
+  if (rubricData && rubricData.items && rubricData.items.length > 0) {
+    let potItems = [];
+    if (isBPH) {
+      potItems = rubricData.items.filter(it => ['Leadership', 'Development', 'Good Student Governance', 'Open Communication'].includes(it.name));
+    } else if (isKabinet) {
+      potItems = rubricData.items.filter(it => ['Leadership', 'Development', 'Empowerment', 'Exemplary'].includes(it.name));
+    } else {
+      potItems = rubricData.items.filter(it => ['Kritis', 'Inovatif', 'Inisiatif', 'Pemahaman Proker', 'Fundamental'].includes(it.name));
+    }
+
+    const scoredPot = potItems.filter(it => it.score > 0);
+    if (scoredPot.length > 0) {
+      potScore = scoredPot.reduce((acc, it) => acc + it.score, 0) / scoredPot.length;
+    } else if (perfScore > 0) {
+      potScore = perfScore;
+    }
+  }
+
+  const isZeroState = (perfScore <= 0 && potScore <= 0);
+
+  // Klasifikasi Sumbu Performance: Low (< 7.5), Medium (7.5 - 8.6), High (> 8.6)
+  let perfLevel = 'Medium';
+  let perfTag = 'Medium';
+  if (perfScore <= 0) {
+    perfLevel = 'Low';
+    perfTag = 'Belum Ada';
+  } else if (perfScore < 7.5) {
+    perfLevel = 'Low';
+    perfTag = 'Low';
+  } else if (perfScore <= 8.6) {
+    perfLevel = 'Medium';
+    perfTag = 'Medium';
+  } else {
+    perfLevel = 'High';
+    perfTag = 'High';
+  }
+
+  // Klasifikasi Sumbu Potential: Low (< 7.5), Medium (7.5 - 8.6), High (> 8.6)
+  let potLevel = 'Medium';
+  let potTag = 'Medium';
+  if (potScore <= 0) {
+    if (isZeroState) {
+      potLevel = 'Medium';
+      potTag = 'Medium (Baseline)';
+    } else {
+      potLevel = 'Low';
+      potTag = 'Low';
+    }
+  } else if (potScore < 7.5) {
+    potLevel = 'Low';
+    potTag = 'Low';
+  } else if (potScore <= 8.6) {
+    potLevel = 'Medium';
+    potTag = 'Medium';
+  } else {
+    potLevel = 'High';
+    potTag = 'High';
+  }
+
+  // Pemetaan Kuadran Grid 3x3 Sesuai Acuan Resmi
+  let quadrantKey = 'core-employee';
+  if (potLevel === 'High') {
+    if (perfLevel === 'High') quadrantKey = 'future-leader';
+    else if (perfLevel === 'Medium') quadrantKey = 'growth-employee';
+    else quadrantKey = 'enigma';
+  } else if (potLevel === 'Medium') {
+    if (perfLevel === 'High') quadrantKey = 'high-impact';
+    else if (perfLevel === 'Medium') quadrantKey = 'core-employee';
+    else quadrantKey = 'dilemma';
+  } else {
+    if (perfLevel === 'High') quadrantKey = 'trusted-professional';
+    else if (perfLevel === 'Medium') quadrantKey = 'effective';
+    else quadrantKey = 'under-performer';
+  }
+
+  const quad = NINE_BOX_QUADRANTS[quadrantKey] || NINE_BOX_QUADRANTS['core-employee'];
+
+  return {
+    quadrantKey,
+    quadrantInfo: quad,
+    perfScore: perfScore > 0 ? perfScore.toFixed(1) : '0.0',
+    potScore: potScore > 0 ? potScore.toFixed(1) : (isZeroState ? '7.8' : '0.0'),
+    perfLevel,
+    perfTag,
+    potLevel,
+    potTag,
+    isZeroState
+  };
+}
+
+// Render visualisasi 9-Box Grid di dalam modal rapor personal
+function renderNineBoxMatrix(staff, rubricData) {
+  const position = getNineBoxPosition(staff, rubricData);
+  const { quadrantKey, quadrantInfo, perfScore, potScore, perfTag, potTag } = position;
+
+  const currentTitle = document.getElementById("pmNbCurrentTitle");
+  if (currentTitle) currentTitle.innerText = quadrantInfo.title;
+
+  // Sorot sel aktif pada 3x3 grid
+  const cells = document.querySelectorAll("#pmNineBoxGrid .ninebox-cell");
+  cells.forEach(cell => {
+    cell.classList.remove("is-active-box");
+    const existingBadge = cell.querySelector(".ninebox-cell-pin-badge");
+    if (existingBadge) existingBadge.remove();
+
+    const q = cell.getAttribute("data-quadrant");
+    if (q === quadrantKey) {
+      cell.classList.add("is-active-box");
+      const badge = document.createElement("span");
+      badge.className = "ninebox-cell-pin-badge";
+      badge.innerText = "Posisi Anda";
+      cell.appendChild(badge);
+    }
+  });
+
+  // Perbarui chip indikator skor
+  const perfScoreEl = document.getElementById("pmNbPerfScore");
+  const perfTagEl = document.getElementById("pmNbPerfTag");
+  const potScoreEl = document.getElementById("pmNbPotScore");
+  const potTagEl = document.getElementById("pmNbPotTag");
+
+  if (perfScoreEl) perfScoreEl.innerText = perfScore;
+  if (perfTagEl) {
+    perfTagEl.innerText = perfTag;
+    perfTagEl.className = `pm-nb-metric-tag tag-${perfTag.toLowerCase().replace(/[^\w]/g, '-')}`;
+  }
+  if (potScoreEl) potScoreEl.innerText = potScore;
+  if (potTagEl) {
+    potTagEl.innerText = potTag;
+    potTagEl.className = `pm-nb-metric-tag tag-${potTag.toLowerCase().replace(/[^\w]/g, '-')}`;
+  }
+
+  // Perbarui narasi deskripsi dan rekomendasi
+  const descEl = document.getElementById("pmNbDescBox");
+  const actionEl = document.getElementById("pmNbActionBox");
+  if (descEl) descEl.innerText = quadrantInfo.desc;
+  if (actionEl) {
+    actionEl.innerHTML = `<strong>Rekomendasi Biro Personalia:</strong> ${quadrantInfo.action}`;
+  }
+}
+
+// Handler interaktif ketika pengguna mengklik kuadran tertentu pada grid
+function showQuadrantInfo(quadrantKey) {
+  const quad = NINE_BOX_QUADRANTS[quadrantKey];
+  if (!quad) return;
+  const descEl = document.getElementById("pmNbDescBox");
+  const actionEl = document.getElementById("pmNbActionBox");
+  if (descEl) descEl.innerHTML = `<strong>[Detail Kuadran: ${quad.title}]</strong> ${quad.desc}`;
+  if (actionEl) actionEl.innerHTML = `<strong>Rekomendasi Biro Personalia:</strong> ${quad.action}`;
+}
+window.showQuadrantInfo = showQuadrantInfo;
+
+// Handler Modal Global Overview 9-Box Talent Matrix
+function openNineBoxOverviewModal() {
+  const modal = document.getElementById("nineBoxOverviewModal");
+  if (!modal) return;
+
+  const counts = {};
+  const quadrantStaffMap = {};
+  Object.keys(NINE_BOX_QUADRANTS).forEach(k => {
+    counts[k] = 0;
+    quadrantStaffMap[k] = [];
+  });
+
+  // Hitung distribusi 9-Box seluruh fungsionaris (berdasarkan data PA Agustus atau live)
+  staffList.forEach(s => {
+    const augData = paAgustusRekapData[s.id] || paRekapData[s.id] || null;
+    const rData = getStaffRubricData(s, augData);
+    const pos = getNineBoxPosition(s, rData);
+    if (counts[pos.quadrantKey] !== undefined) {
+      counts[pos.quadrantKey]++;
+      quadrantStaffMap[pos.quadrantKey].push(s);
+    }
+  });
+
+  const listContainer = document.getElementById("nbQuadrantsList");
+  if (listContainer) {
+    listContainer.innerHTML = Object.entries(NINE_BOX_QUADRANTS).map(([k, q]) => {
+      const staffInQuad = quadrantStaffMap[k] || [];
+      const sampleNames = staffInQuad.slice(0, 3).map(s => s.nama.split(' ')[0]).join(', ');
+      const moreCount = staffInQuad.length > 3 ? ` +${staffInQuad.length - 3} lainnya` : '';
+      const samplePreview = staffInQuad.length > 0 ? `<div style="font-size:0.7rem; color:var(--text-3); margin-top:4px;">Contoh: ${escapeHtml(sampleNames)}${moreCount}</div>` : '';
+
+      return `
+        <div class="nb-quad-card" style="border-left: 4px solid ${q.color};">
+          <div class="nb-quad-top">
+            <span class="nb-quad-name">${q.title}</span>
+            <span class="nb-quad-count">${counts[k] || 0} Fungsionaris</span>
+          </div>
+          <div class="nb-quad-desc">
+            ${q.desc}
+          </div>
+          ${samplePreview}
+        </div>
+      `;
+    }).join('');
+  }
+
+  modal.classList.remove("hidden");
+}
+window.openNineBoxOverviewModal = openNineBoxOverviewModal;
+
+function closeNineBoxOverviewModal() {
+  const modal = document.getElementById("nineBoxOverviewModal");
+  if (modal) modal.classList.add("hidden");
+}
+window.closeNineBoxOverviewModal = closeNineBoxOverviewModal;
 
 // 15. GLOBAL BOOTSTRAP INITIALIZER
 function bootstrapApp() {
