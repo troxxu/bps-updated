@@ -67,7 +67,9 @@ def parse_ssc(raw_text):
         return {"stop": "", "start": "", "continue": "", "hasContent": False}
 
     cleaned = raw_text.strip()
-    
+    if "Contoh pengisian" in cleaned:
+        cleaned = cleaned.split("Contoh pengisian")[0].strip()
+
     # Patterns for Stop, Start, Continue
     stop_match = re.search(r'(?:\[Stop\]|[-*•]?\s*Stop)\s*[:\-]?\s*([\s\S]*?)(?=(?:\[Start\]|[-*•]?\s*Start)|$)', cleaned, re.IGNORECASE)
     start_match = re.search(r'(?:\[Start\]|[-*•]?\s*Start)\s*[:\-]?\s*([\s\S]*?)(?=(?:\[Continue\]|[-*•]?\s*Continue)|$)', cleaned, re.IGNORECASE)
@@ -85,10 +87,15 @@ def parse_ssc(raw_text):
     start_val = clean_section(start_match.group(1)) if start_match else ""
     cont_val = clean_section(cont_match.group(1)) if cont_match else ""
 
+    # Check if anything left beyond template
     has_content = bool(stop_val or start_val or cont_val)
-    if not has_content and len(cleaned) > 10 and not re.match(r'^(?:\[Stop\]\s*:\s*\[Start\]\s*:\s*\[Continue\]\s*:\s*)$', re.sub(r'\s+', '', cleaned)):
-        start_val = cleaned
-        has_content = True
+    if not has_content:
+        stripped = re.sub(r'\[?Stop\]?\s*[:\-]?', '', cleaned, flags=re.I)
+        stripped = re.sub(r'\[?Start\]?\s*[:\-]?', '', stripped, flags=re.I)
+        stripped = re.sub(r'\[?Continue\]?\s*[:\-]?', '', stripped, flags=re.I).strip()
+        if len(stripped) > 3 and not re.match(r'^(?:\[Stop\]\s*:\s*\[Start\]\s*:\s*\[Continue\]\s*:\s*)$', re.sub(r'\s+', '', cleaned)):
+            cont_val = stripped
+            has_content = True
 
     return {
         "stop": stop_val,
@@ -98,15 +105,30 @@ def parse_ssc(raw_text):
     }
 
 def fetch_sheet_csv(doc_id, gid):
-    url = f"https://docs.google.com/spreadsheets/d/{doc_id}/gviz/tq?tqx=out:csv&gid={gid}"
+    urls = [
+        f"https://docs.google.com/spreadsheets/d/{doc_id}/export?format=csv&gid={gid}",
+        f"https://docs.google.com/spreadsheets/d/{doc_id}/gviz/tq?tqx=out:csv&gid={gid}"
+    ]
     ctx = ssl.create_default_context()
     ctx.check_hostname = False
     ctx.verify_mode = ssl.CERT_NONE
-    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+
+    for url in urls:
+        try:
+            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(req, timeout=15, context=ctx) as response:
+                content = response.read().decode('utf-8', errors='replace')
+                reader = list(csv.reader(io.StringIO(content)))
+                if len(reader) >= 30:
+                    return reader
+        except Exception as e:
+            print(f"    URL attempt failed ({url[:50]}...): {e}")
+
+    # Fallback to whatever returned
+    req = urllib.request.Request(urls[0], headers={'User-Agent': 'Mozilla/5.0'})
     with urllib.request.urlopen(req, timeout=15, context=ctx) as response:
         content = response.read().decode('utf-8', errors='replace')
-        reader = csv.reader(io.StringIO(content))
-        return list(reader)
+        return list(csv.reader(io.StringIO(content)))
 
 def sync():
     data = {}
@@ -126,10 +148,10 @@ def sync():
         except Exception as e:
             print(f"  -> Error fetching {bkey}: {e}")
 
-        # Column mapping
+        # Column mapping detection
         col_map = DEFAULT_COL_MAP.copy()
         if rows:
-            for r in range(min(6, len(rows))):
+            for r in range(min(8, len(rows))):
                 for c, cell in enumerate(rows[r]):
                     val = cell.lower()
                     if "dalam negeri" in val: col_map[c] = "DAGRI"
@@ -139,27 +161,31 @@ def sync():
                     elif "riset" in val or "ristek" in val: col_map[c] = "RISTEK"
                     elif "kewirausahaan" in val or "kwu" in val: col_map[c] = "KWU"
 
-        # Row ranges for 6 indicators
-        indicator_blocks = [
-            (3, 6),
-            (7, 10),
-            (11, 14),
-            (15, 18),
-            (19, 22),
-            (23, 26)
-        ]
-
-        ssc_row = 27
-        kesan_row = 28
-        avg_row = 29
+        # Dynamic row indices for 6 indicators, SSC, Kesan Pesan, Average
+        indicator_row_map = [7, 11, 15, 19, 23, 27]
+        ssc_row = 31
+        kesan_row = 35
+        avg_row = 39
 
         if rows:
             for r, row in enumerate(rows):
-                if len(row) > 1:
-                    c1 = row[1].lower()
-                    if "kebiasaan yang perlu dihentikan" in c1 or "(stop)" in c1:
+                for c_test in range(min(3, len(row))):
+                    txt = row[c_test].lower()
+                    if "goal alignment" in txt:
+                        indicator_row_map[0] = r
+                    elif "operational discipline" in txt:
+                        indicator_row_map[1] = r
+                    elif "synergy & collaboration" in txt or "synergy" in txt:
+                        indicator_row_map[2] = r
+                    elif "team resilience" in txt:
+                        indicator_row_map[3] = r
+                    elif "accountability" in txt:
+                        indicator_row_map[4] = r
+                    elif "representative of bem" in txt:
+                        indicator_row_map[5] = r
+                    elif "kebiasaan yang perlu dihentikan" in txt or "(stop)" in txt:
                         ssc_row = r
-                    elif "tuliskan kesan" in c1 or "harapanmu" in c1:
+                    elif "tuliskan kesan" in txt or "harapanmu" in txt:
                         kesan_row = r
 
         for col_idx, dcode in col_map.items():
@@ -169,12 +195,22 @@ def sync():
             indicators = []
             valid_scores = []
             
-            for idx_num, (start_r, end_r) in enumerate(indicator_blocks):
+            for idx_num, ind_row in enumerate(indicator_row_map):
                 found_score = None
-                if rows and len(rows) > start_r:
-                    for r in range(start_r, min(end_r + 1, len(rows))):
-                        if col_idx < len(rows[r]):
-                            val = rows[r][col_idx].strip().replace(',', '.')
+                if rows and len(rows) > ind_row and col_idx < len(rows[ind_row]):
+                    val = rows[ind_row][col_idx].strip().replace(',', '.')
+                    try:
+                        num = float(val)
+                        if 1.0 <= num <= 10.0:
+                            found_score = num
+                    except ValueError:
+                        pass
+                
+                # If exact row empty, search block [ind_row-1 .. ind_row+2]
+                if found_score is None and rows:
+                    for r_search in range(max(0, ind_row - 2), min(len(rows), ind_row + 3)):
+                        if col_idx < len(rows[r_search]):
+                            val = rows[r_search][col_idx].strip().replace(',', '.')
                             try:
                                 num = float(val)
                                 if 1.0 <= num <= 10.0:
@@ -182,6 +218,7 @@ def sync():
                                     break
                             except ValueError:
                                 pass
+
                 if found_score is not None:
                     valid_scores.append(found_score)
                 indicators.append({

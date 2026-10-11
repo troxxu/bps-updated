@@ -3490,7 +3490,7 @@ function openProgressModal(staff, liveData = null, period = null) {
     if (currentModalPeriod === 'agustus') {
       periodEl.innerText = "Periode: PA Agustus 2026 (Arsip Rekapitulasi Final)";
     } else {
-      periodEl.innerText = "Periode: PA September 2026 (09 Okt 20.00 – 12 Okt 23.59)";
+      periodEl.innerText = "Periode: PA September 2026 (09 Okt 20.00 – 14 Okt 23.59)";
     }
   }
 
@@ -3551,7 +3551,7 @@ function openProgressModal(staff, liveData = null, period = null) {
           liveBadge.className = "pm-live-badge-chip";
         }
         if (liveDesc) {
-          liveDesc.innerHTML = `Periode PA Agustus telah resmi selesai direkap dan saat ini sedang berlangsung <strong>Periode Pengisian PA September (09 Oktober 20.00 WIB – 12 Oktober 2026 23.59 WIB)</strong>. Seluruh capaian indikator akan terisi secara otomatis begitu fungsionaris mengisi lembar kerja Google Sheets sebelum deadline <strong>Senin, 12 Oktober 2026 pukul 23.59 WIB</strong>.`;
+          liveDesc.innerHTML = `Periode PA Agustus telah resmi selesai direkap dan saat ini sedang berlangsung <strong>Periode Pengisian PA September (09 Oktober 20.00 WIB – 14 Oktober 2026 23.59 WIB)</strong>. Seluruh capaian indikator akan terisi secara otomatis begitu fungsionaris mengisi lembar kerja Google Sheets sebelum deadline <strong>Rabu, 14 Oktober 2026 pukul 23.59 WIB</strong>.`;
         }
         if (refreshBtnText) refreshBtnText.innerText = "Cek Pembaruan";
         if (refreshBtn) refreshBtn.title = "Cek apakah ada nilai baru masuk";
@@ -4920,34 +4920,34 @@ function renderBphCardsIntoContainer(deptCode, containerEl, isStandalone = false
   const deptData = (window.bphDepartemenData && window.bphDepartemenData[deptCode]) || null;
   const evals = deptData ? (deptData.evaluations || {}) : {};
 
-  // Kumpulkan pesan / kesan / catatan masukan dari BPH
-  const comments = [];
+  // Kumpulkan masukan evaluasi dari BPH
+  const commentCards = [];
   ['ilman', 'mirza', 'bramantio'].forEach(key => {
     const ev = evals[key];
     if (!ev) return;
-    const kp = (ev.kesanPesan || '').trim();
-    if (kp && !isTemplateOnly(kp) && kp !== '-' && kp !== '--') {
-      comments.push(kp);
+
+    let kp = (ev.kesanPesan || '').trim();
+    if (isTemplateOnly(kp) || kp === '-' || kp === '--') {
+      kp = '';
     }
+
+    const ssc = ev.ssc || {};
+    const hasSsc = Boolean(ssc.hasContent && (ssc.stop || ssc.start || ssc.continue));
+
+    // Lewati jika belum ada masukan tertulis
+    if (!kp && !hasSsc) return;
+
+    commentCards.push({
+      kesanPesan: kp,
+      hasSsc: hasSsc,
+      stop: ssc.stop || '',
+      start: ssc.start || '',
+      continue: ssc.continue || ''
+    });
   });
 
-  // Jika kesan pesan belum diisi, cek apakah ada catatan SSC tertulis dari BPH
-  if (comments.length === 0) {
-    ['ilman', 'mirza', 'bramantio'].forEach(key => {
-      const ev = evals[key];
-      if (!ev || !ev.ssc || !ev.ssc.hasContent) return;
-      const sscParts = [];
-      if (ev.ssc.stop) sscParts.push(`Stop: ${ev.ssc.stop}`);
-      if (ev.ssc.start) sscParts.push(`Start: ${ev.ssc.start}`);
-      if (ev.ssc.continue) sscParts.push(`Continue: ${ev.ssc.continue}`);
-      if (sscParts.length > 0) {
-        comments.push(sscParts.join(' • '));
-      }
-    });
-  }
-
   // Jika belum ada komentar sama sekali dari BPH
-  if (comments.length === 0) {
+  if (commentCards.length === 0) {
     containerEl.innerHTML = `
       <div class="pm-bph-empty-box">
         <p class="pm-bph-empty-text">Belum ada komentar</p>
@@ -4956,10 +4956,35 @@ function renderBphCardsIntoContainer(deptCode, containerEl, isStandalone = false
     return;
   }
 
-  // Jika ada komentar: tampilkan komentar BPH secara bersih, elegan, dan anonim
-  containerEl.innerHTML = comments.map((text, idx) => `
+  // Render komentar BPH secara bersih, elegan, dan 100% anonim
+  containerEl.innerHTML = commentCards.map((c, idx) => `
     <div class="pm-bph-comment-card">
-      <p class="pm-bph-comment-text">“${escapeHtml(text)}”</p>
+      ${c.kesanPesan ? `<p class="pm-bph-comment-text">“${escapeHtml(c.kesanPesan)}”</p>` : ''}
+      ${c.hasSsc ? `
+        <div class="pm-bph-ssc-block ${c.kesanPesan ? 'has-top-divider' : ''}">
+          <div class="pm-bph-ssc-heading">Evaluasi Kinerja Departemen (Stop • Start • Continue):</div>
+          <div class="pm-bph-ssc-items">
+            ${c.stop ? `
+              <div class="pm-bph-ssc-row is-stop">
+                <span class="pm-ssc-badge stop">Stop</span>
+                <span class="pm-ssc-desc">${escapeHtml(c.stop)}</span>
+              </div>
+            ` : ''}
+            ${c.start ? `
+              <div class="pm-bph-ssc-row is-start">
+                <span class="pm-ssc-badge start">Start</span>
+                <span class="pm-ssc-desc">${escapeHtml(c.start)}</span>
+              </div>
+            ` : ''}
+            ${c.continue ? `
+              <div class="pm-bph-ssc-row is-continue">
+                <span class="pm-ssc-badge continue">Continue</span>
+                <span class="pm-ssc-desc">${escapeHtml(c.continue)}</span>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      ` : ''}
     </div>
   `).join('');
 }
@@ -5093,19 +5118,42 @@ async function syncLiveBphDepartemenSheets(showFeedbackToast = false) {
   for (const bKey of bphKeys) {
     const cfg = BPH_SHEET_CONFIG[bKey];
     try {
-      const url = `https://docs.google.com/spreadsheets/d/${cfg.docId}/gviz/tq?tqx=out:csv&gid=${cfg.gid}&t=${Date.now()}`;
-      const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), 9000);
-      const res = await fetch(url, { headers: { 'Accept': 'text/csv' }, cache: 'no-store', signal: controller.signal });
-      clearTimeout(timer);
-      if (!res.ok) continue;
-      const text = await res.text();
-      const rows = parseCsvRows(text);
+      // 1. Coba ambil format CSV ekspor penuh terlebih dahulu (menghindari limitasi 28 baris gviz)
+      const exportUrl = `https://docs.google.com/spreadsheets/d/${cfg.docId}/export?format=csv&gid=${cfg.gid}&t=${Date.now()}`;
+      const gvizUrl = `https://docs.google.com/spreadsheets/d/${cfg.docId}/gviz/tq?tqx=out:csv&gid=${cfg.gid}&t=${Date.now()}`;
+      
+      let rows = null;
+      try {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 9000);
+        const res = await fetch(exportUrl, { headers: { 'Accept': 'text/csv' }, cache: 'no-store', signal: controller.signal });
+        clearTimeout(timer);
+        if (res.ok) {
+          const text = await res.text();
+          const parsed = parseCsvRows(text);
+          if (parsed && parsed.length >= 30) {
+            rows = parsed;
+          }
+        }
+      } catch (err) {}
+
+      // Fallback ke gviz jika export gagal
+      if (!rows) {
+        const controller2 = new AbortController();
+        const timer2 = setTimeout(() => controller2.abort(), 9000);
+        const res2 = await fetch(gvizUrl, { headers: { 'Accept': 'text/csv' }, cache: 'no-store', signal: controller2.signal });
+        clearTimeout(timer2);
+        if (res2.ok) {
+          const text2 = await res2.text();
+          rows = parseCsvRows(text2);
+        }
+      }
+
       if (!rows || rows.length < 20) continue;
 
-      // Deteksi kolom departemen dinamis dari baris 2 (atau header)
+      // Deteksi kolom departemen dinamis dari header
       const dynamicColMap = {};
-      for (let r = 0; r < Math.min(6, rows.length); r++) {
+      for (let r = 0; r < Math.min(8, rows.length); r++) {
         const row = rows[r];
         for (let c = 0; c < row.length; c++) {
           const val = (row[c] || '').toLowerCase();
@@ -5121,30 +5169,26 @@ async function syncLiveBphDepartemenSheets(showFeedbackToast = false) {
 
       const activeColMap = Object.keys(dynamicColMap).length >= 6 ? dynamicColMap : BPH_DEPT_COLUMN_MAP;
 
-      // Cari baris SSC, Kesan Pesan, dan formula rata-rata dinamis
-      let sscRowIdx = 27;
-      let kesanRowIdx = 28;
-      let avgRowIdx = 29;
+      // Cari baris SSC, Kesan Pesan, 6 indikator, dan formula rata-rata dinamis
+      let indicatorRows = [7, 11, 15, 19, 23, 27];
+      let sscRowIdx = 31;
+      let kesanRowIdx = 35;
+      let avgRowIdx = 39;
 
       for (let r = 0; r < rows.length; r++) {
         const row = rows[r];
-        const cell1 = (row[1] || '').toLowerCase();
-        if (cell1.includes('kebiasaan yang perlu dihentikan') || cell1.includes('(stop)')) {
-          sscRowIdx = r;
-        } else if (cell1.includes('tuliskan kesan') || cell1.includes('harapanmu')) {
-          kesanRowIdx = r;
+        for (let cTest = 0; cTest < Math.min(3, row.length); cTest++) {
+          const txt = (row[cTest] || '').toLowerCase();
+          if (txt.includes('goal alignment')) indicatorRows[0] = r;
+          else if (txt.includes('operational discipline')) indicatorRows[1] = r;
+          else if (txt.includes('synergy') || txt.includes('collaboration')) indicatorRows[2] = r;
+          else if (txt.includes('team resilience')) indicatorRows[3] = r;
+          else if (txt.includes('accountability')) indicatorRows[4] = r;
+          else if (txt.includes('representative of bem')) indicatorRows[5] = r;
+          else if (txt.includes('kebiasaan yang perlu dihentikan') || txt.includes('(stop)')) sscRowIdx = r;
+          else if (txt.includes('tuliskan kesan') || txt.includes('harapanmu')) kesanRowIdx = r;
         }
       }
-
-      // Rentang baris 6 indikator penilaian
-      const indicatorBlockRanges = [
-        [3, 6],   // Goal Alignment & Impact
-        [7, 10],  // Operational Discipline
-        [11, 14], // Synergy & Collaboration
-        [15, 18], // Team Resilience & Health
-        [19, 22], // Accountability & Problem Solving
-        [23, 26]  // Representative of BEM FTEIC Values
-      ];
 
       for (const [colIdxStr, deptCode] of Object.entries(activeColMap)) {
         const c = parseInt(colIdxStr, 10);
@@ -5155,18 +5199,29 @@ async function syncLiveBphDepartemenSheets(showFeedbackToast = false) {
 
         // Ambil skor per indikator
         const validScores = [];
-        indicatorBlockRanges.forEach(([startR, endR], indIdx) => {
+        indicatorRows.forEach((indR, indIdx) => {
           let foundScore = null;
-          for (let r = startR; r <= Math.min(endR, rows.length - 1); r++) {
-            if (rows[r] && rows[r][c]) {
-              const rawVal = rows[r][c].trim().replace(',', '.');
-              const num = parseFloat(rawVal);
-              if (!isNaN(num) && num >= 1 && num <= 10) {
-                foundScore = num;
-                break;
+          if (rows[indR] && rows[indR][c]) {
+            const rawVal = rows[indR][c].trim().replace(',', '.');
+            const num = parseFloat(rawVal);
+            if (!isNaN(num) && num >= 1 && num <= 10) {
+              foundScore = num;
+            }
+          }
+          // Jika baris persis kosong, cari toleransi [-2 .. +2] baris
+          if (foundScore === null) {
+            for (let rSearch = Math.max(0, indR - 2); rSearch <= Math.min(rows.length - 1, indR + 2); rSearch++) {
+              if (rows[rSearch] && rows[rSearch][c]) {
+                const rawVal = rows[rSearch][c].trim().replace(',', '.');
+                const num = parseFloat(rawVal);
+                if (!isNaN(num) && num >= 1 && num <= 10) {
+                  foundScore = num;
+                  break;
+                }
               }
             }
           }
+
           if (foundScore !== null) {
             validScores.push(foundScore);
             if (evalObj.indicators && evalObj.indicators[indIdx]) {
@@ -5212,7 +5267,7 @@ async function syncLiveBphDepartemenSheets(showFeedbackToast = false) {
     }
   }
 
-  // Jika modal saat ini sedang terbuka, perbarui tampilannya langsung
+  // Jika modal staf saat ini sedang terbuka, perbarui tampilannya langsung
   if (typeof currentProgressStaff !== 'undefined' && currentProgressStaff) {
     const box = document.getElementById("pmBphFeedbackBox");
     if (box && !box.classList.contains("hidden")) {
@@ -5237,64 +5292,148 @@ async function syncLiveBphDepartemenSheets(showFeedbackToast = false) {
 }
 window.syncLiveBphDepartemenSheets = syncLiveBphDepartemenSheets;
 
-// 14B. LEADERBOARD DEPARTMENT OF THE MONTH (60% EVALUASI BPH + 40% INTERNAL DEPARTEMEN)
-const BEM_DEPARTMENTS_CONFIG = {
-  DAGRI: {
-    code: 'DAGRI',
-    name: 'Departemen Dalam Negeri',
-    shortName: 'Dalam Negeri (DAGRI)',
-    memberCount: 15,
-    internalScore: 8.59,
-    desc: 'Departemen Dalam Negeri (DAGRI) menunjukkan sinergi internal yang solid, akuntabilitas tinggi, serta kedisiplinan pengisian evaluasi di lingkungan BEM FTEIC ITS.'
-  },
-  LUGRI: {
-    code: 'LUGRI',
-    name: 'Departemen Luar Negeri',
-    shortName: 'Luar Negeri (LUGRI)',
-    memberCount: 18,
-    internalScore: 8.21,
-    desc: 'Departemen Luar Negeri (LUGRI) konsisten dalam ekspansi relasi eksternal, kolaborasi strategis, dan koordinasi tim yang solid.'
-  },
-  KWU: {
-    code: 'KWU',
-    name: 'Departemen Kewirausahaan',
-    shortName: 'Kewirausahaan (KWU)',
-    memberCount: 14,
-    internalScore: 8.19,
-    desc: 'Departemen Kewirausahaan (KWU) menunjukkan performa tangguh dalam pengelolaan unit usaha dan inisiatif kemandirian finansial kabinet.'
-  },
-  SOSMAS: {
-    code: 'SOSMAS',
-    name: 'Departemen Sosial Masyarakat',
-    shortName: 'Sosial Masyarakat (SOSMAS)',
-    memberCount: 18,
-    internalScore: 8.08,
-    desc: 'Departemen Sosial Masyarakat (SOSMAS) memiliki daya gerak sosial yang tinggi dan dampak kebermanfaatan nyata bagi masyarakat.'
-  },
-  PSDM: {
-    code: 'PSDM',
-    name: 'Departemen Pengembangan Sumber Daya Mahasiswa',
-    shortName: 'Pengembangan SDM (PSDM)',
-    memberCount: 13,
-    internalScore: 8.03,
-    desc: 'Departemen PSDM konsisten mengawal kaderisasi, pengembangan kapasitas fungsionaris, dan iklim kerja organisasi.'
-  },
-  RISTEK: {
-    code: 'RISTEK',
-    name: 'Departemen Riset dan Teknologi',
-    shortName: 'Riset dan Teknologi (RISTEK)',
-    memberCount: 15,
-    internalScore: 7.89,
-    desc: 'Departemen Riset dan Teknologi (RISTEK) aktif menghadirkan inovasi teknologi, digitalisasi, dan karya keilmiahan.'
+// ============================================================================
+// 14B. PAPAN APRESIASI: PERIODE AGUSTUS (REKAP FINAL BEKU) & SEPTEMBER (COMING SOON)
+// ============================================================================
+
+// Data Arsip Rekapitulasi Final Peringkat Departemen PA Agustus 2026 (Permanen & Beku)
+const AUGUST_DEPT_RANKINGS = [
+  { rank: 1, name: 'Dalam Negeri (DAGRI)', code: 'DAGRI', score: 8.59, members: 15, predikat: 'Sangat Baik (AB)', isWinner: true },
+  { rank: 2, name: 'Luar Negeri (LUGRI)', code: 'LUGRI', score: 8.21, members: 18, predikat: 'Sangat Baik (AB)', isWinner: false },
+  { rank: 3, name: 'Kewirausahaan (KWU)', code: 'KWU', score: 8.19, members: 14, predikat: 'Sangat Baik (AB)', isWinner: false },
+  { rank: 4, name: 'Sosial Masyarakat (SOSMAS)', code: 'SOSMAS', score: 8.08, members: 18, predikat: 'Sangat Baik (AB)', isWinner: false },
+  { rank: 5, name: 'Pengembangan SDM (PSDM)', code: 'PSDM', score: 8.03, members: 13, predikat: 'Sangat Baik (AB)', isWinner: false },
+  { rank: 6, name: 'Riset dan Teknologi (RISTEK)', code: 'RISTEK', score: 7.89, members: 15, predikat: 'Sangat Baik (AB)', isWinner: false }
+];
+
+let currentPaAwardsPeriod = 'agustus';
+let paCountdownInterval = null;
+
+// Tab switcher antara PA Agustus (Arsip Rekap) dan PA September (Coming Soon)
+function switchPaAwardsPeriod(period) {
+  currentPaAwardsPeriod = period;
+  const tabAgustus = document.getElementById("paTabAgustus");
+  const tabSeptember = document.getElementById("paTabSeptember");
+  const contentAgustus = document.getElementById("paAwardsContentAgustus");
+  const contentSeptember = document.getElementById("paAwardsContentSeptember");
+
+  if (tabAgustus) {
+    const isAug = (period === 'agustus');
+    tabAgustus.classList.toggle("active", isAug);
+    tabAgustus.setAttribute("aria-selected", isAug ? "true" : "false");
   }
+  if (tabSeptember) {
+    const isSep = (period === 'september');
+    tabSeptember.classList.toggle("active", isSep);
+    tabSeptember.setAttribute("aria-selected", isSep ? "true" : "false");
+  }
+
+  if (contentAgustus) {
+    contentAgustus.classList.toggle("hidden", period !== 'agustus');
+  }
+  if (contentSeptember) {
+    contentSeptember.classList.toggle("hidden", period !== 'september');
+  }
+
+  if (period === 'agustus') {
+    renderAugustLeaderboard();
+  } else if (period === 'september') {
+    startPaSeptemberCountdown();
+  }
+}
+window.switchPaAwardsPeriod = switchPaAwardsPeriod;
+
+// Hitung mundur deadline PA September: Rabu, 14 Oktober 2026 23.59.59 WIB
+function startPaSeptemberCountdown() {
+  if (paCountdownInterval) clearInterval(paCountdownInterval);
+
+  function update() {
+    // 14 Oktober 2026 23:59:59 GMT+7
+    const deadline = new Date("2026-10-14T23:59:59+07:00").getTime();
+    const now = Date.now();
+    const diff = Math.max(0, deadline - now);
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    const dEl = document.getElementById("csDays");
+    const hEl = document.getElementById("csHours");
+    const mEl = document.getElementById("csMinutes");
+    const sEl = document.getElementById("csSeconds");
+
+    if (dEl) dEl.innerText = String(days).padStart(2, '0');
+    if (hEl) hEl.innerText = String(hours).padStart(2, '0');
+    if (mEl) mEl.innerText = String(minutes).padStart(2, '0');
+    if (sEl) sEl.innerText = String(seconds).padStart(2, '0');
+  }
+
+  update();
+  paCountdownInterval = setInterval(update, 1000);
+}
+window.startPaSeptemberCountdown = startPaSeptemberCountdown;
+
+// Render data leaderboard resmi PA Agustus (100% Statis & Sesuai Rekapan Asli)
+function renderAugustLeaderboard() {
+  const rankingListEl = document.getElementById("paDeptRankingList");
+  if (!rankingListEl) return;
+
+  const bestNameEl = document.getElementById("bestDeptName");
+  const bestScoreEl = document.getElementById("bestDeptScoreVal");
+  const bestPredikatEl = document.getElementById("bestDeptPredikatText");
+  const bestDescEl = document.getElementById("bestDeptDesc");
+  const bestStaffCountEl = document.getElementById("bestDeptStaffCount");
+
+  if (bestNameEl) bestNameEl.innerText = "Departemen Dalam Negeri";
+  if (bestScoreEl) bestScoreEl.innerText = "8.59";
+  if (bestPredikatEl) bestPredikatEl.innerText = "Sangat Baik (AB)";
+  if (bestDescEl) {
+    bestDescEl.innerText = "Departemen Dalam Negeri (DAGRI) berhasil meraih nilai rata-rata fungsionaris tertinggi di lingkungan BEM FTEIC ITS. Dengan partisipasi 100% dari seluruh 15 anggota (Pimpinan, Kabiro, Sekdep, dan Staf), DAGRI menunjukkan sinergi internal yang solid, akuntabilitas tinggi, serta kedisiplinan pengisian evaluasi.";
+  }
+  if (bestStaffCountEl) {
+    bestStaffCountEl.innerHTML = "<strong>15 / 15</strong> Fungsionaris Dinilai";
+  }
+
+  rankingListEl.innerHTML = AUGUST_DEPT_RANKINGS.map((dept) => {
+    const rankClass = dept.rank === 1 ? 'rank-1' : (dept.rank === 2 ? 'rank-2' : (dept.rank === 3 ? 'rank-3' : ''));
+    const barWidth = Math.min(100, Math.round((dept.score / 10) * 100));
+    const scoreColor = dept.rank === 1 ? 'color: #B45309; font-weight: 800;' : 'color: var(--text-1); font-weight: 700;';
+
+    return `
+      <div class="pa-ranking-item ${rankClass}">
+        <div class="pa-rank-pos-wrap">
+          <span class="pa-rank-num">${dept.rank}</span>
+          <div class="pa-rank-dept-info">
+            <span class="pa-rank-dept-name">${escapeHtml(dept.name)} ${dept.rank === 1 ? '🏆' : ''}</span>
+            <span class="pa-rank-dept-meta">${dept.members} Fungsionaris • ${dept.predikat}</span>
+          </div>
+        </div>
+        <div class="pa-rank-score-wrap">
+          <div class="pa-rank-bar-bg" title="Nilai Rata-rata Fungsionaris PA Agustus">
+            <div class="pa-rank-bar-fill" style="width: ${barWidth}%;"></div>
+          </div>
+          <span class="pa-rank-score-text" style="${scoreColor}">${dept.score.toFixed(2)}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+window.renderAugustLeaderboard = renderAugustLeaderboard;
+
+// Konfigurasi pembobotan 60% BPH + 40% Internal untuk PA September (disimpan untuk reveal mendatang)
+const BEM_DEPARTMENTS_CONFIG = {
+  DAGRI: { code: 'DAGRI', name: 'Departemen Dalam Negeri', shortName: 'Dalam Negeri (DAGRI)', memberCount: 15, internalScore: 8.59 },
+  LUGRI: { code: 'LUGRI', name: 'Departemen Luar Negeri', shortName: 'Luar Negeri (LUGRI)', memberCount: 18, internalScore: 8.21 },
+  KWU:   { code: 'KWU',   name: 'Departemen Kewirausahaan', shortName: 'Kewirausahaan (KWU)', memberCount: 14, internalScore: 8.19 },
+  SOSMAS:{ code: 'SOSMAS',name: 'Departemen Sosial Masyarakat', shortName: 'Sosial Masyarakat (SOSMAS)', memberCount: 18, internalScore: 8.08 },
+  PSDM:  { code: 'PSDM',  name: 'Departemen Pengembangan Sumber Daya Mahasiswa', shortName: 'Pengembangan SDM (PSDM)', memberCount: 13, internalScore: 8.03 },
+  RISTEK:{ code: 'RISTEK',name: 'Departemen Riset dan Teknologi', shortName: 'Riset dan Teknologi (RISTEK)', memberCount: 15, internalScore: 7.89 }
 };
 
-// Hitung skor akhir departemen berdasarkan pembobotan resmi: 60% BPH + 40% Internal
 function calculateDepartmentFinalScores() {
   const results = [];
-  const deptKeys = Object.keys(BEM_DEPARTMENTS_CONFIG);
-
-  deptKeys.forEach(code => {
+  Object.keys(BEM_DEPARTMENTS_CONFIG).forEach(code => {
     const cfg = BEM_DEPARTMENTS_CONFIG[code];
     let bphAvg = null;
     let bphCount = 0;
@@ -5332,78 +5471,16 @@ function calculateDepartmentFinalScores() {
     });
   });
 
-  // Urutkan peringkat tertinggi ke terendah berdasarkan skor pembobotan
   results.sort((a, b) => b.finalScore - a.finalScore);
   return results;
 }
+window.calculateDepartmentFinalScores = calculateDepartmentFinalScores;
 
-// Render peringkat departemen dan kartu piala Department of the Month
+// Leaderboard controller: Menampilkan PA Agustus (default & frozen)
 function updateDepartmentLeaderboard() {
-  const rankingListEl = document.getElementById("paDeptRankingList");
-  if (!rankingListEl) return;
-
-  const rankedDepts = calculateDepartmentFinalScores();
-  if (!rankedDepts || rankedDepts.length === 0) return;
-
-  const topDept = rankedDepts[0];
-
-  // 1. Update Best Department of the Month Trophy Card
-  const bestNameEl = document.getElementById("bestDeptName");
-  const bestScoreEl = document.getElementById("bestDeptScoreVal");
-  const bestPredikatEl = document.getElementById("bestDeptPredikatText");
-  const bestComponentsEl = document.getElementById("bestDeptScoreComponents");
-  const bestDescEl = document.getElementById("bestDeptDesc");
-  const bestStaffCountEl = document.getElementById("bestDeptStaffCount");
-
-  if (bestNameEl) bestNameEl.innerText = topDept.name;
-  if (bestScoreEl) bestScoreEl.innerText = topDept.finalScore.toFixed(2);
-  if (bestPredikatEl) {
-    bestPredikatEl.innerText = topDept.finalScore >= 8.5 ? 'Sangat Baik (A)' : (topDept.finalScore >= 8.0 ? 'Sangat Baik (AB)' : 'Baik (B)');
+  if (currentPaAwardsPeriod === 'agustus') {
+    renderAugustLeaderboard();
   }
-  if (bestComponentsEl) {
-    if (topDept.hasBph) {
-      bestComponentsEl.innerHTML = `• (BPH: <strong>${topDept.bphAvg}</strong> [60%] | Internal: <strong>${topDept.internalScore}</strong> [40%])`;
-    } else {
-      bestComponentsEl.innerHTML = `• (Internal: <strong>${topDept.internalScore}</strong> [40%] | BPH: <em>Menunggu Penilaian</em> [60%])`;
-    }
-  }
-  if (bestDescEl) {
-    bestDescEl.innerText = `${topDept.name} (${topDept.code}) berhasil meraih nilai akumulasi tertinggi di lingkungan BEM FTEIC ITS berdasarkan pembobotan 60% evaluasi BPH dan 40% nilai internal fungsionaris. ${topDept.desc}`;
-  }
-  if (bestStaffCountEl) {
-    bestStaffCountEl.innerHTML = `<strong>${topDept.memberCount} / ${topDept.memberCount}</strong> Fungsionaris Dinilai`;
-  }
-
-  // 2. Update Leaderboard List (Rank 1 sampai 6)
-  rankingListEl.innerHTML = rankedDepts.map((dept, idx) => {
-    const rankNum = idx + 1;
-    const rankClass = rankNum === 1 ? 'rank-1' : (rankNum === 2 ? 'rank-2' : (rankNum === 3 ? 'rank-3' : ''));
-    const barWidth = Math.min(100, Math.round((dept.finalScore / 10) * 100));
-    const predikat = dept.finalScore >= 8.5 ? 'Sangat Baik (A)' : (dept.finalScore >= 8.0 ? 'Sangat Baik (AB)' : 'Baik (B)');
-    const scoreColor = rankNum === 1 ? 'color: #B45309; font-weight: 800;' : 'color: var(--text-1); font-weight: 700;';
-
-    const bphMeta = dept.hasBph 
-      ? `BPH: <strong>${dept.bphAvg}</strong> (60%) • Internal: <strong>${dept.internalScore}</strong> (40%)` 
-      : `Internal: <strong>${dept.internalScore}</strong> (40%) • BPH: <em>Proses (60%)</em>`;
-
-    return `
-      <div class="pa-ranking-item ${rankClass}">
-        <div class="pa-rank-pos-wrap">
-          <span class="pa-rank-num">${rankNum}</span>
-          <div class="pa-rank-dept-info">
-            <span class="pa-rank-dept-name">${escapeHtml(dept.shortName)} ${rankNum === 1 ? '🏆' : ''}</span>
-            <span class="pa-rank-dept-meta">${dept.memberCount} Fungsionaris • ${bphMeta} • ${predikat}</span>
-          </div>
-        </div>
-        <div class="pa-rank-score-wrap">
-          <div class="pa-rank-bar-bg" title="Akumulasi: 60% BPH + 40% Internal">
-            <div class="pa-rank-bar-fill" style="width: ${barWidth}%;"></div>
-          </div>
-          <span class="pa-rank-score-text" style="${scoreColor}">${dept.finalScore.toFixed(2)}</span>
-        </div>
-      </div>
-    `;
-  }).join('');
 }
 window.updateDepartmentLeaderboard = updateDepartmentLeaderboard;
 
@@ -5415,7 +5492,8 @@ function bootstrapApp() {
   if (typeof initStatCounters === 'function') initStatCounters();
   if (typeof initHeroScrollFade === 'function') initHeroScrollFade();
   initHorizontalSliders();
-  updateDepartmentLeaderboard();
+  renderAugustLeaderboard();
+  startPaSeptemberCountdown();
   setTimeout(() => syncLiveBphDepartemenSheets(false), 800);
 }
 

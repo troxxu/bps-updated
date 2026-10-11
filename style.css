@@ -13066,4 +13066,605 @@ body::before {
   animation: bphHighlightPulse 2s ease-out;
 }
 
+/* ── BPH STOP START CONTINUE BREAKDOWN IN COMMENT CARD ── */
+.pm-bph-ssc-block {
+  margin-top: 10px;
+}
+
+.pm-bph-ssc-block.has-top-divider {
+  padding-top: 10px;
+  border-top: 1px dashed rgba(226, 232, 240, 0.85);
+}
+
+[data-theme="dark"] .pm-bph-ssc-block.has-top-divider {
+  border-top-color: rgba(255, 255, 255, 0.09);
+}
+
+.pm-bph-ssc-heading {
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-2, #475569);
+  margin-bottom: 8px;
+}
+
+[data-theme="dark"] .pm-bph-ssc-heading {
+  color: #94A3B8;
+}
+
+.pm-bph-ssc-items {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.pm-bph-ssc-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.pm-ssc-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 7px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  min-width: 62px;
+  text-align: center;
+}
+
+.pm-ssc-badge.stop {
+  background: #FEE2E2;
+  color: #991B1B;
+  border: 1px solid #FCA5A5;
+}
+
+.pm-ssc-badge.start {
+  background: #DCFCE7;
+  color: #166534;
+  border: 1px solid #86EFAC;
+}
+
+.pm-ssc-badge.continue {
+  background: #EFF6FF;
+  color: #1E40AF;
+  border: 1px solid #BFDBFE;
+}
+
+[data-theme="dark"] .pm-ssc-badge.stop {
+  background: rgba(239, 68, 68, 0.2);
+  color: #FCA5A5;
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+[data-theme="dark"] .pm-ssc-badge.start {
+  background: rgba(34, 197, 94, 0.2);
+  color: #86EFAC;
+  border-color: rgba(34, 197, 94, 0.4);
+}
+
+[data-theme="dark"] .pm-ssc-badge.continue {
+  background: rgba(59, 130, 246, 0.2);
+  color: #93C5FD;
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+.pm-ssc-desc {
+  flex: 1;
+  color: var(--text-1, #1e293b);
+  word-break: break-word;
+}
+
+[data-theme="dark"] .pm-ssc-desc {
+  color: #E2E8F0;
+}
+
+/* ── PAPAN APRESIASI: 2-TAB SWITCHER (PA AGUSTUS & PA SEPTEMBER) ── */
+.pa-period-tabs-bar {
+  display: flex;
+  justify-content: center;
+  margin: 18px 0 24px;
+}
+
+.pa-period-tabs {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(241, 245, 249, 0.95);
+  border: 1px solid rgba(203, 213, 225, 0.85);
+  padding: 4px;
+  border-radius: 999px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  gap: 4px;
+}
+
+[data-theme="dark"] .pa-period-tabs {
+  background: rgba(15, 23, 42, 0.85);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.pa-period-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: transparent;
+  border: none;
+  color: var(--text-2, #475569);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.22s var(--silk, cubic-bezier(0.16, 1, 0.3, 1));
+  user-select: none;
+}
+
+.pa-period-tab:hover {
+  color: var(--text-1, #0f172a);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="dark"] .pa-period-tab:hover {
+  color: #F8FAFC;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.pa-period-tab.active {
+  background: #1D536B;
+  color: #FFFFFF !important;
+  box-shadow: 0 3px 12px rgba(29, 83, 107, 0.32);
+}
+
+[data-theme="dark"] .pa-period-tab.active {
+  background: #256C8A;
+  color: #FFFFFF !important;
+  box-shadow: 0 3px 14px rgba(37, 108, 138, 0.45);
+}
+
+.pa-tab-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.pa-tab-title {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.pa-tab-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+}
+
+.pa-tab-badge.agustus {
+  background: rgba(16, 185, 129, 0.15);
+  color: #047857;
+}
+
+.pa-period-tab.active .pa-tab-badge.agustus {
+  background: rgba(255, 255, 255, 0.22);
+  color: #FFFFFF;
+}
+
+.pa-tab-badge.september {
+  background: rgba(245, 158, 11, 0.18);
+  color: #B45309;
+}
+
+.pa-period-tab.active .pa-tab-badge.september {
+  background: rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+}
+
+.pa-period-view.hidden {
+  display: none !important;
+}
+
+/* ── PAPAN APRESIASI: PA SEPTEMBER COMING SOON CARD ── */
+.pa-coming-soon-card {
+  position: relative;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.96) 0%, rgba(248, 250, 252, 0.94) 100%);
+  border: 1.5px solid rgba(226, 232, 240, 0.9);
+  border-radius: 20px;
+  padding: 36px 32px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
+  overflow: hidden;
+  text-align: center;
+}
+
+[data-theme="dark"] .pa-coming-soon-card {
+  background: linear-gradient(145deg, #111827 0%, #0F172A 100%);
+  border-color: rgba(255, 255, 255, 0.09);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.4);
+}
+
+.pa-coming-soon-glow {
+  position: absolute;
+  top: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 380px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.2) 0%, rgba(29, 83, 107, 0.08) 55%, transparent 75%);
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.pa-coming-soon-badge-wrap {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.pa-cs-badge {
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pa-cs-badge.live-dot {
+  background: rgba(16, 185, 129, 0.12);
+  color: #047857;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+[data-theme="dark"] .pa-cs-badge.live-dot {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34D399;
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+.pa-cs-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 8px #10B981;
+  animation: pulseDot 1.8s infinite;
+}
+
+.pa-cs-badge.date {
+  background: rgba(29, 83, 107, 0.08);
+  color: #1D536B;
+  border: 1px solid rgba(29, 83, 107, 0.18);
+}
+
+[data-theme="dark"] .pa-cs-badge.date {
+  background: rgba(37, 108, 138, 0.18);
+  color: #38BDF8;
+  border-color: rgba(56, 189, 248, 0.25);
+}
+
+.pa-coming-soon-hero {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.pa-cs-icon-wrap {
+  width: 68px;
+  height: 68px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.16) 0%, rgba(217, 119, 6, 0.24) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  box-shadow: 0 6px 18px rgba(245, 158, 11, 0.18);
+}
+
+.pa-cs-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.pa-cs-title {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--text-1, #0f172a);
+  letter-spacing: -0.02em;
+  margin: 0 0 8px;
+}
+
+[data-theme="dark"] .pa-cs-title {
+  color: #F8FAFC;
+}
+
+.pa-cs-highlight {
+  display: inline-block;
+  font-size: 1.85rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 50%, #B45309 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0 0 4px;
+}
+
+.pa-cs-reveal-tag {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #D97706;
+  margin: 0 0 14px;
+  letter-spacing: 0.01em;
+}
+
+[data-theme="dark"] .pa-cs-reveal-tag {
+  color: #FBBF24;
+}
+
+.pa-cs-desc {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--text-2, #475569);
+  margin: 0 auto;
+}
+
+[data-theme="dark"] .pa-cs-desc {
+  color: #94A3B8;
+}
+
+/* Countdown Grid */
+.pa-cs-countdown-box {
+  position: relative;
+  z-index: 1;
+  max-width: 540px;
+  margin: 26px auto 30px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 16px;
+  padding: 18px 20px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="dark"] .pa-cs-countdown-box {
+  background: rgba(15, 23, 42, 0.65);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.pa-cs-countdown-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-2, #475569);
+  margin-bottom: 12px;
+}
+
+[data-theme="dark"] .pa-cs-countdown-header {
+  color: #94A3B8;
+}
+
+.pa-cs-countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.pa-cs-time-card {
+  background: var(--bg, #F8FAFC);
+  border: 1px solid var(--border, rgba(226, 232, 240, 0.8));
+  border-radius: 12px;
+  padding: 10px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.pa-cs-time-card:hover {
+  transform: translateY(-2px);
+}
+
+[data-theme="dark"] .pa-cs-time-card {
+  background: #1E293B;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.pa-cs-time-num {
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: #1D536B;
+  font-family: var(--font-mono, monospace);
+  line-height: 1.1;
+}
+
+[data-theme="dark"] .pa-cs-time-num {
+  color: #38BDF8;
+}
+
+.pa-cs-time-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-3, #64748b);
+  letter-spacing: 0.04em;
+  margin-top: 3px;
+}
+
+.pa-cs-deadline-info {
+  font-size: 0.77rem;
+  color: var(--text-2, #475569);
+  margin-top: 12px;
+  border-top: 1px dashed rgba(226, 232, 240, 0.8);
+  padding-top: 10px;
+}
+
+[data-theme="dark"] .pa-cs-deadline-info {
+  border-top-color: rgba(255, 255, 255, 0.08);
+  color: #94A3B8;
+}
+
+/* Feature Grid Teaser */
+.pa-cs-features-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  max-width: 960px;
+  margin: 0 auto 30px;
+  text-align: left;
+}
+
+.pa-cs-feature-item {
+  background: var(--card-bg, #FFFFFF);
+  border: 1px solid var(--border-color, rgba(226, 232, 240, 0.85));
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+[data-theme="dark"] .pa-cs-feature-item {
+  background: #1E293B;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.pa-cs-feat-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.pa-cs-feat-content h5 {
+  margin: 0 0 5px;
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: var(--text-1, #0f172a);
+}
+
+[data-theme="dark"] .pa-cs-feat-content h5 {
+  color: #F8FAFC;
+}
+
+.pa-cs-feat-content p {
+  margin: 0;
+  font-size: 0.77rem;
+  line-height: 1.5;
+  color: var(--text-2, #475569);
+}
+
+[data-theme="dark"] .pa-cs-feat-content p {
+  color: #94A3B8;
+}
+
+/* Actions Row */
+.pa-cs-action-row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pa-cs-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #1D536B;
+  color: #FFFFFF;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(29, 83, 107, 0.25);
+}
+
+.pa-cs-action-btn:hover {
+  background: #256C8A;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(29, 83, 107, 0.35);
+  color: #FFFFFF;
+}
+
+.pa-cs-secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--text-2, #475569);
+  border: 1px solid var(--border, rgba(203, 213, 225, 0.9));
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pa-cs-secondary-btn:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--text-1, #0f172a);
+}
+
+[data-theme="dark"] .pa-cs-secondary-btn {
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #94A3B8;
+}
+
+[data-theme="dark"] .pa-cs-secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #FFFFFF;
+}
+
+@media (max-width: 640px) {
+  .pa-period-tabs {
+    width: 100%;
+    justify-content: center;
+  }
+  .pa-period-tab {
+    padding: 7px 12px;
+    font-size: 0.76rem;
+  }
+  .pa-coming-soon-card {
+    padding: 24px 16px;
+  }
+  .pa-cs-title {
+    font-size: 1.2rem;
+  }
+  .pa-cs-highlight {
+    font-size: 1.5rem;
+  }
+  .pa-cs-time-num {
+    font-size: 1.25rem;
+  }
+}
+
 

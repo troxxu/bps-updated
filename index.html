@@ -211,7 +211,7 @@
               <span class="pa-chip pa-chip-active">
                 <span class="pa-chip-dot"></span> Sedang Berlangsung
               </span>
-              <span class="pa-deadline-countdown" style="color: #065F46; font-weight: 700;">Batas Akhir: 12 Okt</span>
+              <span class="pa-deadline-countdown" style="color: #065F46; font-weight: 700;">Batas Akhir: 14 Okt</span>
             </div>
             <div class="pa-card-period-name">PA SEPTEMBER</div>
             <div class="pa-card-dates">
@@ -221,11 +221,11 @@
                 <line x1="8" y1="2" x2="8" y2="6"></line>
                 <line x1="3" y1="10" x2="21" y2="10"></line>
               </svg>
-              <span><strong>09 OKTOBER (20.00 WIB) – 12 OKTOBER 2026 (23.59 WIB)</strong></span>
+              <span><strong>09 OKTOBER (20.00 WIB) – 14 OKTOBER 2026 (23.59 WIB)</strong></span>
             </div>
             <div class="pa-card-deadline-alert">
               <div class="pa-deadline-label">DEADLINE PENGERJAAN:</div>
-              <div class="pa-deadline-val">SENIN, 12 OKTOBER 2026 • PUKUL 23.59 WIB</div>
+              <div class="pa-deadline-val">RABU, 14 OKTOBER 2026 • PUKUL 23.59 WIB</div>
             </div>
             <p class="pa-card-info">
               Periode evaluasi kinerja September saat ini aktif. Seluruh fungsionaris wajib mengisi rubrik evaluasi rekan kerja di formulir Google Sheets.
@@ -260,13 +260,32 @@
             </span>
             <span class="pa-awards-badge september">
               <span class="pa-chip-dot"></span>
-              Periode Berjalan: PA September (09 Okt 20.00 – 12 Okt 23.59)
+              Periode Berjalan: PA September (09 Okt 20.00 – 14 Okt 23.59)
             </span>
           </div>
           <h3 class="pa-awards-title">
             Papan Apresiasi &amp; <em>Peringkat Kinerja Fungsionaris</em>
           </h3>
         </div>
+
+        <!-- ── TAB SWITCHER PAPAN APRESIASI: PA AGUSTUS & PA SEPTEMBER ── -->
+        <div class="pa-period-tabs-bar">
+          <div class="pa-period-tabs" role="tablist">
+            <button type="button" class="pa-period-tab active" id="paTabAgustus" onclick="switchPaAwardsPeriod('agustus')" role="tab" aria-selected="true">
+              <span class="pa-tab-icon">🏆</span>
+              <span class="pa-tab-title">PA Agustus 2026</span>
+              <span class="pa-tab-badge agustus">Rekapitulasi Final</span>
+            </button>
+            <button type="button" class="pa-period-tab" id="paTabSeptember" onclick="switchPaAwardsPeriod('september')" role="tab" aria-selected="false">
+              <span class="pa-tab-icon">⏳</span>
+              <span class="pa-tab-title">PA September 2026</span>
+              <span class="pa-tab-badge september">Coming Soon</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ── TAB VIEW 1: PA AGUSTUS 2026 (REKAPITULASI RESMI & BEKU) ── -->
+        <div id="paAwardsContentAgustus" class="pa-period-view active">
 
         <!-- Standar Parameter & Predikat Nilai -->
         <div class="pa-scale-banner">
@@ -344,11 +363,10 @@
                 </span>
               </div>
 
-              <!-- Pembobotan Resmi Department of the Month: 60% BPH + 40% Internal -->
-              <div class="pa-dept-weight-breakdown" id="bestDeptWeightBreakdown" style="margin: 10px 0 12px; font-size: 0.77rem; color: #475569; background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.2); padding: 5px 10px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-                <span style="color: #4F46E5; font-weight: 700;">⚖️ Pembobotan:</span>
-                <span><strong>60% Evaluasi BPH</strong> + <strong>40% Rata-rata Internal</strong></span>
-                <span id="bestDeptScoreComponents" style="color: #64748B;">• (Internal: 8.59 | BPH: Menunggu)</span>
+              <!-- Rekapitulasi Resmi Nilai Department of the Month PA Agustus -->
+              <div class="pa-dept-weight-breakdown" id="bestDeptWeightBreakdown" style="margin: 10px 0 12px; font-size: 0.77rem; color: #475569; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); padding: 5px 10px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                <span style="color: #047857; font-weight: 700;">📋 Rekapitulasi:</span>
+                <span><strong>Nilai Rata-rata Fungsionaris Departemen: 8.59</strong> (15/15 Fungsionaris Dinilai • Final)</span>
               </div>
 
               <p class="pa-best-dept-desc" id="bestDeptDesc">
@@ -375,11 +393,11 @@
                 <div>
                   <h4 class="pa-ranking-title">Peringkat Rata-rata Nilai Departemen</h4>
                   <p class="pa-ranking-sub">
-                    Akumulasi Pembobotan: <strong>60% Evaluasi BPH ke Departemen</strong> + <strong>40% Rata-rata Internal Departemen</strong>
+                    Rekapitulasi Resmi Rata-rata Kinerja Fungsionaris Periode PA Agustus 2026
                   </p>
                 </div>
-                <span style="font-size: 0.72rem; font-weight: 700; color: #4338CA; background: #EEF2FF; border: 1px solid #C7D2FE; padding: 4px 10px; border-radius: 999px;">
-                  Bobot: 60% BPH • 40% Internal
+                <span style="font-size: 0.72rem; font-weight: 700; color: #047857; background: #ECFDF5; border: 1px solid #A7F3D0; padding: 4px 10px; border-radius: 999px;">
+                  Arsip Final PA Agustus
                 </span>
               </div>
             </div>
@@ -792,6 +810,101 @@
           </div>
         </div>
 
+        </div>
+        <!-- END paAwardsContentAgustus -->
+
+        <!-- ── TAB VIEW 2: PA SEPTEMBER 2026 (COMING SOON) ── -->
+        <div id="paAwardsContentSeptember" class="pa-period-view hidden">
+          <div class="pa-coming-soon-card">
+            <div class="pa-coming-soon-glow" aria-hidden="true"></div>
+            <div class="pa-coming-soon-badge-wrap">
+              <span class="pa-cs-badge live-dot">
+                <span class="pa-cs-pulse"></span>
+                Periode Pengisian Sedang Berlangsung
+              </span>
+              <span class="pa-cs-badge date">09 Okt 20.00 – 14 Okt 23.59 WIB</span>
+            </div>
+            
+            <div class="pa-coming-soon-hero">
+              <div class="pa-cs-icon-wrap">
+                <span class="pa-cs-icon">⏳</span>
+              </div>
+              <h3 class="pa-cs-title">Papan Apresiasi PA September 2026</h3>
+              <p class="pa-cs-highlight">Coming Soon</p>
+              <p class="pa-cs-reveal-tag">(Reveal saat pengisian PA sudah selesai)</p>
+              <p class="pa-cs-desc">
+                Papan Apresiasi, Best Department of the Month, Best Overall Staff, Best Sekdep, dan Best Staff per Departemen untuk <strong>Periode PA September 2026</strong> sedang dalam tahap pengumpulan serta rekapitulasi data penilaian 360° dan evaluasi BPH.
+              </p>
+            </div>
+
+            <!-- Countdown Timer Menuju Batas Akhir Pengisian PA September -->
+            <div class="pa-cs-countdown-box">
+              <div class="pa-cs-countdown-header">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <span>Hitung Mundur Batas Akhir Pengisian PA September:</span>
+              </div>
+              <div class="pa-cs-countdown-grid" id="paSeptemberCountdown">
+                <div class="pa-cs-time-card">
+                  <span class="pa-cs-time-num" id="csDays">00</span>
+                  <span class="pa-cs-time-label">Hari</span>
+                </div>
+                <div class="pa-cs-time-card">
+                  <span class="pa-cs-time-num" id="csHours">00</span>
+                  <span class="pa-cs-time-label">Jam</span>
+                </div>
+                <div class="pa-cs-time-card">
+                  <span class="pa-cs-time-num" id="csMinutes">00</span>
+                  <span class="pa-cs-time-label">Menit</span>
+                </div>
+                <div class="pa-cs-time-card">
+                  <span class="pa-cs-time-num" id="csSeconds">00</span>
+                  <span class="pa-cs-time-label">Detik</span>
+                </div>
+              </div>
+              <div class="pa-cs-deadline-info">
+                ⏰ Deadline Pengisian Lembar Kerja: <strong>Rabu, 14 Oktober 2026 pukul 23.59 WIB</strong>
+              </div>
+            </div>
+
+            <!-- Teaser Parameter & Formula PA September -->
+            <div class="pa-cs-features-grid">
+              <div class="pa-cs-feature-item">
+                <div class="pa-cs-feat-icon">🏆</div>
+                <div class="pa-cs-feat-content">
+                  <h5>Best Department of the Month</h5>
+                  <p>Dihitung dari formula resmi pembobotan: <strong>60% Evaluasi BPH ke Departemen</strong> + <strong>40% Rata-rata Internal Fungsionaris</strong>.</p>
+                </div>
+              </div>
+              <div class="pa-cs-feature-item">
+                <div class="pa-cs-feat-icon">🌟</div>
+                <div class="pa-cs-feat-content">
+                  <h5>Best Overall Staff &amp; Best Sekdep</h5>
+                  <p>Apresiasi tertinggi untuk fungsionaris dan sekretaris departemen dengan skor capaian rubrik 12 indikator tertinggi se-FTEIC.</p>
+                </div>
+              </div>
+              <div class="pa-cs-feature-item">
+                <div class="pa-cs-feat-icon">🎖️</div>
+                <div class="pa-cs-feat-content">
+                  <h5>Best Staff di 6 Departemen</h5>
+                  <p>Anugerah fungsionaris teladan terbaik di masing-masing departemen (DAGRI, LUGRI, PSDM, SOSMAS, RISTEK, dan KWU).</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="pa-cs-action-row">
+              <a href="#staf" class="pa-cs-action-btn" onclick="document.getElementById('staf').scrollIntoView({behavior: 'smooth'})">
+                <span>Buka Direktori &amp; Lembar Kerja Fungsionaris &darr;</span>
+              </a>
+              <button type="button" class="pa-cs-secondary-btn" onclick="switchPaAwardsPeriod('agustus')">
+                <span>&larr; Lihat Arsip PA Agustus 2026</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+        <!-- END paAwardsContentSeptember -->
+
       </div>
 
       <!-- Controls: Filter Tabs & Live Search Bar -->
@@ -926,7 +1039,7 @@
                 <ul style="margin: 8px 0 0 18px; line-height: 1.6;">
                   <li><strong>PA AGUSTUS:</strong> 04 – 07 OKTOBER 2026 &bull; <strong>DEADLINE: RABU, 7 OKTOBER 2026
                       PUKUL 23.59 WIB</strong> (<em>Sudah Lewat &amp; Selesai Direkap</em>).</li>
-                  <li><strong>PA SEPTEMBER:</strong> 09 OKTOBER (20.00 WIB) – 12 OKTOBER 2026 &bull; <strong>DEADLINE: SENIN, 12 OKTOBER
+                  <li><strong>PA SEPTEMBER:</strong> 09 OKTOBER (20.00 WIB) – 14 OKTOBER 2026 &bull; <strong>DEADLINE: RABU, 14 OKTOBER
                       2026 PUKUL 23.59 WIB</strong> (<em>Sedang Berlangsung</em>).</li>
                 </ul>
               </div>
@@ -1083,7 +1196,7 @@
           <span>Periode Pengisian Aktif: PA SEPTEMBER 2026</span>
         </div>
         <div class="notice-body">
-          Jadwal: <strong>09 Oktober (20.00 WIB) – 12 Oktober 2026</strong> &bull; <span style="color: #059669; font-weight: 700;">Sedang Berlangsung &bull; Deadline: Senin, 12 Okt 2026 Pukul 23.59 WIB</span>
+          Jadwal: <strong>09 Oktober (20.00 WIB) – 14 Oktober 2026</strong> &bull; <span style="color: #059669; font-weight: 700;">Sedang Berlangsung &bull; Deadline: Rabu, 14 Okt 2026 Pukul 23.59 WIB</span>
         </div>
         <div class="notice-next">
           <strong>Periode Sebelumnya:</strong> PA Agustus: 04 – 07 Oktober 2026 (Sudah Lewat &amp; Selesai Direkap)
@@ -1207,7 +1320,7 @@
           <div class="pm-nrp-row">
             <span id="pmNrp" class="pm-nrp-text">NRP: -</span>
             <span class="pm-divider">•</span>
-            <span class="pm-period-text" id="pmPeriodText">Periode: PA September 2026 (09 Okt 20.00 – 12 Okt 23.59)</span>
+            <span class="pm-period-text" id="pmPeriodText">Periode: PA September 2026 (09 Okt 20.00 – 14 Okt 23.59)</span>
           </div>
           <div class="pm-privacy-verified-badge" title="Data evaluasi telah diotentikasi via PIN">
             <span class="privacy-lock-dot"></span>
@@ -1226,7 +1339,7 @@
               <span class="pm-tab-label">PA September 2026</span>
               <span class="pm-tab-badge live">Live 24/7</span>
             </div>
-            <span class="pm-tab-subtext">Periode Berjalan (09 Okt 20.00 – 12 Okt 23.59)</span>
+            <span class="pm-tab-subtext">Periode Berjalan (09 Okt 20.00 – 14 Okt 23.59)</span>
           </button>
           <button type="button" id="pmTabAgustus" class="pm-period-tab" role="tab" aria-selected="false"
             onclick="switchModalPeriod('agustus')" title="Tampilkan hasil rekapitulasi resmi PA Agustus yang telah selesai (arsip permanen)">
