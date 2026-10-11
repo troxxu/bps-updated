@@ -10,7 +10,7 @@
     "asalDepartemen": "Teknik Elektro",
     "pin": "kabempolarissukses",
     "foto": "assets/foto-staf/bph-001.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1RXy_XyeSlQrlfYWjO5EEHXZzYCajZNQYeXKasfA31_w/edit?usp=drive_link"
   },
   {
     "id": "bph-002",
@@ -23,7 +23,7 @@
     "asalDepartemen": "Teknik Biomedik",
     "pin": "sekjen1internal",
     "foto": "assets/foto-staf/bph-002.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/19n67m57FSuNN-vl0URbHYG5fuCBDmIok4mTwzcMsQQU/edit?usp=drive_link"
   },
   {
     "id": "bph-003",
@@ -36,7 +36,7 @@
     "asalDepartemen": "Teknik Elektro",
     "pin": "sekjen2external",
     "foto": "assets/foto-staf/bph-003.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/13JA9jiN_Hq5mcz8_R1YC2jvtHnTncwxqBEoIuLpS7VY/edit?usp=drive_link"
   },
   {
     "id": "staf-001",

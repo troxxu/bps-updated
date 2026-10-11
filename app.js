@@ -47,7 +47,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "kabempolarissukses",
     "foto": "assets/foto-staf/bph-001.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/1RXy_XyeSlQrlfYWjO5EEHXZzYCajZNQYeXKasfA31_w/edit?usp=drive_link"
   },
   {
     "id": "bph-002",
@@ -60,7 +60,7 @@ const staffList = [
     "asalDepartemen": "Teknik Biomedik",
     "pin": "sekjen1internal",
     "foto": "assets/foto-staf/bph-002.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/19n67m57FSuNN-vl0URbHYG5fuCBDmIok4mTwzcMsQQU/edit?usp=drive_link"
   },
   {
     "id": "bph-003",
@@ -73,7 +73,7 @@ const staffList = [
     "asalDepartemen": "Teknik Elektro",
     "pin": "sekjen2external",
     "foto": "assets/foto-staf/bph-003.jpg",
-    "sheetUrl": ""
+    "sheetUrl": "https://docs.google.com/spreadsheets/d/13JA9jiN_Hq5mcz8_R1YC2jvtHnTncwxqBEoIuLpS7VY/edit?usp=drive_link"
   },
   {
     "id": "staf-001",
@@ -3038,7 +3038,7 @@ function getFilteredStaff() {
     const matchFilter = activeFilter === 'all' || staff.departemenBEM === activeFilter;
     const q = searchQuery.toLowerCase().trim();
     const matchSearch = !q ||
-      staff.nama.toLowerCase().includes(q) ||
+      staff.nama.toLowerCase().includes(q) || (staff.id === 'bph-001' && q.includes('liman')) ||
       staff.role.toLowerCase().includes(q) ||
       staff.nrp.includes(q) ||
       staff.departemenBEM.toLowerCase().includes(q) ||
