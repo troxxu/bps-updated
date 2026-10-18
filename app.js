@@ -3101,12 +3101,14 @@ function renderStaffGrid() {
   gridContainer.classList.remove("hidden");
   if (emptyState) emptyState.classList.add("hidden");
 
-  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 640;
+  const itemsPerPage = isMobile ? 6 : ITEMS_PER_PAGE;
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
   if (currentPage > totalPages) currentPage = totalPages;
   if (currentPage < 1) currentPage = 1;
 
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const pagedStaff = filtered.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const pagedStaff = filtered.slice(startIndex, startIndex + itemsPerPage);
 
   pagedStaff.forEach(staff => {
     const isBPH = staff.departemenBEM === 'BPH';
@@ -3148,18 +3150,6 @@ function renderStaffGrid() {
         <span class="card-period-dot"></span>
         <span>PA September</span>
       </div>
-
-      ${isBPH ? `
-      <div class="card-bph-sync-badge bph-presidium-badge" title="Presidium Penilai BPH (Mengevaluasi Departemen)">
-        <span class="card-bph-dot"></span>
-        <span>Presidium Penilai</span>
-      </div>
-      ` : `
-      <div class="card-bph-sync-badge" title="Telah terhubung dengan penilaian & evaluasi BPH untuk ${staff.departemenBEM}">
-        <span class="card-bph-dot"></span>
-        <span>Evaluasi BPH Terhubung</span>
-      </div>
-      `}
 
       <div class="card-actions-group">
         <button type="button" class="btn-card-action btn-card-progress" onclick="event.stopPropagation(); requestPinAccess('${staff.id}', 'progress');" title="Lihat Rapor & Evaluasi ${staff.nama}">
@@ -4235,6 +4225,17 @@ if (modalOverlay) {
     }
   });
 }
+
+// Dynamic responsive layout updater for mobile vs desktop cards
+let lastIsMobile = typeof window !== 'undefined' ? window.innerWidth <= 640 : false;
+window.addEventListener('resize', () => {
+  const currentIsMobile = window.innerWidth <= 640;
+  if (currentIsMobile !== lastIsMobile) {
+    lastIsMobile = currentIsMobile;
+    currentPage = 1;
+    renderStaffGrid();
+  }
+});
 
 // ── MAGIC UI: MAGIC CARD SPOTLIGHT GLOW ──
 document.addEventListener('mousemove', (e) => {
