@@ -3149,13 +3149,33 @@ function renderStaffGrid() {
         <span>PA September</span>
       </div>
 
+      ${isBPH ? `
+      <div class="card-bph-sync-badge bph-presidium-badge" title="Presidium Penilai BPH (Mengevaluasi Departemen)">
+        <span class="card-bph-dot"></span>
+        <span>Presidium Penilai</span>
+      </div>
+      ` : `
+      <div class="card-bph-sync-badge" title="Telah terhubung dengan penilaian & evaluasi BPH untuk ${staff.departemenBEM}">
+        <span class="card-bph-dot"></span>
+        <span>Evaluasi BPH Terhubung</span>
+      </div>
+      `}
 
-      <div class="card-hint-badge">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
-          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-        </svg>
-        <span>Akses Rapor Personal</span>
+      <div class="card-actions-group">
+        <button type="button" class="btn-card-action btn-card-progress" onclick="event.stopPropagation(); requestPinAccess('${staff.id}', 'progress');" title="Lihat Rapor & Evaluasi ${staff.nama}">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span>Rapor</span>
+        </button>
+        <button type="button" class="btn-card-action btn-card-sheet" onclick="event.stopPropagation(); requestPinAccess('${staff.id}', 'sheet');" title="Isi form evaluasi PA September untuk ${staff.nama}">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+          </svg>
+          <span>Isi PA ↗</span>
+        </button>
       </div>
     `;
 
@@ -3490,7 +3510,7 @@ function openProgressModal(staff, liveData = null, period = null) {
     if (currentModalPeriod === 'agustus') {
       periodEl.innerText = "Periode: PA Agustus 2026 (Arsip Rekapitulasi Final)";
     } else {
-      periodEl.innerText = "Periode: PA September 2026 (09 Okt 20.00 – 14 Okt 23.59)";
+      periodEl.innerText = "Periode: PA September 2026 (09 Okt 20.00 – 21 Okt 23.59)";
     }
   }
 
@@ -3551,7 +3571,7 @@ function openProgressModal(staff, liveData = null, period = null) {
           liveBadge.className = "pm-live-badge-chip";
         }
         if (liveDesc) {
-          liveDesc.innerHTML = `Periode PA Agustus telah resmi selesai direkap dan saat ini sedang berlangsung <strong>Periode Pengisian PA September (09 Oktober 20.00 WIB – 14 Oktober 2026 23.59 WIB)</strong>. Seluruh capaian indikator akan terisi secara otomatis begitu fungsionaris mengisi lembar kerja Google Sheets sebelum deadline <strong>Rabu, 14 Oktober 2026 pukul 23.59 WIB</strong>.`;
+          liveDesc.innerHTML = `Periode PA Agustus telah resmi selesai direkap dan saat ini sedang berlangsung <strong>Periode Pengisian PA September (09 Oktober 20.00 WIB – 21 Oktober 2026 23.59 WIB)</strong>. Seluruh capaian indikator akan terisi secara otomatis begitu fungsionaris mengisi lembar kerja Google Sheets sebelum deadline <strong>Rabu, 21 Oktober 2026 pukul 23.59 WIB</strong>.`;
         }
         if (refreshBtnText) refreshBtnText.innerText = "Cek Pembaruan";
         if (refreshBtn) refreshBtn.title = "Cek apakah ada nilai baru masuk";
@@ -3997,6 +4017,21 @@ function handleVerifyPassword(event) {
 function openLupaPinHelp() {
   showToast("Bantuan Akses PIN", "Silakan hubungi rekan Biro Personalia BEM FTEIC ITS atau DM Instagram @bemfteic.its untuk bantuan verifikasi dan pemulihan PIN personal Anda.");
 }
+
+// Global window bindings for UI interaction and modal actions
+window.handleVerifyPassword = handleVerifyPassword;
+window.togglePasswordVisibility = togglePasswordVisibility;
+window.openLupaPinHelp = openLupaPinHelp;
+window.closeModal = closeModal;
+window.openModal = openModal;
+window.requestPinAccess = requestPinAccess;
+window.openProgressModal = openProgressModal;
+window.closeProgressModal = closeProgressModal;
+window.refreshLiveScoreCurrentStaff = refreshLiveScoreCurrentStaff;
+window.transitionFromProgressToSheet = transitionFromProgressToSheet;
+window.lockStaffSession = lockStaffSession;
+window.openProgressModalFromProgressState = openProgressModalFromProgressState;
+window.executeOpenSheet = executeOpenSheet;
 
 // 8. TOAST NOTIFICATION
 function showToast(title, message) {
@@ -5343,13 +5378,13 @@ function switchPaAwardsPeriod(period) {
 }
 window.switchPaAwardsPeriod = switchPaAwardsPeriod;
 
-// Hitung mundur deadline PA September: Rabu, 14 Oktober 2026 23.59.59 WIB
+// Hitung mundur deadline PA September: Rabu, 21 Oktober 2026 23.59.59 WIB
 function startPaSeptemberCountdown() {
   if (paCountdownInterval) clearInterval(paCountdownInterval);
 
   function update() {
-    // 14 Oktober 2026 23:59:59 GMT+7
-    const deadline = new Date("2026-10-14T23:59:59+07:00").getTime();
+    // 21 Oktober 2026 23:59:59 GMT+7
+    const deadline = new Date("2026-10-21T23:59:59+07:00").getTime();
     const now = Date.now();
     const diff = Math.max(0, deadline - now);
 

@@ -3128,6 +3128,13 @@ body::before {
   color: var(--text-1);
 }
 
+.pm-live-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
 .pm-live-refresh-btn {
   display: inline-flex;
   align-items: center;
@@ -3150,6 +3157,29 @@ body::before {
   border-color: var(--accent);
   transform: translateY(-1px);
   box-shadow: var(--shadow-sm);
+}
+
+.pm-live-fill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 13px;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  box-shadow: 0 1px 4px rgba(29, 83, 107, 0.25);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s var(--silk);
+}
+
+.pm-live-fill-btn:hover {
+  background: var(--accent-mid);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(29, 83, 107, 0.35);
 }
 
 .pm-live-refresh-btn.refreshing {
@@ -3668,10 +3698,17 @@ body::before {
     line-height: 1.45;
   }
 
-  .pm-live-refresh-btn {
-    justify-content: center;
+  .pm-live-actions {
+    display: flex;
+    gap: 8px;
     width: 100%;
-    padding: 7px 12px;
+  }
+
+  .pm-live-refresh-btn,
+  .pm-live-fill-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 7px 10px;
     font-size: 0.72rem;
   }
 
@@ -7138,10 +7175,35 @@ body::before {
     height: 4px !important;
   }
 
-  .card-hint-badge {
-    font-size: 0.62rem !important;
-    padding: 2px 7px !important;
+  .card-bph-sync-badge {
+    font-size: 0.58rem !important;
+    padding: 2px 6px !important;
     gap: 3px !important;
+    margin-top: 2px !important;
+    margin-bottom: 3px !important;
+  }
+
+  .card-bph-dot {
+    width: 4px !important;
+    height: 4px !important;
+  }
+
+  .card-actions-group {
+    gap: 4px !important;
+    margin-top: 5px !important;
+  }
+
+  .btn-card-action {
+    height: 28px !important;
+    padding: 0 4px !important;
+    font-size: 0.67rem !important;
+    gap: 3px !important;
+    border-radius: 6px !important;
+  }
+
+  .btn-card-action svg {
+    width: 10px !important;
+    height: 10px !important;
   }
 
   .pagination-wrapper {
