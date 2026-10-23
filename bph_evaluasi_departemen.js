@@ -52,7 +52,7 @@ window.bphDepartemenData = {
         "evaluatorRole": "Sekretaris Jenderal 1",
         "evaluatorFoto": "assets/foto-staf/bph-002.jpg",
         "isFilled": true,
-        "averageScore": 8.8,
+        "averageScore": 8.0,
         "indicators": [
           {
             "title": "Goal Alignment & Impact",
@@ -60,7 +60,7 @@ window.bphDepartemenData = {
           },
           {
             "title": "Operational Discipline",
-            "score": 9.0
+            "score": 8.0
           },
           {
             "title": "Synergy & Collaboration",
@@ -68,7 +68,7 @@ window.bphDepartemenData = {
           },
           {
             "title": "Team Resilience & Health",
-            "score": 9.0
+            "score": 7.0
           },
           {
             "title": "Accountability & Problem Solving",
@@ -76,7 +76,7 @@ window.bphDepartemenData = {
           },
           {
             "title": "Representative of BEM FTEIC Values",
-            "score": 9.0
+            "score": 7.0
           }
         ],
         "ssc": {
@@ -316,15 +316,15 @@ window.bphDepartemenData = {
         "evaluatorRole": "Sekretaris Jenderal 1",
         "evaluatorFoto": "assets/foto-staf/bph-002.jpg",
         "isFilled": true,
-        "averageScore": 8.5,
+        "averageScore": 9.2,
         "indicators": [
           {
             "title": "Goal Alignment & Impact",
-            "score": 9.0
+            "score": 10.0
           },
           {
             "title": "Operational Discipline",
-            "score": 7.0
+            "score": 10.0
           },
           {
             "title": "Synergy & Collaboration",
