@@ -1734,20 +1734,31 @@ function shadeColor(color, percent) {
 const liveStaffCache = {}; // Kept for backward compatibility
 const liveSeptemberCache = {};
 let paAgustusRekapData = {};
+let paSeptemberRekapData = {};
 let paRekapData = paAgustusRekapData;
-let currentModalPeriod = 'september'; // Default modal period: 'september' (Live 24/7)
+let currentModalPeriod = 'september'; // Default modal period: 'september' (Resmi Ditutup & Selesai Direkap)
 
-// Load precomputed official PA Agustus 360° Rekapitulasi Data (Arsip Resmi Statis 94 fungsionaris)
+// Load precomputed official PA Agustus & September 360° Rekapitulasi Data (Arsip Resmi Statis)
 async function loadPaRekapData() {
   try {
     const res = await fetch('pa_agustus_rekap.json');
     if (res.ok) {
       paAgustusRekapData = await res.json();
       paRekapData = paAgustusRekapData;
-      console.log('Arsip Rekapitulasi PA Agustus 360° berhasil dimuat untuk 94 fungsionaris (Tersimpan Permanen).');
+      console.log('Arsip Rekapitulasi PA Agustus 360° berhasil dimuat (Tersimpan Permanen).');
     }
   } catch (e) {
     console.warn('Gagal memuat pa_agustus_rekap.json:', e);
+  }
+
+  try {
+    const resSep = await fetch('pa_september_rekap.json');
+    if (resSep.ok) {
+      paSeptemberRekapData = await resSep.json();
+      console.log('Arsip Rekapitulasi PA September 360° berhasil dimuat (Tersimpan Permanen).');
+    }
+  } catch (e) {
+    console.warn('Gagal memuat pa_september_rekap.json:', e);
   }
 }
 loadPaRekapData();
@@ -3146,25 +3157,18 @@ function renderStaffGrid() {
       <h3 class="card-name" title="${staff.nama}">${staff.nama}</h3>
       <p class="card-role" title="${staff.role}">${staff.role}</p>
 
-      <div class="card-period-tag" title="Periode Pengisian PA September 2026 sedang aktif">
-        <span class="card-period-dot"></span>
-        <span>PA September</span>
+      <div class="card-period-tag completed" title="Periode Pengisian PA September 2026 resmi ditutup &amp; selesai direkap" style="background: rgba(100, 116, 139, 0.12); color: var(--text-2); border-color: rgba(100, 116, 139, 0.25);">
+        <span class="card-period-dot" style="background: #94a3b8; box-shadow: none;"></span>
+        <span>PA September (Ditutup)</span>
       </div>
 
       <div class="card-actions-group">
-        <button type="button" class="btn-card-action btn-card-progress" onclick="event.stopPropagation(); requestPinAccess('${staff.id}', 'progress');" title="Lihat Rapor & Evaluasi ${staff.nama}">
+        <button type="button" class="btn-card-action btn-card-progress" style="width: 100%; justify-content: center; padding: 7px 10px;" onclick="event.stopPropagation(); requestPinAccess('${staff.id}', 'progress');" title="Lihat Rapor & Evaluasi ${staff.nama}">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
           </svg>
           <span>Rapor</span>
-        </button>
-        <button type="button" class="btn-card-action btn-card-sheet" onclick="event.stopPropagation(); requestPinAccess('${staff.id}', 'sheet');" title="Isi form evaluasi PA September untuk ${staff.nama}">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
-          </svg>
-          <span>Isi PA ↗</span>
         </button>
       </div>
     `;
@@ -3290,6 +3294,11 @@ function resetAllFilters() {
 function requestPinAccess(staffId, mode) {
   const staff = staffList.find(s => s.id === staffId);
   if (!staff) return;
+
+  if (mode === 'sheet') {
+    showToast("Pengisian Ditutup", "Periode pengisian PA September telah resmi berakhir pada Rabu, 21 Oktober 2026 pukul 23.59 WIB. Formulir evaluasi telah dinonaktifkan.");
+    return;
+  }
 
   authTargetMode = mode || 'progress';
 
@@ -3442,8 +3451,8 @@ function openProgressModal(staff, liveData = null, period = null) {
     } else {
       switchHint.innerHTML = `
         <button type="button" class="pm-hint-btn active-september" onclick="switchModalPeriod('september')">
-          <span class="pm-tab-dot september" style="width:7px;height:7px;display:inline-block;margin-right:6px;border-radius:50%;background:#10B981;box-shadow:0 0 6px rgba(16,185,129,0.7);"></span>
-          Kembali ke penilaian berjalan? <strong>Buka PA September (Live 24/7) &rarr;</strong>
+          <span class="pm-tab-dot september" style="width:7px;height:7px;display:inline-block;margin-right:6px;border-radius:50%;background:#94a3b8;"></span>
+          Kembali ke penilaian September? <strong>Buka Rapor PA September (Selesai Direkap) &rarr;</strong>
         </button>
         <button type="button" class="pm-hint-btn pm-hint-bph" onclick="scrollToBphFeedback()" title="Gulir langsung ke Catatan Evaluasi BPH untuk departemen">
           <span>🏛️</span>
@@ -3459,20 +3468,8 @@ function openProgressModal(staff, liveData = null, period = null) {
     // Mode Arsip Rekapitulasi PA Agustus: 100% Statis & Frozen dari paAgustusRekapData (kebal hapus spreadsheet)
     activeData = paAgustusRekapData[staff.id] || paRekapData[staff.id] || null;
   } else {
-    // Mode Live PA September (Google Sheets 24/7 Sync)
-    if (liveData) {
-      activeData = liveData;
-    } else if (liveSeptemberCache[staff.id]) {
-      activeData = liveSeptemberCache[staff.id];
-    } else {
-      try {
-        const sessionCached = sessionStorage.getItem('live_pa_september_' + staff.id) || sessionStorage.getItem('live_pa_data_' + staff.id);
-        if (sessionCached) {
-          activeData = JSON.parse(sessionCached);
-          liveSeptemberCache[staff.id] = activeData;
-        }
-      } catch (e) {}
-    }
+    // Mode Rekapitulasi PA September (Arsip Resmi Statis & Selesai Direkap)
+    activeData = paSeptemberRekapData[staff.id] || liveData || liveSeptemberCache[staff.id] || null;
   }
 
   const data = getStaffRubricData(staff, activeData);
@@ -3500,7 +3497,7 @@ function openProgressModal(staff, liveData = null, period = null) {
     if (currentModalPeriod === 'agustus') {
       periodEl.innerText = "Periode: PA Agustus 2026 (Arsip Rekapitulasi Final)";
     } else {
-      periodEl.innerText = "Periode: PA September 2026 (09 Okt 20.00 – 21 Okt 23.59)";
+      periodEl.innerText = "Periode: PA September 2026 (Resmi Ditutup & Selesai Direkap)";
     }
   }
 
@@ -3538,33 +3535,20 @@ function openProgressModal(staff, liveData = null, period = null) {
         liveDesc.innerHTML = `Data evaluasi resmi PA Agustus 2026 telah ditutup dan direkapitulasi secara permanen oleh Biro Personalia BEM FTEIC ITS Kabinet Polaris berdasarkan <strong>${data.evaluatorCount || 15} lembar penilaian terbobot 360°</strong>. Nilai ini bersifat permanen dan tidak terpengaruh perubahan lembar kerja.`;
       }
       if (refreshBtnText) refreshBtnText.innerText = "Lihat PA September";
-      if (refreshBtn) refreshBtn.title = "Beralih ke penilaian live PA September";
+      if (refreshBtn) refreshBtn.title = "Beralih ke hasil rekap PA September";
     } else {
-      liveBanner.classList.remove("is-archived");
-      if (data.isLive && data.evaluatorCount > 0) {
-        liveBanner.classList.remove("is-pending");
-        if (liveTitle) liveTitle.innerText = "Data Real-Time PA September (Terhubung)";
-        if (liveBadge) {
-          liveBadge.innerText = `Live 360° • ${data.evaluatorCount} Penilai`;
-          liveBadge.className = "pm-live-badge-chip";
-        }
-        if (liveDesc) {
-          liveDesc.innerHTML = `Skor dihitung otomatis dari rata-rata terbobot <strong>${data.evaluatorCount} lembar penilaian aktif</strong> (Periode Pengisian PA September Sedang Berlangsung) di ${staff.departemenBEMFull}. Sinkronisasi: <strong>${data.timestamp || 'Terkini'}</strong>.`;
-        }
-        if (refreshBtnText) refreshBtnText.innerText = "Sinkronkan Live";
-        if (refreshBtn) refreshBtn.title = "Ambil data terbaru dari Google Sheets";
-      } else {
-        liveBanner.classList.add("is-pending");
-        if (liveTitle) liveTitle.innerText = "Belum Ada Nilai Masuk (Periode PA September)";
-        if (liveBadge) {
-          liveBadge.innerText = "Skor 0.0 • 0 Penilai";
-          liveBadge.className = "pm-live-badge-chip";
-        }
-        if (liveDesc) {
-          liveDesc.innerHTML = `Periode PA Agustus telah resmi selesai direkap dan saat ini sedang berlangsung <strong>Periode Pengisian PA September (09 Oktober 20.00 WIB – 21 Oktober 2026 23.59 WIB)</strong>. Seluruh capaian indikator akan terisi secara otomatis begitu fungsionaris mengisi lembar kerja Google Sheets sebelum deadline <strong>Rabu, 21 Oktober 2026 pukul 23.59 WIB</strong>.`;
-        }
-        if (refreshBtnText) refreshBtnText.innerText = "Cek Pembaruan";
-        if (refreshBtn) refreshBtn.title = "Cek apakah ada nilai baru masuk";
+      liveBanner.className = "pm-live-banner is-archived";
+      if (liveTitle) liveTitle.innerText = "Hasil Rekapitulasi Resmi PA September 2026 (Final & Ditutup)";
+      if (liveBadge) {
+        liveBadge.innerText = `Arsip Rekap • ${data.evaluatorCount || 15} Penilai`;
+        liveBadge.className = "pm-live-badge-chip final";
+      }
+      if (liveDesc) {
+        liveDesc.innerHTML = `Periode pengisian PA September 2026 telah <strong>resmi ditutup pada Rabu, 21 Oktober 2026 pukul 23.59 WIB</strong> dan 100% selesai direkapitulasi secara permanen oleh Biro Personalia (BPS) BEM FTEIC ITS Kabinet Polaris berdasarkan <strong>${data.evaluatorCount || 15} lembar penilaian terbobot 360°</strong>.`;
+      }
+      if (refreshBtnText) refreshBtnText.innerText = "Data Final";
+      if (refreshBtn) {
+        refreshBtn.title = "Rekapitulasi PA September telah final dan selesai direkap";
       }
     }
   }
@@ -3623,12 +3607,9 @@ function openProgressModal(staff, liveData = null, period = null) {
     if (currentModalPeriod === 'agustus') {
       formStatusEl.innerText = `🟢 Selesai Direkap (${data.evaluatorCount || 15} Penilai • Lengkap)`;
       formStatusEl.style.color = "#2A9D8F";
-    } else if (data.isLive && data.evaluatorCount > 0) {
-      formStatusEl.innerText = data.formStatus;
-      formStatusEl.style.color = "#2A9D8F";
     } else {
-      formStatusEl.innerText = "Sedang Berlangsung (0 Penilai)";
-      formStatusEl.style.color = "var(--gold)";
+      formStatusEl.innerText = `🟢 Selesai Direkap (${data.evaluatorCount || 15} Penilai • Ditutup)`;
+      formStatusEl.style.color = "#2A9D8F";
     }
   }
 
@@ -3637,7 +3618,7 @@ function openProgressModal(staff, liveData = null, period = null) {
     if (currentModalPeriod === 'agustus') {
       sheetAvailEl.innerText = "Arsip Permanen Biro Personalia (07 Okt 2026)";
     } else {
-      sheetAvailEl.innerText = data.sheetNote;
+      sheetAvailEl.innerText = "Periode Resmi Ditutup (21 Okt 2026 23.59 WIB)";
     }
   }
 
@@ -3827,9 +3808,7 @@ function closeProgressModal() {
 }
 
 function transitionFromProgressToSheet() {
-  if (!currentProgressStaff) return;
-  const target = currentProgressStaff;
-  executeOpenSheet(target);
+  showToast("Pengisian Ditutup", "Periode pengisian PA September telah resmi berakhir pada Rabu, 21 Oktober 2026 pukul 23.59 WIB. Formulir evaluasi telah dinonaktifkan.");
 }
 
 function lockStaffSession() {
@@ -3856,51 +3835,7 @@ function openProgressModalFromProgressState() {
 }
 
 function executeOpenSheet(staff) {
-  if (!staff) staff = currentProgressStaff || currentSelectedStaff;
-  if (!staff) return;
-
-  const activeSheet = (staff.sheetUrl && staff.sheetUrl.trim() !== '' && !staff.sheetUrl.includes('on-progress') && staff.sheetUrl.startsWith('http'))
-    ? staff.sheetUrl.trim()
-    : (typeof MASTER_PA_SPREADSHEET_URL === 'string' && MASTER_PA_SPREADSHEET_URL.trim().startsWith('http'))
-      ? MASTER_PA_SPREADSHEET_URL.trim()
-      : '';
-
-  if (activeSheet) {
-    showToast("Akses Diberikan", `Membuka spreadsheet evaluasi ${staff.nama}...`);
-    try {
-      const win = window.open(activeSheet, "_blank", "noopener,noreferrer");
-      if (!win || win.closed || typeof win.closed === 'undefined') {
-        const a = document.createElement("a");
-        a.href = activeSheet;
-        a.target = "_blank";
-        a.rel = "noopener,noreferrer";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      }
-    } catch (err) {
-      window.location.href = activeSheet;
-    }
-    closeModal();
-  } else {
-    // Tautan masih on-progress: buka modal dengan notifikasi status
-    currentSelectedStaff = staff;
-    authTargetMode = 'sheet';
-
-    const modal = document.getElementById("passwordModal");
-    const authForm = document.getElementById("authForm");
-    const progressState = document.getElementById("progressState");
-    const progressStaffName = document.getElementById("progressStaffName");
-    const modalProfile = document.querySelector(".modal-profile");
-
-    if (modal) modal.classList.remove("hidden");
-    if (authForm) authForm.classList.add("hidden");
-    if (modalProfile) modalProfile.classList.add("hidden");
-    if (progressStaffName) progressStaffName.innerText = staff.nama;
-    if (progressState) progressState.classList.remove("hidden");
-
-    showToast("Status Evaluasi", `Performance Appraisal ${staff.nama}: On Progress`);
-  }
+  showToast("Pengisian Ditutup", "Periode pengisian PA September telah resmi berakhir pada Rabu, 21 Oktober 2026 pukul 23.59 WIB. Formulir evaluasi telah dinonaktifkan.");
 }
 
 function togglePasswordVisibility() {
