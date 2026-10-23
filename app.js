@@ -5392,14 +5392,14 @@ function renderAugustLeaderboard() {
 }
 window.renderAugustLeaderboard = renderAugustLeaderboard;
 
-// Konfigurasi pembobotan 60% BPH + 40% Internal untuk PA September (disimpan untuk reveal mendatang)
+// Konfigurasi pembobotan Best Department of the Month: 30% Evaluasi BPH + 70% Internal (Kabinet & Staf)
 const BEM_DEPARTMENTS_CONFIG = {
-  DAGRI: { code: 'DAGRI', name: 'Departemen Dalam Negeri', shortName: 'Dalam Negeri (DAGRI)', memberCount: 15, internalScore: 8.59 },
-  LUGRI: { code: 'LUGRI', name: 'Departemen Luar Negeri', shortName: 'Luar Negeri (LUGRI)', memberCount: 18, internalScore: 8.21 },
-  KWU:   { code: 'KWU',   name: 'Departemen Kewirausahaan', shortName: 'Kewirausahaan (KWU)', memberCount: 14, internalScore: 8.19 },
-  SOSMAS:{ code: 'SOSMAS',name: 'Departemen Sosial Masyarakat', shortName: 'Sosial Masyarakat (SOSMAS)', memberCount: 18, internalScore: 8.08 },
-  PSDM:  { code: 'PSDM',  name: 'Departemen Pengembangan Sumber Daya Mahasiswa', shortName: 'Pengembangan SDM (PSDM)', memberCount: 13, internalScore: 8.03 },
-  RISTEK:{ code: 'RISTEK',name: 'Departemen Riset dan Teknologi', shortName: 'Riset dan Teknologi (RISTEK)', memberCount: 15, internalScore: 7.89 }
+  DAGRI: { code: 'DAGRI', name: 'Departemen Dalam Negeri', shortName: 'Dalam Negeri (DAGRI)', memberCount: 15, internalScore: 8.63 },
+  KWU:   { code: 'KWU',   name: 'Departemen Kewirausahaan', shortName: 'Kewirausahaan (KWU)', memberCount: 15, internalScore: 8.37 },
+  SOSMAS:{ code: 'SOSMAS',name: 'Departemen Sosial Masyarakat', shortName: 'Sosial Masyarakat (SOSMAS)', memberCount: 18, internalScore: 8.23 },
+  LUGRI: { code: 'LUGRI', name: 'Departemen Luar Negeri', shortName: 'Luar Negeri (LUGRI)', memberCount: 18, internalScore: 8.17 },
+  PSDM:  { code: 'PSDM',  name: 'Departemen Pengembangan Sumber Daya Mahasiswa', shortName: 'Pengembangan SDM (PSDM)', memberCount: 13, internalScore: 8.16 },
+  RISTEK:{ code: 'RISTEK',name: 'Departemen Riset dan Teknologi', shortName: 'Riset dan Teknologi (RISTEK)', memberCount: 15, internalScore: 7.91 }
 };
 
 function calculateDepartmentFinalScores() {
@@ -5429,7 +5429,8 @@ function calculateDepartmentFinalScores() {
 
     if (bphAvg !== null) {
       hasBph = true;
-      finalScore = Number(((bphAvg * 0.60) + (internalScore * 0.40)).toFixed(2));
+      // Formula Khusus Best Department: 30% BPH + 70% Internal (Kabinet + Staf)
+      finalScore = Number(((bphAvg * 0.30) + (internalScore * 0.70)).toFixed(2));
     }
 
     results.push({

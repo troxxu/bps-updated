@@ -85,7 +85,35 @@ def build_pa_september_excel():
         'sosial': 'Kepekaan Sosial'
     }
 
-    # Department Rankings September
+    # Load BPH evaluations
+    bph_scores = {}
+    bph_eval_details = {}
+    try:
+        with open('bph_evaluasi_departemen.json', 'r', encoding='utf-8') as f:
+            bph_data = json.load(f)
+        for dept, ddata in bph_data.items():
+            valid = []
+            details = []
+            for k, ev in ddata.get('evaluations', {}).items():
+                if ev.get('isFilled') and ev.get('averageScore') is not None:
+                    valid.append(ev.get('averageScore'))
+                    details.append(f"{ev.get('evaluatorName')}: {ev.get('averageScore')}")
+            if valid:
+                bph_scores[dept] = sum(valid) / len(valid)
+                bph_eval_details[dept] = details
+    except Exception as e:
+        print("Warning: could not load bph_evaluasi_departemen.json:", e)
+
+    dept_names_map = {
+        'DAGRI': 'Departemen Dalam Negeri',
+        'LUGRI': 'Departemen Luar Negeri',
+        'PSDM': 'Departemen Pengembangan Sumber Daya Mahasiswa',
+        'SOSMAS': 'Departemen Sosial Masyarakat',
+        'RISTEK': 'Departemen Riset dan Teknologi',
+        'KWU': 'Departemen Kewirausahaan'
+    }
+
+    # Department Rankings September: 30% BPH + 70% Internal (Kabinet & Staf)
     dept_scores = {}
     for e in enriched:
         d = e['dept']
@@ -96,16 +124,22 @@ def build_pa_september_excel():
 
     dept_rankings = []
     for d, sc_list in dept_scores.items():
-        avg_d = sum(sc_list) / len(sc_list)
+        internal_avg = sum(sc_list) / len(sc_list)
+        bph_avg = bph_scores.get(d, 0)
+        final_score = (0.30 * bph_avg) + (0.70 * internal_avg)
         dept_rankings.append({
-            'dept': d,
+            'dept': dept_names_map.get(d, d),
             'code': d,
-            'score': round(avg_d, 2),
+            'finalScore': round(final_score, 2),
+            'rawFinal': final_score,
+            'bphScore': round(bph_avg, 2),
+            'internalScore': round(internal_avg, 2),
             'members': len(sc_list),
-            'predikat': get_predikat(avg_d),
+            'predikat': get_predikat(final_score),
+            'bphDetails': ', '.join(bph_eval_details.get(d, [])) if bph_eval_details.get(d) else '-',
             'winner': False
         })
-    dept_rankings.sort(key=lambda x: x['score'], reverse=True)
+    dept_rankings.sort(key=lambda x: x['rawFinal'], reverse=True)
     for i, d in enumerate(dept_rankings, 1):
         d['rank'] = i
         if i == 1:
@@ -184,22 +218,22 @@ def build_pa_september_excel():
     curr_row = 5
 
     # TABEL 1: BEST DEPARTMENT
-    ws1.merge_cells(f"A{curr_row}:H{curr_row}")
-    ws1[f"A{curr_row}"] = "🏆 1. BEST DEPARTMENT OF THE MONTH (PA SEPTEMBER 2026)"
+    ws1.merge_cells(f"A{curr_row}:J{curr_row}")
+    ws1[f"A{curr_row}"] = "🏆 1. BEST DEPARTMENT OF THE MONTH (30% EVALUASI BPH + 70% INTERNAL KABINET & STAF)"
     ws1[f"A{curr_row}"].font = font_section
     ws1[f"A{curr_row}"].fill = navy_fill
     ws1[f"A{curr_row}"].alignment = align_left
     ws1.row_dimensions[curr_row].height = 25
     curr_row += 1
 
-    dept_headers = ["Peringkat", "Departemen", "Kode", "Nilai Rata-rata", "Predikat Kinerja", "Jumlah Fungsionaris", "Status Partisipasi", "Keterangan & Prestasi"]
+    dept_headers = ["Peringkat", "Departemen", "Kode", "Nilai Akhir (Terbobot)", "Nilai BPH (30%)", "Nilai Internal (70%)", "Predikat Kinerja", "Jumlah Fungsionaris", "Rincian Evaluasi BPH", "Keterangan & Prestasi"]
     for col_idx, h in enumerate(dept_headers, 1):
         cell = ws1.cell(row=curr_row, column=col_idx, value=h)
         cell.font = font_header
         cell.fill = teal_fill
         cell.alignment = align_header
         cell.border = border_header
-    ws1.row_dimensions[curr_row].height = 22
+    ws1.row_dimensions[curr_row].height = 24
     curr_row += 1
 
     for d in dept_rankings:
@@ -207,11 +241,13 @@ def build_pa_september_excel():
             ws1.cell(row=curr_row, column=1, value=f"#{d['rank']}" if not d['winner'] else f"🏆 #{d['rank']}"),
             ws1.cell(row=curr_row, column=2, value=d['dept']),
             ws1.cell(row=curr_row, column=3, value=d['code']),
-            ws1.cell(row=curr_row, column=4, value=d['score']),
-            ws1.cell(row=curr_row, column=5, value=d['predikat']),
-            ws1.cell(row=curr_row, column=6, value=f"{d['members']} Fungsionaris"),
-            ws1.cell(row=curr_row, column=7, value="100% Selesai Direkap"),
-            ws1.cell(row=curr_row, column=8, value=d['desc']),
+            ws1.cell(row=curr_row, column=4, value=d['finalScore']),
+            ws1.cell(row=curr_row, column=5, value=d['bphScore']),
+            ws1.cell(row=curr_row, column=6, value=d['internalScore']),
+            ws1.cell(row=curr_row, column=7, value=d['predikat']),
+            ws1.cell(row=curr_row, column=8, value=f"{d['members']} Fungsionaris"),
+            ws1.cell(row=curr_row, column=9, value=d['bphDetails']),
+            ws1.cell(row=curr_row, column=10, value=d['desc']),
         ]
         is_win = d['winner']
         for i, c in enumerate(row_cells):
@@ -228,8 +264,12 @@ def build_pa_september_excel():
         row_cells[3].alignment = align_center
         row_cells[3].number_format = '0.00'
         row_cells[4].alignment = align_center
+        row_cells[4].number_format = '0.00'
         row_cells[5].alignment = align_center
+        row_cells[5].number_format = '0.00'
         row_cells[6].alignment = align_center
+        row_cells[7].alignment = align_center
+        row_cells[8].alignment = align_left
         ws1.row_dimensions[curr_row].height = 20
         curr_row += 1
 
@@ -772,14 +812,16 @@ def build_pa_september_excel():
                     max_len = len(val)
             ws.column_dimensions[col_letter].width = max(max_len + 4, 12)
 
-    ws1.column_dimensions['A'].width = 16
-    ws1.column_dimensions['B'].width = 30
+    ws1.column_dimensions['A'].width = 15
+    ws1.column_dimensions['B'].width = 34
     ws1.column_dimensions['C'].width = 14
-    ws1.column_dimensions['D'].width = 18
-    ws1.column_dimensions['E'].width = 22
+    ws1.column_dimensions['D'].width = 24
+    ws1.column_dimensions['E'].width = 18
     ws1.column_dimensions['F'].width = 22
     ws1.column_dimensions['G'].width = 20
-    ws1.column_dimensions['H'].width = 35
+    ws1.column_dimensions['H'].width = 22
+    ws1.column_dimensions['I'].width = 36
+    ws1.column_dimensions['J'].width = 40
 
     ws1.freeze_panes = "A5"
     ws2.freeze_panes = "D5"
