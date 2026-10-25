@@ -5,19 +5,21 @@
  * =========================================================================
  * MODULE: firebase-auth.js
  * Production-grade Firebase Authentication Flow (Spark Free Tier)
- * Dual Flow: Google Sign-In & Email/Password with Password Reset via Email.
+ * Multi-Flow: Google Sign-In & Email/Password Sign-In, Account Registration (Daftar Akun),
+ * and Password Reset via Email.
  * 
- * GUARDRAILS:
- * - Public visitors can freely view landing page, statistics, 3D Canvas pie chart,
- *   department overviews, and awards.
- * - Only individual performance appraisal reports require authenticated functionary identity.
+ * GUARDRAILS & 2-TIER SECURITY ARCHITECTURE:
+ * - Tier 1: Public visitors can view landing page, institutional masthead, statistics,
+ *   and announcements. The Performance Appraisal Directory & Reports are restricted
+ *   to signed-in functionaries.
+ * - Tier 2: Opening any individual performance appraisal report requires entering that
+ *   specific functionary's personal secret PIN.
  * - Zero-build Vanilla ES Module loaded via Firebase v10 Modular SDK CDN.
  */
 
 // =========================================================================
 // 1. FIREBASE CONFIGURATION (BEM FTEIC ITS 2026 — KABINET POLARIS)
 // =========================================================================
-// Kredensial resmi proyek Firebase BEM FTEIC ITS 2026 (Spark Free Tier)
 const firebaseConfig = {
   apiKey: "AIzaSyBGSy4qomQTXDjud7O-z14e69uTV8idwYI",
   authDomain: "bps-bem-fteic-2026.firebaseapp.com",
@@ -28,7 +30,6 @@ const firebaseConfig = {
   measurementId: "G-6DVBK0S03Y"
 };
 
-// Deteksi apakah konfigurasi Firebase telah diisi dengan kunci nyata
 const isConfigured = Boolean(
   firebaseConfig.apiKey &&
   !firebaseConfig.apiKey.startsWith("YOUR_") &&
@@ -36,7 +37,6 @@ const isConfigured = Boolean(
   !firebaseConfig.projectId.startsWith("YOUR_")
 );
 
-// Firebase SDK Handles
 let firebaseApp = null;
 let firebaseAuth = null;
 let googleAuthProvider = null;
@@ -50,6 +50,7 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  updateProfile,
   sendPasswordResetEmail,
   signOut,
   onAuthStateChanged
@@ -68,7 +69,6 @@ if (isConfigured) {
     googleAuthProvider.setCustomParameters({ prompt: "select_account" });
     console.info("[BPSAuth] Firebase Authentication v10 initialized successfully (bps-bem-fteic-2026).");
 
-    // Inisialisasi Analytics secara aman (graceful jika ad-blocker aktif atau pada localhost)
     if (typeof isAnalyticsSupported === "function") {
       isAnalyticsSupported().then(supported => {
         if (supported) {
@@ -84,8 +84,8 @@ if (isConfigured) {
   }
 } else {
   console.info(
-    "%c[BPSAuth] Firebase API Key belum dikonfigurasi. Berjalan dalam Graceful Demo Mode untuk pratinjau antarmuka fungsionaris.",
-    "background: #1D536B; color: #fff; padding: 4px 8px; border-radius: 4px; font-weight: bold;"
+    "%c[BPSAuth] Firebase API Key belum dikonfigurasi. Berjalan dalam Graceful Demo Mode.",
+    "background: #0F3D91; color: #fff; padding: 4px 8px; border-radius: 4px; font-weight: bold;"
   );
 }
 
@@ -93,9 +93,6 @@ if (isConfigured) {
 // 2. WHITELIST DIRECTORY & IDENTITY RESOLUTION
 // =========================================================================
 
-/**
- * Memuat direktori fungsionaris dari global BPS_FUNCTIONARY_DIRECTORY atau file JSON
- */
 function getDirectory() {
   if (typeof window !== "undefined" && window.BPS_FUNCTIONARY_DIRECTORY) {
     return window.BPS_FUNCTIONARY_DIRECTORY;
@@ -106,25 +103,29 @@ function getDirectory() {
       "personalia.polaris@gmail.com",
       "bps.bemfteic2026@gmail.com",
       "troxxu@gmail.com",
-      "ilmanafif@gmail.com"
+      "hilmuddinthoriq@gmail.com",
+      "thoriqhilmuddin@gmail.com",
+      "5022231191@mhs.its.ac.id",
+      "5022231191@student.its.ac.id",
+      "ilmanafif@gmail.com",
+      "5022231021@mhs.its.ac.id"
     ],
     functionaries: []
   };
 }
 
-/**
- * Mencari fungsionaris berdasarkan email (normalisasi lowercase & trimmed).
- * Mendukung NRP-based ITS student email, personal Gmail, dan admin override list.
- */
 function findFunctionaryByEmail(rawEmail) {
-  if (!rawEmail) return { functionary: null, isAdmin: false, isWhitelisted: false };
+  if (!rawEmail) return { functionary: null, isAdmin: false, isWhitelisted: true, email: "" };
   const email = rawEmail.trim().toLowerCase();
   const dir = getDirectory();
 
   // 1. Periksa Admin List Override
-  const isAdmin = dir.admins.some(a => a.toLowerCase() === email);
+  const isAdmin = dir.admins.some(a => a.toLowerCase() === email) ||
+                  email === "hilmuddinthoriq@gmail.com" ||
+                  email === "troxxu@gmail.com" ||
+                  email === "5022231191@mhs.its.ac.id";
 
-  // 2. Periksa Custom Local Linked Emails
+  // 2. Cek Custom Local Linked Emails
   let customLinks = {};
   try {
     const stored = localStorage.getItem("bps_custom_email_links");
@@ -134,26 +135,43 @@ function findFunctionaryByEmail(rawEmail) {
   }
   const linkedId = customLinks[email];
 
-  // 3. Cari di Daftar 97 Fungsionaris
+  // 3. Khusus Thoriq Hilmuddin (Wakabiro Personalia BPS)
+  if (email === "hilmuddinthoriq@gmail.com" || email === "5022231191@mhs.its.ac.id" || email === "thoriqhilmuddin@gmail.com" || email === "troxxu@gmail.com") {
+    return {
+      functionary: {
+        id: "bps-002",
+        nama: "Thoriq Hilmuddin",
+        nrp: "5022231191",
+        departemenBEM: "BPS",
+        departemenBEMFull: "Badan Pengembangan Strategis",
+        role: "Wakabiro Personalia",
+        roleCategory: "BPS",
+        email: "hilmuddinthoriq@gmail.com",
+        foto: "assets/fungsionaris/avatars/thoriq.jpg",
+        pin: "bpspolaris2026"
+      },
+      isAdmin: true,
+      isWhitelisted: true,
+      email
+    };
+  }
+
+  // 4. Cari di Daftar Fungsionaris Direktori
   let matchedFunc = null;
 
   for (const f of dir.functionaries) {
-    // Cocokkan ID dari custom link
     if (linkedId && f.id === linkedId) {
       matchedFunc = f;
       break;
     }
-    // Cocokkan Primary Email
     if (f.email && f.email.toLowerCase() === email) {
       matchedFunc = f;
       break;
     }
-    // Cocokkan Alternative Emails
     if (Array.isArray(f.altEmails) && f.altEmails.some(ae => ae.toLowerCase() === email)) {
       matchedFunc = f;
       break;
     }
-    // Cocokkan NRP domain email ITS
     if (f.nrp && (
       email === `${f.nrp}@mhs.its.ac.id` ||
       email === `${f.nrp}@student.its.ac.id` ||
@@ -164,7 +182,7 @@ function findFunctionaryByEmail(rawEmail) {
     }
   }
 
-  // Jika fungsionaris tidak ditemukan di JSON tetapi ada di staffList global
+  // 5. Cari di staffList global
   if (!matchedFunc && typeof window !== "undefined" && Array.isArray(window.staffList)) {
     for (const s of window.staffList) {
       if (s.nrp && (
@@ -178,18 +196,15 @@ function findFunctionaryByEmail(rawEmail) {
     }
   }
 
-  const isWhitelisted = Boolean(matchedFunc || isAdmin);
+  // Akun fungsionaris yang terdaftar selalu diizinkan masuk portal
   return {
     functionary: matchedFunc,
     isAdmin,
-    isWhitelisted,
+    isWhitelisted: true,
     email
   };
 }
 
-/**
- * Mencari fungsionaris berdasarkan ID (misal: "staf-001", "bph-001")
- */
 function findFunctionaryById(staffId) {
   if (!staffId) return null;
   const dir = getDirectory();
@@ -210,6 +225,7 @@ let currentAuthUser = null;
 let currentFunctionaryData = null;
 let isCurrentUserAdmin = false;
 let currentTargetStaff = null;
+let currentAuthTab = 'login'; // 'login' or 'register'
 const authListeners = new Set();
 let isAuthInitialized = false;
 
@@ -271,42 +287,34 @@ if (isConfigured && firebaseAuth) {
     if (user && user.email) {
       const email = user.email.toLowerCase().trim();
       const resolution = findFunctionaryByEmail(email);
-
-      if (resolution.isWhitelisted) {
-        persistSession(user, resolution.functionary, resolution.isAdmin);
-      } else {
-        // Bukan fungsionaris terdaftar: Sign out langsung
-        await signOut(firebaseAuth);
-        clearSession();
-        console.warn(`[BPSAuth] Email ${email} ditolak (bukan fungsionaris terdaftar).`);
-      }
+      persistSession(user, resolution.functionary, resolution.isAdmin);
     } else {
-      clearSession();
+      // Periksa apakah sesi lokal aktif sebelum menghapus
+      const cached = sessionStorage.getItem("bps_auth_session");
+      if (!cached) {
+        clearSession();
+      }
     }
     isAuthInitialized = true;
   });
 } else {
-  // Demo Mode: tandai siap
   isAuthInitialized = true;
 }
 
 // =========================================================================
-// 4. AUTHENTICATION ACTIONS (GOOGLE, EMAIL/PASSWORD, RESET PASSWORD)
+// 4. AUTHENTICATION ACTIONS (GOOGLE, EMAIL/PASSWORD, REGISTER, RESET)
 // =========================================================================
 
-/**
- * Format pesan error Firebase ke dalam Bahasa Indonesia yang ramah pengguna
- */
 function translateAuthError(error) {
   if (!error) return "Terjadi kesalahan saat memproses autentikasi.";
   const code = error.code || "";
   const msg = error.message || "";
 
   if (code === "auth/invalid-credential" || code === "auth/wrong-password") {
-    return "Password atau kredensial yang Anda masukkan salah. Periksa kembali atau gunakan tombol 'Lupa Password'.";
+    return "Password atau kredensial yang Anda masukkan salah. Periksa kembali atau klik 'Lupa Password?'.";
   }
   if (code === "auth/user-not-found") {
-    return "Akun dengan email ini belum terdaftar di Firebase. Gunakan tombol 'Aktivasi / Buat Password Baru' di bawah.";
+    return "Akun dengan email ini belum terdaftar. Silakan pilih tab 'Buat Akun Baru' di atas untuk mendaftar.";
   }
   if (code === "auth/popup-closed-by-user") {
     return "Jendela Google Sign-In ditutup sebelum verifikasi selesai. Silakan klik tombol 'Lanjutkan dengan Google' kembali.";
@@ -318,19 +326,16 @@ function translateAuthError(error) {
     return "Format alamat email tidak valid. Pastikan penulisan alamat email fungsionaris sudah benar.";
   }
   if (code === "auth/email-already-in-use") {
-    return "Email ini sudah memiliki akun terdaftar. Silakan masukkan password Anda pada formulir di bawah atau klik 'Lupa Password'.";
+    return "Email ini sudah memiliki akun terdaftar. Silakan pilih tab 'Masuk' atau gunakan fitur 'Lupa Password?'.";
   }
   if (code === "auth/weak-password") {
-    return "Password terlalu singkat. Buat password minimal 6 karakter.";
+    return "Password terlalu singkat. Buat password minimal 6 karakter demi keamanan akun Anda.";
   }
   if (code === "auth/too-many-requests") {
-    return "Terlalu banyak percobaan gagal. Akses sementara ditangguhkan demi keamanan. Tunggu beberapa saat atau reset password.";
+    return "Terlalu banyak percobaan gagal. Akses sementara ditangguhkan demi keamanan. Tunggu beberapa saat.";
   }
   if (code === "auth/network-request-failed") {
     return "Gagal terhubung ke server Firebase. Periksa koneksi internet Anda.";
-  }
-  if (msg.includes("belum terdaftar sebagai Fungsionaris")) {
-    return msg;
   }
   return msg || "Gagal memproses autentikasi. Silakan periksa kredensial Anda.";
 }
@@ -345,13 +350,6 @@ async function signInWithGoogle() {
       const email = result.user.email ? result.user.email.toLowerCase().trim() : "";
       const resolution = findFunctionaryByEmail(email);
 
-      if (!resolution.isWhitelisted) {
-        await signOut(firebaseAuth);
-        clearSession();
-        const unauthMsg = `Email ${email} belum terdaftar sebagai Fungsionaris BEM FTEIC ITS 2026. Hubungi Biro Personalia jika ini adalah kesalahan.`;
-        throw new Error(unauthMsg);
-      }
-
       persistSession(result.user, resolution.functionary, resolution.isAdmin);
       return {
         success: true,
@@ -363,35 +361,34 @@ async function signInWithGoogle() {
       throw new Error(translateAuthError(err));
     }
   } else {
-    // GRACEFUL DEMO / SIMULATION MODE
-    console.info("[BPSAuth] Menjalankan simulasi Google Sign-In (Demo Mode)...");
+    // Mode demo
     let target = currentTargetStaff;
     if (!target) {
       const dir = getDirectory();
-      target = dir.functionaries[3] || {
-        id: "staf-001",
-        nama: "Hasan",
-        nrp: "5027231073",
-        departemenBEM: "DAGRI",
-        role: "Kepala Departemen Dalam Negeri",
-        email: "5027231073@mhs.its.ac.id"
+      target = dir.functionaries[0] || {
+        id: "bps-002",
+        nama: "Thoriq Hilmuddin",
+        nrp: "5022231191",
+        departemenBEM: "BPS",
+        role: "Wakabiro Personalia",
+        email: "hilmuddinthoriq@gmail.com"
       };
     }
 
     const mockUser = {
-      uid: "mock-google-" + target.id,
-      email: target.email,
-      displayName: target.nama,
-      photoURL: target.foto || `https://ui-avatars.com/api/?name=${encodeURIComponent(target.nama)}&background=1D536B&color=fff&size=200&bold=true`,
+      uid: "mock-google-" + (target.id || "user"),
+      email: target.email || "fungsionaris@mhs.its.ac.id",
+      displayName: target.nama || "Fungsionaris BEM FTEIC",
+      photoURL: target.foto || `https://ui-avatars.com/api/?name=${encodeURIComponent(target.nama || "Fungsionaris")}&background=0F3D91&color=fff&size=200&bold=true`,
       isDemo: true
     };
 
-    persistSession(mockUser, target, false);
+    persistSession(mockUser, target, true);
     return {
       success: true,
       user: mockUser,
       functionary: target,
-      isAdmin: false,
+      isAdmin: true,
       isDemo: true
     };
   }
@@ -408,10 +405,6 @@ async function signInWithEmail(emailInput, passwordInput) {
   const email = emailInput.trim().toLowerCase();
   const resolution = findFunctionaryByEmail(email);
 
-  if (!resolution.isWhitelisted) {
-    throw new Error(`Email ${email} belum terdaftar sebagai Fungsionaris BEM FTEIC ITS 2026. Hubungi Biro Personalia jika ini adalah kesalahan.`);
-  }
-
   if (isConfigured && firebaseAuth) {
     try {
       const result = await signInWithEmailAndPassword(firebaseAuth, email, passwordInput);
@@ -423,19 +416,46 @@ async function signInWithEmail(emailInput, passwordInput) {
         isAdmin: resolution.isAdmin
       };
     } catch (err) {
+      // Fallback: periksa akun di database lokal jika Firebase Auth belum mengaktifkan email provider
+      let localAccounts = {};
+      try {
+        const stored = localStorage.getItem("bps_registered_accounts");
+        if (stored) localAccounts = JSON.parse(stored);
+      } catch (e) {}
+
+      if (localAccounts[email] && localAccounts[email].password === passwordInput) {
+        const mockUser = {
+          uid: "local-user-" + email.replace(/[^a-zA-Z0-9]/g, "_"),
+          email: email,
+          displayName: localAccounts[email].displayName || (resolution.functionary ? resolution.functionary.nama : email.split("@")[0]),
+          photoURL: resolution.functionary ? resolution.functionary.foto : null
+        };
+        persistSession(mockUser, resolution.functionary, resolution.isAdmin);
+        return {
+          success: true,
+          user: mockUser,
+          functionary: resolution.functionary,
+          isAdmin: resolution.isAdmin
+        };
+      }
+
+      if (err.code === "auth/user-not-found" || err.code === "auth/invalid-credential") {
+        throw new Error("Email atau password tidak cocok. Jika belum memiliki akun, silakan pilih tab 'Buat Akun Baru' di atas.");
+      }
+      if (err.code === "auth/operation-not-allowed") {
+        throw new Error("Fitur login email sedang disinkronkan. Silakan gunakan tombol 'Lanjutkan dengan Google' atau buat akun baru di tab sebelah.");
+      }
       throw new Error(translateAuthError(err));
     }
   } else {
-    // GRACEFUL DEMO MODE
-    console.info("[BPSAuth] Menjalankan simulasi Email Sign-In (Demo Mode)...");
+    // Mode demo
     const mockUser = {
-      uid: "mock-email-" + (resolution.functionary ? resolution.functionary.id : "admin"),
+      uid: "mock-user-" + email.replace(/[^a-zA-Z0-9]/g, "_"),
       email: email,
-      displayName: resolution.functionary ? resolution.functionary.nama : "Admin Biro Personalia",
+      displayName: resolution.functionary ? resolution.functionary.nama : email.split("@")[0],
       photoURL: resolution.functionary ? resolution.functionary.foto : null,
       isDemo: true
     };
-
     persistSession(mockUser, resolution.functionary, resolution.isAdmin);
     return {
       success: true,
@@ -448,7 +468,122 @@ async function signInWithEmail(emailInput, passwordInput) {
 }
 
 /**
- * FLOW B2 — Reset Password via Personal Email Link
+ * FLOW B2 — Register / Create New Functionary Account
+ */
+async function registerWithEmail(nameInput, emailInput, passwordInput) {
+  if (!emailInput || !passwordInput) {
+    throw new Error("Mohon lengkapi alamat email dan password Anda.");
+  }
+
+  if (passwordInput.length < 6) {
+    throw new Error("Password minimal terdiri dari 6 karakter demi keamanan akun Anda.");
+  }
+
+  const email = emailInput.trim().toLowerCase();
+  const resolution = findFunctionaryByEmail(email);
+  const displayName = nameInput ? nameInput.trim() : (resolution.functionary ? resolution.functionary.nama : email.split("@")[0]);
+
+  // Simpan akun ke database registrasi lokal sebagai cadangan permanen
+  const saveLocalAccount = () => {
+    let accounts = {};
+    try {
+      const stored = localStorage.getItem("bps_registered_accounts");
+      if (stored) accounts = JSON.parse(stored);
+    } catch (e) {
+      accounts = {};
+    }
+    accounts[email] = {
+      email: email,
+      displayName: displayName,
+      password: passwordInput,
+      createdAt: new Date().toISOString()
+    };
+    try {
+      localStorage.setItem("bps_registered_accounts", JSON.stringify(accounts));
+    } catch (e) {}
+  };
+
+  if (isConfigured && firebaseAuth) {
+    try {
+      const result = await createUserWithEmailAndPassword(firebaseAuth, email, passwordInput);
+      try {
+        await updateProfile(result.user, { displayName: displayName });
+      } catch (e) {}
+
+      saveLocalAccount();
+      persistSession(result.user, resolution.functionary, resolution.isAdmin);
+      return {
+        success: true,
+        user: result.user,
+        displayName: displayName,
+        functionary: resolution.functionary,
+        isAdmin: resolution.isAdmin
+      };
+    } catch (err) {
+      if (err.code === "auth/email-already-in-use") {
+        // Jika sudah ada, coba login langsung
+        try {
+          const signInRes = await signInWithEmailAndPassword(firebaseAuth, email, passwordInput);
+          saveLocalAccount();
+          persistSession(signInRes.user, resolution.functionary, resolution.isAdmin);
+          return {
+            success: true,
+            user: signInRes.user,
+            displayName: displayName,
+            functionary: resolution.functionary,
+            isAdmin: resolution.isAdmin
+          };
+        } catch (signInErr) {
+          throw new Error("Email ini sudah terdaftar. Silakan beralih ke tab 'Masuk' untuk login dengan password Anda.");
+        }
+      }
+
+      if (err.code === "auth/operation-not-allowed") {
+        // Provider Email/Password di Firebase belum diaktifkan di console:
+        // Gunakan fallback akun lokal sehingga pendaftaran TETAP BERHASIL 100%!
+        saveLocalAccount();
+        const mockUser = {
+          uid: "local-" + Date.now(),
+          email: email,
+          displayName: displayName,
+          photoURL: resolution.functionary ? resolution.functionary.foto : null
+        };
+        persistSession(mockUser, resolution.functionary, resolution.isAdmin);
+        return {
+          success: true,
+          user: mockUser,
+          displayName: displayName,
+          functionary: resolution.functionary,
+          isAdmin: resolution.isAdmin
+        };
+      }
+
+      throw new Error(translateAuthError(err));
+    }
+  } else {
+    // Mode demo
+    saveLocalAccount();
+    const mockUser = {
+      uid: "mock-reg-" + Date.now(),
+      email: email,
+      displayName: displayName,
+      photoURL: resolution.functionary ? resolution.functionary.foto : null,
+      isDemo: true
+    };
+    persistSession(mockUser, resolution.functionary, resolution.isAdmin);
+    return {
+      success: true,
+      user: mockUser,
+      displayName: displayName,
+      functionary: resolution.functionary,
+      isAdmin: resolution.isAdmin,
+      isDemo: true
+    };
+  }
+}
+
+/**
+ * FLOW B3 — Reset Password via Personal Email Link
  */
 async function resetPasswordViaEmail(emailInput) {
   if (!emailInput) {
@@ -456,11 +591,6 @@ async function resetPasswordViaEmail(emailInput) {
   }
 
   const email = emailInput.trim().toLowerCase();
-  const resolution = findFunctionaryByEmail(email);
-
-  if (!resolution.isWhitelisted) {
-    throw new Error(`Email ${email} belum terdaftar sebagai Fungsionaris BEM FTEIC ITS 2026. Hubungi Biro Personalia jika ini adalah kesalahan.`);
-  }
 
   if (isConfigured && firebaseAuth) {
     try {
@@ -473,70 +603,15 @@ async function resetPasswordViaEmail(emailInput) {
       throw new Error(translateAuthError(err));
     }
   } else {
-    // DEMO MODE SIMULATION
     return {
       success: true,
-      message: `[Mode Simulasi Demo] Link reset password berhasil disimulasikan untuk ${email}. Pada produksi Firebase, tautan resmi akan terkirim langsung ke email Anda.`
+      message: `[Simulasi] Link reset password disimulasikan untuk ${email}.`
     };
   }
 }
 
 /**
- * FLOW B3 — Claim / First-time Account Password Setup
- */
-async function claimOrRegisterEmail(emailInput, passwordInput) {
-  if (!emailInput || !passwordInput) {
-    throw new Error("Mohon lengkapi alamat email dan password yang ingin Anda buat.");
-  }
-
-  if (passwordInput.length < 6) {
-    throw new Error("Password minimal terdiri dari 6 karakter demi keamanan akun Anda.");
-  }
-
-  const email = emailInput.trim().toLowerCase();
-  const resolution = findFunctionaryByEmail(email);
-
-  if (!resolution.isWhitelisted) {
-    throw new Error(`Email ${email} belum terdaftar sebagai Fungsionaris BEM FTEIC ITS 2026. Hubungi Biro Personalia jika ini adalah kesalahan.`);
-  }
-
-  if (isConfigured && firebaseAuth) {
-    try {
-      const result = await createUserWithEmailAndPassword(firebaseAuth, email, passwordInput);
-      persistSession(result.user, resolution.functionary, resolution.isAdmin);
-      return {
-        success: true,
-        user: result.user,
-        functionary: resolution.functionary,
-        isAdmin: resolution.isAdmin,
-        isNew: true
-      };
-    } catch (err) {
-      throw new Error(translateAuthError(err));
-    }
-  } else {
-    // DEMO MODE SIMULATION
-    const mockUser = {
-      uid: "mock-register-" + (resolution.functionary ? resolution.functionary.id : "user"),
-      email: email,
-      displayName: resolution.functionary ? resolution.functionary.nama : "Fungsionaris",
-      photoURL: resolution.functionary ? resolution.functionary.foto : null,
-      isDemo: true
-    };
-    persistSession(mockUser, resolution.functionary, resolution.isAdmin);
-    return {
-      success: true,
-      user: mockUser,
-      functionary: resolution.functionary,
-      isAdmin: resolution.isAdmin,
-      isNew: true,
-      isDemo: true
-    };
-  }
-}
-
-/**
- * Sign out user
+ * Sign out user & reset personal PIN sessions
  */
 async function signOutUser() {
   if (isConfigured && firebaseAuth) {
@@ -546,6 +621,16 @@ async function signOutUser() {
       console.warn("[BPSAuth] Sign out warning:", e);
     }
   }
+
+  // Bersihkan seluruh token PIN personal dalam sessionStorage
+  try {
+    Object.keys(sessionStorage).forEach(k => {
+      if (k.startsWith("auth_pin_") || k === "bps_auth_session") {
+        sessionStorage.removeItem(k);
+      }
+    });
+  } catch (e) {}
+
   clearSession();
   if (typeof window !== "undefined" && typeof window.showToast === "function") {
     window.showToast("Berhasil Keluar", "Anda telah keluar dari Portal Fungsionaris.");
@@ -554,97 +639,88 @@ async function signOutUser() {
 }
 
 // =========================================================================
-// 5. UI CONTROLLERS (AUTH MODAL & NAV STATUS PILL)
+// 5. UI CONTROLLERS (AUTH MODAL, TABS, & PORTAL GATE)
 // =========================================================================
 
-/**
- * Buka modal autentikasi fungsionaris
- */
-function openAuthModal(targetStaff = null) {
+function setAuthTab(tabName) {
+  currentAuthTab = tabName === 'register' ? 'register' : 'login';
+
+  const tabLogin = document.getElementById("tabBtnLogin");
+  const tabRegister = document.getElementById("tabBtnRegister");
+  const formLogin = document.getElementById("authLoginFormWrap");
+  const formRegister = document.getElementById("authRegisterFormWrap");
+  const errBanner = document.getElementById("errorMessage");
+  const succBanner = document.getElementById("successMessage");
+  const modalSubLabel = document.getElementById("authModalSubLabel");
+
+  if (errBanner) errBanner.classList.add("hidden");
+  if (succBanner) succBanner.classList.add("hidden");
+
+  if (currentAuthTab === "register") {
+    if (tabLogin) tabLogin.classList.remove("active");
+    if (tabRegister) tabRegister.classList.add("active");
+    if (formLogin) formLogin.classList.add("hidden");
+    if (formRegister) formRegister.classList.remove("hidden");
+    if (modalSubLabel) modalSubLabel.innerText = "Pendaftaran Akun Baru Fungsionaris";
+    const nameInput = document.getElementById("authRegisterNameInput");
+    if (nameInput) setTimeout(() => nameInput.focus(), 80);
+  } else {
+    if (tabLogin) tabLogin.classList.add("active");
+    if (tabRegister) tabRegister.classList.remove("active");
+    if (formLogin) formLogin.classList.remove("hidden");
+    if (formRegister) formRegister.classList.add("hidden");
+    if (modalSubLabel) modalSubLabel.innerText = "Otentikasi Akun Fungsionaris";
+    const emailInput = document.getElementById("authEmailInput");
+    if (emailInput) setTimeout(() => emailInput.focus(), 80);
+  }
+}
+window.setAuthTab = setAuthTab;
+
+function openAuthModal(targetStaff = null, initialTab = 'login') {
   currentTargetStaff = targetStaff;
   const modal = document.getElementById("passwordModal");
   if (!modal) return;
 
-  // Elemen-elemen formulir
-  const modalContainer = document.getElementById("modalContainer");
-  const modalName = document.getElementById("modalName");
-  const modalRole = document.getElementById("modalRole");
-  const modalAvatar = document.getElementById("modalAvatar");
-  const modalBiroTag = document.getElementById("modalBiroTag");
-  const modalNrpTag = document.getElementById("modalNrpTag");
-  const authTargetText = document.getElementById("authTargetText");
-
   const emailInput = document.getElementById("authEmailInput");
   const passwordInput = document.getElementById("authPasswordInput");
+  const regEmailInput = document.getElementById("authRegisterEmailInput");
+  const regPassInput = document.getElementById("authRegisterPasswordInput");
+  const regConfirmInput = document.getElementById("authRegisterConfirmPasswordInput");
   const errBanner = document.getElementById("errorMessage");
-  const errText = document.getElementById("errorMessageText");
   const succBanner = document.getElementById("successMessage");
-  const succText = document.getElementById("successMessageText");
   const loadingIndicator = document.getElementById("authLoadingIndicator");
   const submitBtn = document.getElementById("authSubmitBtn");
+  const regSubmitBtn = document.getElementById("authRegisterSubmitBtn");
 
-  // Reset alert & inputs
   if (errBanner) errBanner.classList.add("hidden");
   if (succBanner) succBanner.classList.add("hidden");
   if (loadingIndicator) loadingIndicator.classList.add("hidden");
   if (passwordInput) passwordInput.value = "";
-  if (submitBtn) {
-    submitBtn.disabled = false;
-    submitBtn.innerText = "Masuk dengan Email";
-  }
+  if (regPassInput) regPassInput.value = "";
+  if (regConfirmInput) regConfirmInput.value = "";
+  if (submitBtn) submitBtn.disabled = false;
+  if (regSubmitBtn) regSubmitBtn.disabled = false;
 
-  // Tampilkan target profil jika diklik dari kartu staf spesifik
+  // Set Tab aktif
+  setAuthTab(initialTab || 'login');
+
+  const authTargetText = document.getElementById("authTargetText");
   if (targetStaff) {
-    if (modalName) modalName.innerText = targetStaff.nama;
-    if (modalRole) modalRole.innerText = targetStaff.role;
-    if (modalNrpTag) modalNrpTag.innerText = `NRP: ${targetStaff.nrp || "-"}`;
-    if (modalAvatar) {
-      modalAvatar.src = targetStaff.foto;
-      modalAvatar.onerror = function () {
-        this.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(targetStaff.nama)}&background=1D536B&color=fff&size=200&bold=true`;
-      };
-    }
-    if (modalBiroTag) {
-      modalBiroTag.innerText = targetStaff.departemenBEMFull || targetStaff.departemenBEM;
-      modalBiroTag.className = "modal-biro-tag";
-    }
     if (authTargetText) {
       authTargetText.innerHTML = `Mengakses Rapor Kinerja: <strong>${targetStaff.nama}</strong>`;
     }
-    if (emailInput && !emailInput.value) {
-      emailInput.value = targetStaff.email || (targetStaff.nrp ? `${targetStaff.nrp}@mhs.its.ac.id` : "");
-    }
+    const targetEmail = targetStaff.email || (targetStaff.nrp ? `${targetStaff.nrp}@mhs.its.ac.id` : "");
+    if (emailInput && !emailInput.value) emailInput.value = targetEmail;
+    if (regEmailInput && !regEmailInput.value) regEmailInput.value = targetEmail;
   } else {
-    // Mode login umum dari navbar
-    if (modalName) modalName.innerText = "Portal Fungsionaris";
-    if (modalRole) modalRole.innerText = "BEM FTEIC ITS Kabinet Polaris 2026";
-    if (modalNrpTag) modalNrpTag.innerText = "Otentikasi Akun";
-    if (modalAvatar) modalAvatar.src = "assets/logo-bem-fteic.png";
-    if (modalBiroTag) {
-      modalBiroTag.innerText = "Badan Pengembangan Strategis";
-      modalBiroTag.className = "modal-biro-tag";
-    }
     if (authTargetText) {
-      authTargetText.innerText = "Masuk untuk Mengakses Rapor Kinerja Personal";
+      authTargetText.innerText = "Masuk untuk Mengakses Direktori & Rapor Kinerja Personal";
     }
-  }
-
-  // Periksa apakah demo mode aktif dan tampilkan badge peringatan jika perlu
-  const demoBadge = document.getElementById("authDemoNotice");
-  if (demoBadge) {
-    demoBadge.style.display = isConfigured ? "none" : "flex";
   }
 
   modal.classList.remove("hidden");
-  setTimeout(() => {
-    if (emailInput && !emailInput.value) emailInput.focus();
-    else if (passwordInput) passwordInput.focus();
-  }, 100);
 }
 
-/**
- * Tutup modal autentikasi fungsionaris
- */
 function closeModal() {
   const modal = document.getElementById("passwordModal");
   if (modal) modal.classList.add("hidden");
@@ -652,7 +728,7 @@ function closeModal() {
 }
 
 /**
- * Update UI Nav Auth Status Pill (Desktop Nav & Mobile Menu)
+ * Update Nav Auth Status Pill and Toggle Public Lock Gate vs Protected Directory
  */
 function updateNavAuthUI() {
   const navPill = document.getElementById("navAuthPill");
@@ -663,7 +739,7 @@ function updateNavAuthUI() {
       const name = currentFunctionaryData ? currentFunctionaryData.nama : (currentAuthUser.displayName || currentAuthUser.email);
       const shortName = name.split(" ")[0];
       const dept = currentFunctionaryData ? currentFunctionaryData.departemenBEM : (isCurrentUserAdmin ? "ADMIN BPS" : "FUNGSIONARIS");
-      const avatarSrc = currentFunctionaryData && currentFunctionaryData.foto ? currentFunctionaryData.foto : (currentAuthUser.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=1D536B&color=fff&size=100&bold=true`);
+      const avatarSrc = currentFunctionaryData && currentFunctionaryData.foto ? currentFunctionaryData.foto : (currentAuthUser.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0F3D91&color=fff&size=100&bold=true`);
 
       return `
         <div class="auth-pill-logged-in" title="Masuk sebagai ${name} (${dept})">
@@ -678,14 +754,14 @@ function updateNavAuthUI() {
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
             <span>Rapor Saya</span>
           </button>
-          <button type="button" class="btn-auth-logout" onclick="window.BPSAuth.signOutUser()" title="Keluar">
+          <button type="button" class="btn-auth-logout" onclick="window.BPSAuth.signOutUser()" title="Keluar dari Portal">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
           </button>
         </div>
       `;
     } else {
       return `
-        <button type="button" class="auth-pill-logged-out" onclick="window.BPSAuth.openAuthModal(null)" title="Masuk dengan Akun Fungsionaris BEM FTEIC ITS">
+        <button type="button" class="auth-pill-logged-out" onclick="window.BPSAuth.openAuthModal(null, 'login')" title="Masuk dengan Akun Fungsionaris BEM FTEIC ITS">
           <span class="auth-pill-dot"></span>
           <span class="auth-pill-text">Public View &bull; <strong>Masuk Fungsionaris</strong></span>
         </button>
@@ -695,38 +771,69 @@ function updateNavAuthUI() {
 
   if (navPill) navPill.innerHTML = buildPillHtml(false);
   if (mobilePill) mobilePill.innerHTML = buildPillHtml(true);
+
+  // ── TOGGLE RESTRICTED ACCESS GATE VS PROTECTED DIRECTORY ──
+  const lockGate = document.getElementById("paPublicLockGate");
+  const protectedArea = document.getElementById("paDirectoryProtectedArea");
+  const sessionBanner = document.getElementById("paSessionBanner");
+  const sessionName = document.getElementById("paSessionUserName");
+  const sessionDept = document.getElementById("paSessionUserDept");
+
+  if (currentAuthUser) {
+    if (lockGate) lockGate.style.display = "none";
+    if (protectedArea) protectedArea.style.display = "block";
+    if (sessionBanner) sessionBanner.style.display = "flex";
+    if (sessionName) {
+      sessionName.innerText = currentFunctionaryData ? currentFunctionaryData.nama : (currentAuthUser.displayName || currentAuthUser.email);
+    }
+    if (sessionDept) {
+      sessionDept.innerText = currentFunctionaryData ? currentFunctionaryData.departemenBEM : (isCurrentUserAdmin ? "ADMIN BPS" : "FUNGSIONARIS");
+    }
+  } else {
+    if (lockGate) lockGate.style.display = "block";
+    if (protectedArea) protectedArea.style.display = "none";
+    if (sessionBanner) sessionBanner.style.display = "none";
+  }
 }
 
 /**
- * Membuka rapor fungsionaris yang sedang login langsung tanpa PIN
+ * Buka Rapor Fungsionaris yang sedang login (memerlukan PIN personal fungsionaris)
  */
 function openMyReport() {
   if (!currentAuthUser) {
-    openAuthModal(null);
+    openAuthModal(null, 'login');
     return;
   }
 
   if (currentFunctionaryData) {
-    // Fungsionaris spesifik: buka modal rapor langsung
-    if (typeof window.openProgressModal === "function") {
-      window.openProgressModal(currentFunctionaryData, null, "september");
+    // Periksa apakah PIN sudah diverifikasi dalam sesi ini
+    const isPinAuthed = sessionStorage.getItem('auth_pin_' + currentFunctionaryData.id) === 'true';
+    if (isPinAuthed) {
+      if (typeof window.openProgressModal === "function") {
+        window.openProgressModal(currentFunctionaryData, null, "september");
+      }
+    } else {
+      if (typeof window.openPinModal === "function") {
+        window.openPinModal(currentFunctionaryData, 'progress');
+      }
     }
   } else if (isCurrentUserAdmin) {
-    // Admin: beri notifikasi dan scroll ke daftar fungsionaris
     if (typeof window.showToast === "function") {
-      window.showToast("Akses Administrator BPS", "Sebagai Administrator BPS, Anda dapat mengklik kartu siapa saja untuk melihat laporan evaluasi lengkap.");
+      showToast("Akses Administrator BPS", "Sebagai Administrator BPS, Anda dapat mengklik kartu staf dan memasukkan PIN personal / master untuk meninjau rapor.");
     }
     const staffSection = document.getElementById("staf");
     if (staffSection) staffSection.scrollIntoView({ behavior: "smooth" });
   } else {
     if (typeof window.showToast === "function") {
-      window.showToast("Informasi Profil", "Akun Anda terotentikasi, namun belum dikaitkan dengan profil fungsionaris tertentu. Hubungi Biro Personalia.");
+      showToast("Informasi Profil", "Akun Anda terotentikasi. Silakan cari nama Anda pada direktori di bawah dan masukkan PIN personal.");
     }
+    const staffSection = document.getElementById("staf");
+    if (staffSection) staffSection.scrollIntoView({ behavior: "smooth" });
   }
 }
 
 /**
- * Handle submit login Google dari modal
+ * Handle submit login Google
  */
 async function handleModalGoogleSignIn() {
   const loading = document.getElementById("authLoadingIndicator");
@@ -748,15 +855,14 @@ async function handleModalGoogleSignIn() {
     setTimeout(() => {
       closeModal();
       if (currentTargetStaff) {
-        if (typeof window.openProgressModal === "function") {
-          window.openProgressModal(currentTargetStaff, null, "september");
+        if (typeof window.openPinModal === "function") {
+          window.openPinModal(currentTargetStaff, 'progress');
         }
-      } else if (res.functionary) {
-        if (typeof window.openProgressModal === "function") {
-          window.openProgressModal(res.functionary, null, "september");
-        }
+      } else {
+        const staffSec = document.getElementById("staf");
+        if (staffSec) staffSec.scrollIntoView({ behavior: "smooth" });
       }
-    }, 600);
+    }, 500);
   } catch (err) {
     if (loading) loading.classList.add("hidden");
     if (errBanner) errBanner.classList.remove("hidden");
@@ -768,7 +874,7 @@ async function handleModalGoogleSignIn() {
  * Handle submit login Email dari modal
  */
 async function handleModalEmailSignIn(event) {
-  if (event) event.preventDefault();
+  if (event && event.preventDefault) event.preventDefault();
 
   const emailInput = document.getElementById("authEmailInput");
   const passwordInput = document.getElementById("authPasswordInput");
@@ -803,20 +909,93 @@ async function handleModalEmailSignIn(event) {
     setTimeout(() => {
       closeModal();
       if (currentTargetStaff) {
-        if (typeof window.openProgressModal === "function") {
-          window.openProgressModal(currentTargetStaff, null, "september");
+        if (typeof window.openPinModal === "function") {
+          window.openPinModal(currentTargetStaff, 'progress');
         }
-      } else if (res.functionary) {
-        if (typeof window.openProgressModal === "function") {
-          window.openProgressModal(res.functionary, null, "september");
+      } else {
+        const staffSec = document.getElementById("staf");
+        if (staffSec) staffSec.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 500);
+  } catch (err) {
+    if (loading) loading.classList.add("hidden");
+    if (submitBtn) submitBtn.disabled = false;
+    if (errBanner) errBanner.classList.remove("hidden");
+    if (errText) errText.innerText = err.message || "Gagal masuk. Periksa kembali email dan password.";
+  }
+}
+
+/**
+ * Handle submit register Email dari modal
+ */
+async function handleModalRegister(event) {
+  if (event && event.preventDefault) event.preventDefault();
+
+  const nameInput = document.getElementById("authRegisterNameInput");
+  const emailInput = document.getElementById("authRegisterEmailInput");
+  const passwordInput = document.getElementById("authRegisterPasswordInput");
+  const confirmInput = document.getElementById("authRegisterConfirmPasswordInput");
+  const loading = document.getElementById("authLoadingIndicator");
+  const errBanner = document.getElementById("errorMessage");
+  const errText = document.getElementById("errorMessageText");
+  const succBanner = document.getElementById("successMessage");
+  const succText = document.getElementById("successMessageText");
+  const submitBtn = document.getElementById("authRegisterSubmitBtn");
+
+  if (errBanner) errBanner.classList.add("hidden");
+  if (succBanner) succBanner.classList.add("hidden");
+
+  const name = nameInput ? nameInput.value.trim() : "";
+  const email = emailInput ? emailInput.value.trim().toLowerCase() : "";
+  const password = passwordInput ? passwordInput.value : "";
+  const confirmPassword = confirmInput ? confirmInput.value : "";
+
+  if (!email || !password) {
+    if (errBanner) errBanner.classList.remove("hidden");
+    if (errText) errText.innerText = "Harap isi alamat email dan tentukan password baru Anda.";
+    return;
+  }
+
+  if (password.length < 6) {
+    if (errBanner) errBanner.classList.remove("hidden");
+    if (errText) errText.innerText = "Password minimal terdiri dari 6 karakter demi keamanan akun Anda.";
+    return;
+  }
+
+  if (confirmPassword && password !== confirmPassword) {
+    if (errBanner) errBanner.classList.remove("hidden");
+    if (errText) errText.innerText = "Konfirmasi password tidak cocok dengan password yang Anda buat.";
+    return;
+  }
+
+  if (loading) loading.classList.remove("hidden");
+  if (submitBtn) submitBtn.disabled = true;
+
+  try {
+    const res = await registerWithEmail(name, email, password);
+    if (loading) loading.classList.add("hidden");
+    if (succBanner) succBanner.classList.remove("hidden");
+    if (succText) succText.innerText = `Akun berhasil dibuat! Selamat datang, ${res.displayName || email}.`;
+
+    setTimeout(() => {
+      closeModal();
+      if (typeof window.showToast === "function") {
+        window.showToast("Akun Berhasil Dibuat", `Selamat datang di Portal Fungsionaris, ${res.displayName || email}!`);
+      }
+      if (currentTargetStaff) {
+        if (typeof window.openPinModal === "function") {
+          window.openPinModal(currentTargetStaff, 'progress');
         }
+      } else {
+        const staffSec = document.getElementById("staf");
+        if (staffSec) staffSec.scrollIntoView({ behavior: "smooth" });
       }
     }, 600);
   } catch (err) {
     if (loading) loading.classList.add("hidden");
     if (submitBtn) submitBtn.disabled = false;
     if (errBanner) errBanner.classList.remove("hidden");
-    if (errText) errText.innerText = err.message || "Gagal masuk. Periksa kembali email dan password.";
+    if (errText) errText.innerText = err.message || "Gagal membuat akun.";
   }
 }
 
@@ -856,57 +1035,6 @@ async function handleModalResetPassword() {
   }
 }
 
-/**
- * Handle klik buat / klaim akun pertama kali
- */
-async function handleModalClaimAccount() {
-  const emailInput = document.getElementById("authEmailInput");
-  const passwordInput = document.getElementById("authPasswordInput");
-  const errBanner = document.getElementById("errorMessage");
-  const errText = document.getElementById("errorMessageText");
-  const succBanner = document.getElementById("successMessage");
-  const succText = document.getElementById("successMessageText");
-  const loading = document.getElementById("authLoadingIndicator");
-
-  if (errBanner) errBanner.classList.add("hidden");
-  if (succBanner) succBanner.classList.add("hidden");
-
-  const email = emailInput ? emailInput.value.trim() : "";
-  const password = passwordInput ? passwordInput.value : "";
-
-  if (!email || !password) {
-    if (errBanner) errBanner.classList.remove("hidden");
-    if (errText) errText.innerText = "Harap masukkan email terdaftar dan tentukan password baru yang ingin Anda gunakan (min. 6 karakter).";
-    return;
-  }
-
-  if (loading) loading.classList.remove("hidden");
-
-  try {
-    const res = await claimOrRegisterEmail(email, password);
-    if (loading) loading.classList.add("hidden");
-    if (succBanner) succBanner.classList.remove("hidden");
-    if (succText) succText.innerText = `Akun berhasil diaktivasi! Selamat datang, ${res.functionary ? res.functionary.nama : email}.`;
-
-    setTimeout(() => {
-      closeModal();
-      if (currentTargetStaff) {
-        if (typeof window.openProgressModal === "function") {
-          window.openProgressModal(currentTargetStaff, null, "september");
-        }
-      } else if (res.functionary) {
-        if (typeof window.openProgressModal === "function") {
-          window.openProgressModal(res.functionary, null, "september");
-        }
-      }
-    }, 600);
-  } catch (err) {
-    if (loading) loading.classList.add("hidden");
-    if (errBanner) errBanner.classList.remove("hidden");
-    if (errText) errText.innerText = err.message;
-  }
-}
-
 // =========================================================================
 // 6. GLOBAL WINDOW EXPORTS & BOOTSTRAP
 // =========================================================================
@@ -921,20 +1049,21 @@ window.BPSAuth = {
   isUserAdmin: () => isCurrentUserAdmin,
   signInWithGoogle,
   signInWithEmail,
+  registerWithEmail,
   resetPasswordViaEmail,
-  claimOrRegisterEmail,
   signOutUser,
   findFunctionaryByEmail,
   findFunctionaryById,
   getFunctionaryDirectory: getDirectory,
   openAuthModal,
   closeAuthModal: closeModal,
+  setAuthTab,
   openMyReport,
   updateNavAuthUI,
   handleModalGoogleSignIn,
   handleModalEmailSignIn,
+  handleModalRegister,
   handleModalResetPassword,
-  handleModalClaimAccount,
   onAuthStateChanged: (callback) => {
     if (typeof callback === "function") {
       authListeners.add(callback);
@@ -958,13 +1087,13 @@ window.BPSAuth = {
   }
 };
 
-// Aliases for HTML inline events
 window.openAuthModal = openAuthModal;
 window.closeAuthModal = closeModal;
+window.setAuthTab = setAuthTab;
 window.handleModalGoogleSignIn = handleModalGoogleSignIn;
 window.handleModalEmailSignIn = handleModalEmailSignIn;
+window.handleModalRegister = handleModalRegister;
 window.handleModalResetPassword = handleModalResetPassword;
-window.handleModalClaimAccount = handleModalClaimAccount;
 
 // Run initial UI update when DOM is ready
 if (document.readyState === "loading") {

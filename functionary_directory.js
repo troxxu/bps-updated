@@ -12,9 +12,31 @@ window.BPS_FUNCTIONARY_DIRECTORY = {
     "personalia.polaris@gmail.com",
     "bps.bemfteic2026@gmail.com",
     "troxxu@gmail.com",
-    "ilmanafif@gmail.com"
+    "hilmuddinthoriq@gmail.com",
+    "thoriqhilmuddin@gmail.com",
+    "5022231191@mhs.its.ac.id",
+    "5022231191@student.its.ac.id",
+    "ilmanafif@gmail.com",
+    "5022231021@mhs.its.ac.id"
   ],
   "functionaries": [
+    {
+      "id": "bps-002",
+      "nama": "Thoriq Hilmuddin",
+      "nrp": "5022231191",
+      "departemenBEM": "BPS",
+      "departemenBEMFull": "Badan Pengembangan Strategis",
+      "role": "Wakabiro Personalia",
+      "roleCategory": "BPS",
+      "email": "hilmuddinthoriq@gmail.com",
+      "altEmails": [
+        "5022231191@mhs.its.ac.id",
+        "5022231191@student.its.ac.id",
+        "thoriqhilmuddin@gmail.com",
+        "thoriq.hilmuddin@mhs.its.ac.id",
+        "troxxu@gmail.com"
+      ]
+    },
     {
       "id": "bph-001",
       "nama": "Ilman Afif Al Arif",

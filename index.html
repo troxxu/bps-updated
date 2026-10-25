@@ -952,77 +952,130 @@
 
       </div>
 
-      <!-- Controls: Filter Tabs & Live Search Bar -->
-      <div class="controls-wrapper reveal reveal-delay-1">
-        <div class="controls-inner">
-
-          <!-- Filter Tabs -->
-          <div class="filter-tabs" id="filterTabs">
-            <button class="filter-pill active" data-filter="all" onclick="setFilter('all')">
-              Semua (<span id="countAll">97</span>)
-            </button>
-            <button class="filter-pill" data-filter="BPH" onclick="setFilter('BPH')">
-              BPH (<span id="count_BPH">3</span>)
-            </button>
-            <button class="filter-pill" data-filter="DAGRI" onclick="setFilter('DAGRI')">
-              Dalam Negeri (<span id="count_DAGRI">15</span>)
-            </button>
-            <button class="filter-pill" data-filter="LUGRI" onclick="setFilter('LUGRI')">
-              Luar Negeri (<span id="count_LUGRI">18</span>)
-            </button>
-            <button class="filter-pill" data-filter="PSDM" onclick="setFilter('PSDM')">
-              Pengembangan Sumber Daya Manusia (<span id="count_PSDM">13</span>)
-            </button>
-            <button class="filter-pill" data-filter="RISTEK" onclick="setFilter('RISTEK')">
-              Riset dan Teknologi (<span id="count_RISTEK">15</span>)
-            </button>
-            <button class="filter-pill" data-filter="KWU" onclick="setFilter('KWU')">
-              Kewirausahaan (<span id="count_KWU">15</span>)
-            </button>
-            <button class="filter-pill" data-filter="SOSMAS" onclick="setFilter('SOSMAS')">
-              Sosial Masyarakat (<span id="count_SOSMAS">18</span>)
-            </button>
-          </div>
-
-          <!-- Live Search Input -->
-          <div class="search-box">
-            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2.2">
-              <circle cx="11" cy="11" r="8" />
-              <path d="M21 21l-4.35-4.35" />
+      <!-- ── 4C. RESTRICTED ACCESS GATE (HANYA UNTUK PENGUNJUNG PUBLIK / BELUM LOGIN) ── -->
+      <div id="paPublicLockGate" class="pa-locked-gate-card reveal">
+        <div class="pa-lock-shield-wrap">
+          <div class="pa-lock-shield-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
             </svg>
-            <input type="text" id="searchInput" placeholder="Cari nama, NRP, jabatan, atau jurusan..."
-              oninput="handleSearch(this.value)" autocomplete="off" />
-            <button id="clearSearchBtn" class="clear-search-btn" style="display:none;" onclick="clearSearchInput()"
-              title="Hapus pencarian">✕</button>
           </div>
-
+        </div>
+        <div class="pa-lock-content">
+          <span class="pa-lock-kicker">01 // RESTRICTED ACCESS &bull; GOOD STUDENT GOVERNANCE</span>
+          <h3 class="pa-lock-title">Area Terproteksi: Direktori &amp; Rapor Kinerja Fungsionaris</h3>
+          <p class="pa-lock-desc">
+            Berdasarkan prinsip tata kelola privasi dan <em>Organizational Well-Being</em> BEM FTEIC ITS Kabinet Polaris 2026, <strong>direktori nama dan lembar evaluasi berkala hanya dapat diakses oleh fungsionaris yang telah masuk (sign in)</strong> ke Portal Fungsionaris.
+          </p>
+          <div class="pa-lock-actions">
+            <button type="button" class="btn-editorial-primary" onclick="if(window.BPSAuth) window.BPSAuth.openAuthModal(null, 'login')">
+              <span>Masuk Portal Fungsionaris</span>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5"/></svg>
+            </button>
+            <button type="button" class="btn-editorial-secondary" onclick="if(window.BPSAuth) window.BPSAuth.openAuthModal(null, 'register')">
+              <span>Buat Akun Baru</span>
+            </button>
+          </div>
+          <div class="pa-lock-meta-row">
+            <span>🔒 Akses Sesi Terenkripsi</span>
+            <span>&bull;</span>
+            <span>👥 Khusus Fungsionaris BEM FTEIC ITS 2026</span>
+            <span>&bull;</span>
+            <span>🔑 Memerlukan PIN Personal untuk Lembar Rapor</span>
+          </div>
         </div>
       </div>
 
-      <!-- Staff Cards Grid Container (With Pre-rendered Default Cards for Instant Display) -->
-      <div id="staffGrid" class="staff-grid">
-        <!-- Seluruh 94 Fungsionaris di-render dinamis oleh app.js -->
-      </div>
+      <!-- ── 4D. PROTECTED DIRECTORY AREA (AKTIF SETELAH PENGGUNA SIGN IN) ── -->
+      <div id="paDirectoryProtectedArea" style="display: none;">
 
-      <!-- Pagination Controls (Pages untuk HP & Desktop) -->
-      <div id="staffPagination" class="pagination-wrapper"></div>
-
-      <!-- Empty State if Search Finds Nothing -->
-      <div id="emptyState" class="empty-state hidden">
-        <div class="empty-state-icon">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
+        <!-- Active Session Status Banner -->
+        <div id="paSessionBanner" class="pa-session-banner">
+          <div class="pa-session-left">
+            <span class="status-live-dot"></span>
+            <span>Sesi Terotentikasi: Masuk sebagai <strong id="paSessionUserName">Fungsionaris</strong> (<span id="paSessionUserDept">BEM FTEIC</span>)</span>
+          </div>
+          <div class="pa-session-right">
+            <span class="pa-session-hint">Klik kartu &amp; masukkan PIN personal untuk membuka rapor evaluasi</span>
+            <button type="button" class="pa-session-logout-btn" onclick="if(window.BPSAuth) window.BPSAuth.signOutUser()">Keluar</button>
+          </div>
         </div>
-        <h3>Fungsionaris Tidak Ditemukan</h3>
-        <p>Tidak ada data yang sesuai dengan kata kunci pencarian atau filter departemen saat ini. Silakan periksa
-          kembali ejaan nama atau NRP Anda.</p>
-        <button onclick="resetAllFilters()" class="btn-primary" style="margin-top:16px;">
-          Reset Pencarian
-        </button>
+
+        <!-- Controls: Filter Tabs & Live Search Bar -->
+        <div class="controls-wrapper">
+          <div class="controls-inner">
+
+            <!-- Filter Tabs -->
+            <div class="filter-tabs" id="filterTabs">
+              <button class="filter-pill active" data-filter="all" onclick="setFilter('all')">
+                Semua (<span id="countAll">97</span>)
+              </button>
+              <button class="filter-pill" data-filter="BPH" onclick="setFilter('BPH')">
+                BPH (<span id="count_BPH">3</span>)
+              </button>
+              <button class="filter-pill" data-filter="DAGRI" onclick="setFilter('DAGRI')">
+                Dalam Negeri (<span id="count_DAGRI">15</span>)
+              </button>
+              <button class="filter-pill" data-filter="LUGRI" onclick="setFilter('LUGRI')">
+                Luar Negeri (<span id="count_LUGRI">18</span>)
+              </button>
+              <button class="filter-pill" data-filter="PSDM" onclick="setFilter('PSDM')">
+                Pengembangan Sumber Daya Manusia (<span id="count_PSDM">13</span>)
+              </button>
+              <button class="filter-pill" data-filter="RISTEK" onclick="setFilter('RISTEK')">
+                Riset dan Teknologi (<span id="count_RISTEK">15</span>)
+              </button>
+              <button class="filter-pill" data-filter="KWU" onclick="setFilter('KWU')">
+                Kewirausahaan (<span id="count_KWU">15</span>)
+              </button>
+              <button class="filter-pill" data-filter="SOSMAS" onclick="setFilter('SOSMAS')">
+                Sosial Masyarakat (<span id="count_SOSMAS">18</span>)
+              </button>
+            </div>
+
+            <!-- Live Search Input -->
+            <div class="search-box">
+              <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.2">
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" />
+              </svg>
+              <input type="text" id="searchInput" placeholder="Cari nama, NRP, jabatan, atau jurusan..."
+                oninput="handleSearch(this.value)" autocomplete="off" />
+              <button id="clearSearchBtn" class="clear-search-btn" style="display:none;" onclick="clearSearchInput()"
+                title="Hapus pencarian">✕</button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Staff Cards Grid Container -->
+        <div id="staffGrid" class="staff-grid">
+          <!-- Seluruh 94 Fungsionaris di-render dinamis oleh app.js -->
+        </div>
+
+        <!-- Pagination Controls (Pages untuk HP & Desktop) -->
+        <div id="staffPagination" class="pagination-wrapper"></div>
+
+        <!-- Empty State if Search Finds Nothing -->
+        <div id="emptyState" class="empty-state hidden">
+          <div class="empty-state-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+          <h3>Fungsionaris Tidak Ditemukan</h3>
+          <p>Tidak ada data yang sesuai dengan kata kunci pencarian atau filter departemen saat ini. Silakan periksa
+            kembali ejaan nama atau NRP Anda.</p>
+          <button onclick="resetAllFilters()" class="btn-primary" style="margin-top:16px;">
+            Reset Pencarian
+          </button>
+        </div>
+
       </div>
+      <!-- END paDirectoryProtectedArea -->
 
     </div>
   </section>
@@ -1200,12 +1253,12 @@
     </div>
   </footer>
 
-  <!-- ── 8. MODAL AUTENTIKASI FUNGSIONARIS (FIREBASE AUTHENTICATION) ── -->
+  <!-- ── 8. MODAL AUTENTIKASI FUNGSIONARIS (FIREBASE AUTH & REGISTRASI) ── -->
   <div id="passwordModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modalName">
     <div class="modal-card auth-modal-card" id="modalContainer">
 
       <!-- Close Button -->
-      <button type="button" class="modal-close-btn" onclick="closeModal()" aria-label="Tutup popup">
+      <button type="button" class="modal-close-btn" onclick="closeModal()" aria-label="Tutup modal login">
         ✕
       </button>
 
@@ -1222,7 +1275,7 @@
         <div class="modal-tags-row"
           style="display: flex; justify-content: center; gap: 8px; margin: 4px 0 8px; flex-wrap: wrap;">
           <span id="modalBiroTag" class="modal-biro-tag">Badan Pengembangan Strategis</span>
-          <span id="modalNrpTag" class="modal-nrp-tag"
+          <span id="authModalSubLabel" class="modal-nrp-tag"
             style="font-size: 0.72rem; color: var(--text-3); font-family: var(--font-mono); align-self: center;">Otentikasi Akun</span>
         </div>
 
@@ -1231,17 +1284,23 @@
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
           </svg>
-          <span id="authTargetText">Masuk untuk Mengakses Rapor Kinerja Personal</span>
+          <span id="authTargetText">Masuk untuk Mengakses Direktori &amp; Rapor Kinerja Personal</span>
         </div>
       </div>
 
-      <!-- Demo Mode Graceful Indicator Badge (Hanya tampil saat Firebase belum diberi API Key) -->
-      <div id="authDemoNotice" class="auth-demo-badge" style="display: none;">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-        <span><strong>Mode Demo / Pratinjau:</strong> Kunci Firebase belum diisi di <code>firebaseConfig</code>. Anda tetap dapat mencoba login dengan akun demo fungsionaris.</span>
+      <!-- TABS SWITCHER: MASUK VS BUAT AKUN BARU -->
+      <div class="auth-tabs-switcher" role="tablist">
+        <button type="button" id="tabBtnLogin" class="auth-tab-btn active" role="tab" aria-selected="true" onclick="setAuthTab('login')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+          <span>Masuk</span>
+        </button>
+        <button type="button" id="tabBtnRegister" class="auth-tab-btn" role="tab" aria-selected="false" onclick="setAuthTab('register')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+          <span>Buat Akun Baru</span>
+        </button>
       </div>
 
-      <!-- FLOW A: PRIMARY GOOGLE ONE-CLICK SIGN-IN -->
+      <!-- GOOGLE ONE-CLICK SIGN-IN (AVAILABLE ON BOTH TABS) -->
       <div class="auth-google-section">
         <button type="button" id="btnGoogleSignIn" class="btn-google-auth" onclick="window.BPSAuth ? window.BPSAuth.handleModalGoogleSignIn() : null">
           <svg class="google-svg-icon" viewBox="0 0 24 24" width="20" height="20">
@@ -1250,105 +1309,227 @@
             <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
             <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
           </svg>
-          <span>Lanjutkan dengan Google</span>
+          <span id="googleBtnText">Lanjutkan dengan Google</span>
         </button>
       </div>
 
-      <!-- DIVIDER -->
-      <div class="auth-divider">
-        <span>atau masuk dengan email fungsionaris</span>
-      </div>
-
-      <!-- FLOW B: EMAIL & PASSWORD SIGN-IN -->
-      <form id="authForm" onsubmit="window.BPSAuth ? window.BPSAuth.handleModalEmailSignIn(event) : null" class="modal-form">
-        <div class="form-group">
-          <label for="authEmailInput">Email Fungsionaris Terdaftar</label>
-          <div class="auth-input-wrap">
-            <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-            <input type="email" id="authEmailInput" placeholder="NRP@mhs.its.ac.id / nama@gmail.com" required autocomplete="email" />
-          </div>
+      <!-- TAB 1: FORM LOGIN (MASUK) -->
+      <div id="authLoginFormWrap">
+        <div class="auth-divider">
+          <span>atau masuk dengan email &amp; password</span>
         </div>
 
-        <div class="form-group">
-          <div class="form-label-row">
-            <label for="authPasswordInput">Password Akun</label>
-            <button type="button" class="btn-text-action" onclick="window.BPSAuth ? window.BPSAuth.handleModalResetPassword() : null" title="Kirim tautan reset password ke email Anda">
-              Lupa Password?
-            </button>
+        <form id="authLoginForm" onsubmit="window.BPSAuth ? window.BPSAuth.handleModalEmailSignIn(event) : null" class="modal-form">
+          <div class="form-group">
+            <label for="authEmailInput">Email Fungsionaris Terdaftar</label>
+            <div class="auth-input-wrap">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              <input type="email" id="authEmailInput" placeholder="NRP@mhs.its.ac.id / nama@gmail.com" required autocomplete="email" />
+            </div>
           </div>
+
+          <div class="form-group">
+            <div class="form-label-row">
+              <label for="authPasswordInput">Password Akun</label>
+              <button type="button" class="btn-text-action" onclick="window.BPSAuth ? window.BPSAuth.handleModalResetPassword() : null" title="Kirim tautan reset password ke email Anda">
+                Lupa Password?
+              </button>
+            </div>
+            <div class="auth-input-wrap">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <input type="password" id="authPasswordInput" placeholder="Masukkan password Anda..." autocomplete="current-password" />
+              <button type="button" id="togglePasswordBtn" class="toggle-eye-btn" onclick="window.toggleAuthPasswordVisibility()" title="Lihat / Sembunyikan Password">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="modal-actions auth-actions-stack">
+            <button type="submit" id="authSubmitBtn" class="btn-editorial-primary" style="width: 100%; justify-content: center;">
+              <span>Masuk dengan Email</span>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5"/></svg>
+            </button>
+            <div class="auth-first-time-row">
+              <span>Belum memiliki akun?</span>
+              <button type="button" class="btn-claim-link" onclick="setAuthTab('register')">
+                Buat Akun Baru di Sini
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- TAB 2: FORM REGISTRASI (DAFTAR AKUN BARU) -->
+      <div id="authRegisterFormWrap" class="hidden">
+        <div class="auth-divider">
+          <span>atau lengkapi formulir pendaftaran baru</span>
+        </div>
+
+        <form id="authRegisterForm" onsubmit="window.BPSAuth ? window.BPSAuth.handleModalRegister(event) : null" class="modal-form">
+          <div class="form-group">
+            <label for="authRegisterNameInput">Nama Lengkap (Opsional)</label>
+            <div class="auth-input-wrap">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <input type="text" id="authRegisterNameInput" placeholder="Contoh: Thoriq Hilmuddin" autocomplete="name" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="authRegisterEmailInput">Email Fungsionaris</label>
+            <div class="auth-input-wrap">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              <input type="email" id="authRegisterEmailInput" placeholder="NRP@mhs.its.ac.id / email@gmail.com" required autocomplete="email" />
+            </div>
+            <p class="pin-hint-text" style="margin-top:4px;">Gunakan email student ITS atau Gmail aktif Anda.</p>
+          </div>
+
+          <div class="form-group">
+            <label for="authRegisterPasswordInput">Tentukan Password Baru</label>
+            <div class="auth-input-wrap">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <input type="password" id="authRegisterPasswordInput" placeholder="Minimal 6 karakter..." required autocomplete="new-password" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="authRegisterConfirmPasswordInput">Konfirmasi Password</label>
+            <div class="auth-input-wrap">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <input type="password" id="authRegisterConfirmPasswordInput" placeholder="Ketik ulang password..." required autocomplete="new-password" />
+            </div>
+          </div>
+
+          <div class="modal-actions auth-actions-stack">
+            <button type="submit" id="authRegisterSubmitBtn" class="btn-editorial-primary" style="width: 100%; justify-content: center;">
+              <span>Daftar &amp; Aktivasi Akun</span>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5"/></svg>
+            </button>
+            <div class="auth-first-time-row">
+              <span>Sudah memiliki akun?</span>
+              <button type="button" class="btn-claim-link" onclick="setAuthTab('login')">
+                Masuk di Sini
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Loading Indicator -->
+      <div id="authLoadingIndicator" class="auth-loading-banner hidden">
+        <div class="auth-spinner"></div>
+        <span id="authLoadingText">Menghubungkan ke layanan autentikasi Firebase...</span>
+      </div>
+
+      <!-- Error Alert Banner -->
+      <div id="errorMessage" class="alert-banner alert-error hidden">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span id="errorMessageText">Terjadi kesalahan verifikasi.</span>
+      </div>
+
+      <!-- Success Alert Banner -->
+      <div id="successMessage" class="alert-banner alert-success hidden">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+        <span id="successMessageText">Berhasil diverifikasi! Membuka akses...</span>
+      </div>
+
+      <!-- Footer Privacy Notice -->
+      <div class="auth-modal-footer">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        <span>Data evaluasi dan catatan konseling 360° bersifat rahasia dan dilindungi PIN personal masing-masing fungsionaris.</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── 8B. MODAL VERIFIKASI PIN PERSONAL FUNGSIONARIS ── -->
+  <div id="pinModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="pinModalName" onclick="if(event.target === this) closePinModal()">
+    <div class="modal-card auth-modal-card pin-modal-card" id="pinModalContainer">
+      <!-- Close Button -->
+      <button type="button" class="modal-close-btn" onclick="closePinModal()" aria-label="Tutup verifikasi PIN">✕</button>
+
+      <!-- Staff Profile Header Inside PIN Modal -->
+      <div class="modal-profile">
+        <div class="modal-avatar-wrap">
+          <img id="pinModalAvatar" src="assets/logo-bem-fteic.png" alt="Avatar" class="modal-avatar-img" />
+          <img src="assets/logo-kabinet-polaris-icon.png" alt="Polaris" class="modal-avatar-badge-img" title="BEM FTEIC Kabinet Polaris 2026" />
+        </div>
+        <h3 id="pinModalName" class="modal-name">Nama Fungsionaris</h3>
+        <p id="pinModalRole" class="modal-role">Jabatan • Departemen</p>
+        <div class="modal-tags-row" style="display: flex; justify-content: center; gap: 8px; margin: 4px 0 8px; flex-wrap: wrap;">
+          <span id="pinModalBiroTag" class="modal-biro-tag">Departemen</span>
+          <span id="pinModalNrpTag" class="modal-nrp-tag" style="font-size: 0.72rem; color: var(--text-3); font-family: var(--font-mono); align-self: center;">NRP: -</span>
+        </div>
+        <div class="auth-target-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span>Verifikasi PIN Personal untuk Buka Rapor</span>
+        </div>
+      </div>
+
+      <!-- PIN Verification Form -->
+      <form id="pinForm" onsubmit="handleVerifyStaffPin(event)" class="modal-form">
+        <div class="form-group">
+          <label for="staffPinInput">Kode PIN Personal Fungsionaris</label>
           <div class="auth-input-wrap">
-            <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-            <input type="password" id="authPasswordInput" placeholder="Masukkan password Anda..." autocomplete="current-password" />
-            <button type="button" id="togglePasswordBtn" class="toggle-eye-btn" onclick="window.toggleAuthPasswordVisibility()" title="Lihat / Sembunyikan Password">
+            <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            <input type="password" id="staffPinInput" placeholder="Masukkan PIN personal Anda..." required autocomplete="off" />
+            <button type="button" class="toggle-eye-btn" onclick="togglePinVisibility()" title="Lihat / Sembunyikan PIN">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                 <circle cx="12" cy="12" r="3"></circle>
               </svg>
             </button>
           </div>
-        </div>
-
-        <!-- Loading Indicator -->
-        <div id="authLoadingIndicator" class="auth-loading-banner hidden">
-          <div class="auth-spinner"></div>
-          <span id="authLoadingText">Menghubungkan ke layanan autentikasi Firebase...</span>
+          <p class="pin-hint-text">PIN unik telah dibagikan secara privat oleh Biro Personalia kepada fungsionaris bersangkutan.</p>
         </div>
 
         <!-- Error Alert Banner -->
-        <div id="errorMessage" class="alert-banner alert-error hidden">
+        <div id="pinErrorMessage" class="alert-banner alert-error hidden">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;">
             <circle cx="12" cy="12" r="10"></circle>
             <line x1="12" y1="8" x2="12" y2="12"></line>
             <line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
-          <span id="errorMessageText">Terjadi kesalahan verifikasi.</span>
+          <span id="pinErrorMessageText">PIN personal salah. Periksa kembali atau hubungi Biro Personalia.</span>
         </div>
 
         <!-- Success Alert Banner -->
-        <div id="successMessage" class="alert-banner alert-success hidden">
+        <div id="pinSuccessMessage" class="alert-banner alert-success hidden">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;">
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
             <polyline points="22 4 12 14.01 9 11.01"></polyline>
           </svg>
-          <span id="successMessageText">Berhasil diverifikasi! Membuka akses...</span>
+          <span id="pinSuccessMessageText">PIN Terverifikasi! Membuka rapor evaluasi...</span>
         </div>
 
-        <!-- Actions -->
         <div class="modal-actions auth-actions-stack">
-          <button type="submit" id="authSubmitBtn" class="btn-modal-submit btn-auth-primary">
-            Masuk dengan Email
+          <button type="submit" id="pinSubmitBtn" class="btn-editorial-primary" style="width: 100%; justify-content: center;">
+            <span>Verifikasi PIN &amp; Buka Rapor</span>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5"/></svg>
           </button>
           <div class="auth-first-time-row">
-            <span>Belum punya password?</span>
-            <button type="button" class="btn-claim-link" onclick="window.BPSAuth ? window.BPSAuth.handleModalClaimAccount() : null">
-              Aktivasi / Buat Password Baru
+            <span>Kendala atau lupa PIN?</span>
+            <button type="button" class="btn-claim-link" onclick="openLupaPinHelp()">
+              Hubungi Biro Personalia (BPS)
             </button>
           </div>
         </div>
       </form>
-
-      <!-- Footer Privacy Notice -->
-      <div class="auth-modal-footer">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-        <span>Data evaluasi dan catatan konseling 360° bersifat rahasia dan hanya dapat diakses oleh fungsionaris bersangkutan dan Biro Personalia.</span>
-      </div>
-
-      <!-- On-Progress State (Fallback Compatibility) -->
-      <div id="progressState" class="progress-state hidden">
-        <div class="progress-icon">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-            <polyline points="22 4 12 14.01 9 11.01"></polyline>
-          </svg>
-        </div>
-        <h4 class="progress-title">Akun Terverifikasi!</h4>
-        <p class="progress-subtitle">Halo, <strong id="progressStaffName">Fungsionaris</strong></p>
-        <div class="modal-actions" style="margin-top: 16px;">
-          <button type="button" onclick="closeModal()" class="btn-modal-cancel">Tutup</button>
-          <button type="button" onclick="window.BPSAuth ? window.BPSAuth.openMyReport() : null" class="btn-modal-submit">Lihat Rapor Kinerja</button>
-        </div>
-      </div>
-
     </div>
   </div>
 

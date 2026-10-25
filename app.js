@@ -3291,7 +3291,7 @@ function resetAllFilters() {
   setFilter('all');
 }
 
-// 7. SISTEM AUTENTIKASI FUNGSIONARIS TERPROTEKSI (FIREBASE AUTH & PORTAL ACCESS)
+// 7. SISTEM AUTENTIKASI FUNGSIONARIS TERPROTEKSI (2-TIER SECURITY: PORTAL LOGIN + PERSONAL PIN)
 function requestPinAccess(staffId, mode) {
   const staff = staffList.find(s => s.id === staffId);
   if (!staff) return;
@@ -3303,39 +3303,147 @@ function requestPinAccess(staffId, mode) {
 
   authTargetMode = mode || 'progress';
 
-  // Periksa apakah pengguna telah terautentikasi melalui Firebase Auth (BPSAuth)
+  // TIER 1: Periksa apakah pengguna telah masuk (sign in) ke Portal Fungsionaris
   const authUser = window.BPSAuth ? window.BPSAuth.getCurrentUser() : null;
-  const authFunc = window.BPSAuth ? window.BPSAuth.getCurrentFunctionary() : null;
-  const isAdmin = window.BPSAuth ? window.BPSAuth.isUserAdmin() : false;
-
-  if (authUser) {
-    // Pengguna sudah login!
-    // Izinkan akses jika pengguna adalah Administrator BPS atau pemilik rapor yang bersangkutan
-    if (isAdmin || (authFunc && authFunc.id === staff.id)) {
-      openProgressModal(staff, null, 'september');
-      return;
-    } else {
-      // Pengguna login sebagai fungsionaris lain
-      const myName = authFunc ? authFunc.nama : "Fungsionaris Lain";
-      showToast(
-        "Akses Privat Terproteksi",
-        `Anda sedang masuk sebagai ${myName}. Anda hanya memiliki hak akses privat untuk Rapor Anda sendiri, atau gunakan akun Administrator BPS.`
-      );
-      if (window.BPSAuth && typeof window.BPSAuth.openAuthModal === 'function') {
-        window.BPSAuth.openAuthModal(staff);
-      }
-      return;
+  if (!authUser) {
+    if (typeof showToast === "function") {
+      showToast("Autentikasi Diperlukan", "Silakan masuk atau buat akun fungsionaris terlebih dahulu untuk mengakses rapor.");
     }
+    if (window.BPSAuth && typeof window.BPSAuth.openAuthModal === 'function') {
+      window.BPSAuth.openAuthModal(staff, 'login');
+    }
+    return;
   }
 
-  // Jika belum login, buka modal autentikasi fungsionaris (Firebase Auth Portal)
-  if (window.BPSAuth && typeof window.BPSAuth.openAuthModal === 'function') {
-    window.BPSAuth.openAuthModal(staff);
-  } else {
-    openModal(staff, authTargetMode);
+  // TIER 2: Pengguna sudah login. Periksa apakah PIN personal fungsionaris ini sudah diverifikasi dalam sesi ini
+  const isPinAuthed = sessionStorage.getItem('auth_pin_' + staff.id) === 'true';
+  if (isPinAuthed) {
+    openProgressModal(staff, null, 'september');
+    return;
   }
+
+  // Tampilkan Modal Verifikasi PIN Personal Fungsionaris
+  openPinModal(staff, authTargetMode);
 }
 window.requestPinAccess = requestPinAccess;
+
+// 7A. DEDICATED PIN MODAL CONTROLLERS
+let currentPinTargetStaff = null;
+let currentPinTargetMode = 'progress';
+
+function openPinModal(staff, mode = 'progress') {
+  currentPinTargetStaff = staff;
+  currentPinTargetMode = mode || 'progress';
+
+  const modal = document.getElementById("pinModal");
+  if (!modal) return;
+
+  const modalName = document.getElementById("pinModalName");
+  const modalRole = document.getElementById("pinModalRole");
+  const modalAvatar = document.getElementById("pinModalAvatar");
+  const modalBiroTag = document.getElementById("pinModalBiroTag");
+  const modalNrpTag = document.getElementById("pinModalNrpTag");
+  const pinInput = document.getElementById("staffPinInput");
+  const errBanner = document.getElementById("pinErrorMessage");
+  const succBanner = document.getElementById("pinSuccessMessage");
+  const submitBtn = document.getElementById("pinSubmitBtn");
+
+  if (errBanner) errBanner.classList.add("hidden");
+  if (succBanner) succBanner.classList.add("hidden");
+  if (pinInput) {
+    pinInput.value = "";
+    pinInput.type = "password";
+  }
+  if (submitBtn) {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = `<span>Verifikasi PIN &amp; Buka Rapor</span><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5"/></svg>`;
+  }
+
+  if (modalName) modalName.innerText = staff.nama;
+  if (modalRole) modalRole.innerText = staff.role;
+  if (modalNrpTag) modalNrpTag.innerText = `NRP: ${staff.nrp || "-"}`;
+  if (modalAvatar) {
+    modalAvatar.src = staff.foto;
+    modalAvatar.onerror = function () {
+      this.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(staff.nama)}&background=0F3D91&color=fff&size=200&bold=true`;
+    };
+  }
+  if (modalBiroTag) {
+    modalBiroTag.innerText = staff.departemenBEMFull || staff.departemenBEM;
+    modalBiroTag.className = "modal-biro-tag";
+  }
+
+  modal.classList.remove("hidden");
+  setTimeout(() => {
+    if (pinInput) pinInput.focus();
+  }, 100);
+}
+window.openPinModal = openPinModal;
+
+function closePinModal() {
+  const modal = document.getElementById("pinModal");
+  if (modal) modal.classList.add("hidden");
+  currentPinTargetStaff = null;
+}
+window.closePinModal = closePinModal;
+
+function handleVerifyStaffPin(event) {
+  if (event && event.preventDefault) event.preventDefault();
+
+  const pinInput = document.getElementById("staffPinInput");
+  const errBanner = document.getElementById("pinErrorMessage");
+  const errText = document.getElementById("pinErrorMessageText");
+  const succBanner = document.getElementById("pinSuccessMessage");
+  const succText = document.getElementById("pinSuccessMessageText");
+  const submitBtn = document.getElementById("pinSubmitBtn");
+
+  if (!pinInput || !currentPinTargetStaff) return;
+
+  const entered = pinInput.value.trim();
+  const secretPin = (currentPinTargetStaff.pin || "").trim();
+  const isAdmin = window.BPSAuth ? window.BPSAuth.isUserAdmin() : false;
+
+  const isMatch = entered.length > 0 && (
+    entered === secretPin ||
+    entered.toLowerCase() === secretPin.toLowerCase() ||
+    (isAdmin && (entered === "bpspolaris2026" || entered === "bps2026"))
+  );
+
+  if (isMatch) {
+    if (errBanner) errBanner.classList.add("hidden");
+    if (succBanner) succBanner.classList.remove("hidden");
+    if (succText) succText.innerText = "PIN Terverifikasi! Membuka rapor evaluasi...";
+
+    sessionStorage.setItem('auth_pin_' + currentPinTargetStaff.id, 'true');
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Membuka Rapor...";
+    }
+
+    const staffToOpen = currentPinTargetStaff;
+    setTimeout(() => {
+      closePinModal();
+      openProgressModal(staffToOpen, null, 'september');
+      if (typeof showToast === "function") {
+        showToast("PIN Terverifikasi", `Membuka Rapor Kinerja ${staffToOpen.nama}...`);
+      }
+    }, 450);
+  } else {
+    if (errBanner) errBanner.classList.remove("hidden");
+    if (errText) errText.innerText = "PIN personal yang Anda masukkan salah. Periksa kembali atau hubungi Biro Personalia.";
+    pinInput.focus();
+    pinInput.select();
+  }
+}
+window.handleVerifyStaffPin = handleVerifyStaffPin;
+
+function togglePinVisibility() {
+  const pinInput = document.getElementById("staffPinInput");
+  if (!pinInput) return;
+  pinInput.type = pinInput.type === "password" ? "text" : "password";
+}
+window.togglePinVisibility = togglePinVisibility;
 
 function openModal(staff, mode = 'progress') {
   currentSelectedStaff = staff;
@@ -3903,6 +4011,10 @@ function openLupaPinHelp() {
 
 // Global window bindings for UI interaction and modal actions
 window.handleVerifyPassword = handleVerifyPassword;
+window.handleVerifyStaffPin = handleVerifyStaffPin;
+window.openPinModal = openPinModal;
+window.closePinModal = closePinModal;
+window.togglePinVisibility = togglePinVisibility;
 window.togglePasswordVisibility = togglePasswordVisibility;
 window.toggleAuthPasswordVisibility = togglePasswordVisibility;
 window.openLupaPinHelp = openLupaPinHelp;
