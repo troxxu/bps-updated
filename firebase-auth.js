@@ -125,7 +125,7 @@ function findFunctionaryByEmail(rawEmail) {
                   email === "troxxu@gmail.com" ||
                   email === "5022231191@mhs.its.ac.id";
 
-  // 2. Cek Custom Local Linked Emails
+  // 2. Cek Custom Local Linked Emails (pendaftaran fleksibel berbasis nama fungsionaris)
   let customLinks = {};
   try {
     const stored = localStorage.getItem("bps_custom_email_links");
@@ -133,7 +133,18 @@ function findFunctionaryByEmail(rawEmail) {
   } catch (e) {
     customLinks = {};
   }
-  const linkedId = customLinks[email];
+  let linkedId = customLinks[email];
+  if (!linkedId) {
+    try {
+      const storedAcc = localStorage.getItem("bps_registered_accounts");
+      if (storedAcc) {
+        const accs = JSON.parse(storedAcc);
+        if (accs[email] && accs[email].functionaryId) {
+          linkedId = accs[email].functionaryId;
+        }
+      }
+    } catch (e) {}
+  }
 
   // 3. Khusus Thoriq Hilmuddin (Wakabiro Personalia BPS)
   if (email === "hilmuddinthoriq@gmail.com" || email === "5022231191@mhs.its.ac.id" || email === "thoriqhilmuddin@gmail.com" || email === "troxxu@gmail.com") {
@@ -156,33 +167,35 @@ function findFunctionaryByEmail(rawEmail) {
     };
   }
 
-  // 4. Cari di Daftar Fungsionaris Direktori
+  // 4. Cari dari linked ID hasil verifikasi nama fungsionaris saat registrasi
   let matchedFunc = null;
+  if (linkedId) {
+    matchedFunc = findFunctionaryById(linkedId);
+  }
 
-  for (const f of dir.functionaries) {
-    if (linkedId && f.id === linkedId) {
-      matchedFunc = f;
-      break;
-    }
-    if (f.email && f.email.toLowerCase() === email) {
-      matchedFunc = f;
-      break;
-    }
-    if (Array.isArray(f.altEmails) && f.altEmails.some(ae => ae.toLowerCase() === email)) {
-      matchedFunc = f;
-      break;
-    }
-    if (f.nrp && (
-      email === `${f.nrp}@mhs.its.ac.id` ||
-      email === `${f.nrp}@student.its.ac.id` ||
-      email === `${f.nrp}@its.ac.id`
-    )) {
-      matchedFunc = f;
-      break;
+  // 5. Cari di Daftar Fungsionaris Direktori
+  if (!matchedFunc) {
+    for (const f of dir.functionaries) {
+      if (f.email && f.email.toLowerCase() === email) {
+        matchedFunc = f;
+        break;
+      }
+      if (Array.isArray(f.altEmails) && f.altEmails.some(ae => ae.toLowerCase() === email)) {
+        matchedFunc = f;
+        break;
+      }
+      if (f.nrp && (
+        email === `${f.nrp}@mhs.its.ac.id` ||
+        email === `${f.nrp}@student.its.ac.id` ||
+        email === `${f.nrp}@its.ac.id`
+      )) {
+        matchedFunc = f;
+        break;
+      }
     }
   }
 
-  // 5. Cari di staffList global
+  // 6. Cari di staffList global
   if (!matchedFunc && typeof window !== "undefined" && Array.isArray(window.staffList)) {
     for (const s of window.staffList) {
       if (s.nrp && (
@@ -196,10 +209,16 @@ function findFunctionaryByEmail(rawEmail) {
     }
   }
 
+  const isFunctionaryAdmin = isAdmin || (matchedFunc && (
+    matchedFunc.id === "bps-002" ||
+    (matchedFunc.role && matchedFunc.role.toLowerCase().includes("personalia")) ||
+    (matchedFunc.departemenBEM && matchedFunc.departemenBEM.toUpperCase() === "BPS")
+  ));
+
   // Akun fungsionaris yang terdaftar selalu diizinkan masuk portal
   return {
     functionary: matchedFunc,
-    isAdmin,
+    isAdmin: isFunctionaryAdmin,
     isWhitelisted: true,
     email
   };
@@ -212,9 +231,150 @@ function findFunctionaryById(staffId) {
   if (inDir) return inDir;
 
   if (typeof window !== "undefined" && Array.isArray(window.staffList)) {
-    return window.staffList.find(s => s.id === staffId) || null;
+    const inStaff = window.staffList.find(s => s.id === staffId);
+    if (inStaff) return inStaff;
   }
+  const all = getAllFunctionaries();
+  return all.find(f => f.id === staffId) || null;
+}
+
+/**
+ * Mengambil seluruh daftar fungsionaris terdaftar secara lengkap dan terdeduplikasi
+ */
+function getAllFunctionaries() {
+  const map = new Map();
+  // 1. Dari window.staffList jika ada
+  if (typeof window !== "undefined" && Array.isArray(window.staffList)) {
+    window.staffList.forEach(s => {
+      if (s && s.id && (s.nama || s.name)) {
+        map.set(s.id, {
+          id: s.id,
+          nama: s.nama || s.name,
+          nrp: s.nrp || "",
+          departemenBEM: s.departemenBEM || s.department || "",
+          departemenBEMFull: s.departemenBEMFull || s.departmentFull || "",
+          role: s.role || "",
+          foto: s.foto || "",
+          pin: s.pin || "",
+          sheetUrl: s.sheetUrl || ""
+        });
+      }
+    });
+  }
+  // 2. Dari window.BPS_FUNCTIONARY_DIRECTORY
+  if (typeof window !== "undefined" && window.BPS_FUNCTIONARY_DIRECTORY && Array.isArray(window.BPS_FUNCTIONARY_DIRECTORY.functionaries)) {
+    window.BPS_FUNCTIONARY_DIRECTORY.functionaries.forEach(f => {
+      if (f && f.id && (f.nama || f.name) && !map.has(f.id)) {
+        map.set(f.id, {
+          id: f.id,
+          nama: f.nama || f.name,
+          nrp: f.nrp || "",
+          departemenBEM: f.departemenBEM || f.department || "",
+          departemenBEMFull: f.departemenBEMFull || f.departmentFull || "",
+          role: f.role || "",
+          foto: f.foto || "",
+          pin: f.pin || "",
+          sheetUrl: f.sheetUrl || ""
+        });
+      }
+    });
+  }
+  // 3. Dari getDirectory()
+  const dir = getDirectory();
+  if (dir && Array.isArray(dir.functionaries)) {
+    dir.functionaries.forEach(f => {
+      if (f && f.id && (f.nama || f.name) && !map.has(f.id)) {
+        map.set(f.id, {
+          id: f.id,
+          nama: f.nama || f.name,
+          nrp: f.nrp || "",
+          departemenBEM: f.departemenBEM || f.department || "",
+          departemenBEMFull: f.departemenBEMFull || f.departmentFull || "",
+          role: f.role || "",
+          foto: f.foto || "",
+          pin: f.pin || "",
+          sheetUrl: f.sheetUrl || ""
+        });
+      }
+    });
+  }
+  return Array.from(map.values());
+}
+
+/**
+ * Normalisasi string nama untuk perbandingan yang andal dan toleran terhadap tanda petik/spasi
+ */
+function normalizeName(str) {
+  if (!str) return "";
+  return str
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/['`’"]/g, "")
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/**
+ * Mencari fungsionaris berdasarkan nama lengkap saat registrasi
+ */
+function findFunctionaryByName(rawName) {
+  if (!rawName) return null;
+  const targetNorm = normalizeName(rawName);
+  if (!targetNorm) return null;
+
+  const all = getAllFunctionaries();
+
+  // 1. Pencocokan langsung (exact match)
+  const exact = all.find(f => normalizeName(f.nama) === targetNorm);
+  if (exact) return exact;
+
+  // 2. Pencocokan token / kata (misal input nama lengkap tanpa gelar/tanda petik)
+  const inputWords = targetNorm.split(" ").filter(w => w.length > 1);
+  if (inputWords.length >= 2) {
+    const candidates = all.filter(f => {
+      const fNorm = normalizeName(f.nama);
+      const fWords = fNorm.split(" ").filter(Boolean);
+      return inputWords.every(w => fWords.some(fw => fw === w || (w.length > 3 && fw.includes(w))));
+    });
+    if (candidates.length === 1) {
+      return candidates[0];
+    }
+  }
+
+  // 3. Substring match jika panjang string cukup signifikan (>= 6 karakter)
+  if (targetNorm.length >= 6) {
+    const subCandidates = all.filter(f => {
+      const fNorm = normalizeName(f.nama);
+      return fNorm.includes(targetNorm) || targetNorm.includes(fNorm);
+    });
+    if (subCandidates.length === 1) {
+      return subCandidates[0];
+    }
+  }
+
   return null;
+}
+
+/**
+ * Mengisi datalist rekomendasi nama lengkap fungsionaris pada form registrasi
+ */
+function populateFunctionaryDatalist() {
+  if (typeof document === "undefined") return;
+  const datalist = document.getElementById("functionaryDatalist");
+  if (!datalist) return;
+
+  const all = getAllFunctionaries();
+  if (!all.length) return;
+
+  const sorted = [...all].sort((a, b) => (a.nama || "").localeCompare(b.nama || "", "id"));
+  datalist.innerHTML = sorted.map(f => {
+    const dept = f.departemenBEM || f.department || "";
+    const role = f.role || "";
+    const label = role ? `${role} - ${dept}` : dept;
+    return `<option value="${f.nama}">${label ? `(${label})` : ""}</option>`;
+  }).join("");
 }
 
 // =========================================================================
@@ -316,11 +476,8 @@ function translateAuthError(error) {
   if (code === "auth/user-not-found") {
     return "Akun dengan email ini belum terdaftar. Silakan pilih tab 'Buat Akun Baru' di atas untuk mendaftar.";
   }
-  if (code === "auth/popup-closed-by-user") {
-    return "Jendela Google Sign-In ditutup sebelum verifikasi selesai. Silakan klik tombol 'Lanjutkan dengan Google' kembali.";
-  }
-  if (code === "auth/popup-blocked") {
-    return "Pop-up login Google diblokir oleh browser. Harap izinkan pop-up untuk situs ini lalu coba lagi.";
+  if (code === "auth/popup-closed-by-user" || code === "auth/popup-blocked") {
+    return "Jendela autentikasi ditutup sebelum verifikasi selesai. Silakan coba kembali.";
   }
   if (code === "auth/invalid-email") {
     return "Format alamat email tidak valid. Pastikan penulisan alamat email fungsionaris sudah benar.";
@@ -443,7 +600,7 @@ async function signInWithEmail(emailInput, passwordInput) {
         throw new Error("Email atau password tidak cocok. Jika belum memiliki akun, silakan pilih tab 'Buat Akun Baru' di atas.");
       }
       if (err.code === "auth/operation-not-allowed") {
-        throw new Error("Fitur login email sedang disinkronkan. Silakan gunakan tombol 'Lanjutkan dengan Google' atau buat akun baru di tab sebelah.");
+        throw new Error("Layanan login email sedang disinkronkan. Silakan gunakan tab 'Buat Akun Baru' di atas untuk mendaftarkan akun.");
       }
       throw new Error(translateAuthError(err));
     }
@@ -469,8 +626,13 @@ async function signInWithEmail(emailInput, passwordInput) {
 
 /**
  * FLOW B2 — Register / Create New Functionary Account
+ * Verifikasi nama lengkap fungsionaris terhadap direktori BEM FTEIC ITS 2026
+ * dan hubungkan email bebas (Gmail/Student/Pribadi) secara permanen.
  */
 async function registerWithEmail(nameInput, emailInput, passwordInput) {
+  if (!nameInput || !nameInput.trim()) {
+    throw new Error("Mohon masukkan nama lengkap Anda sesuai daftar fungsionaris BEM FTEIC ITS 2026.");
+  }
   if (!emailInput || !passwordInput) {
     throw new Error("Mohon lengkapi alamat email dan password Anda.");
   }
@@ -479,9 +641,37 @@ async function registerWithEmail(nameInput, emailInput, passwordInput) {
     throw new Error("Password minimal terdiri dari 6 karakter demi keamanan akun Anda.");
   }
 
+  const rawTrimmedName = nameInput.trim();
+  const matchedFunc = findFunctionaryByName(rawTrimmedName);
+  if (!matchedFunc) {
+    throw new Error(
+      `Nama "${rawTrimmedName}" tidak terdaftar dalam database fungsionaris BEM FTEIC ITS 2026. ` +
+      `Pastikan Anda memilih atau mengetik nama lengkap resmi sesuai SK kepengurusan.`
+    );
+  }
+
   const email = emailInput.trim().toLowerCase();
-  const resolution = findFunctionaryByEmail(email);
-  const displayName = nameInput ? nameInput.trim() : (resolution.functionary ? resolution.functionary.nama : email.split("@")[0]);
+  const officialName = matchedFunc.nama;
+
+  // Hubungkan alamat email bebas ini secara permanen ke ID fungsionaris yang terverifikasi
+  let customLinks = {};
+  try {
+    const stored = localStorage.getItem("bps_custom_email_links");
+    if (stored) customLinks = JSON.parse(stored);
+  } catch (e) {
+    customLinks = {};
+  }
+  customLinks[email] = matchedFunc.id;
+  try {
+    localStorage.setItem("bps_custom_email_links", JSON.stringify(customLinks));
+  } catch (e) {}
+
+  // Tentukan apakah fungsionaris ini memiliki hak akses administrator
+  const dir = getDirectory();
+  const isFAdmin = (dir.admins.some(a => a.toLowerCase() === email)) ||
+                   (matchedFunc.id === "bps-002") ||
+                   (matchedFunc.role && matchedFunc.role.toLowerCase().includes("personalia")) ||
+                   (matchedFunc.departemenBEM && matchedFunc.departemenBEM.toUpperCase() === "BPS");
 
   // Simpan akun ke database registrasi lokal sebagai cadangan permanen
   const saveLocalAccount = () => {
@@ -494,8 +684,10 @@ async function registerWithEmail(nameInput, emailInput, passwordInput) {
     }
     accounts[email] = {
       email: email,
-      displayName: displayName,
+      displayName: officialName,
+      functionaryId: matchedFunc.id,
       password: passwordInput,
+      isAdmin: isFAdmin,
       createdAt: new Date().toISOString()
     };
     try {
@@ -507,31 +699,31 @@ async function registerWithEmail(nameInput, emailInput, passwordInput) {
     try {
       const result = await createUserWithEmailAndPassword(firebaseAuth, email, passwordInput);
       try {
-        await updateProfile(result.user, { displayName: displayName });
+        await updateProfile(result.user, { displayName: officialName });
       } catch (e) {}
 
       saveLocalAccount();
-      persistSession(result.user, resolution.functionary, resolution.isAdmin);
+      persistSession(result.user, matchedFunc, isFAdmin);
       return {
         success: true,
         user: result.user,
-        displayName: displayName,
-        functionary: resolution.functionary,
-        isAdmin: resolution.isAdmin
+        displayName: officialName,
+        functionary: matchedFunc,
+        isAdmin: isFAdmin
       };
     } catch (err) {
       if (err.code === "auth/email-already-in-use") {
-        // Jika sudah ada, coba login langsung
+        // Jika sudah ada akun Firebase, coba login langsung
         try {
           const signInRes = await signInWithEmailAndPassword(firebaseAuth, email, passwordInput);
           saveLocalAccount();
-          persistSession(signInRes.user, resolution.functionary, resolution.isAdmin);
+          persistSession(signInRes.user, matchedFunc, isFAdmin);
           return {
             success: true,
             user: signInRes.user,
-            displayName: displayName,
-            functionary: resolution.functionary,
-            isAdmin: resolution.isAdmin
+            displayName: officialName,
+            functionary: matchedFunc,
+            isAdmin: isFAdmin
           };
         } catch (signInErr) {
           throw new Error("Email ini sudah terdaftar. Silakan beralih ke tab 'Masuk' untuk login dengan password Anda.");
@@ -545,38 +737,38 @@ async function registerWithEmail(nameInput, emailInput, passwordInput) {
         const mockUser = {
           uid: "local-" + Date.now(),
           email: email,
-          displayName: displayName,
-          photoURL: resolution.functionary ? resolution.functionary.foto : null
+          displayName: officialName,
+          photoURL: matchedFunc.foto || null
         };
-        persistSession(mockUser, resolution.functionary, resolution.isAdmin);
+        persistSession(mockUser, matchedFunc, isFAdmin);
         return {
           success: true,
           user: mockUser,
-          displayName: displayName,
-          functionary: resolution.functionary,
-          isAdmin: resolution.isAdmin
+          displayName: officialName,
+          functionary: matchedFunc,
+          isAdmin: isFAdmin
         };
       }
 
       throw new Error(translateAuthError(err));
     }
   } else {
-    // Mode demo
+    // Mode demo lokal
     saveLocalAccount();
     const mockUser = {
       uid: "mock-reg-" + Date.now(),
       email: email,
-      displayName: displayName,
-      photoURL: resolution.functionary ? resolution.functionary.foto : null,
+      displayName: officialName,
+      photoURL: matchedFunc.foto || null,
       isDemo: true
     };
-    persistSession(mockUser, resolution.functionary, resolution.isAdmin);
+    persistSession(mockUser, matchedFunc, isFAdmin);
     return {
       success: true,
       user: mockUser,
-      displayName: displayName,
-      functionary: resolution.functionary,
-      isAdmin: resolution.isAdmin,
+      displayName: officialName,
+      functionary: matchedFunc,
+      isAdmin: isFAdmin,
       isDemo: true
     };
   }
@@ -681,8 +873,11 @@ function openAuthModal(targetStaff = null, initialTab = 'login') {
   const modal = document.getElementById("passwordModal");
   if (!modal) return;
 
+  populateFunctionaryDatalist();
+
   const emailInput = document.getElementById("authEmailInput");
   const passwordInput = document.getElementById("authPasswordInput");
+  const regNameInput = document.getElementById("authRegisterNameInput");
   const regEmailInput = document.getElementById("authRegisterEmailInput");
   const regPassInput = document.getElementById("authRegisterPasswordInput");
   const regConfirmInput = document.getElementById("authRegisterConfirmPasswordInput");
@@ -712,6 +907,7 @@ function openAuthModal(targetStaff = null, initialTab = 'login') {
     const targetEmail = targetStaff.email || (targetStaff.nrp ? `${targetStaff.nrp}@mhs.its.ac.id` : "");
     if (emailInput && !emailInput.value) emailInput.value = targetEmail;
     if (regEmailInput && !regEmailInput.value) regEmailInput.value = targetEmail;
+    if (regNameInput && !regNameInput.value) regNameInput.value = targetStaff.nama;
   } else {
     if (authTargetText) {
       authTargetText.innerText = "Masuk untuk Mengakses Direktori & Rapor Kinerja Personal";
@@ -950,6 +1146,13 @@ async function handleModalRegister(event) {
   const password = passwordInput ? passwordInput.value : "";
   const confirmPassword = confirmInput ? confirmInput.value : "";
 
+  if (!name) {
+    if (errBanner) errBanner.classList.remove("hidden");
+    if (errText) errText.innerText = "Harap masukkan nama lengkap Anda sesuai direktori fungsionaris BEM FTEIC ITS 2026.";
+    if (nameInput) nameInput.focus();
+    return;
+  }
+
   if (!email || !password) {
     if (errBanner) errBanner.classList.remove("hidden");
     if (errText) errText.innerText = "Harap isi alamat email dan tentukan password baru Anda.";
@@ -1054,6 +1257,9 @@ window.BPSAuth = {
   signOutUser,
   findFunctionaryByEmail,
   findFunctionaryById,
+  findFunctionaryByName,
+  getAllFunctionaries,
+  populateFunctionaryDatalist,
   getFunctionaryDirectory: getDirectory,
   openAuthModal,
   closeAuthModal: closeModal,
@@ -1094,10 +1300,15 @@ window.handleModalGoogleSignIn = handleModalGoogleSignIn;
 window.handleModalEmailSignIn = handleModalEmailSignIn;
 window.handleModalRegister = handleModalRegister;
 window.handleModalResetPassword = handleModalResetPassword;
+window.populateFunctionaryDatalist = populateFunctionaryDatalist;
 
-// Run initial UI update when DOM is ready
+// Run initial UI update & datalist populate when DOM is ready
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", updateNavAuthUI);
+  document.addEventListener("DOMContentLoaded", () => {
+    updateNavAuthUI();
+    populateFunctionaryDatalist();
+  });
 } else {
   updateNavAuthUI();
+  populateFunctionaryDatalist();
 }

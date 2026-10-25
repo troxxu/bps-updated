@@ -21,6 +21,20 @@ window.BPS_FUNCTIONARY_DIRECTORY = {
   ],
   "functionaries": [
     {
+      "id": "bps-001",
+      "nama": "Faaqih Mustafti Al Qalbi",
+      "nrp": "5022231126",
+      "departemenBEM": "BPS",
+      "departemenBEMFull": "Badan Pengembangan Strategis",
+      "role": "Kabiro Personalia",
+      "roleCategory": "BPS",
+      "email": "5022231126@mhs.its.ac.id",
+      "altEmails": [
+        "5022231126@student.its.ac.id",
+        "faaqih.mustafti@mhs.its.ac.id"
+      ]
+    },
+    {
       "id": "bps-002",
       "nama": "Thoriq Hilmuddin",
       "nrp": "5022231191",
@@ -36,6 +50,83 @@ window.BPS_FUNCTIONARY_DIRECTORY = {
         "thoriq.hilmuddin@mhs.its.ac.id",
         "troxxu@gmail.com"
       ]
+    },
+    {
+      "id": "bps-003",
+      "nama": "Azizah Muthiah Aini",
+      "nrp": "5023241110",
+      "departemenBEM": "BPS",
+      "departemenBEMFull": "Badan Pengembangan Strategis",
+      "role": "Asisten Biro Personalia",
+      "roleCategory": "BPS",
+      "email": "5023241110@mhs.its.ac.id",
+      "altEmails": ["5023241110@student.its.ac.id"]
+    },
+    {
+      "id": "bps-004",
+      "nama": "Yoshio Andhika Pratama",
+      "nrp": "5022241111",
+      "departemenBEM": "BPS",
+      "departemenBEMFull": "Badan Pengembangan Strategis",
+      "role": "Asisten Biro Personalia",
+      "roleCategory": "BPS",
+      "email": "5022241111@mhs.its.ac.id",
+      "altEmails": ["5022241111@student.its.ac.id"]
+    },
+    {
+      "id": "bps-005",
+      "nama": "Zulkarnaen Ramdhani",
+      "nrp": "5025241043",
+      "departemenBEM": "BPS",
+      "departemenBEMFull": "Badan Pengembangan Strategis",
+      "role": "Asisten Biro Personalia",
+      "roleCategory": "BPS",
+      "email": "5025241043@mhs.its.ac.id",
+      "altEmails": ["5025241043@student.its.ac.id"]
+    },
+    {
+      "id": "bps-006",
+      "nama": "Achmad Najwa Maruf",
+      "nrp": "5025231265",
+      "departemenBEM": "BPS",
+      "departemenBEMFull": "Badan Pengembangan Strategis",
+      "role": "Kabiro Keorganisasian",
+      "roleCategory": "BPS",
+      "email": "5025231265@mhs.its.ac.id",
+      "altEmails": ["5025231265@student.its.ac.id"]
+    },
+    {
+      "id": "bps-007",
+      "nama": "Habil Lirobi",
+      "nrp": "5048231043",
+      "departemenBEM": "BPS",
+      "departemenBEMFull": "Badan Pengembangan Strategis",
+      "role": "Wakabiro Keorganisasian",
+      "roleCategory": "BPS",
+      "email": "5048231043@mhs.its.ac.id",
+      "altEmails": ["5048231043@student.its.ac.id"]
+    },
+    {
+      "id": "bps-008",
+      "nama": "Afsal Murtaza",
+      "nrp": "5025241190",
+      "departemenBEM": "BPS",
+      "departemenBEMFull": "Badan Pengembangan Strategis",
+      "role": "Asisten Biro Keorganisasian",
+      "roleCategory": "BPS",
+      "email": "5025241190@mhs.its.ac.id",
+      "altEmails": ["5025241190@student.its.ac.id"]
+    },
+    {
+      "id": "bps-009",
+      "nama": "Dien Fadillah Prihardini",
+      "nrp": "5024241051",
+      "departemenBEM": "BPS",
+      "departemenBEMFull": "Badan Pengembangan Strategis",
+      "role": "Asisten Biro Keorganisasian",
+      "roleCategory": "BPS",
+      "email": "5024241051@mhs.its.ac.id",
+      "altEmails": ["5024241051@student.its.ac.id"]
     },
     {
       "id": "bph-001",

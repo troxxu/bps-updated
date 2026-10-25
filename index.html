@@ -1239,32 +1239,16 @@
         </button>
       </div>
 
-      <!-- GOOGLE ONE-CLICK SIGN-IN (AVAILABLE ON BOTH TABS) -->
-      <div class="auth-google-section">
-        <button type="button" id="btnGoogleSignIn" class="btn-google-auth" onclick="window.BPSAuth ? window.BPSAuth.handleModalGoogleSignIn() : null">
-          <svg class="google-svg-icon" viewBox="0 0 24 24" width="20" height="20">
-            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-          </svg>
-          <span id="googleBtnText">Lanjutkan dengan Google</span>
-        </button>
-      </div>
-
       <!-- TAB 1: FORM LOGIN (MASUK) -->
       <div id="authLoginFormWrap">
-        <div class="auth-divider">
-          <span>atau masuk dengan email &amp; password</span>
-        </div>
-
-        <form id="authLoginForm" onsubmit="window.BPSAuth ? window.BPSAuth.handleModalEmailSignIn(event) : null" class="modal-form">
+        <form id="authLoginForm" onsubmit="window.BPSAuth ? window.BPSAuth.handleModalEmailSignIn(event) : null" class="modal-form" style="margin-top: 14px;">
           <div class="form-group">
-            <label for="authEmailInput">Email Fungsionaris Terdaftar</label>
+            <label for="authEmailInput">Alamat Email Terdaftar</label>
             <div class="auth-input-wrap">
               <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-              <input type="email" id="authEmailInput" placeholder="NRP@mhs.its.ac.id / nama@gmail.com" required autocomplete="email" />
+              <input type="email" id="authEmailInput" placeholder="nama@gmail.com / nrp@mhs.its.ac.id" required autocomplete="email" />
             </div>
+            <p class="pin-hint-text" style="margin-top:4px;">Gunakan email yang Anda daftarkan saat membuat akun fungsionaris.</p>
           </div>
 
           <div class="form-group">
@@ -1288,11 +1272,11 @@
 
           <div class="modal-actions auth-actions-stack">
             <button type="submit" id="authSubmitBtn" class="btn-editorial-primary" style="width: 100%; justify-content: center;">
-              <span>Masuk dengan Email</span>
+              <span>Masuk ke Akun</span>
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5"/></svg>
             </button>
             <div class="auth-first-time-row">
-              <span>Belum memiliki akun?</span>
+              <span>Belum memiliki akun fungsionaris?</span>
               <button type="button" class="btn-claim-link" onclick="setAuthTab('register')">
                 Buat Akun Baru di Sini
               </button>
@@ -1303,30 +1287,28 @@
 
       <!-- TAB 2: FORM REGISTRASI (DAFTAR AKUN BARU) -->
       <div id="authRegisterFormWrap" class="hidden">
-        <div class="auth-divider">
-          <span>atau lengkapi formulir pendaftaran baru</span>
-        </div>
-
-        <form id="authRegisterForm" onsubmit="window.BPSAuth ? window.BPSAuth.handleModalRegister(event) : null" class="modal-form">
+        <form id="authRegisterForm" onsubmit="window.BPSAuth ? window.BPSAuth.handleModalRegister(event) : null" class="modal-form" style="margin-top: 14px;">
           <div class="form-group">
-            <label for="authRegisterNameInput">Nama Lengkap (Opsional)</label>
+            <label for="authRegisterNameInput">Nama Lengkap Fungsionaris <span style="color:#e53e3e; font-weight:700;">*</span></label>
             <div class="auth-input-wrap">
               <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-              <input type="text" id="authRegisterNameInput" placeholder="Contoh: Thoriq Hilmuddin" autocomplete="name" />
+              <input type="text" id="authRegisterNameInput" list="functionaryDatalist" placeholder="Ketik atau pilih nama lengkap Anda..." required autocomplete="off" />
+              <datalist id="functionaryDatalist"></datalist>
             </div>
+            <p class="pin-hint-text" style="margin-top:4px;">Ketik nama untuk memilih dari direktori 97 fungsionaris BEM FTEIC ITS 2026.</p>
           </div>
 
           <div class="form-group">
-            <label for="authRegisterEmailInput">Email Fungsionaris</label>
+            <label for="authRegisterEmailInput">Alamat Email Bebas (Gmail / Student) <span style="color:#e53e3e; font-weight:700;">*</span></label>
             <div class="auth-input-wrap">
               <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-              <input type="email" id="authRegisterEmailInput" placeholder="NRP@mhs.its.ac.id / email@gmail.com" required autocomplete="email" />
+              <input type="email" id="authRegisterEmailInput" placeholder="nama@gmail.com / nrp@mhs.its.ac.id" required autocomplete="email" />
             </div>
-            <p class="pin-hint-text" style="margin-top:4px;">Gunakan email student ITS atau Gmail aktif Anda.</p>
+            <p class="pin-hint-text" style="margin-top:4px;">Bebas menggunakan email Gmail pribadi atau email student ITS Anda.</p>
           </div>
 
           <div class="form-group">
-            <label for="authRegisterPasswordInput">Tentukan Password Baru</label>
+            <label for="authRegisterPasswordInput">Tentukan Password Baru <span style="color:#e53e3e; font-weight:700;">*</span></label>
             <div class="auth-input-wrap">
               <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
               <input type="password" id="authRegisterPasswordInput" placeholder="Minimal 6 karakter..." required autocomplete="new-password" />
@@ -1334,7 +1316,7 @@
           </div>
 
           <div class="form-group">
-            <label for="authRegisterConfirmPasswordInput">Konfirmasi Password</label>
+            <label for="authRegisterConfirmPasswordInput">Konfirmasi Password <span style="color:#e53e3e; font-weight:700;">*</span></label>
             <div class="auth-input-wrap">
               <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
               <input type="password" id="authRegisterConfirmPasswordInput" placeholder="Ketik ulang password..." required autocomplete="new-password" />
