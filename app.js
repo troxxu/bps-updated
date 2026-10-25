@@ -1299,6 +1299,7 @@ const staffList = [
     "sheetUrl": "https://docs.google.com/spreadsheets/d/1ABwY5AMCU83YfqScAiuUxOJ04VlIAxS6VSf58PmUW0w/edit?usp=drive_link"
   }
 ];
+window.staffList = staffList;
 
 // State Management
 let activeFilter = 'all';
@@ -3290,7 +3291,7 @@ function resetAllFilters() {
   setFilter('all');
 }
 
-// 7. SISTEM AUTENTIKASI PIN TERPROTEKSI UNTUK REPORT & SPREADSHEET
+// 7. SISTEM AUTENTIKASI FUNGSIONARIS TERPROTEKSI (FIREBASE AUTH & PORTAL ACCESS)
 function requestPinAccess(staffId, mode) {
   const staff = staffList.find(s => s.id === staffId);
   if (!staff) return;
@@ -3302,109 +3303,61 @@ function requestPinAccess(staffId, mode) {
 
   authTargetMode = mode || 'progress';
 
-  // Periksa apakah fungsionaris sudah berhasil verifikasi PIN dalam sesi ini
-  const isSessionAuthed = sessionStorage.getItem('auth_pin_' + staff.id) === 'true';
-  if (isSessionAuthed) {
-    if (authTargetMode === 'progress') {
+  // Periksa apakah pengguna telah terautentikasi melalui Firebase Auth (BPSAuth)
+  const authUser = window.BPSAuth ? window.BPSAuth.getCurrentUser() : null;
+  const authFunc = window.BPSAuth ? window.BPSAuth.getCurrentFunctionary() : null;
+  const isAdmin = window.BPSAuth ? window.BPSAuth.isUserAdmin() : false;
+
+  if (authUser) {
+    // Pengguna sudah login!
+    // Izinkan akses jika pengguna adalah Administrator BPS atau pemilik rapor yang bersangkutan
+    if (isAdmin || (authFunc && authFunc.id === staff.id)) {
       openProgressModal(staff, null, 'september');
+      return;
     } else {
-      executeOpenSheet(staff);
+      // Pengguna login sebagai fungsionaris lain
+      const myName = authFunc ? authFunc.nama : "Fungsionaris Lain";
+      showToast(
+        "Akses Privat Terproteksi",
+        `Anda sedang masuk sebagai ${myName}. Anda hanya memiliki hak akses privat untuk Rapor Anda sendiri, atau gunakan akun Administrator BPS.`
+      );
+      if (window.BPSAuth && typeof window.BPSAuth.openAuthModal === 'function') {
+        window.BPSAuth.openAuthModal(staff);
+      }
+      return;
     }
-    return;
   }
 
-  // Jika belum, tampilkan modal PIN dengan instruksi sesuai tujuan
-  openModal(staff, authTargetMode);
+  // Jika belum login, buka modal autentikasi fungsionaris (Firebase Auth Portal)
+  if (window.BPSAuth && typeof window.BPSAuth.openAuthModal === 'function') {
+    window.BPSAuth.openAuthModal(staff);
+  } else {
+    openModal(staff, authTargetMode);
+  }
 }
 window.requestPinAccess = requestPinAccess;
 
-function openModal(staff, mode = 'sheet') {
+function openModal(staff, mode = 'progress') {
   currentSelectedStaff = staff;
-  authTargetMode = mode || 'sheet';
-
+  authTargetMode = mode || 'progress';
+  if (window.BPSAuth && typeof window.BPSAuth.openAuthModal === 'function') {
+    window.BPSAuth.openAuthModal(staff);
+    return;
+  }
   const modal = document.getElementById("passwordModal");
-  const modalName = document.getElementById("modalName");
-  const modalRole = document.getElementById("modalRole");
-  const modalAvatar = document.getElementById("modalAvatar");
-  const modalBiroTag = document.getElementById("modalBiroTag");
-  const modalNrpTag = document.getElementById("modalNrpTag");
-  const staffPin = document.getElementById("staffPin");
-  const errorMessage = document.getElementById("errorMessage");
-  const successMessage = document.getElementById("successMessage");
-  const submitBtn = document.getElementById("submitBtn");
-  const authForm = document.getElementById("authForm");
-  const progressState = document.getElementById("progressState");
-  const modalProfile = document.querySelector(".modal-profile");
-  const authTargetText = document.getElementById("authTargetText");
-
-  if (!modal) return;
-
-  // Reset modal display state
-  if (authForm) authForm.classList.remove("hidden");
-  if (modalProfile) modalProfile.classList.remove("hidden");
-  if (progressState) progressState.classList.add("hidden");
-
-  if (modalName) modalName.innerText = staff.nama;
-  if (modalRole) modalRole.innerText = staff.role;
-  if (modalNrpTag) modalNrpTag.innerText = `NRP: ${staff.nrp}`;
-
-  if (modalAvatar) {
-    modalAvatar.src = staff.foto;
-    modalAvatar.onerror = function() {
-      this.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(staff.nama)}&background=1D536B&color=fff&size=200&bold=true`;
-    };
-  }
-
-  if (modalBiroTag) {
-    modalBiroTag.innerText = staff.departemenBEMFull || staff.departemenBEM;
-    modalBiroTag.className = `modal-biro-tag ${getDeptBadgeClass(staff.departemenBEM)}`;
-  }
-
-  if (authTargetText) {
-    authTargetText.innerText = (authTargetMode === 'progress')
-      ? "PIN Diperlukan: Akses Rapor & Evaluasi PA September"
-      : "PIN Diperlukan: Mengisi Lembar Kerja PA September (Sedang Berlangsung)";
-  }
-
-  if (staffPin) {
-    staffPin.value = "";
-    staffPin.type = "password";
-    staffPin.placeholder = (authTargetMode === 'progress')
-      ? "Masukkan PIN untuk akses PA September..."
-      : "Masukkan PIN untuk mengisi form PA September...";
-  }
-  isPasswordVisible = false;
-  updateEyeIcon();
-
-  if (errorMessage) errorMessage.classList.add("hidden");
-  if (successMessage) successMessage.classList.add("hidden");
-  if (submitBtn) {
-    submitBtn.disabled = false;
-    submitBtn.innerText = (authTargetMode === 'progress')
-      ? "Verifikasi & Buka Evaluasi"
-      : "Verifikasi & Buka PA September";
-  }
-
-  modal.classList.remove("hidden");
-  setTimeout(() => {
-    if (staffPin) staffPin.focus();
-  }, 50);
+  if (modal) modal.classList.remove("hidden");
 }
+window.openModal = openModal;
 
 function closeModal() {
+  if (window.BPSAuth && typeof window.BPSAuth.closeAuthModal === 'function') {
+    window.BPSAuth.closeAuthModal();
+  }
   const modal = document.getElementById("passwordModal");
   if (modal) modal.classList.add("hidden");
-
-  const authForm = document.getElementById("authForm");
-  const progressState = document.getElementById("progressState");
-  const modalProfile = document.querySelector(".modal-profile");
-
-  if (authForm) authForm.classList.remove("hidden");
-  if (modalProfile) modalProfile.classList.remove("hidden");
-  if (progressState) progressState.classList.add("hidden");
-
   currentSelectedStaff = null;
 }
+window.closeModal = closeModal;
 
 // 7B. PROGRESS DETAIL MODAL HANDLERS (REPORT RESMI PA KABINET & STAF)
 function openProgressModal(staff, liveData = null, period = null) {
@@ -3839,13 +3792,13 @@ function executeOpenSheet(staff) {
 }
 
 function togglePasswordVisibility() {
-  const staffPin = document.getElementById("staffPin");
-  if (!staffPin) return;
+  const input = document.getElementById("authPasswordInput") || document.getElementById("staffPin");
+  if (!input) return;
 
   isPasswordVisible = !isPasswordVisible;
-  staffPin.type = isPasswordVisible ? "text" : "password";
+  input.type = isPasswordVisible ? "text" : "password";
   updateEyeIcon();
-  staffPin.focus();
+  input.focus();
 }
 
 function updateEyeIcon() {
@@ -3858,13 +3811,18 @@ function updateEyeIcon() {
 }
 
 function handleVerifyPassword(event) {
-  event.preventDefault();
+  if (event && event.preventDefault) event.preventDefault();
+  // Jika Firebase Auth module aktif, delegasikan langsung ke modul BPSAuth
+  if (window.BPSAuth && typeof window.BPSAuth.handleModalEmailSignIn === 'function') {
+    return window.BPSAuth.handleModalEmailSignIn(event);
+  }
+
   const staffPin = document.getElementById("staffPin");
   const errorMessage = document.getElementById("errorMessage");
   const errorMessageText = document.getElementById("errorMessageText");
   const successMessage = document.getElementById("successMessage");
   const successMessageText = document.getElementById("successMessageText");
-  const submitBtn = document.getElementById("submitBtn");
+  const submitBtn = document.getElementById("submitBtn") || document.getElementById("authSubmitBtn");
   const modalContainer = document.getElementById("modalContainer");
 
   if (!staffPin || !currentSelectedStaff) return;
@@ -3946,6 +3904,7 @@ function openLupaPinHelp() {
 // Global window bindings for UI interaction and modal actions
 window.handleVerifyPassword = handleVerifyPassword;
 window.togglePasswordVisibility = togglePasswordVisibility;
+window.toggleAuthPasswordVisibility = togglePasswordVisibility;
 window.openLupaPinHelp = openLupaPinHelp;
 window.closeModal = closeModal;
 window.openModal = openModal;

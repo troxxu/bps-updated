@@ -1,2 +1,9 @@
 # Scratch development scripts
 scratch/
+*.py
+staffList.json
+
+# Security & Secret files (DO NOT COMMIT)
+raw_passwords.txt
+generate_directory.py
+
