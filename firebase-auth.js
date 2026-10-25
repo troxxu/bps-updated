@@ -17,15 +17,15 @@
 // =========================================================================
 // 1. FIREBASE CONFIGURATION (BEM FTEIC ITS 2026 — KABINET POLARIS)
 // =========================================================================
-// Masukkan kredensial proyek Firebase Anda di sini.
-// Didapatkan dari: Firebase Console -> Project Settings -> General -> Your Apps -> Web App.
+// Kredensial resmi proyek Firebase BEM FTEIC ITS 2026 (Spark Free Tier)
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBGSy4qomQTXDjud7O-z14e69uTV8idwYI",
+  authDomain: "bps-bem-fteic-2026.firebaseapp.com",
+  projectId: "bps-bem-fteic-2026",
+  storageBucket: "bps-bem-fteic-2026.firebasestorage.app",
+  messagingSenderId: "475554803643",
+  appId: "1:475554803643:web:d772250c1c4c85b4281e9e",
+  measurementId: "G-6DVBK0S03Y"
 };
 
 // Deteksi apakah konfigurasi Firebase telah diisi dengan kunci nyata
@@ -40,6 +40,7 @@ const isConfigured = Boolean(
 let firebaseApp = null;
 let firebaseAuth = null;
 let googleAuthProvider = null;
+let firebaseAnalytics = null;
 
 // Import Firebase SDK v10 Modular via CDN
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
@@ -53,6 +54,10 @@ import {
   signOut,
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import {
+  getAnalytics,
+  isSupported as isAnalyticsSupported
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-analytics.js";
 
 // Inisialisasi Firebase jika konfigurasi valid
 if (isConfigured) {
@@ -61,7 +66,19 @@ if (isConfigured) {
     firebaseAuth = getAuth(firebaseApp);
     googleAuthProvider = new GoogleAuthProvider();
     googleAuthProvider.setCustomParameters({ prompt: "select_account" });
-    console.info("[BPSAuth] Firebase Authentication v10 initialized successfully.");
+    console.info("[BPSAuth] Firebase Authentication v10 initialized successfully (bps-bem-fteic-2026).");
+
+    // Inisialisasi Analytics secara aman (graceful jika ad-blocker aktif atau pada localhost)
+    if (typeof isAnalyticsSupported === "function") {
+      isAnalyticsSupported().then(supported => {
+        if (supported) {
+          firebaseAnalytics = getAnalytics(firebaseApp);
+          console.info("[BPSAuth] Firebase Analytics v10 initialized successfully.");
+        }
+      }).catch(err => {
+        console.warn("[BPSAuth] Firebase Analytics not supported in this context:", err);
+      });
+    }
   } catch (err) {
     console.error("[BPSAuth] Failed to initialize Firebase:", err);
   }
@@ -898,6 +915,7 @@ window.BPSAuth = {
   isConfigured,
   firebaseApp,
   firebaseAuth,
+  getAnalytics: () => firebaseAnalytics,
   getCurrentUser: () => currentAuthUser,
   getCurrentFunctionary: () => currentFunctionaryData,
   isUserAdmin: () => isCurrentUserAdmin,
