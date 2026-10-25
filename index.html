@@ -16,18 +16,13 @@
   <link rel="preload" href="style.css" as="style" />
   <link rel="preload" href="app.js" as="script" />
 
-  <!-- Google Fonts (async loading for fast text render) -->
+  <!-- Google Fonts: Human-Crafted Swiss Editorial & Linear Precision -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
   <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
-    rel="stylesheet" media="print" onload="this.media='all'" />
-  <noscript>
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
-      rel="stylesheet" />
-  </noscript>
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+    rel="stylesheet" />
 
   <!-- Custom Stylesheet (Clearwave Design System) -->
   <link rel="stylesheet" href="style.css" />
@@ -99,33 +94,82 @@
     </div>
 
     <div class="container" style="position: relative; z-index: 2;">
-      <div class="hero-inner-editorial">
+      <div class="hero-editorial-grid">
 
+        <!-- Column 1: Institutional Swiss Masthead -->
+        <div class="hero-masthead-col reveal">
+          <div class="hero-institutional-kicker">
+            <span class="swiss-kicker-dot"></span>
+            <span class="swiss-kicker-text">BEM FTEIC ITS 2026 &bull; BADAN PENGEMBANGAN STRATEGIS</span>
+          </div>
 
-        <h1 class="hero-title reveal reveal-delay-1">
-          BPS BEM FTEIC ITS 2026<br>
-          <span class="magic-shiny-text">Elevator Mahasiswa &amp; Pengawal Mutu</span>
-        </h1>
+          <h1 class="hero-title">
+            Kabinet Polaris<br />
+            <span class="hero-title-serif">Elevator Mahasiswa &amp; Pengawal Mutu</span>
+          </h1>
 
-        <p class="hero-sub reveal reveal-delay-2">
-          Mewujudkan BEM FTEIC yang <strong>adaptif</strong> dan <strong>harmonis</strong> sebagai
-          <strong>elevator</strong> pengembangan kapasitas fungsionaris serta berperan <strong>komprehensif</strong>
-          dalam masyarakat. Portal resmi evaluasi performa, pendampingan preventif-persuasif, dan transparansi tata
-          kelola Kabinet Polaris berlandaskan prinsip <em>Good Student Governance</em> &amp; <em>Organizational Well
-            Being</em>.
-        </p>
+          <p class="hero-sub">
+            Mewujudkan BEM FTEIC yang <strong>adaptif</strong> dan <strong>harmonis</strong> sebagai
+            <strong>elevator</strong> pengembangan kapasitas fungsionaris serta berperan <strong>komprehensif</strong>
+            dalam masyarakat. Portal resmi evaluasi performa, pendampingan preventif-persuasif, dan transparansi tata
+            kelola berlandaskan prinsip <em>Good Student Governance</em> &amp; <em>Organizational Well-Being</em>.
+          </p>
 
-        <div class="hero-actions reveal reveal-delay-3">
-          <a href="#staf" class="magic-shimmer-btn">
-            <span>Buka Performance Appraisal Report</span>
-          </a>
-          <a href="about-bps.html" class="btn-hero-secondary">
-            <span>Tentang BPS FTEIC</span>
-          </a>
+          <div class="hero-actions">
+            <a href="#staf" class="btn-editorial-primary">
+              <span>Buka Performance Appraisal Report</span>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5"/></svg>
+            </a>
+            <a href="about-bps.html" class="btn-editorial-secondary">
+              <span>Tentang BPS FTEIC</span>
+            </a>
+          </div>
         </div>
 
-        <!-- Metric counter id preservation for JS logic -->
-        <span id="statTotalStaff" style="display: none;" aria-hidden="true">94</span>
+        <!-- Column 2: Executive Telemetry Ledger -->
+        <div class="hero-telemetry-col reveal reveal-delay-1">
+          <div class="telemetry-ledger-card">
+            <div class="telemetry-card-header">
+              <span class="telemetry-index-label">00 // EXECUTIVE TELEMETRY LEDGER</span>
+              <span class="telemetry-status-badge">
+                <span class="status-live-dot"></span>
+                ACTIVE AUDIT
+              </span>
+            </div>
+            <div class="telemetry-rows">
+              <div class="telemetry-row">
+                <span class="telemetry-label">Total Fungsionaris Terdaftar</span>
+                <span class="telemetry-val mono-val"><strong id="statTotalStaff">94</strong> Anggota</span>
+              </div>
+              <div class="telemetry-row">
+                <span class="telemetry-label">Siklus Evaluasi Kinerja Aktif</span>
+                <span class="telemetry-val mono-val">
+                  <span class="telemetry-chip active">Agustus 2026</span>
+                  <span class="telemetry-chip active">September 2026</span>
+                </span>
+              </div>
+              <div class="telemetry-row">
+                <span class="telemetry-label">Dual Rubric System</span>
+                <span class="telemetry-val mono-val"><strong>7 Indikator BPH</strong> / <strong>12 Indikator Staf</strong></span>
+              </div>
+              <div class="telemetry-row">
+                <span class="telemetry-label">Bobot Best Dept (BPH : Staf)</span>
+                <span class="telemetry-val mono-val"><strong>30%</strong> BPH : <strong>70%</strong> Kabinet</span>
+              </div>
+            </div>
+            <div class="telemetry-dept-strip">
+              <span class="telemetry-strip-label">Filter Cepat Direktori Departemen:</span>
+              <div class="telemetry-dept-pills">
+                <button type="button" class="telemetry-dept-btn" onclick="if(window.setFilter){window.setFilter('DAGRI'); document.getElementById('staf').scrollIntoView({behavior:'smooth'});}">DAGRI</button>
+                <button type="button" class="telemetry-dept-btn" onclick="if(window.setFilter){window.setFilter('PSDM'); document.getElementById('staf').scrollIntoView({behavior:'smooth'});}">PSDM</button>
+                <button type="button" class="telemetry-dept-btn" onclick="if(window.setFilter){window.setFilter('RISTEK'); document.getElementById('staf').scrollIntoView({behavior:'smooth'});}">RISTEK</button>
+                <button type="button" class="telemetry-dept-btn" onclick="if(window.setFilter){window.setFilter('SOSMAS'); document.getElementById('staf').scrollIntoView({behavior:'smooth'});}">SOSMAS</button>
+                <button type="button" class="telemetry-dept-btn" onclick="if(window.setFilter){window.setFilter('LUGRI'); document.getElementById('staf').scrollIntoView({behavior:'smooth'});}">LUGRI</button>
+                <button type="button" class="telemetry-dept-btn" onclick="if(window.setFilter){window.setFilter('KWU'); document.getElementById('staf').scrollIntoView({behavior:'smooth'});}">KWU</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
       </div>
     </div>
@@ -169,10 +213,11 @@
 
       <!-- Section Header -->
       <div class="staff-header">
+        <span class="swiss-section-overline">01 // DIREKTORI &amp; RAPOR FUNGSIONARIS</span>
         <h2 class="section-title reveal">Daftar Fungsionaris &amp; <em>Performance Appraisal Report</em>
         </h2>
         <p class="section-sub reveal reveal-delay-2">
-          Cari nama Anda atau gunakan filter departemen di bawah, masukkan PIN personal, dan akses langsung lembar
+          Cari nama Anda atau gunakan filter departemen di bawah, masuk dengan akun fungsionaris, dan akses langsung lembar
           evaluasi berkala Anda.
         </p>
       </div>
@@ -261,6 +306,7 @@
 
       <!-- ── 4B. REKAPITULASI RESMI & APRESIASI KINERJA (AWARDS OF THE MONTH) ── -->
       <div class="pa-awards-section reveal reveal-delay-2" id="paAwardsSection">
+        <span class="swiss-section-overline">02 // REKAPITULASI KABINET &amp; APRESIASI KINERJA</span>
         
         <!-- Header Section -->
         <div class="pa-awards-header">
@@ -987,6 +1033,7 @@
       <div class="faq-inner">
 
         <div class="faq-sidebar reveal">
+          <span class="swiss-section-overline">03 // PANDUAN &amp; FREQUENTLY ASKED QUESTIONS</span>
           <h2 class="section-title">Informasi &amp; <em>Pertanyaan Umum</em></h2>
           <p class="section-sub">
             Punya kendala dalam mengakses Performance Appraisal Report atau membutuhkan bantuan terkait PIN personal?
