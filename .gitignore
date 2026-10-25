@@ -1,6 +1,8 @@
 # Scratch development scripts
 scratch/
 *.py
+!generate_email_template.py
+!sync_bph_data.py
 staffList.json
 
 # Security & Secret files (DO NOT COMMIT)

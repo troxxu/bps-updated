@@ -1312,13 +1312,13 @@ let currentPage = 1;
 const ITEMS_PER_PAGE = 12;
 
 // 1B-0. MASTER RUBRIK RESMI BPH (BADAN PENGURUS HARIAN) BEM FTEIC ITS 2026
-// Berdasarkan Pedoman Penilaian Resmi Tab PA Kabinet-BPH & PA Staf-BPH (6 Indikator, Skala 0 - 10)
+// Berdasarkan Pedoman Penilaian Resmi Tab PA Kabinet-BPH & PA Staf-BPH (7 Indikator Kepemimpinan, Skala 0 - 10)
 const RUBRIC_BPH = [
   {
     key: "leadership",
     name: "Leadership",
     desc: "BPH menunjukkan integritas tinggi, sikap profesional, etika kerja yang konsisten, serta mampu merepresentasikan nilai-nilai organisasi dan menjadi figur panutan bagi seluruh fungsionaris.",
-    color: "#1D536B",
+    color: "#0F3D91",
     levels: {
       "9-10": "BPH sangat konsisten menunjukkan integritas tinggi dan profesionalisme prima, serta menjadi teladan inspiratif dalam merepresentasikan nilai-nilai organisasi di setiap kesempatan.",
       "6-8": "BPH mampu menunjukkan integritas, sikap profesional, dan etika kerja yang baik, serta dapat menjadi figur panutan bagi seluruh fungsionaris.",
@@ -1327,22 +1327,10 @@ const RUBRIC_BPH = [
     }
   },
   {
-    key: "open_communication",
-    name: "Open Communication",
-    desc: "BPH terbuka terhadap masukan, kritik, maupun aspirasi kabinet dan staf, mudah dihubungi ketika dibutuhkan pandangan strategis, serta rutin menyampaikan pembaruan isu internal maupun eksternal secara berkala.",
-    color: "#0EA5E9",
-    levels: {
-      "9-10": "BPH sangat proaktif menampung aspirasi, sangat mudah dijangkau dan komunikatif, serta transparan dan konsisten dalam memperbarui isu strategis internal/eksternal.",
-      "6-8": "BPH terbuka menerima masukan/kritik, cukup responsif dan mudah dihubungi saat dibutuhkan pandangan strategis, serta rutin memberikan pembaruan isu organisasi.",
-      "3-5": "BPH kurang terbuka terhadap masukan/kritik, lambat merespons ketika dihubungi, serta jarang menyampaikan pembaruan isu secara berkala.",
-      "1-2": "BPH tertutup terhadap masukan/kritik staf, sangat sulit dihubungi, dan tidak pernah menyampaikan pembaruan isu internal maupun eksternal."
-    }
-  },
-  {
     key: "development",
     name: "Development",
-    desc: "BPH memberikan contoh, menjalankan transfer knowledge dengan baik, dan mengapresiasi pencapaian staf dalam mendukung tujuan program kerja.",
-    color: "#2A9D8F",
+    desc: "BPH memberikan teladan, menjalankan transfer knowledge terarah, dan mengapresiasi pencapaian staf dalam mendukung tujuan program kerja.",
+    color: "#166534",
     levels: {
       "9-10": "BPH menjadi mentor yang berdedikasi tinggi, mentransfer wawasan secara komprehensif, serta sangat apresiatif dan suportif terhadap perkembangan kinerja staf.",
       "6-8": "BPH mampu memberikan contoh yang baik, menjalankan transfer knowledge secara terarah, dan mengapresiasi pencapaian staf.",
@@ -1351,39 +1339,67 @@ const RUBRIC_BPH = [
     }
   },
   {
-    key: "good_student_governance",
-    name: "Good Student Governance",
-    desc: "BPH menjaga ritme kerja dan keteraturan administrasi-birokrasi organisasi secara keseluruhan, memastikan transparansi regulasi internal, serta mengawal timeline besar kepengurusan agar program kerja tetap selaras dengan target tahunan.",
-    color: "#D69415",
+    key: "empowerment",
+    aliases: ["open_communication", "empowerment"],
+    name: "Empowerment",
+    desc: "BPH memberikan kewenangan terukur, mendengarkan masukan aspirasi dengan terbuka, serta memberdayakan kapasitas fungsionaris secara optimal.",
+    color: "#B45309",
     levels: {
-      "9-10": "BPH sangat disiplin dan presisi dalam mengelola tata kelola organisasi, menegakkan regulasi secara transparan dan solutif, serta proaktif memastikan seluruh target strategis tahunan tercapai tepat waktu.",
-      "6-8": "BPH mampu menjaga ritme kerja dan keteraturan birokrasi organisasi, menjamin transparansi regulasi internal, serta mengawal timeline besar program kerja dengan baik.",
-      "3-5": "BPH kurang konsisten menjaga keteraturan birokrasi, transparansi regulasi masih minim, dan kurang cermat mengawal timeline besar kepengurusan.",
-      "1-2": "BPH tidak mampu menjaga ritme kerja organisasi, mengabaikan transparansi regulasi internal, dan gagal mengawal keselarasan timeline besar program kerja."
+      "9-10": "BPH sangat terbuka menampung aspirasi, memberikan kewenangan proporsional, serta proaktif memberdayakan potensi fungsionaris.",
+      "6-8": "BPH terbuka menerima masukan/kritik, cukup responsif saat dibutuhkan pandangan strategis, serta memberikan ruang pemberdayaan yang baik.",
+      "3-5": "BPH kurang terbuka terhadap masukan/kritik, lambat merespons, dan ruang pemberdayaan masih terbatas.",
+      "1-2": "BPH tertutup terhadap aspirasi staf dan tidak memberikan ruang pemberdayaan anggota."
     }
   },
   {
-    key: "administration",
-    name: "Administration",
-    desc: "BPH menjalankan tugas administratif, mendukung operasional departemen, dan memfasilitasi kegiatan sehari-hari.",
-    color: "#8B5CF6",
+    key: "coordination",
+    name: "Coordination",
+    desc: "BPH mengorkestrasi sinergi kolaborasi lintas departemen/biro, menjaga ritme kerja harmonis, dan memantau timeline besar kepengurusan.",
+    color: "#0284C7",
     levels: {
-      "9-10": "BPH menjalankan administrasi secara rapi, cepat, dan presisi, serta sangat responsif dalam memfasilitasi dan memastikan seluruh operasional harian berjalan lancar tanpa kendala.",
-      "6-8": "BPH mampu menjalankan tugas administratif secara tertib, mendukung operasional departemen/biro, dan memfasilitasi kegiatan sehari-hari dengan baik.",
-      "3-5": "BPH lambat dalam penyelesaian administrasi dan kurang optimal dalam mendukung operasional harian departemen/biro.",
-      "1-2": "BPH tidak menjalankan tugas administratif dengan benar, sering menghambat proses operasional, dan tidak memfasilitasi kebutuhan kegiatan organisasi."
+      "9-10": "BPH mengkoordinasikan sinergi lintas bidang secara presisi, menjaga ritme kerja harmonis, dan memastikan seluruh program berjalan selaras.",
+      "6-8": "BPH mampu mengkoordinasikan kolaborasi antar departemen/biro dan mengawal ritme dinamika kerja dengan baik.",
+      "3-5": "BPH kurang optimal dalam mengkoordinasikan kolaborasi, dan ritme dinamika organisasi masih tersendat.",
+      "1-2": "BPH tidak mampu mengkoordinasikan kolaborasi dan ritme kerja organisasi tidak teratur."
     }
   },
   {
-    key: "exemplary",
-    name: "Exemplary",
-    desc: "BPH menjadi teladan dalam perilaku dan profesionalisme, memotivasi kabinet serta staff-staff nya, dan membangun kolaborasi yang solid di BEM FTEIC ITS.",
-    color: "#EC4899",
+    key: "visionary_strategy",
+    aliases: ["good_student_governance", "representation", "visionary_strategy"],
+    name: "Visionary Strategy",
+    desc: "BPH merumuskan arah kebijakan jangka panjang, memastikan keselarasan prinsip Good Student Governance, dan mengawal arah strategis TKO Kabinet Polaris 2026.",
+    color: "#D94E1F",
     levels: {
-      "9-10": "BPH menjadi role model kepemimpinan yang berintegritas tinggi, sangat menginspirasi dan membakar semangat fungsionaris, serta sukses merekatkan sinergi kolaboratif yang harmonis di BEM FTEIC ITS.",
-      "6-8": "BPH mampu menjadi teladan dalam perilaku dan profesionalisme, memotivasi staf, serta membangun kolaborasi kerja yang solid di seluruh lingkup BEM.",
-      "3-5": "BPH kurang konsisten menunjukkan keteladanan, kurang memotivasi fungsionaris, dan kolaborasi yang terbangun antar-elemen masih terkotak-kotak.",
-      "1-2": "BPH tidak mampu menjadi teladan perilaku/profesionalisme, bersikap pasif, serta gagal membangun iklim kolaborasi yang sehat di kabinet."
+      "9-10": "BPH sangat visioner dalam mengawal arah strategis organisasi, menegakkan tata kelola transparan, dan merealisasikan target TKO secara unggul.",
+      "6-8": "BPH mampu menjaga arah strategis kepengurusan, menegakkan regulasi internal, serta mengawal target tahunan dengan baik.",
+      "3-5": "BPH kurang fokus pada visi strategis jangka panjang dan tata kelola organisasi belum konsisten.",
+      "1-2": "BPH tidak memiliki arah strategis yang jelas dan mengabaikan prinsip tata kelola organisasi."
+    }
+  },
+  {
+    key: "adaptive_problem_solving",
+    aliases: ["administration", "adaptive_problem_solving"],
+    name: "Adaptive Problem Solving",
+    desc: "BPH tanggap menghadapi dinamika tak terduga, merumuskan solusi mitigasi risiko yang efektif, serta menjaga ketertiban tata kelola birokrasi.",
+    color: "#4F46E5",
+    levels: {
+      "9-10": "BPH sangat adaptif dan solutif dalam mengatasi hambatan rumit, mengambil keputusan cepat-tepat, dan menyelesaikan birokrasi secara tertib.",
+      "6-8": "BPH mampu menyelesaikan masalah operasional secara adaptif dan mendukung kelancaran birokrasi harian.",
+      "3-5": "BPH lambat dalam penyelesaian kendala organisasi dan administrasi pendukung masih terhambat.",
+      "1-2": "BPH tidak adaptif menghadapi dinamika dan gagal merumuskan solusi atas kendala yang muncul."
+    }
+  },
+  {
+    key: "integrity_accountability",
+    aliases: ["exemplary", "integrity_accountability"],
+    name: "Integrity & Accountability",
+    desc: "BPH menjadi teladan integritas moral, etika profesionalisme, akuntabilitas publik, dan membangun iklim saling percaya di BEM FTEIC ITS.",
+    color: "#334155",
+    levels: {
+      "9-10": "BPH menjadi role model berintegritas tinggi, menginspirasi fungsionaris, dan menegakkan akuntabilitas organisasi secara transparan.",
+      "6-8": "BPH mampu menjadi teladan perilaku dan profesionalisme, serta memotivasi kolaborasi yang sehat.",
+      "3-5": "BPH kurang konsisten menunjukkan keteladanan etika dan akuntabilitas kerja masih minim.",
+      "1-2": "BPH tidak mampu menjadi teladan perilaku dan gagal menegakkan integritas organisasi."
     }
   }
 ];
@@ -1489,7 +1505,7 @@ const RUBRIC_KABINET = [
     key: "leadership",
     name: "Leadership",
     desc: "Kadep/Wakadep/Kabiro menjelaskan arah strategis proyek/program kerja, memastikan pemahaman peran staf, dan memfasilitasi pengambilan keputusan.",
-    color: "#1D536B",
+    color: "#0F3D91",
     levels: {
       "9-10": "Kabinet mampu dalam menjelaskan arah strategis, memastikan pemahaman peran staf, serta memfasilitasi pengambilan keputusan secara cepat, tepat, dan solutif.",
       "6-8": "Kabinet mampu dalam menjelaskan arah strategis, memastikan pemahaman peran staf, serta memfasilitasi pengambilan keputusan.",
@@ -1501,7 +1517,7 @@ const RUBRIC_KABINET = [
     key: "development",
     name: "Development",
     desc: "Kadep/Wakadep/Kabiro memberikan contoh, menjalankan transfer knowledge dengan baik, dan mengapresiasi pencapaian staf dalam mendukung tujuan program kerja.",
-    color: "#2A9D8F",
+    color: "#166534",
     levels: {
       "9-10": "Kabinet mampu dalam memberikan contoh, menjalankan transfer knowledge secara optimal, serta konsisten mengapresiasi pencapaian staf dalam mendukung tujuan program kerja.",
       "6-8": "Kabinet mampu dalam memberikan contoh, menjalankan transfer knowledge, dan mengapresiasi pencapaian staf.",
@@ -1513,7 +1529,7 @@ const RUBRIC_KABINET = [
     key: "empowerment",
     name: "Empowerment",
     desc: "Kadep/Wakadep/Kabiro memberikan kewenangan yang tepat kepada staf, merumuskan tujuan, dan mengelola sumber daya.",
-    color: "#D69415",
+    color: "#B45309",
     levels: {
       "9-10": "Kabinet mampu dalam memberikan kewenangan yang tepat kepada staf, merumuskan tujuan yang jelas, serta mengelola dan mengoptimalkan sumber daya secara efektif.",
       "6-8": "Kabinet mampu dalam memberikan kewenangan yang tepat kepada staf, merumuskan tujuan, dan mengelola sumber daya.",
@@ -1525,7 +1541,7 @@ const RUBRIC_KABINET = [
     key: "coordination",
     name: "Coordination",
     desc: "Kadep/Wakadep/Kabiro mengkoordinasikan kolaborasi antar departemen/biro, memantau kinerja staf dalam mengembangkan program kerja, dan melakukan evaluasi untuk meningkatkan efektivitas.",
-    color: "#E76F51",
+    color: "#0284C7",
     levels: {
       "9-10": "Kabinet mampu dalam mengkoordinasikan kolaborasi antar departemen/biro secara solid, memantau kinerja staf, serta melakukan evaluasi berkala untuk meningkatkan efektivitas program kerja.",
       "6-8": "Kabinet mampu dalam mengkoordinasikan kolaborasi antar departemen/biro, memantau kinerja staf, dan melakukan evaluasi secara berkala untuk meningkatkan efektivitas program kerja.",
@@ -1534,39 +1550,42 @@ const RUBRIC_KABINET = [
     }
   },
   {
-    key: "representation",
-    name: "Representation",
-    desc: "Kadep/Wakadep/Kabiro menjadi perwakilan departemen/biro dalam hubungan dengan stakeholder eksternal.",
-    color: "#0EA5E9",
+    key: "visionary_strategy",
+    aliases: ["representation", "good_student_governance"],
+    name: "Visionary Strategy",
+    desc: "Kadep/Wakadep/Kabiro merumuskan visi strategis, mewakili departemen/biro dalam kemitraan eksternal, dan menjaga tata kelola organisasi yang visioner.",
+    color: "#D94E1F",
     levels: {
-      "9-10": "Kabinet mampu dalam menjadi perwakilan departemen/biro dalam hubungan dengan stakeholder eksternal secara profesional, diplomatis, dan membangun kemitraan yang positif.",
-      "6-8": "Kabinet mampu dalam menjadi perwakilan departemen/biro dalam hubungan dengan stakeholder eksternal.",
-      "3-5": "Kabinet kurang mampu dalam menjadi perwakilan departemen/biro dalam hubungan dengan stakeholder eksternal.",
-      "1-2": "Kabinet tidak mampu dalam menjadi perwakilan departemen/biro dalam hubungan dengan stakeholder eksternal."
+      "9-10": "Kabinet mampu dalam merumuskan visi strategis, menjadi perwakilan departemen/biro secara profesional dan diplomatis, serta menjaga tata kelola yang unggul.",
+      "6-8": "Kabinet mampu dalam menjadi perwakilan departemen/biro dan menjalankan arah kebijakan strategis.",
+      "3-5": "Kabinet kurang mampu dalam merumuskan strategi dan memposisikan departemen dalam lingkup eksternal.",
+      "1-2": "Kabinet tidak mampu dalam merumuskan arah strategis dan mewakili departemen/biro."
     }
   },
   {
-    key: "administration",
-    name: "Administration",
-    desc: "Kadep/Wakadep/Kabiro menjalankan tugas administratif, mendukung operasional departemen/biro, dan memfasilitasi kegiatan sehari-hari.",
-    color: "#8B5CF6",
+    key: "adaptive_problem_solving",
+    aliases: ["administration"],
+    name: "Adaptive Problem Solving",
+    desc: "Kadep/Wakadep/Kabiro cepat dan adaptif menyelesaikan persoalan taktis dan administratif serta memastikan kelancaran operasional departemen/biro.",
+    color: "#4F46E5",
     levels: {
-      "9-10": "Kabinet mampu dalam menjalankan tugas administratif secara tertib dan akurat, mendukung operasional, serta memfasilitasi kegiatan sehari-hari secara efisien.",
-      "6-8": "Kabinet mampu dalam menjalankan tugas administratif, mendukung operasional departemen/biro, dan memfasilitasi kegiatan sehari-hari.",
-      "3-5": "Kabinet kurang mampu dalam menjalankan tugas administratif, mendukung operasional departemen/biro, dan memfasilitasi kegiatan sehari-hari.",
-      "1-2": "Kabinet tidak mampu dalam menjalankan tugas administratif, mendukung operasional departemen/biro, dan memfasilitasi kegiatan sehari-hari."
+      "9-10": "Kabinet mampu dalam menyelesaikan masalah secara adaptif, tangkas, dan solutif, serta mengawal operasional administratif dengan akurasi prima.",
+      "6-8": "Kabinet mampu dalam menyelesaikan permasalahan operasional dan mendukung administrasi departemen.",
+      "3-5": "Kabinet kurang adaptif dalam merespons persoalan mendesak atau hambatan administratif.",
+      "1-2": "Kabinet tidak mampu merespons kendala operasional departemen secara solutif."
     }
   },
   {
-    key: "exemplary",
-    name: "Exemplary",
-    desc: "Kadep/Wakadep/Kabiro menjadi teladan dalam perilaku dan profesionalisme, memotivasi tim, serta membangun kolaborasi yang solid di dalam departemen terkait.",
-    color: "#EC4899",
+    key: "integrity_accountability",
+    aliases: ["exemplary"],
+    name: "Integrity & Accountability",
+    desc: "Kadep/Wakadep/Kabiro menjadi teladan integritas, etika profesionalisme, transparansi, serta membina komitmen moral seluruh anggota tim.",
+    color: "#334155",
     levels: {
-      "9-10": "Kabinet mampu dalam menjadi teladan dalam perilaku dan profesionalisme, memotivasi tim secara efektif, serta membangun kolaborasi yang solid di dalam departemen/biro.",
-      "6-8": "Kabinet mampu dalam menjadi teladan dalam perilaku dan profesionalisme, memotivasi tim, serta membangun kolaborasi.",
-      "3-5": "Kabinet kurang mampu dalam menjadi teladan dalam perilaku dan profesionalisme, memotivasi tim, serta membangun kolaborasi.",
-      "1-2": "Kabinet tidak mampu dalam menjadi teladan dalam perilaku dan profesionalisme, memotivasi tim, serta membangun kolaborasi."
+      "9-10": "Kabinet mampu dalam menjadi teladan integritas tertinggi, memotivasi tim dengan ketulusan, serta menegakkan akuntabilitas kerja tanpa cela.",
+      "6-8": "Kabinet mampu dalam menjadi teladan perilaku profesional dan memotivasi tim secara baik.",
+      "3-5": "Kabinet kurang konsisten dalam menunjukkan keteladanan integritas dan akuntabilitas kerja.",
+      "1-2": "Kabinet tidak mampu menunjukkan keteladanan etika dan akuntabilitas dalam kepemimpinan."
     }
   }
 ];
@@ -1576,7 +1595,7 @@ const RUBRIC_STAF = [
     key: "kritis",
     name: "Kritis",
     desc: "Mengidentifikasi akar penyebab masalah dan merumuskan langkah penyelesaian yang efektif.",
-    color: "#1D536B",
+    color: "#0F3D91",
     levels: {
       "9-10": "Fungsionaris mampu dalam menganalisis suatu permasalahan dan menemukan jalan menuju solusi dari suatu permasalahannya.",
       "6-8": "Fungsionaris mampu dalam menganalisis suatu permasalahan.",
@@ -1588,7 +1607,7 @@ const RUBRIC_STAF = [
     key: "disiplin",
     name: "Disiplin",
     desc: "Kedisiplinan fungsionaris untuk konsisten hadir dan taat terhadap waktu pelaksanaan agenda organisasi.",
-    color: "#2A9D8F",
+    color: "#166534",
     levels: {
       "9-10": "Fungsionaris selalu datang tepat waktu dalam forum atau rapat yang diadakan oleh BEM FTEIC.",
       "6-8": "Persentase kehadiran fungsionaris 80% tepat waktu dalam forum atau rapat yang diadakan oleh BEM FTEIC.",
@@ -1600,7 +1619,7 @@ const RUBRIC_STAF = [
     key: "inovatif",
     name: "Inovatif",
     desc: "Kemampuan fungsionaris berperan aktif dalam memberikan masukan kreatif serta merumuskan solusi pengembangan demi kemajuan organisasi.",
-    color: "#D69415",
+    color: "#B45309",
     levels: {
       "9-10": "Fungsionaris aktif memberikan ide maupun inovasi pada agenda maupun proker departemennya dan departemen lainnya.",
       "6-8": "Fungsionaris aktif memberikan ide maupun inovasi pada agenda maupun proker departemennya.",
@@ -1612,7 +1631,7 @@ const RUBRIC_STAF = [
     key: "solidaritas",
     name: "Solidaritas",
     desc: "Kemauan dan kemampuan fungsionaris untuk bekerja sama secara kolektif dan saling mendukung.",
-    color: "#E76F51",
+    color: "#0284C7",
     levels: {
       "9-10": "Fungsionaris mampu dalam saling membantu fungsionaris lain dalam menyukseskan suatu agenda maupun proker departemennya maupun diluar departemennya dan melaksanakannya dengan maksimal.",
       "6-8": "Fungsionaris mampu dalam saling membantu fungsionaris lain dalam menyukseskan suatu agenda maupun proker departemennya dan melaksanakannya dengan maksimal.",
@@ -1624,7 +1643,7 @@ const RUBRIC_STAF = [
     key: "sosial",
     name: "Sosial",
     desc: "Kemampuan fungsionaris membangun networking dan mengenal rekan kerja di luar lingkup departemen asalnya.",
-    color: "#0EA5E9",
+    color: "#D94E1F",
     levels: {
       "9-10": "Fungsionaris mengenal hampir seluruh fungsionaris diluar departemennya.",
       "6-8": "Fungsionaris mengenal sekitar 50 - 75% fungsionaris diluar departemennya.",
@@ -1636,7 +1655,7 @@ const RUBRIC_STAF = [
     key: "rasa_kekeluargaan",
     name: "Rasa Kekeluargaan",
     desc: "Fungsionaris bersikap kekeluargaan, empati, serta rasa memiliki terhadap sesama anggota organisasi.",
-    color: "#F43F5E",
+    color: "#4F46E5",
     levels: {
       "9-10": "Fungsionaris memahami tentang rasa kekeluargaan antar sesama fungsionaris lainnya dan mampu mengaplikasikannya.",
       "6-8": "Fungsionaris memahami tentang rasa kekeluargaan antar sesama fungsionaris lainnya.",
@@ -1648,7 +1667,7 @@ const RUBRIC_STAF = [
     key: "inisiatif",
     name: "Inisiatif",
     desc: "Fungsionaris bersikap proaktif dalam membangun koordinasi dan sinergi kerja baik di internal departemen maupun lintas departemen.",
-    color: "#6366F1",
+    color: "#0D9488",
     levels: {
       "9-10": "Fungsionaris memiliki inisiatif dalam berkoordinasi dengan fungsionaris lain didepartemennya maupun diluar departemennya.",
       "6-8": "Fungsionaris memiliki inisiatif dalam berkoordinasi dengan fungsionaris lain didepartemennya.",
@@ -1660,7 +1679,7 @@ const RUBRIC_STAF = [
     key: "tanggung_jawab",
     name: "Tanggung Jawab",
     desc: "Kemampuan fungsionaris mengeksekusi serta melakukan inovasi pengembangan pada program kerja yang menjadi tanggung jawabnya.",
-    color: "#10B981",
+    color: "#15803D",
     levels: {
       "9-10": "Fungsionaris mampu menjalankan dan mengembangkan proker yang ditanggungjawabkan ke fungsionaris tersebut.",
       "6-8": "Fungsionaris mampu menjalankan proker yang ditanggungjawabkan ke fungsionaris tersebut.",
@@ -1672,7 +1691,7 @@ const RUBRIC_STAF = [
     key: "etika",
     name: "Etika",
     desc: "Pemahaman dan penerapan etika berkomunikasi fungsionaris yang efektif serta profesional dalam berinteraksi di lingkungan organisasi.",
-    color: "#8B5CF6",
+    color: "#4338CA",
     levels: {
       "9-10": "Fungsionaris memahami serta dapat mengaplikasikan etika berkomunikasi.",
       "6-8": "Fungsionaris memahami etika berkomunikasi.",
@@ -1684,7 +1703,7 @@ const RUBRIC_STAF = [
     key: "pemahaman_proker",
     name: "Pemahaman Proker",
     desc: "Kemampuan fungsionaris menyusun strategi dan perencanaan kerja yang sistematis untuk merealisasikan tanggung jawab serta target individu.",
-    color: "#D97706",
+    color: "#854D0E",
     levels: {
       "9-10": "Fungsionaris paham dan memiliki strategi dan perencanaan yang jelas untuk merealisasikan job description dirinya sendiri.",
       "6-8": "Fungsionaris paham mengenai job description dirinya sendiri.",
@@ -1696,7 +1715,7 @@ const RUBRIC_STAF = [
     key: "fundamental",
     name: "Fundamental",
     desc: "Fungsionaris paham dan konsisten dalam mengimplementasikan nilai-nilai dasar BEM FTEIC pada setiap aktivitas organisasi.",
-    color: "#059669",
+    color: "#0369A1",
     levels: {
       "9-10": "Fungsionaris paham dan mengimplementasikan fundamental BEM FTEIC.",
       "6-8": "Fungsionaris memahami fundamental BEM FTEIC.",
@@ -1708,7 +1727,7 @@ const RUBRIC_STAF = [
     key: "responsif",
     name: "Responsif",
     desc: "Fungsionaris peka dan kritis dalam memetakan isu strategis di dalam maupun luar kampus.",
-    color: "#0284C7",
+    color: "#9A3412",
     levels: {
       "9-10": "Fungsionaris mengerti tentang permasalahan yang terjadi saat ini baik dilingkungan kampus maupun luar dan berani mengkaji permasalahan yang telah berupa opini maupun aksi.",
       "6-8": "Fungsionaris mengerti tentang permasalahan yang terjadi saat ini baik dilingkungan kampus maupun luar.",
@@ -2466,7 +2485,28 @@ function getStaffRubricData(staff, liveData = null) {
     // 1. Cek apakah ada data skor real-time dari Google Sheets
     const matchKey = item.key;
     const matchNameKey = item.name.toLowerCase();
-    const liveScoreObj = liveData && liveData.scores ? (liveData.scores[matchKey] || liveData.scores[matchNameKey] || liveData.scores[matchKey.replace(/_/g, ' ')]) : null;
+    let liveScoreObj = null;
+    if (liveData && liveData.scores) {
+      if (liveData.scores[matchKey]) {
+        liveScoreObj = liveData.scores[matchKey];
+      } else if (liveData.scores[matchNameKey]) {
+        liveScoreObj = liveData.scores[matchNameKey];
+      } else if (liveData.scores[matchKey.replace(/_/g, ' ')]) {
+        liveScoreObj = liveData.scores[matchKey.replace(/_/g, ' ')];
+      } else if (item.aliases && Array.isArray(item.aliases)) {
+        for (const alias of item.aliases) {
+          if (liveData.scores[alias]) {
+            liveScoreObj = liveData.scores[alias];
+            break;
+          }
+          const aliasSpaced = alias.replace(/_/g, ' ');
+          if (liveData.scores[aliasSpaced]) {
+            liveScoreObj = liveData.scores[aliasSpaced];
+            break;
+          }
+        }
+      }
+    }
 
     if (liveScoreObj && typeof liveScoreObj.average === 'number' && (liveScoreObj.kabCount > 0 || liveScoreObj.stafCount > 0 || liveScoreObj.selfCount > 0)) {
       score = liveScoreObj.average;
@@ -2806,7 +2846,7 @@ function init3DPieChart(canvas, dataItems) {
           const textDist = rx * 0.65;
           const tx = cx + offX + Math.cos(s.mid) * textDist;
           const ty = cy + offY + Math.sin(s.mid) * textDist * 0.52;
-          ctx.font = '600 10px system-ui, -apple-system, sans-serif';
+          ctx.font = '600 10px "JetBrains Mono", monospace';
           ctx.fillStyle = '#64748B';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
@@ -2832,7 +2872,7 @@ function init3DPieChart(canvas, dataItems) {
           const textDist = rx * 0.65;
           const tx = cx + offX + Math.cos(s.mid) * textDist;
           const ty = cy + offY + Math.sin(s.mid) * textDist * 0.52;
-          ctx.font = 'bold 11px system-ui, -apple-system, sans-serif';
+          ctx.font = '600 11px "JetBrains Mono", monospace';
           ctx.fillStyle = '#FFFFFF';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
@@ -2851,22 +2891,22 @@ function init3DPieChart(canvas, dataItems) {
       ctx.save();
       ctx.beginPath();
       ctx.ellipse(cx, cy, rx * 0.35, ry * 0.35, 0, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.92)';
-      ctx.shadowColor = 'rgba(15, 23, 42, 0.12)';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+      ctx.shadowColor = 'rgba(17, 17, 16, 0.1)';
       ctx.shadowBlur = 8;
       ctx.fill();
-      ctx.strokeStyle = 'rgba(148, 163, 184, 0.4)';
+      ctx.strokeStyle = 'rgba(228, 226, 221, 0.8)';
       ctx.lineWidth = 1.5;
       ctx.stroke();
 
-      ctx.font = 'bold 14px system-ui, -apple-system, sans-serif';
-      ctx.fillStyle = '#475569';
+      ctx.font = '600 14px "JetBrains Mono", monospace';
+      ctx.fillStyle = '#111110';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText("0.0", cx, cy - 5);
 
-      ctx.font = '600 8.5px system-ui, -apple-system, sans-serif';
-      ctx.fillStyle = '#94A3B8';
+      ctx.font = '600 8.5px "Plus Jakarta Sans", sans-serif';
+      ctx.fillStyle = '#64748B';
       ctx.fillText("BELUM DINILAI", cx, cy + 8);
       ctx.restore();
     }
@@ -2927,10 +2967,12 @@ function init3DPieChart(canvas, dataItems) {
       tooltip.innerHTML = `
         <div class="pie-tooltip-title" style="color: ${isZeroState ? '#64748B' : s.color};">
           <span class="pie-tooltip-dot" style="background: ${isZeroState ? '#94A3B8' : s.color};"></span>
-          ${s.name}
+          <span>${escapeHtml(s.name)}</span>
         </div>
-        <div class="pie-tooltip-score">Skor: <strong>${s.score.toFixed(1)}</strong> / 10 ${isZeroState ? '(Belum Dinilai)' : `(${s.percent}%)`}</div>
-        <div class="pie-tooltip-sub">${isZeroState ? 'Belum ada penilaian masuk di Google Sheets' : s.desc}</div>
+        <div class="pie-tooltip-score">
+          Skor: <strong class="pie-tooltip-mono">${s.score.toFixed(1)}</strong> <span class="pie-tooltip-scale">/ 10</span> ${isZeroState ? '<span class="pie-tooltip-empty-badge">Belum Dinilai</span>' : `<span class="pie-tooltip-pct font-mono">(${s.percent}%)</span>`}
+        </div>
+        <div class="pie-tooltip-sub">${isZeroState ? 'Belum ada penilaian masuk di Google Sheets' : escapeHtml(s.desc)}</div>
       `;
       tooltip.style.left = `${Math.min(canvasRect.width - 200, Math.max(10, x - 100))}px`;
       tooltip.style.top = `${Math.max(10, y - 80)}px`;
@@ -3621,6 +3663,41 @@ function openProgressModal(staff, liveData = null, period = null) {
   const scoreCatEl = document.getElementById("pmScoreCategory");
   if (scoreCatEl) scoreCatEl.innerText = `Predikat: ${data.predikat}`;
 
+  // Delta indicator between September and August (Executive Performance Dossier)
+  const augData = (typeof paAgustusRekapData !== 'undefined' && paAgustusRekapData[staff.id]) || (typeof paRekapData !== 'undefined' && paRekapData[staff.id]) || null;
+  const sepData = (typeof paSeptemberRekapData !== 'undefined' && paSeptemberRekapData[staff.id]) || (typeof liveSeptemberCache !== 'undefined' && liveSeptemberCache[staff.id]) || null;
+  const augAvg = augData && typeof augData.averageScore === 'number' ? augData.averageScore : null;
+  const sepAvg = sepData && typeof sepData.averageScore === 'number' ? sepData.averageScore : null;
+
+  const deltaBadge = document.getElementById("pmScoreDeltaBadge");
+  if (deltaBadge) {
+    if (currentModalPeriod === 'agustus') {
+      deltaBadge.className = "pm-score-delta-badge neutral";
+      deltaBadge.innerHTML = `<span class="pm-delta-icon">●</span> <span>Baseline (Agustus)</span>`;
+      deltaBadge.title = "Nilai baseline pada periode evaluasi PA Agustus 2026";
+    } else {
+      if (sepAvg !== null && augAvg !== null) {
+        const delta = sepAvg - augAvg;
+        if (delta > 0.005) {
+          deltaBadge.className = "pm-score-delta-badge positive";
+          deltaBadge.innerHTML = `<span class="pm-delta-icon">↑</span> <span>+${delta.toFixed(2)} vs Agustus</span>`;
+          deltaBadge.title = `Peningkatan capaian: ${sepAvg.toFixed(2)} (September) vs ${augAvg.toFixed(2)} (Agustus)`;
+        } else if (delta < -0.005) {
+          deltaBadge.className = "pm-score-delta-badge negative";
+          deltaBadge.innerHTML = `<span class="pm-delta-icon">↓</span> <span>${delta.toFixed(2)} vs Agustus</span>`;
+          deltaBadge.title = `Penurunan capaian: ${sepAvg.toFixed(2)} (September) vs ${augAvg.toFixed(2)} (Agustus)`;
+        } else {
+          deltaBadge.className = "pm-score-delta-badge neutral";
+          deltaBadge.innerHTML = `<span class="pm-delta-icon">→</span> <span>0.00 vs Agustus</span>`;
+          deltaBadge.title = `Skor stabil sama dengan periode Agustus: ${sepAvg.toFixed(2)}`;
+        }
+      } else {
+        deltaBadge.className = "pm-score-delta-badge neutral";
+        deltaBadge.innerHTML = `<span>Periode September</span>`;
+      }
+    }
+  }
+
   // Set Status Mahasiswa
   const statusEl = document.getElementById("pmStudentStatus");
   const statusSubEl = document.getElementById("pmStudentStatusSub");
@@ -3691,7 +3768,7 @@ function openProgressModal(staff, liveData = null, period = null) {
     }
   }, 100);
 
-  // Render Detail Indikator Penilaian (Cards)
+  // Render Detail Indikator Penilaian (Horizontal Meter Bars dengan Nilai Tepat Rata Kanan)
   const indContainer = document.getElementById("pmIndicatorsList");
   if (indContainer) {
     indContainer.innerHTML = data.items.map((item, idx) => `
@@ -3699,7 +3776,7 @@ function openProgressModal(staff, liveData = null, period = null) {
         <div class="pm-ind-header">
           <div class="pm-ind-name-wrap">
             <span class="pm-ind-dot" style="background: ${item.score === 0 ? '#94A3B8' : item.color};"></span>
-            <span class="pm-ind-name">${item.name}</span>
+            <span class="pm-ind-name">${escapeHtml(item.name)}</span>
             ${item.isLive && item.evalCount > 0 ? `
               <span class="pm-live-indicator-tag" title="Dihitung dari ${item.evalCount} penilai terbobot">
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
@@ -3711,16 +3788,18 @@ function openProgressModal(staff, liveData = null, period = null) {
               </span>
             `}
           </div>
-          <span class="pm-ind-score-badge ${item.score === 0 ? 'is-zero' : ''}">${item.score.toFixed(1)} / 10</span>
+          <span class="pm-ind-score-badge ${item.score === 0 ? 'is-zero' : ''}">
+            <strong class="font-mono">${item.score.toFixed(1)}</strong> <span class="pm-ind-score-scale">/ 10</span>
+          </span>
         </div>
         <div class="pm-ind-track">
-          <div class="pm-ind-fill" style="width: ${item.score * 10}%; background: ${item.score === 0 ? '#CBD5E1' : `linear-gradient(90deg, ${item.color} 0%, ${shadeColor(item.color, 25)} 100%)`};"></div>
+          <div class="pm-ind-fill" style="width: ${item.score * 10}%; background: ${item.score === 0 ? '#CBD5E1' : item.color};"></div>
         </div>
         ${item.breakdownHtml ? `<div class="pm-breakdown-row">${item.breakdownHtml}</div>` : ''}
-        <div class="pm-ind-desc">${item.desc}</div>
+        <div class="pm-ind-desc">${escapeHtml(item.desc)}</div>
         <div class="pm-ind-param-box ${item.score === 0 ? 'is-zero' : ''}">
-          <div class="pm-ind-param-tag">${item.levelBadge}</div>
-          <p class="pm-ind-param-text">${item.levelText}</p>
+          <div class="pm-ind-param-tag">${escapeHtml(item.levelBadge)}</div>
+          <p class="pm-ind-param-text">${escapeHtml(item.levelText)}</p>
         </div>
       </div>
     `).join('');
@@ -3730,7 +3809,8 @@ function openProgressModal(staff, liveData = null, period = null) {
   const feedbackEl = document.getElementById("pmFeedbackText");
   if (feedbackEl) feedbackEl.innerText = data.feedback;
 
-  // Catatan: 9-Box Talent Matrix dinonaktifkan sementara untuk PA September 2026 sesuai arahan BPS
+  // Render Ruang Refleksi & Lembar Konseling 360° Personal
+  renderCounselingFeedback(staff);
 
   // Render Catatan & Evaluasi BPH untuk Departemen (Start, Stop, Continue, Kesan Pesan)
   renderBphDepartemenFeedback(staff);
@@ -4786,6 +4866,118 @@ function renderCounselingInsight(staff, cData) {
 
   body.innerHTML = itemsHtml.join('');
 }
+
+// Render Lembar Konseling & Refleksi 360° Personal (Executive Performance Dossier)
+function renderCounselingFeedback(staff) {
+  const container = document.getElementById("pmCounselingBox");
+  if (!container) return;
+
+  const cData = (typeof staffCounselingData !== 'undefined' && staffCounselingData[staff.id]) ||
+    (typeof window !== 'undefined' && window.COUNSELING_INITIAL_DATA && window.COUNSELING_INITIAL_DATA[staff.id]) ||
+    null;
+
+  let matchedData = cData;
+  if (!matchedData && typeof window !== 'undefined' && window.COUNSELING_INITIAL_DATA && staff && staff.nama) {
+    const cleanTarget = staff.nama.toLowerCase().replace(/[^a-z0-9]/g, '');
+    for (const key in window.COUNSELING_INITIAL_DATA) {
+      const entry = window.COUNSELING_INITIAL_DATA[key];
+      if (entry && entry.nama) {
+        const cleanEntry = entry.nama.toLowerCase().replace(/[^a-z0-9]/g, '');
+        if (cleanTarget.includes(cleanEntry) || cleanEntry.includes(cleanTarget)) {
+          matchedData = entry;
+          break;
+        }
+      }
+    }
+  }
+
+  if (matchedData && (matchedData.kepuasanText || matchedData.pembelajaranText || matchedData.minatLanjutText || matchedData.posisiDiminatiText || matchedData.pesanLegacyText)) {
+    container.innerHTML = `
+      <div class="pm-counseling-card">
+        <div class="pm-counseling-header">
+          <div class="pm-counseling-title-wrap">
+            <span class="pm-counseling-badge">LEMBAR KONSELING & REFLEKSI 360°</span>
+            <h4 class="pm-counseling-title">Aspirasi, Refleksi & Catatan Pengembangan Fungsionaris</h4>
+          </div>
+          <div class="pm-counseling-scores">
+            ${typeof matchedData.skorRefleksi === 'number' ? `<span class="pm-counseling-pill">Skor Refleksi: <strong class="font-mono">${matchedData.skorRefleksi.toFixed(1)}</strong> / 10</span>` : ''}
+            ${typeof matchedData.skorPotentialInterest === 'number' ? `<span class="pm-counseling-pill">Potential & Interest: <strong class="font-mono">${matchedData.skorPotentialInterest.toFixed(1)}</strong> / 10</span>` : ''}
+          </div>
+        </div>
+        <div class="pm-counseling-body">
+          ${matchedData.kepuasanText ? `
+            <div class="pm-counseling-item">
+              <div class="pm-counseling-item-label">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+                <span>Refleksi Dinamika & Kepuasan di Departemen</span>
+              </div>
+              <blockquote class="pm-editorial-quote">${escapeHtml(matchedData.kepuasanText)}</blockquote>
+            </div>
+          ` : ''}
+          ${matchedData.pembelajaranText ? `
+            <div class="pm-counseling-item">
+              <div class="pm-counseling-label">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                <span>Pembelajaran, Tantangan & Kendala Terbesar</span>
+              </div>
+              <blockquote class="pm-editorial-quote">${escapeHtml(matchedData.pembelajaranText)}</blockquote>
+            </div>
+          ` : ''}
+          ${matchedData.minatLanjutText ? `
+            <div class="pm-counseling-item">
+              <div class="pm-counseling-label">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                <span>Minat Berkontribusi & Eksplorasi Tahun Depan</span>
+              </div>
+              <blockquote class="pm-editorial-quote">${escapeHtml(matchedData.minatLanjutText)}</blockquote>
+            </div>
+          ` : ''}
+          ${matchedData.posisiDiminatiText ? `
+            <div class="pm-counseling-item">
+              <div class="pm-counseling-label">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <span>Aspirasi Posisi / Peran yang Diminati</span>
+              </div>
+              <blockquote class="pm-editorial-quote">${escapeHtml(matchedData.posisiDiminatiText)}</blockquote>
+            </div>
+          ` : ''}
+          ${matchedData.pesanLegacyText ? `
+            <div class="pm-counseling-item">
+              <div class="pm-counseling-label">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                <span>Pesan, Harapan & Rekomendasi Masa Depan</span>
+              </div>
+              <blockquote class="pm-editorial-quote">${escapeHtml(matchedData.pesanLegacyText)}</blockquote>
+            </div>
+          ` : ''}
+        </div>
+      </div>
+    `;
+    container.classList.remove("hidden");
+  } else {
+    container.innerHTML = `
+      <div class="pm-counseling-card is-empty">
+        <div class="pm-counseling-header">
+          <div class="pm-counseling-title-wrap">
+            <span class="pm-counseling-badge">LEMBAR KONSELING & REFLEKSI 360°</span>
+            <h4 class="pm-counseling-title">Catatan Konseling Personal</h4>
+          </div>
+        </div>
+        <div class="pm-counseling-empty-state">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          <div class="pm-counseling-empty-text">Lembar refleksi personal fungsionaris ini belum terdokumentasi dalam sesi konseling Biro Personalia untuk periode saat ini.</div>
+        </div>
+      </div>
+    `;
+    container.classList.remove("hidden");
+  }
+}
+window.renderCounselingFeedback = renderCounselingFeedback;
+
+function printDossierReport() {
+  window.print();
+}
+window.printDossierReport = printDossierReport;
 
 // Handler interaktif ketika pengguna mengklik kuadran tertentu pada grid
 function showQuadrantInfo(quadrantKey) {

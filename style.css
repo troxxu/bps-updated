@@ -2622,25 +2622,34 @@ body::before {
 .pie-3d-tooltip {
   position: absolute;
   pointer-events: none;
-  background: rgba(15, 23, 42, 0.94);
-  backdrop-filter: blur(10px);
-  color: #FFFFFF;
-  padding: 9px 13px;
-  border-radius: 9px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  background: var(--surface, #FFFFFF);
+  color: var(--text-1, #111110);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm, 6px);
+  border: 1px solid var(--border-dark, #111110);
+  box-shadow: 0 8px 24px rgba(17, 17, 16, 0.08);
   z-index: 20;
-  max-width: 220px;
+  max-width: 240px;
   transition: transform 0.12s ease, opacity 0.12s ease;
+  font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
+}
+
+[data-theme="dark"] .pie-3d-tooltip {
+  background: #181816;
+  color: #FAF9F5;
+  border-color: #3F3F3C;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .pie-tooltip-title {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.8rem;
+  gap: 7px;
+  font-size: 0.78rem;
   font-weight: 700;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: -0.01em;
 }
 
 .pie-tooltip-dot {
@@ -2648,18 +2657,49 @@ body::before {
   height: 8px;
   border-radius: 50%;
   display: inline-block;
+  flex-shrink: 0;
 }
 
 .pie-tooltip-score {
+  font-size: 0.8rem;
+  color: var(--text-1, #111110);
+  margin-bottom: 4px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.pie-tooltip-mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-feature-settings: 'tnum';
+  font-weight: 700;
+}
+
+.pie-tooltip-scale {
+  font-size: 0.72rem;
+  color: var(--text-3, #71716D);
+}
+
+.pie-tooltip-pct {
+  font-family: 'JetBrains Mono', monospace;
+  font-feature-settings: 'tnum';
+  font-weight: 600;
+  color: var(--text-2, #3F3F3C);
   font-size: 0.75rem;
-  color: #E2E8F0;
-  margin-bottom: 3px;
+  margin-left: 4px;
+}
+
+.pie-tooltip-empty-badge {
+  font-size: 0.68rem;
+  font-weight: 600;
+  background: #F1F5F9;
+  color: #64748B;
+  padding: 1px 6px;
+  border-radius: 4px;
 }
 
 .pie-tooltip-sub {
-  font-size: 0.67rem;
-  line-height: 1.35;
-  color: #94A3B8;
+  font-size: 0.68rem;
+  line-height: 1.4;
+  color: var(--text-3, #71716D);
 }
 
 /* Legend Grid */
@@ -2702,10 +2742,12 @@ body::before {
 }
 
 .pie-legend-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-feature-settings: 'tnum';
   font-weight: 700;
   color: var(--text-1);
-  background: rgba(15, 23, 42, 0.05);
-  padding: 1px 5px;
+  background: rgba(17, 17, 16, 0.05);
+  padding: 1px 6px;
   border-radius: 4px;
   font-size: 0.69rem;
 }
@@ -2757,12 +2799,32 @@ body::before {
 }
 
 .pm-ind-score-badge {
-  font-size: 0.78rem;
-  font-weight: 800;
-  color: var(--accent);
-  background: rgba(29, 83, 107, 0.08);
-  padding: 2px 8px;
-  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-feature-settings: 'tnum';
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--accent, #0F3D91);
+  background: rgba(15, 61, 145, 0.06);
+  border: 1px solid rgba(15, 61, 145, 0.15);
+  padding: 3px 9px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  text-align: right;
+  letter-spacing: -0.01em;
+}
+
+.pm-ind-score-scale {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--text-3, #71716D);
+}
+
+.pm-ind-score-badge.is-zero {
+  color: var(--text-3, #71716D);
+  background: rgba(17, 17, 16, 0.04);
+  border-color: var(--border, #E4E2DD);
 }
 
 .pm-ind-track {
@@ -10141,6 +10203,7 @@ body::before {
 
 .spreadsheet-table-container {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   max-width: 100%;
 }
 
@@ -14611,5 +14674,423 @@ body::before {
   .pa-session-right {
     width: 100%;
     justify-content: space-between;
+  }
+}
+
+/* ==============================================================================
+   EXECUTIVE PERFORMANCE DOSSIER & PRINT STYLES (SWISS EDITORIAL POLISH)
+   ============================================================================== */
+
+/* Header Action Group (Print & Close buttons) */
+.pm-header-action-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-print-dossier {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface, #FFFFFF);
+  border: 1px solid var(--border, #E4E2DD);
+  color: var(--text-2, #3F3F3C);
+  padding: 6px 14px;
+  border-radius: var(--radius-sm, 6px);
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.btn-print-dossier:hover {
+  background: var(--surface-hover, #F5F4F0);
+  border-color: var(--border-dark, #111110);
+  color: var(--text-1, #111110);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(17, 17, 16, 0.06);
+}
+
+.btn-print-dossier:active {
+  transform: translateY(0);
+}
+
+/* Modal Bottom Action: Print */
+.btn-modal-print {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--surface, #FFFFFF);
+  border: 1px solid var(--border-dark, #111110);
+  color: var(--text-1, #111110);
+  padding: 8px 16px;
+  border-radius: var(--radius-sm, 6px);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: inherit;
+}
+
+.btn-modal-print:hover {
+  background: var(--text-1, #111110);
+  color: var(--surface, #FFFFFF);
+  box-shadow: 0 4px 12px rgba(17, 17, 16, 0.12);
+}
+
+/* Score Delta Badge (Tabular Mono Delta Indicator) */
+.pm-bento-score-card {
+  position: relative;
+}
+
+.pm-score-delta-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'JetBrains Mono', monospace;
+  font-feature-settings: 'tnum';
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-top: 6px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.pm-score-delta-badge.positive {
+  background: #DCFCE7;
+  color: #166534;
+  border: 1px solid #BBF7D0;
+}
+
+.pm-score-delta-badge.negative {
+  background: #FEE2E2;
+  color: #991B1B;
+  border: 1px solid #FECACA;
+}
+
+.pm-score-delta-badge.neutral {
+  background: #F1F5F9;
+  color: #475569;
+  border: 1px solid #E2E8F0;
+}
+
+.pm-delta-icon {
+  font-weight: 800;
+  display: inline-block;
+}
+
+/* Dedicated Qualitative & Counseling Section */
+.pm-dossier-qualitative-section {
+  border-top: 1px solid var(--border, #E4E2DD);
+  padding-top: 24px;
+  margin-top: 24px;
+}
+
+.pm-counseling-box {
+  margin-bottom: 24px;
+}
+
+.pm-counseling-card {
+  background: var(--surface, #FFFFFF);
+  border: 1px solid var(--border, #E4E2DD);
+  border-radius: var(--radius-md, 8px);
+  padding: 20px 22px;
+  box-shadow: 0 1px 3px rgba(17, 17, 16, 0.04);
+}
+
+.pm-counseling-card.is-empty {
+  background: var(--surface-subtle, #FAF9F5);
+  border-style: dashed;
+  padding: 16px 20px;
+}
+
+.pm-counseling-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border, #E4E2DD);
+  margin-bottom: 16px;
+}
+
+.pm-counseling-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pm-counseling-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent, #0F3D91);
+}
+
+.pm-counseling-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-1, #111110);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.pm-counseling-scores {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pm-counseling-pill {
+  font-size: 0.72rem;
+  color: var(--text-2, #3F3F3C);
+  background: var(--surface-subtle, #FAF9F5);
+  border: 1px solid var(--border, #E4E2DD);
+  padding: 3px 9px;
+  border-radius: 4px;
+}
+
+.pm-counseling-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pm-counseling-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pm-counseling-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-2, #3F3F3C);
+}
+
+.pm-counseling-label svg {
+  color: var(--accent, #0F3D91);
+}
+
+/* Editorial Blockquote for Qualitative Insights */
+.pm-editorial-quote {
+  margin: 0;
+  padding: 12px 16px;
+  background: var(--surface-subtle, #FAF9F5);
+  border-left: 3px solid var(--accent, #0F3D91);
+  border-radius: 0 var(--radius-sm, 6px) var(--radius-sm, 6px) 0;
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: var(--text-1, #111110);
+  font-style: normal;
+  white-space: pre-line;
+  word-break: break-word;
+}
+
+.pm-counseling-empty-state {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  color: var(--text-3, #71716D);
+}
+
+.pm-counseling-empty-text {
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 480px) {
+  .btn-print-dossier {
+    padding: 5px 8px;
+    font-size: 0.7rem;
+  }
+  .pm-score-delta-badge {
+    font-size: 0.65rem;
+    padding: 2px 6px;
+  }
+  .pm-counseling-card {
+    padding: 14px 14px;
+  }
+  .pm-editorial-quote {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+/* ── PUBLICATION-GRADE PRINT STYLESHEET (@media print) ── */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 12mm 14mm 14mm 14mm;
+  }
+
+  /* Hide everything on page except the modal */
+  body * {
+    visibility: hidden;
+  }
+
+  #progressModal,
+  #progressModal * {
+    visibility: visible;
+  }
+
+  /* Reset layout for print output */
+  body, html {
+    background: #FFFFFF !important;
+    color: #111110 !important;
+    font-size: 11pt !important;
+    line-height: 1.45 !important;
+  }
+
+  #progressModal {
+    position: static !important;
+    display: block !important;
+    background: transparent !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+
+  #progressModal .modal-card,
+  #progressModal .modal-card-wide,
+  #progressModal .pm-modal-content {
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    background: #FFFFFF !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  /* Hide interactive controls and chrome in print */
+  .modal-close-btn,
+  .btn-print-dossier,
+  .pm-modal-actions,
+  .pm-period-tabs,
+  #pmPeriodSwitchHint,
+  #pmRefreshBtn,
+  .pm-chart-hint,
+  .mobile-quick-jump-fab,
+  #pie3DTooltip,
+  header,
+  nav,
+  footer,
+  .site-header {
+    display: none !important;
+  }
+
+  /* Executive Dossier Header Band in Print */
+  .pm-profile-header,
+  .pm-modal-header {
+    border-bottom: 2pt solid #111110 !important;
+    padding-bottom: 12pt !important;
+    margin-bottom: 16pt !important;
+    display: flex !important;
+  }
+
+  .pm-avatar-img,
+  .pm-avatar {
+    width: 64px !important;
+    height: 64px !important;
+    border: 1pt solid #111110 !important;
+    border-radius: 8px !important;
+    object-fit: cover !important;
+  }
+
+  .pm-name {
+    font-size: 18pt !important;
+    color: #111110 !important;
+    font-weight: 800 !important;
+  }
+
+  .pm-role {
+    font-size: 10pt !important;
+    color: #3F3F3C !important;
+  }
+
+  .pm-bento-grid,
+  .pm-bento-score-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8pt !important;
+    margin-bottom: 16pt !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .pm-bento-card {
+    border: 1pt solid #CCCCCC !important;
+    padding: 8pt 10pt !important;
+    background: #FAFAFA !important;
+  }
+
+  .pm-bento-value,
+  .pm-score-num {
+    font-size: 20pt !important;
+    font-weight: 800 !important;
+    color: #0F3D91 !important;
+    font-family: 'JetBrains Mono', monospace !important;
+  }
+
+  .pm-section-block {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-bottom: 16pt !important;
+  }
+
+  .pm-indicator-card {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    border: 1pt solid #DDDDDD !important;
+    padding: 8pt 10pt !important;
+    margin-bottom: 6pt !important;
+  }
+
+  .pm-ind-track {
+    background: #EEEEEE !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .pm-ind-fill {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .pm-editorial-quote {
+    background: #F8F8F8 !important;
+    border-left: 3pt solid #0F3D91 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .pm-dossier-qualitative-section {
+    page-break-before: auto;
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
 }

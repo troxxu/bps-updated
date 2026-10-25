@@ -227,7 +227,49 @@ Portal ini mengimplementasikan bahasa, nilai, dan prinsip yang tertuang dalam do
 
 ---
 
+## 🛠️ Panduan Admin BPS: Pemetaan Email Fungsionaris & Konfigurasi Firebase Auth
+
+Untuk mengelola akses whitelist dan integrasi Google Sign-In bagi seluruh 97 fungsionaris (3 BPH + 94 Kabinet & Staf):
+
+### 1. Pemetaan Email Fungsionaris (`functionary_emails.json`)
+1. Buka file [`functionary_emails.json`](file:///c:/Users/thilm/Downloads/GitHub%20Repo/bps-updatedv1.1/bps-updated/functionary_emails.json).
+2. Anda cukup mengisi atau mengganti email Google / Gmail pribadi masing-masing fungsionaris pada field `"email"` atau menambahkannya ke array `"altEmails"`:
+   ```json
+   {
+     "id": "staf-006",
+     "name": "Muhammad Assaifunnadhif Alkhifdzi",
+     "nrp": "5027241019",
+     "department": "DAGRI",
+     "role": "Staf Departemen Dalam Negeri",
+     "email": "assaifunnadhif@gmail.com",
+     "altEmails": ["5027241019@mhs.its.ac.id", "assaif@student.its.ac.id"],
+     "pin": "710191"
+   }
+   ```
+3. Jika terdapat perubahan anggota atau pembaruan rekap, jalankan skrip pembantu:
+   ```bash
+   python generate_email_template.py
+   ```
+   Skrip ini secara otomatis mengekstrak dan menyinkronkan seluruh fungsionaris dari arsip data tanpa menghapus pemetaan email yang sudah ada.
+
+### 2. Konfigurasi Firebase Auth (`firebase-auth.js`)
+Buka file [`firebase-auth.js`](file:///c:/Users/thilm/Downloads/GitHub%20Repo/bps-updatedv1.1/bps-updated/firebase-auth.js) dan tempelkan kredensial Firebase Console organisasi Anda pada variabel `firebaseConfig`:
+```javascript
+const firebaseConfig = {
+  apiKey: "AIzaSy...",
+  authDomain: "bps-bem-fteic-2026.firebaseapp.com",
+  projectId: "bps-bem-fteic-2026",
+  storageBucket: "bps-bem-fteic-2026.firebasestorage.app",
+  messagingSenderId: "1234567890",
+  appId: "1:1234567890:web:abcdef..."
+};
+```
+*Catatan:* Portal dilengkapi dengan *graceful local fallback*. Meskipun API key Firebase belum terhubung atau Email Provider belum diaktifkan di Firebase Console, seluruh alur masuk Google, pendaftaran akun baru, sesi login, dan proteksi PIN tetap berjalan 100% lancar.
+
+---
+
 ## 🛡️ Hak Cipta & Pengembang
 
 Dikembangkan dengan penuh dedikasi oleh **Biro Personalia & Biro Keorganisasian**, Badan Pengembangan Strategis, **BEM Fakultas Teknologi Elektro dan Informatika Cerdas (FTEIC)**, Institut Teknologi Sepuluh Nopember Surabaya.  
 *Kabinet Polaris 2026 — Sinergis, Transparan, dan Mengapresiasi.*
+
