@@ -281,21 +281,21 @@
         <!-- ── TAB SWITCHER PAPAN APRESIASI: PA AGUSTUS & PA SEPTEMBER ── -->
         <div class="pa-period-tabs-bar">
           <div class="pa-period-tabs" role="tablist">
-            <button type="button" class="pa-period-tab active" id="paTabAgustus" onclick="switchPaAwardsPeriod('agustus')" role="tab" aria-selected="true">
-              <span class="pa-tab-icon">🏆</span>
+            <button type="button" class="pa-period-tab" id="paTabAgustus" onclick="switchPaAwardsPeriod('agustus')" role="tab" aria-selected="false">
+              <span class="pa-tab-icon">📜</span>
               <span class="pa-tab-title">PA Agustus 2026</span>
               <span class="pa-tab-badge agustus">Rekapitulasi Final</span>
             </button>
-            <button type="button" class="pa-period-tab" id="paTabSeptember" onclick="switchPaAwardsPeriod('september')" role="tab" aria-selected="false">
-              <span class="pa-tab-icon">🔒</span>
+            <button type="button" class="pa-period-tab active" id="paTabSeptember" onclick="switchPaAwardsPeriod('september')" role="tab" aria-selected="true">
+              <span class="pa-tab-icon">🏆</span>
               <span class="pa-tab-title">PA September 2026</span>
-              <span class="pa-tab-badge september" style="background: rgba(100, 116, 139, 0.2); color: var(--text-2); border-color: rgba(100, 116, 139, 0.3);">Selesai Direkap</span>
+              <span class="pa-tab-badge september">Rekapitulasi Final</span>
             </button>
           </div>
         </div>
 
         <!-- ── TAB VIEW 1: PA AGUSTUS 2026 (REKAPITULASI RESMI & BEKU) ── -->
-        <div id="paAwardsContentAgustus" class="pa-period-view active">
+        <div id="paAwardsContentAgustus" class="pa-period-view hidden">
 
         <!-- Standar Parameter & Predikat Nilai -->
         <div class="pa-scale-banner">
@@ -823,80 +823,532 @@
         </div>
         <!-- END paAwardsContentAgustus -->
 
-        <!-- ── TAB VIEW 2: PA SEPTEMBER 2026 (PERIODE RESMI DITUTUP) ── -->
-        <div id="paAwardsContentSeptember" class="pa-period-view hidden">
-          <div class="pa-coming-soon-card">
-            <div class="pa-coming-soon-glow" aria-hidden="true"></div>
-            <div class="pa-coming-soon-badge-wrap">
-              <span class="pa-cs-badge live-dot" style="background: rgba(100, 116, 139, 0.15); color: #94a3b8; border-color: rgba(100, 116, 139, 0.3);">
-                <span class="pa-cs-pulse" style="background: #94a3b8; box-shadow: none;"></span>
-                Periode Pengisian Resmi Ditutup
-              </span>
-              <span class="pa-cs-badge date">Berakhir pada 21 Okt 2026 23.59 WIB</span>
+        <!-- ── TAB VIEW 2: PA SEPTEMBER 2026 (REKAPITULASI RESMI & FINAL) ── -->
+        <div id="paAwardsContentSeptember" class="pa-period-view active">
+
+        <!-- Standar Parameter & Predikat Nilai -->
+        <div class="pa-scale-banner">
+          <div class="pa-scale-header">
+            <div class="pa-scale-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+              Skala Parameter &amp; Predikat Kinerja Resmi
             </div>
-            
-            <div class="pa-coming-soon-hero">
-              <div class="pa-cs-icon-wrap">
-                <span class="pa-cs-icon">🔒</span>
+            <span class="pa-scale-meta">Standar Rubrik PA BPS FTEIC 2026</span>
+          </div>
+          <div class="pa-scale-grid">
+            <div class="pa-scale-item pa-scale-e">
+              <span class="pa-scale-range">0.0 – 3.0</span>
+              <strong class="pa-scale-label">BURUK (E)</strong>
+            </div>
+            <div class="pa-scale-item pa-scale-d">
+              <span class="pa-scale-range">3.1 – 5.5</span>
+              <strong class="pa-scale-label">Kurang Mampu (D)</strong>
+            </div>
+            <div class="pa-scale-item pa-scale-c">
+              <span class="pa-scale-range">5.6 – 6.5</span>
+              <strong class="pa-scale-label">Cukup (C)</strong>
+            </div>
+            <div class="pa-scale-item pa-scale-b">
+              <span class="pa-scale-range">6.6 – 7.5</span>
+              <strong class="pa-scale-label">Baik (B)</strong>
+            </div>
+            <div class="pa-scale-item pa-scale-ab">
+              <span class="pa-scale-range">7.5 – 8.9</span>
+              <strong class="pa-scale-label">Sangat Baik (AB)</strong>
+            </div>
+            <div class="pa-scale-item pa-scale-a">
+              <span class="pa-scale-range">9.0 – 10.0</span>
+              <strong class="pa-scale-label">EXCELLENT (A)</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bento Row 1: Best Department of The Month & Ranking Leaderboard -->
+        <div class="pa-top-grid">
+          
+          <!-- Best Department Trophy Card -->
+          <div class="pa-best-dept-card">
+            <div class="pa-best-dept-glow" aria-hidden="true"></div>
+            <div>
+              <div class="pa-award-badge-ribbon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <circle cx="12" cy="8" r="7"></circle>
+                  <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                </svg>
+                Best Department of the Month
               </div>
-              <h3 class="pa-cs-title">Papan Apresiasi PA September 2026</h3>
-              <p class="pa-cs-highlight" style="color: #64748b;">Pengisian Telah Resmi Ditutup</p>
-              <p class="pa-cs-reveal-tag">(Seluruh Lembar Evaluasi Telah Dinonaktifkan &amp; 100% Selesai Direkap)</p>
-              <p class="pa-cs-desc">
-                Periode pengisian Performance Appraisal (PA) September 2026 telah resmi berakhir pada <strong>Rabu, 21 Oktober 2026 pukul 23.59 WIB</strong>. Seluruh data penilaian 360° internal fungsionaris dan evaluasi BPH telah berhasil direkapitulasi secara menyeluruh dan diarsipkan oleh Biro Personalia (BPS) BEM FTEIC ITS Kabinet Polaris 2026.
+              <div class="pa-dept-trophy-header">
+                <div class="pa-trophy-icon-wrap" title="Pemenang Departemen Terbaik">
+                  🏆
+                </div>
+                <div>
+                  <h4 class="pa-best-dept-name" id="bestDeptNameSep">Departemen Dalam Negeri</h4>
+                  <div class="pa-best-dept-sub">BEM FTEIC ITS • Kabinet Polaris 2026</div>
+                </div>
+              </div>
+
+              <div class="pa-dept-score-box">
+                <div class="pa-dept-score-val-wrap">
+                  <span class="pa-dept-score-val" id="bestDeptScoreValSep">8.63</span>
+                  <span class="pa-dept-score-max">/ 10.0</span>
+                </div>
+                <span class="pa-dept-predikat-pill">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span id="bestDeptPredikatTextSep">Sangat Baik (AB)</span>
+                </span>
+              </div>
+
+              <!-- Rekapitulasi Resmi Nilai Department of the Month PA September -->
+              <div class="pa-dept-weight-breakdown" id="bestDeptWeightBreakdownSep" style="margin: 10px 0 12px; font-size: 0.77rem; color: #475569; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); padding: 5px 10px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                <span style="color: #047857; font-weight: 700;">📋 Rekapitulasi:</span>
+                <span><strong>Nilai Rata-rata Fungsionaris Departemen: 8.63</strong> (15/15 Fungsionaris Dinilai • Final)</span>
+              </div>
+
+              <p class="pa-best-dept-desc" id="bestDeptDescSep">
+                Departemen Dalam Negeri (DAGRI) kembali berhasil mempertahankan posisi puncak dengan nilai rata-rata fungsionaris 8.63 di lingkungan BEM FTEIC ITS. Dengan partisipasi 100% dari seluruh 15 anggota (Pimpinan, Kabiro, Sekdep, dan Staf), DAGRI konsisten menunjukkan performa kerja solid, komunikasi tanggap, akuntabilitas tinggi, serta kedisiplinan prima sepanjang periode evaluasi September 2026.
               </p>
             </div>
 
-            <!-- Box Status Penutupan & Hasil Rekapitulasi -->
-            <div class="pa-cs-countdown-box" style="border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.05); padding: 24px 20px;">
-              <div class="pa-cs-countdown-header" style="color: #10B981; font-weight: 700; font-size: 1rem; justify-content: center; margin-bottom: 12px;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span>Status Rekapitulasi Akhir: 100% Selesai &amp; Diarsipkan</span>
+            <div class="pa-dept-stats-row">
+              <div class="pa-dept-stat-box" id="bestDeptStaffCountSep">
+                <strong>15 / 15</strong>
+                Fungsionaris Dinilai
               </div>
-              <div style="text-align: center; color: var(--text-1); font-size: 0.95rem; line-height: 1.6; margin-bottom: 14px;">
-                Pengisian PA September telah <strong>resmi ditutup</strong> bagi seluruh fungsionaris dan pengurus. Terima kasih atas partisipasi aktif seluruh fungsionaris BEM FTEIC ITS 2026 dalam menyukseskan evaluasi berkala ini!
+              <div class="pa-dept-stat-box">
+                <strong style="color: #D69415;">#1 Rank</strong>
+                Tertinggi di BEM FTEIC
               </div>
-              <div class="pa-cs-deadline-info" style="color: var(--text-2); justify-content: center;">
-                ✅ Pengisian Resmi Ditutup: <strong>Rabu, 21 Oktober 2026 pukul 23.59 WIB</strong>
+            </div>
+          </div>
+
+          <!-- Department Ranking Leaderboard Card (Highest to Lowest) -->
+          <div class="pa-dept-ranking-card">
+            <div class="pa-ranking-header">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; flex-wrap: wrap;">
+                <div>
+                  <h4 class="pa-ranking-title">Peringkat Rata-rata Nilai Departemen</h4>
+                  <p class="pa-ranking-sub">
+                    Rekapitulasi Resmi Rata-rata Kinerja Fungsionaris Periode PA September 2026
+                  </p>
+                </div>
+                <span style="font-size: 0.72rem; font-weight: 700; color: #B45309; background: #FEF3C7; border: 1px solid #FCD34D; padding: 4px 10px; border-radius: 999px;">
+                  Arsip Final PA September
+                </span>
               </div>
             </div>
 
-            <!-- Teaser Parameter & Formula PA September -->
-            <div class="pa-cs-features-grid">
-              <div class="pa-cs-feature-item">
-                <div class="pa-cs-feat-icon">🏆</div>
-                <div class="pa-cs-feat-content">
-                  <h5>Best Department of the Month</h5>
-                  <p>Dihitung dari formula resmi pembobotan: <strong>30% Evaluasi BPH ke Departemen</strong> + <strong>70% Rata-rata Internal Kabinet &amp; Staf</strong>.</p>
+            <div class="pa-ranking-list" id="paDeptRankingListSep">
+              
+              <!-- Rank 1: DAGRI -->
+              <div class="pa-ranking-item rank-1">
+                <div class="pa-rank-pos-wrap">
+                  <span class="pa-rank-num">1</span>
+                  <div class="pa-rank-dept-info">
+                    <span class="pa-rank-dept-name">Dalam Negeri (DAGRI) 🏆</span>
+                    <span class="pa-rank-dept-meta">15 Fungsionaris • Sangat Baik (AB)</span>
+                  </div>
+                </div>
+                <div class="pa-rank-score-wrap">
+                  <div class="pa-rank-bar-bg">
+                    <div class="pa-rank-bar-fill" style="width: 86%;"></div>
+                  </div>
+                  <span class="pa-rank-score-text" style="color: #B45309;">8.63</span>
                 </div>
               </div>
-              <div class="pa-cs-feature-item">
-                <div class="pa-cs-feat-icon">🌟</div>
-                <div class="pa-cs-feat-content">
-                  <h5>Best Overall Staff &amp; Best Sekdep</h5>
-                  <p>Apresiasi tertinggi untuk fungsionaris dan sekretaris departemen dengan skor capaian rubrik 12 indikator tertinggi se-FTEIC.</p>
+
+              <!-- Rank 2: KWU -->
+              <div class="pa-ranking-item rank-2">
+                <div class="pa-rank-pos-wrap">
+                  <span class="pa-rank-num">2</span>
+                  <div class="pa-rank-dept-info">
+                    <span class="pa-rank-dept-name">Kewirausahaan (KWU)</span>
+                    <span class="pa-rank-dept-meta">15 Fungsionaris • Sangat Baik (AB)</span>
+                  </div>
+                </div>
+                <div class="pa-rank-score-wrap">
+                  <div class="pa-rank-bar-bg">
+                    <div class="pa-rank-bar-fill" style="width: 84%;"></div>
+                  </div>
+                  <span class="pa-rank-score-text">8.37</span>
                 </div>
               </div>
-              <div class="pa-cs-feature-item">
-                <div class="pa-cs-feat-icon">🎖️</div>
-                <div class="pa-cs-feat-content">
-                  <h5>Best Staff di 6 Departemen</h5>
-                  <p>Anugerah fungsionaris teladan terbaik di masing-masing departemen (DAGRI, LUGRI, PSDM, SOSMAS, RISTEK, dan KWU).</p>
+
+              <!-- Rank 3: SOSMAS -->
+              <div class="pa-ranking-item rank-3">
+                <div class="pa-rank-pos-wrap">
+                  <span class="pa-rank-num">3</span>
+                  <div class="pa-rank-dept-info">
+                    <span class="pa-rank-dept-name">Sosial Masyarakat (SOSMAS)</span>
+                    <span class="pa-rank-dept-meta">18 Fungsionaris • Sangat Baik (AB)</span>
+                  </div>
+                </div>
+                <div class="pa-rank-score-wrap">
+                  <div class="pa-rank-bar-bg">
+                    <div class="pa-rank-bar-fill" style="width: 82%;"></div>
+                  </div>
+                  <span class="pa-rank-score-text">8.23</span>
+                </div>
+              </div>
+
+              <!-- Rank 4: LUGRI -->
+              <div class="pa-ranking-item">
+                <div class="pa-rank-pos-wrap">
+                  <span class="pa-rank-num">4</span>
+                  <div class="pa-rank-dept-info">
+                    <span class="pa-rank-dept-name">Luar Negeri (LUGRI)</span>
+                    <span class="pa-rank-dept-meta">18 Fungsionaris • Sangat Baik (AB)</span>
+                  </div>
+                </div>
+                <div class="pa-rank-score-wrap">
+                  <div class="pa-rank-bar-bg">
+                    <div class="pa-rank-bar-fill" style="width: 82%;"></div>
+                  </div>
+                  <span class="pa-rank-score-text">8.17</span>
+                </div>
+              </div>
+
+              <!-- Rank 5: PSDM -->
+              <div class="pa-ranking-item">
+                <div class="pa-rank-pos-wrap">
+                  <span class="pa-rank-num">5</span>
+                  <div class="pa-rank-dept-info">
+                    <span class="pa-rank-dept-name">Pengembangan SDM (PSDM)</span>
+                    <span class="pa-rank-dept-meta">13 Fungsionaris • Sangat Baik (AB)</span>
+                  </div>
+                </div>
+                <div class="pa-rank-score-wrap">
+                  <div class="pa-rank-bar-bg">
+                    <div class="pa-rank-bar-fill" style="width: 82%;"></div>
+                  </div>
+                  <span class="pa-rank-score-text">8.16</span>
+                </div>
+              </div>
+
+              <!-- Rank 6: RISTEK -->
+              <div class="pa-ranking-item">
+                <div class="pa-rank-pos-wrap">
+                  <span class="pa-rank-num">6</span>
+                  <div class="pa-rank-dept-info">
+                    <span class="pa-rank-dept-name">Riset dan Teknologi (RISTEK)</span>
+                    <span class="pa-rank-dept-meta">15 Fungsionaris • Sangat Baik (AB)</span>
+                  </div>
+                </div>
+                <div class="pa-rank-score-wrap">
+                  <div class="pa-rank-bar-bg">
+                    <div class="pa-rank-bar-fill" style="width: 79%;"></div>
+                  </div>
+                  <span class="pa-rank-score-text">7.91</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Bento Row 2: Best Overall Staff & Best Sekdep of the Month -->
+        <div class="pa-individual-winners-grid">
+          
+          <!-- 1. Best Overall Staff of the Month -->
+          <div class="pa-winner-card staff-champion">
+            <div class="pa-winner-top">
+              <div class="pa-winner-avatar-wrap">
+                <img src="assets/foto-staf/staf-006.jpg" alt="Muhammad Assaifunnadhif Alkhifdzi" class="pa-winner-avatar" onerror="this.src='https://ui-avatars.com/api/?name=Muhammad+Assaifunnadhif&background=10B981&color=fff&size=200&bold=true'" />
+                <span class="pa-winner-avatar-badge" title="Juara 1 Staf Se-FTEIC">🥇</span>
+              </div>
+              <div class="pa-winner-info">
+                <span class="pa-winner-badge-pill overall">🌟 Best Overall Staff of the Month</span>
+                <h4 class="pa-winner-name" title="Muhammad Assaifunnadhif Alkhifdzi">Muhammad Assaifunnadhif Alkhifdzi</h4>
+                <div class="pa-winner-role">Staf Departemen Dalam Negeri (DAGRI) • TB (5023241031)</div>
+                <div class="pa-winner-score-row">
+                  <span class="pa-winner-score-num">9.00</span>
+                  <span style="font-size: 0.82rem; color: var(--text-3); font-weight: 700;">/ 10.0</span>
+                  <span class="pa-winner-predikat" style="background: #F3E8FF; color: #6B21A8; border: 1px solid #D8B4FE;">EXCELLENT (A)</span>
                 </div>
               </div>
             </div>
 
-            <!-- CTA Buttons -->
-            <div class="pa-cs-action-row">
-              <a href="#staf" class="pa-cs-action-btn" onclick="document.getElementById('staf').scrollIntoView({behavior: 'smooth'})">
-                <span>Buka Direktori &amp; Lembar Kerja Fungsionaris &darr;</span>
-              </a>
-              <button type="button" class="pa-cs-secondary-btn" onclick="switchPaAwardsPeriod('agustus')">
-                <span>&larr; Lihat Arsip PA Agustus 2026</span>
+            <div class="pa-winner-indicators-title">Rincian Capaian 12 Indikator:</div>
+            <div class="pa-winner-indicators-grid">
+              <div class="pa-ind-mini-pill"><span class="pa-ind-mini-name">Solidaritas</span><span class="pa-ind-mini-val">9.30</span></div>
+              <div class="pa-ind-mini-pill"><span class="pa-ind-mini-name">Pemahaman Proker</span><span class="pa-ind-mini-val">9.30</span></div>
+              <div class="pa-ind-mini-pill"><span class="pa-ind-mini-name">Kritis</span><span class="pa-ind-mini-val">9.10</span></div>
+              <div class="pa-ind-mini-pill"><span class="pa-ind-mini-name">Inovatif</span><span class="pa-ind-mini-val">9.10</span></div>
+              <div class="pa-ind-mini-pill"><span class="pa-ind-mini-name">Sosial</span><span class="pa-ind-mini-val">9.10</span></div>
+              <div class="pa-ind-mini-pill"><span class="pa-ind-mini-name">Rasa Kekeluargaan</span><span class="pa-ind-mini-val">9.10</span></div>
+              <div class="pa-ind-mini-pill"><span class="pa-ind-mini-name">Tanggung Jawab</span><span class="pa-ind-mini-val">9.10</span></div>
+              <div class="pa-ind-mini-pill"><span class="pa-ind-mini-name">Fundamental</span><span class="pa-ind-mini-val">9.10</span></div>
+              <div class="pa-ind-mini-pill"><span class="pa-ind-mini-name">Etika</span><span class="pa-ind-mini-val">9.00</span></div>
+              <div class="pa-ind-mini-pill"><span class="pa-ind-mini-name">Inisiatif</span><span class="pa-ind-mini-val">8.90</span></div>
+              <div class="pa-ind-mini-pill"><span class="pa-ind-mini-name">Responsif</span><span class="pa-ind-mini-val">8.90</span></div>
+              <div class="pa-ind-mini-pill"><span class="pa-ind-mini-name">Disiplin</span><span class="pa-ind-mini-val">8.50</span></div>
+            </div>
+
+            <button type="button" class="pa-winner-card-btn" onclick="requestPinAccess('staf-006', 'progress')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              Lihat Lembar Evaluasi Penuh
+            </button>
+          </div>
+
+          <!-- 2. Best Sekretaris Departemen (SEKDEP) of the Month -->
+          <div class="pa-winner-card sekdep-champion">
+            <div class="pa-winner-top">
+              <div class="pa-winner-avatar-wrap">
+                <img src="assets/foto-staf/staf-049.jpg" alt="Ajeng Nadya Arofani" class="pa-winner-avatar" onerror="this.src='https://ui-avatars.com/api/?name=Ajeng+Nadya+Arofani&background=6366F1&color=fff&size=200&bold=true'" />
+                <span class="pa-winner-avatar-badge" style="background: #6366F1;" title="Juara 1 Sekdep Se-FTEIC">⭐</span>
+              </div>
+              <div class="pa-winner-info">
+                <span class="pa-winner-badge-pill sekdep">📝 Best Sekretaris Departemen of the Month</span>
+                <h4 class="pa-winner-name" title="Ajeng Nadya Arofani">Ajeng Nadya Arofani</h4>
+                <div class="pa-winner-role">Sekretaris Departemen Sosial Masyarakat (SOSMAS) • TE (5048241058)</div>
+                <div class="pa-winner-score-row">
+                  <span class="pa-winner-score-num">8.50</span>
+                  <span style="font-size: 0.82rem; color: var(--text-3); font-weight: 700;">/ 10.0</span>
+                  <span class="pa-winner-predikat" style="background: #ECFDF5; color: #047857; border: 1px solid #A7F3D0;">Sangat Baik (AB)</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="pa-winner-indicators-title">Rincian Capaian 12 Indikator:</div>
+            <div class="pa-winner-indicators-grid">
+              <div class="pa-ind-mini-pill"><span class="pa-ind-mini-name">Pemahaman Proker</span><span class="pa-ind-mini-val">8.80</span></div>
+              <div class="pa-ind-mini-pill"><span class="pa-ind-mini-name">Sosial</span><span class="pa-ind-mini-val">8.70</span></div>
+              <div class="pa-ind-mini-pill"><span class="pa-ind-mini-name">Rasa Kekeluargaan</span><span class="pa-ind-mini-val">8.70</span></div>
+              <div class="pa-ind-mini-pill"><span class="pa-ind-mini-name">Responsif</span><span class="pa-ind-mini-val">8.70</span></div>
+              <div class="pa-ind-mini-pill"><span class="pa-ind-mini-name">Kritis</span><span class="pa-ind-mini-val">8.60</span></div>
+              <div class="pa-ind-mini-pill"><span class="pa-ind-mini-name">Solidaritas</span><span class="pa-ind-mini-val">8.60</span></div>
+              <div class="pa-ind-mini-pill"><span class="pa-ind-mini-name">Etika</span><span class="pa-ind-mini-val">8.60</span></div>
+              <div class="pa-ind-mini-pill"><span class="pa-ind-mini-name">Inovatif</span><span class="pa-ind-mini-val">8.40</span></div>
+              <div class="pa-ind-mini-pill"><span class="pa-ind-mini-name">Inisiatif</span><span class="pa-ind-mini-val">8.40</span></div>
+              <div class="pa-ind-mini-pill"><span class="pa-ind-mini-name">Tanggung Jawab</span><span class="pa-ind-mini-val">8.40</span></div>
+              <div class="pa-ind-mini-pill"><span class="pa-ind-mini-name">Fundamental</span><span class="pa-ind-mini-val">8.40</span></div>
+              <div class="pa-ind-mini-pill"><span class="pa-ind-mini-name">Disiplin</span><span class="pa-ind-mini-val">8.20</span></div>
+            </div>
+
+            <button type="button" class="pa-winner-card-btn" onclick="requestPinAccess('staf-049', 'progress')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              Lihat Lembar Evaluasi Penuh
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Bento Row 3: Best Staff di Setiap Departemen (6 Departemen) -->
+        <div class="pa-dept-staff-section">
+          <div class="pa-dept-staff-header">
+            <h4 class="pa-dept-staff-title">Best Staff di Tiap Departemen</h4>
+            <p class="pa-dept-staff-sub">
+              Staf dengan skor rubrik tertinggi di masing-masing departemen (KWU, SOSMAS, DAGRI, LUGRI, RISTEK, PSDM) periode September 2026 beserta rincian nilai capaian:
+            </p>
+          </div>
+
+          <div class="pa-dept-staff-grid">
+            
+            <!-- 1. KWU -->
+            <div class="pa-dept-best-card">
+              <div class="pa-dept-best-top">
+                <img src="assets/foto-staf/staf-088.jpg" alt="Aisyah Salma Alifia" class="pa-dept-best-avatar" onerror="this.src='https://ui-avatars.com/api/?name=Aisyah+Salma+Alifia&background=1A7A6E&color=fff&size=150&bold=true'" />
+                <div class="pa-dept-best-meta">
+                  <span class="pa-dept-tag-pill" style="color: #115E59; background: rgba(26, 122, 110, 0.1);">Kewirausahaan (KWU)</span>
+                  <div class="pa-dept-best-name" title="Aisyah Salma Alifia">Aisyah Salma Alifia</div>
+                </div>
+              </div>
+              <div class="pa-dept-best-score-row">
+                <span>Skor Rata-rata: <strong>8.80</strong></span>
+                <span class="pa-winner-predikat" style="background: #ECFDF5; color: #047857; font-size: 0.68rem; padding: 2px 6px;">Sangat Baik (AB)</span>
+              </div>
+              <div class="pa-dept-best-indicators">
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Tanggung Jawab</span><span class="pa-mini-ind-val">9.20</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Disiplin</span><span class="pa-mini-ind-val">9.10</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Kritis</span><span class="pa-mini-ind-val">8.90</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Pemahaman Proker</span><span class="pa-mini-ind-val">8.90</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Responsif</span><span class="pa-mini-ind-val">8.90</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Inovatif</span><span class="pa-mini-ind-val">8.80</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Fundamental</span><span class="pa-mini-ind-val">8.80</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Solidaritas</span><span class="pa-mini-ind-val">8.70</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Etika</span><span class="pa-mini-ind-val">8.70</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Inisiatif</span><span class="pa-mini-ind-val">8.60</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Kekeluargaan</span><span class="pa-mini-ind-val">8.40</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Sosial</span><span class="pa-mini-ind-val">8.30</span></div>
+              </div>
+              <button type="button" class="pa-winner-card-btn" onclick="requestPinAccess('staf-088', 'progress')">
+                Buka Rapor Personal
+              </button>
+            </div>
+
+            <!-- 2. SOSMAS -->
+            <div class="pa-dept-best-card">
+              <div class="pa-dept-best-top">
+                <img src="assets/foto-staf/staf-055.jpg" alt="Sylvina Syah Fitri" class="pa-dept-best-avatar" onerror="this.src='https://ui-avatars.com/api/?name=Sylvina+Syah+Fitri&background=10B981&color=fff&size=150&bold=true'" />
+                <div class="pa-dept-best-meta">
+                  <span class="pa-dept-tag-pill" style="color: #047857; background: rgba(16, 185, 129, 0.1);">Sosial Masyarakat (SOSMAS)</span>
+                  <div class="pa-dept-best-name" title="Sylvina Syah Fitri">Sylvina Syah Fitri</div>
+                </div>
+              </div>
+              <div class="pa-dept-best-score-row">
+                <span>Skor Rata-rata: <strong>8.80</strong></span>
+                <span class="pa-winner-predikat" style="background: #ECFDF5; color: #047857; font-size: 0.68rem; padding: 2px 6px;">Sangat Baik (AB)</span>
+              </div>
+              <div class="pa-dept-best-indicators">
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Kritis</span><span class="pa-mini-ind-val">9.00</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Inovatif</span><span class="pa-mini-ind-val">8.90</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Tanggung Jawab</span><span class="pa-mini-ind-val">8.90</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Etika</span><span class="pa-mini-ind-val">8.90</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Pemahaman Proker</span><span class="pa-mini-ind-val">8.90</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Solidaritas</span><span class="pa-mini-ind-val">8.80</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Sosial</span><span class="pa-mini-ind-val">8.80</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Inisiatif</span><span class="pa-mini-ind-val">8.80</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Kekeluargaan</span><span class="pa-mini-ind-val">8.60</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Disiplin</span><span class="pa-mini-ind-val">8.50</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Responsif</span><span class="pa-mini-ind-val">8.50</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Fundamental</span><span class="pa-mini-ind-val">8.40</span></div>
+              </div>
+              <button type="button" class="pa-winner-card-btn" onclick="requestPinAccess('staf-055', 'progress')">
+                Buka Rapor Personal
+              </button>
+            </div>
+
+            <!-- 3. DAGRI -->
+            <div class="pa-dept-best-card" style="border-color: rgba(37, 99, 235, 0.4);">
+              <div class="pa-dept-best-top">
+                <img src="assets/foto-staf/staf-006.jpg" alt="Muhammad Assaifunnadhif Alkhifdzi" class="pa-dept-best-avatar" onerror="this.src='https://ui-avatars.com/api/?name=Muhammad+Assaifunnadhif&background=1D4ED8&color=fff&size=150&bold=true'" />
+                <div class="pa-dept-best-meta">
+                  <span class="pa-dept-tag-pill" style="color: #1D4ED8; background: rgba(37, 99, 235, 0.1);">Dalam Negeri (DAGRI)</span>
+                  <div class="pa-dept-best-name" title="Muhammad Assaifunnadhif Alkhifdzi">Muhammad Assaifunnadhif</div>
+                </div>
+              </div>
+              <div class="pa-dept-best-score-row">
+                <span>Skor Rata-rata: <strong>9.00</strong></span>
+                <span class="pa-winner-predikat" style="background: #F3E8FF; color: #6B21A8; font-size: 0.68rem; padding: 2px 6px;">EXCELLENT (A)</span>
+              </div>
+              <div class="pa-dept-best-indicators">
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Solidaritas</span><span class="pa-mini-ind-val">9.30</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Pemahaman Proker</span><span class="pa-mini-ind-val">9.30</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Kritis</span><span class="pa-mini-ind-val">9.10</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Inovatif</span><span class="pa-mini-ind-val">9.10</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Sosial</span><span class="pa-mini-ind-val">9.10</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Kekeluargaan</span><span class="pa-mini-ind-val">9.10</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Tanggung Jawab</span><span class="pa-mini-ind-val">9.10</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Fundamental</span><span class="pa-mini-ind-val">9.10</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Etika</span><span class="pa-mini-ind-val">9.00</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Inisiatif</span><span class="pa-mini-ind-val">8.90</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Responsif</span><span class="pa-mini-ind-val">8.90</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Disiplin</span><span class="pa-mini-ind-val">8.50</span></div>
+              </div>
+              <button type="button" class="pa-winner-card-btn" onclick="requestPinAccess('staf-006', 'progress')">
+                Buka Rapor Personal
+              </button>
+            </div>
+
+            <!-- 4. LUGRI -->
+            <div class="pa-dept-best-card">
+              <div class="pa-dept-best-top">
+                <img src="assets/foto-staf/staf-071.jpg" alt="Iqbal Aflah Al Farisi" class="pa-dept-best-avatar" onerror="this.src='https://ui-avatars.com/api/?name=Iqbal+Aflah+Al+Farisi&background=0E7490&color=fff&size=150&bold=true'" />
+                <div class="pa-dept-best-meta">
+                  <span class="pa-dept-tag-pill" style="color: #0E7490; background: rgba(6, 182, 212, 0.1);">Luar Negeri (LUGRI)</span>
+                  <div class="pa-dept-best-name" title="Iqbal Aflah Al Farisi">Iqbal Aflah Al Farisi</div>
+                </div>
+              </div>
+              <div class="pa-dept-best-score-row">
+                <span>Skor Rata-rata: <strong>8.70</strong></span>
+                <span class="pa-winner-predikat" style="background: #ECFDF5; color: #047857; font-size: 0.68rem; padding: 2px 6px;">Sangat Baik (AB)</span>
+              </div>
+              <div class="pa-dept-best-indicators">
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Kekeluargaan</span><span class="pa-mini-ind-val">9.00</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Solidaritas</span><span class="pa-mini-ind-val">8.90</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Sosial</span><span class="pa-mini-ind-val">8.90</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Disiplin</span><span class="pa-mini-ind-val">8.80</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Tanggung Jawab</span><span class="pa-mini-ind-val">8.80</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Inovatif</span><span class="pa-mini-ind-val">8.70</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Inisiatif</span><span class="pa-mini-ind-val">8.70</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Etika</span><span class="pa-mini-ind-val">8.70</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Responsif</span><span class="pa-mini-ind-val">8.70</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Pemahaman Proker</span><span class="pa-mini-ind-val">8.60</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Kritis</span><span class="pa-mini-ind-val">8.50</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Fundamental</span><span class="pa-mini-ind-val">8.30</span></div>
+              </div>
+              <button type="button" class="pa-winner-card-btn" onclick="requestPinAccess('staf-071', 'progress')">
+                Buka Rapor Personal
+              </button>
+            </div>
+
+            <!-- 5. RISTEK -->
+            <div class="pa-dept-best-card">
+              <div class="pa-dept-best-top">
+                <img src="assets/foto-staf/staf-039.jpg" alt="Asyifa Abida Rosjadi" class="pa-dept-best-avatar" onerror="this.src='https://ui-avatars.com/api/?name=Asyifa+Abida+Rosjadi&background=6D28D9&color=fff&size=150&bold=true'" />
+                <div class="pa-dept-best-meta">
+                  <span class="pa-dept-tag-pill" style="color: #6D28D9; background: rgba(124, 58, 237, 0.1);">Riset &amp; Teknologi (RISTEK)</span>
+                  <div class="pa-dept-best-name" title="Asyifa Abida Rosjadi">Asyifa Abida Rosjadi</div>
+                </div>
+              </div>
+              <div class="pa-dept-best-score-row">
+                <span>Skor Rata-rata: <strong>8.60</strong></span>
+                <span class="pa-winner-predikat" style="background: #ECFDF5; color: #047857; font-size: 0.68rem; padding: 2px 6px;">Sangat Baik (AB)</span>
+              </div>
+              <div class="pa-dept-best-indicators">
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Etika</span><span class="pa-mini-ind-val">9.00</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Sosial</span><span class="pa-mini-ind-val">8.80</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Tanggung Jawab</span><span class="pa-mini-ind-val">8.80</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Disiplin</span><span class="pa-mini-ind-val">8.70</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Inisiatif</span><span class="pa-mini-ind-val">8.70</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Pemahaman Proker</span><span class="pa-mini-ind-val">8.70</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Responsif</span><span class="pa-mini-ind-val">8.60</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Inovatif</span><span class="pa-mini-ind-val">8.50</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Solidaritas</span><span class="pa-mini-ind-val">8.50</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Fundamental</span><span class="pa-mini-ind-val">8.50</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Kekeluargaan</span><span class="pa-mini-ind-val">8.40</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Kritis</span><span class="pa-mini-ind-val">8.20</span></div>
+              </div>
+              <button type="button" class="pa-winner-card-btn" onclick="requestPinAccess('staf-039', 'progress')">
+                Buka Rapor Personal
+              </button>
+            </div>
+
+            <!-- 6. PSDM -->
+            <div class="pa-dept-best-card">
+              <div class="pa-dept-best-top">
+                <img src="assets/foto-staf/staf-025.jpg" alt="Himawan Rakha Bhadra" class="pa-dept-best-avatar" onerror="this.src='https://ui-avatars.com/api/?name=Himawan+Rakha+Bhadra&background=B45309&color=fff&size=150&bold=true'" />
+                <div class="pa-dept-best-meta">
+                  <span class="pa-dept-tag-pill" style="color: #B45309; background: rgba(217, 119, 6, 0.1);">Pengembangan SDM (PSDM)</span>
+                  <div class="pa-dept-best-name" title="Himawan Rakha Bhadra">Himawan Rakha Bhadra</div>
+                </div>
+              </div>
+              <div class="pa-dept-best-score-row">
+                <span>Skor Rata-rata: <strong>8.40</strong></span>
+                <span class="pa-winner-predikat" style="background: #ECFDF5; color: #047857; font-size: 0.68rem; padding: 2px 6px;">Sangat Baik (AB)</span>
+              </div>
+              <div class="pa-dept-best-indicators">
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Kritis</span><span class="pa-mini-ind-val">8.70</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Inovatif</span><span class="pa-mini-ind-val">8.70</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Inisiatif</span><span class="pa-mini-ind-val">8.60</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Tanggung Jawab</span><span class="pa-mini-ind-val">8.60</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Pemahaman Proker</span><span class="pa-mini-ind-val">8.60</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Disiplin</span><span class="pa-mini-ind-val">8.50</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Fundamental</span><span class="pa-mini-ind-val">8.50</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Solidaritas</span><span class="pa-mini-ind-val">8.40</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Responsif</span><span class="pa-mini-ind-val">8.30</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Kekeluargaan</span><span class="pa-mini-ind-val">8.20</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Sosial</span><span class="pa-mini-ind-val">8.00</span></div>
+                <div class="pa-mini-ind-item"><span class="pa-mini-ind-name">Etika</span><span class="pa-mini-ind-val">7.90</span></div>
+              </div>
+              <button type="button" class="pa-winner-card-btn" onclick="requestPinAccess('staf-025', 'progress')">
+                Buka Rapor Personal
               </button>
             </div>
 
           </div>
+        </div>
+
         </div>
         <!-- END paAwardsContentSeptember -->
 

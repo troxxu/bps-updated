@@ -5527,7 +5527,7 @@ async function syncLiveBphDepartemenSheets(showFeedbackToast = false) {
 window.syncLiveBphDepartemenSheets = syncLiveBphDepartemenSheets;
 
 // ============================================================================
-// 14B. PAPAN APRESIASI: PERIODE AGUSTUS (REKAP FINAL BEKU) & SEPTEMBER (COMING SOON)
+// 14B. PAPAN APRESIASI: PERIODE AGUSTUS & SEPTEMBER (REKAP FINAL RESMI)
 // ============================================================================
 
 // Data Arsip Rekapitulasi Final Peringkat Departemen PA Agustus 2026 (Permanen & Beku)
@@ -5540,10 +5540,20 @@ const AUGUST_DEPT_RANKINGS = [
   { rank: 6, name: 'Riset dan Teknologi (RISTEK)', code: 'RISTEK', score: 7.89, members: 15, predikat: 'Sangat Baik (AB)', isWinner: false }
 ];
 
-let currentPaAwardsPeriod = 'agustus';
+// Data Arsip Rekapitulasi Final Peringkat Departemen PA September 2026 (Permanen & Final)
+const SEPTEMBER_DEPT_RANKINGS = [
+  { rank: 1, name: 'Dalam Negeri (DAGRI)', code: 'DAGRI', score: 8.63, members: 15, predikat: 'Sangat Baik (AB)', isWinner: true },
+  { rank: 2, name: 'Kewirausahaan (KWU)', code: 'KWU', score: 8.37, members: 15, predikat: 'Sangat Baik (AB)', isWinner: false },
+  { rank: 3, name: 'Sosial Masyarakat (SOSMAS)', code: 'SOSMAS', score: 8.23, members: 18, predikat: 'Sangat Baik (AB)', isWinner: false },
+  { rank: 4, name: 'Luar Negeri (LUGRI)', code: 'LUGRI', score: 8.17, members: 18, predikat: 'Sangat Baik (AB)', isWinner: false },
+  { rank: 5, name: 'Pengembangan SDM (PSDM)', code: 'PSDM', score: 8.16, members: 13, predikat: 'Sangat Baik (AB)', isWinner: false },
+  { rank: 6, name: 'Riset dan Teknologi (RISTEK)', code: 'RISTEK', score: 7.91, members: 15, predikat: 'Sangat Baik (AB)', isWinner: false }
+];
+
+let currentPaAwardsPeriod = 'september';
 let paCountdownInterval = null;
 
-// Tab switcher antara PA Agustus (Arsip Rekap) dan PA September (Coming Soon)
+// Tab switcher antara PA Agustus dan PA September
 function switchPaAwardsPeriod(period) {
   currentPaAwardsPeriod = period;
   const tabAgustus = document.getElementById("paTabAgustus");
@@ -5572,39 +5582,14 @@ function switchPaAwardsPeriod(period) {
   if (period === 'agustus') {
     renderAugustLeaderboard();
   } else if (period === 'september') {
-    startPaSeptemberCountdown();
+    renderSeptemberLeaderboard();
   }
 }
 window.switchPaAwardsPeriod = switchPaAwardsPeriod;
 
-// Hitung mundur deadline PA September: Rabu, 21 Oktober 2026 23.59.59 WIB
+// Hitung mundur deadline PA September (Arsip/Fallback)
 function startPaSeptemberCountdown() {
   if (paCountdownInterval) clearInterval(paCountdownInterval);
-
-  function update() {
-    // 21 Oktober 2026 23:59:59 GMT+7
-    const deadline = new Date("2026-10-21T23:59:59+07:00").getTime();
-    const now = Date.now();
-    const diff = Math.max(0, deadline - now);
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-    const dEl = document.getElementById("csDays");
-    const hEl = document.getElementById("csHours");
-    const mEl = document.getElementById("csMinutes");
-    const sEl = document.getElementById("csSeconds");
-
-    if (dEl) dEl.innerText = String(days).padStart(2, '0');
-    if (hEl) hEl.innerText = String(hours).padStart(2, '0');
-    if (mEl) mEl.innerText = String(minutes).padStart(2, '0');
-    if (sEl) sEl.innerText = String(seconds).padStart(2, '0');
-  }
-
-  update();
-  paCountdownInterval = setInterval(update, 1000);
 }
 window.startPaSeptemberCountdown = startPaSeptemberCountdown;
 
@@ -5654,6 +5639,53 @@ function renderAugustLeaderboard() {
   }).join('');
 }
 window.renderAugustLeaderboard = renderAugustLeaderboard;
+
+// Render data leaderboard resmi PA September (100% Statis & Sesuai Rekapan Asli)
+function renderSeptemberLeaderboard() {
+  const rankingListEl = document.getElementById("paDeptRankingListSep");
+  if (!rankingListEl) return;
+
+  const bestNameEl = document.getElementById("bestDeptNameSep");
+  const bestScoreEl = document.getElementById("bestDeptScoreValSep");
+  const bestPredikatEl = document.getElementById("bestDeptPredikatTextSep");
+  const bestDescEl = document.getElementById("bestDeptDescSep");
+  const bestStaffCountEl = document.getElementById("bestDeptStaffCountSep");
+
+  if (bestNameEl) bestNameEl.innerText = "Departemen Dalam Negeri";
+  if (bestScoreEl) bestScoreEl.innerText = "8.63";
+  if (bestPredikatEl) bestPredikatEl.innerText = "Sangat Baik (AB)";
+  if (bestDescEl) {
+    bestDescEl.innerText = "Departemen Dalam Negeri (DAGRI) kembali berhasil mempertahankan posisi puncak dengan nilai rata-rata fungsionaris 8.63 di lingkungan BEM FTEIC ITS. Dengan partisipasi 100% dari seluruh 15 anggota (Pimpinan, Kabiro, Sekdep, dan Staf), DAGRI konsisten menunjukkan performa kerja solid, komunikasi tanggap, akuntabilitas tinggi, serta kedisiplinan prima sepanjang periode evaluasi September 2026.";
+  }
+  if (bestStaffCountEl) {
+    bestStaffCountEl.innerHTML = "<strong>15 / 15</strong> Fungsionaris Dinilai";
+  }
+
+  rankingListEl.innerHTML = SEPTEMBER_DEPT_RANKINGS.map((dept) => {
+    const rankClass = dept.rank === 1 ? 'rank-1' : (dept.rank === 2 ? 'rank-2' : (dept.rank === 3 ? 'rank-3' : ''));
+    const barWidth = Math.min(100, Math.round((dept.score / 10) * 100));
+    const scoreColor = dept.rank === 1 ? 'color: #B45309; font-weight: 800;' : 'color: var(--text-1); font-weight: 700;';
+
+    return `
+      <div class="pa-ranking-item ${rankClass}">
+        <div class="pa-rank-pos-wrap">
+          <span class="pa-rank-num">${dept.rank}</span>
+          <div class="pa-rank-dept-info">
+            <span class="pa-rank-dept-name">${escapeHtml(dept.name)} ${dept.rank === 1 ? '🏆' : ''}</span>
+            <span class="pa-rank-dept-meta">${dept.members} Fungsionaris • ${dept.predikat}</span>
+          </div>
+        </div>
+        <div class="pa-rank-score-wrap">
+          <div class="pa-rank-bar-bg" title="Nilai Rata-rata Fungsionaris PA September">
+            <div class="pa-rank-bar-fill" style="width: ${barWidth}%;"></div>
+          </div>
+          <span class="pa-rank-score-text" style="${scoreColor}">${dept.score.toFixed(2)}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+window.renderSeptemberLeaderboard = renderSeptemberLeaderboard;
 
 // Konfigurasi pembobotan Best Department of the Month: 30% Evaluasi BPH + 70% Internal (Kabinet & Staf)
 const BEM_DEPARTMENTS_CONFIG = {
@@ -5711,10 +5743,12 @@ function calculateDepartmentFinalScores() {
 }
 window.calculateDepartmentFinalScores = calculateDepartmentFinalScores;
 
-// Leaderboard controller: Menampilkan PA Agustus (default & frozen)
+// Leaderboard controller: Menampilkan PA sesuai tab aktif
 function updateDepartmentLeaderboard() {
   if (currentPaAwardsPeriod === 'agustus') {
     renderAugustLeaderboard();
+  } else if (currentPaAwardsPeriod === 'september') {
+    renderSeptemberLeaderboard();
   }
 }
 window.updateDepartmentLeaderboard = updateDepartmentLeaderboard;
@@ -5728,7 +5762,8 @@ function bootstrapApp() {
   if (typeof initHeroScrollFade === 'function') initHeroScrollFade();
   initHorizontalSliders();
   renderAugustLeaderboard();
-  startPaSeptemberCountdown();
+  renderSeptemberLeaderboard();
+  switchPaAwardsPeriod('september');
   setTimeout(() => syncLiveBphDepartemenSheets(false), 800);
 }
 
