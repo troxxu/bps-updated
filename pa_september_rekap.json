@@ -930,11 +930,11 @@
   },
   "staf-006": {
     "isLive": true,
-    "averageScore": 9.0,
+    "averageScore": 8.7,
     "scores": {
       "kritis": {
-        "average": 9.1,
-        "rawScore": 9.0975,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 9.2,
         "stafAvg": 8.6,
         "selfAvg": 10.0,
@@ -948,8 +948,8 @@
         }
       },
       "disiplin": {
-        "average": 8.5,
-        "rawScore": 8.545,
+        "average": 8.22,
+        "rawScore": 8.22,
         "kabinetAvg": 8.5,
         "stafAvg": 8.2,
         "selfAvg": 10.0,
@@ -963,8 +963,8 @@
         }
       },
       "inovatif": {
-        "average": 9.1,
-        "rawScore": 9.0625,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 9.2,
         "stafAvg": 8.5,
         "selfAvg": 10.0,
@@ -978,8 +978,8 @@
         }
       },
       "solidaritas": {
-        "average": 9.3,
-        "rawScore": 9.27,
+        "average": 8.99,
+        "rawScore": 8.99,
         "kabinetAvg": 9.5,
         "stafAvg": 8.7,
         "selfAvg": 10.0,
@@ -993,8 +993,8 @@
         }
       },
       "sosial": {
-        "average": 9.1,
-        "rawScore": 9.1325,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 9.2,
         "stafAvg": 8.7,
         "selfAvg": 10.0,
@@ -1008,8 +1008,8 @@
         }
       },
       "rasa_kekeluargaan": {
-        "average": 9.1,
-        "rawScore": 9.0975,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 9.2,
         "stafAvg": 8.6,
         "selfAvg": 10.0,
@@ -1023,8 +1023,8 @@
         }
       },
       "inisiatif": {
-        "average": 8.9,
-        "rawScore": 8.855,
+        "average": 8.6,
+        "rawScore": 8.6,
         "kabinetAvg": 9.0,
         "stafAvg": 8.3,
         "selfAvg": 10.0,
@@ -1038,8 +1038,8 @@
         }
       },
       "tanggung_jawab": {
-        "average": 9.1,
-        "rawScore": 9.0625,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 9.2,
         "stafAvg": 8.5,
         "selfAvg": 10.0,
@@ -1053,8 +1053,8 @@
         }
       },
       "etika": {
-        "average": 9.0,
-        "rawScore": 9.0275,
+        "average": 8.7,
+        "rawScore": 8.7,
         "kabinetAvg": 9.2,
         "stafAvg": 8.4,
         "selfAvg": 10.0,
@@ -1068,8 +1068,8 @@
         }
       },
       "pemahaman_proker": {
-        "average": 9.3,
-        "rawScore": 9.27,
+        "average": 8.99,
+        "rawScore": 8.99,
         "kabinetAvg": 9.5,
         "stafAvg": 8.7,
         "selfAvg": 10.0,
@@ -1083,8 +1083,8 @@
         }
       },
       "fundamental": {
-        "average": 9.1,
-        "rawScore": 9.0625,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 9.2,
         "stafAvg": 8.5,
         "selfAvg": 10.0,
@@ -1098,8 +1098,8 @@
         }
       },
       "responsif": {
-        "average": 8.9,
-        "rawScore": 8.925,
+        "average": 8.6,
+        "rawScore": 8.6,
         "kabinetAvg": 9.0,
         "stafAvg": 8.5,
         "selfAvg": 10.0,
@@ -1123,11 +1123,11 @@
   },
   "staf-007": {
     "isLive": true,
-    "averageScore": 8.8,
+    "averageScore": 8.6,
     "scores": {
       "kritis": {
-        "average": 8.9,
-        "rawScore": 8.925,
+        "average": 8.7,
+        "rawScore": 8.7,
         "kabinetAvg": 9.0,
         "stafAvg": 8.5,
         "selfAvg": 10.0,
@@ -1141,8 +1141,8 @@
         }
       },
       "disiplin": {
-        "average": 8.6,
-        "rawScore": 8.647499999999999,
+        "average": 8.4,
+        "rawScore": 8.4,
         "kabinetAvg": 8.8,
         "stafAvg": 8.1,
         "selfAvg": 10.0,
@@ -1156,8 +1156,8 @@
         }
       },
       "inovatif": {
-        "average": 8.7,
-        "rawScore": 8.6825,
+        "average": 8.5,
+        "rawScore": 8.5,
         "kabinetAvg": 8.8,
         "stafAvg": 8.2,
         "selfAvg": 10.0,
@@ -1171,8 +1171,8 @@
         }
       },
       "solidaritas": {
-        "average": 8.4,
-        "rawScore": 8.440000000000001,
+        "average": 8.21,
+        "rawScore": 8.21,
         "kabinetAvg": 8.5,
         "stafAvg": 7.9,
         "selfAvg": 10.0,
@@ -1186,8 +1186,8 @@
         }
       },
       "sosial": {
-        "average": 8.8,
-        "rawScore": 8.82,
+        "average": 8.6,
+        "rawScore": 8.6,
         "kabinetAvg": 9.0,
         "stafAvg": 8.2,
         "selfAvg": 10.0,
@@ -1201,8 +1201,8 @@
         }
       },
       "rasa_kekeluargaan": {
-        "average": 8.7,
-        "rawScore": 8.715,
+        "average": 8.5,
+        "rawScore": 8.5,
         "kabinetAvg": 9.0,
         "stafAvg": 7.9,
         "selfAvg": 10.0,
@@ -1216,8 +1216,8 @@
         }
       },
       "inisiatif": {
-        "average": 8.6,
-        "rawScore": 8.5775,
+        "average": 8.4,
+        "rawScore": 8.4,
         "kabinetAvg": 8.8,
         "stafAvg": 7.9,
         "selfAvg": 10.0,
@@ -1231,8 +1231,8 @@
         }
       },
       "tanggung_jawab": {
-        "average": 8.8,
-        "rawScore": 8.7525,
+        "average": 8.6,
+        "rawScore": 8.6,
         "kabinetAvg": 8.8,
         "stafAvg": 8.4,
         "selfAvg": 10.0,
@@ -1246,8 +1246,8 @@
         }
       },
       "etika": {
-        "average": 8.8,
-        "rawScore": 8.75,
+        "average": 8.6,
+        "rawScore": 8.6,
         "kabinetAvg": 9.0,
         "stafAvg": 8.0,
         "selfAvg": 10.0,
@@ -1261,8 +1261,8 @@
         }
       },
       "pemahaman_proker": {
-        "average": 9.2,
-        "rawScore": 9.2,
+        "average": 8.99,
+        "rawScore": 8.99,
         "kabinetAvg": 9.5,
         "stafAvg": 8.5,
         "selfAvg": 10.0,
@@ -1276,8 +1276,8 @@
         }
       },
       "fundamental": {
-        "average": 9.0,
-        "rawScore": 9.0275,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 9.2,
         "stafAvg": 8.4,
         "selfAvg": 10.0,
@@ -1291,8 +1291,8 @@
         }
       },
       "responsif": {
-        "average": 8.8,
-        "rawScore": 8.82,
+        "average": 8.6,
+        "rawScore": 8.6,
         "kabinetAvg": 9.0,
         "stafAvg": 8.2,
         "selfAvg": 10.0,
@@ -1702,11 +1702,11 @@
   },
   "staf-010": {
     "isLive": true,
-    "averageScore": 8.9,
+    "averageScore": 8.7,
     "scores": {
       "kritis": {
-        "average": 8.4,
-        "rawScore": 8.445,
+        "average": 8.21,
+        "rawScore": 8.21,
         "kabinetAvg": 8.5,
         "stafAvg": 8.2,
         "selfAvg": 9.0,
@@ -1720,8 +1720,8 @@
         }
       },
       "disiplin": {
-        "average": 8.5,
-        "rawScore": 8.5475,
+        "average": 8.31,
+        "rawScore": 8.31,
         "kabinetAvg": 8.8,
         "stafAvg": 8.1,
         "selfAvg": 9.0,
@@ -1735,8 +1735,8 @@
         }
       },
       "inovatif": {
-        "average": 8.7,
-        "rawScore": 8.65,
+        "average": 8.5,
+        "rawScore": 8.5,
         "kabinetAvg": 9.0,
         "stafAvg": 8.0,
         "selfAvg": 9.0,
@@ -1750,8 +1750,8 @@
         }
       },
       "solidaritas": {
-        "average": 9.3,
-        "rawScore": 9.3375,
+        "average": 9.09,
+        "rawScore": 9.09,
         "kabinetAvg": 9.8,
         "stafAvg": 8.5,
         "selfAvg": 10.0,
@@ -1765,8 +1765,8 @@
         }
       },
       "sosial": {
-        "average": 9.2,
-        "rawScore": 9.235,
+        "average": 8.99,
+        "rawScore": 8.99,
         "kabinetAvg": 9.5,
         "stafAvg": 8.6,
         "selfAvg": 10.0,
@@ -1780,8 +1780,8 @@
         }
       },
       "rasa_kekeluargaan": {
-        "average": 9.1,
-        "rawScore": 9.13,
+        "average": 8.9,
+        "rawScore": 8.9,
         "kabinetAvg": 9.5,
         "stafAvg": 8.3,
         "selfAvg": 10.0,
@@ -1795,8 +1795,8 @@
         }
       },
       "inisiatif": {
-        "average": 8.7,
-        "rawScore": 8.685,
+        "average": 8.5,
+        "rawScore": 8.5,
         "kabinetAvg": 9.0,
         "stafAvg": 8.1,
         "selfAvg": 9.0,
@@ -1810,8 +1810,8 @@
         }
       },
       "tanggung_jawab": {
-        "average": 8.7,
-        "rawScore": 8.72,
+        "average": 8.5,
+        "rawScore": 8.5,
         "kabinetAvg": 9.0,
         "stafAvg": 8.2,
         "selfAvg": 9.0,
@@ -1825,8 +1825,8 @@
         }
       },
       "etika": {
-        "average": 8.7,
-        "rawScore": 8.72,
+        "average": 8.5,
+        "rawScore": 8.5,
         "kabinetAvg": 9.0,
         "stafAvg": 8.2,
         "selfAvg": 9.0,
@@ -1840,8 +1840,8 @@
         }
       },
       "pemahaman_proker": {
-        "average": 9.2,
-        "rawScore": 9.165000000000001,
+        "average": 8.99,
+        "rawScore": 8.99,
         "kabinetAvg": 9.5,
         "stafAvg": 8.4,
         "selfAvg": 10.0,
@@ -1855,8 +1855,8 @@
         }
       },
       "fundamental": {
-        "average": 9.0,
-        "rawScore": 8.9575,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 9.2,
         "stafAvg": 8.2,
         "selfAvg": 10.0,
@@ -1870,8 +1870,8 @@
         }
       },
       "responsif": {
-        "average": 8.7,
-        "rawScore": 8.68,
+        "average": 8.5,
+        "rawScore": 8.5,
         "kabinetAvg": 9.0,
         "stafAvg": 7.8,
         "selfAvg": 10.0,
@@ -2088,11 +2088,11 @@
   },
   "staf-012": {
     "isLive": true,
-    "averageScore": 8.8,
+    "averageScore": 9.0,
     "scores": {
       "kritis": {
-        "average": 8.7,
-        "rawScore": 8.7225,
+        "average": 9.1,
+        "rawScore": 9.1,
         "kabinetAvg": 9.2,
         "stafAvg": 8.1,
         "selfAvg": 8.0,
@@ -2106,8 +2106,8 @@
         }
       },
       "disiplin": {
-        "average": 8.7,
-        "rawScore": 8.685,
+        "average": 9.3,
+        "rawScore": 9.3,
         "kabinetAvg": 9.0,
         "stafAvg": 8.1,
         "selfAvg": 9.0,
@@ -2121,8 +2121,8 @@
         }
       },
       "inovatif": {
-        "average": 8.8,
-        "rawScore": 8.755,
+        "average": 8.9,
+        "rawScore": 8.9,
         "kabinetAvg": 9.0,
         "stafAvg": 8.3,
         "selfAvg": 9.0,
@@ -2136,8 +2136,8 @@
         }
       },
       "solidaritas": {
-        "average": 9.1,
-        "rawScore": 9.065000000000001,
+        "average": 9.2,
+        "rawScore": 9.2,
         "kabinetAvg": 9.5,
         "stafAvg": 8.4,
         "selfAvg": 9.0,
@@ -2152,7 +2152,7 @@
       },
       "sosial": {
         "average": 8.8,
-        "rawScore": 8.8225,
+        "rawScore": 8.8,
         "kabinetAvg": 9.2,
         "stafAvg": 8.1,
         "selfAvg": 9.0,
@@ -2167,7 +2167,7 @@
       },
       "rasa_kekeluargaan": {
         "average": 8.8,
-        "rawScore": 8.825,
+        "rawScore": 8.8,
         "kabinetAvg": 9.0,
         "stafAvg": 8.5,
         "selfAvg": 9.0,
@@ -2181,8 +2181,8 @@
         }
       },
       "inisiatif": {
-        "average": 8.8,
-        "rawScore": 8.755,
+        "average": 9.0,
+        "rawScore": 9.0,
         "kabinetAvg": 9.0,
         "stafAvg": 8.3,
         "selfAvg": 9.0,
@@ -2196,8 +2196,8 @@
         }
       },
       "tanggung_jawab": {
-        "average": 8.9,
-        "rawScore": 8.9275,
+        "average": 9.3,
+        "rawScore": 9.3,
         "kabinetAvg": 9.2,
         "stafAvg": 8.4,
         "selfAvg": 9.0,
@@ -2211,8 +2211,8 @@
         }
       },
       "etika": {
-        "average": 8.9,
-        "rawScore": 8.8575,
+        "average": 9.0,
+        "rawScore": 9.0,
         "kabinetAvg": 9.2,
         "stafAvg": 8.2,
         "selfAvg": 9.0,
@@ -2226,8 +2226,8 @@
         }
       },
       "pemahaman_proker": {
-        "average": 9.1,
-        "rawScore": 9.065000000000001,
+        "average": 9.2,
+        "rawScore": 9.2,
         "kabinetAvg": 9.5,
         "stafAvg": 8.4,
         "selfAvg": 9.0,
@@ -2241,8 +2241,8 @@
         }
       },
       "fundamental": {
-        "average": 8.8,
-        "rawScore": 8.8225,
+        "average": 8.7,
+        "rawScore": 8.7,
         "kabinetAvg": 9.2,
         "stafAvg": 8.1,
         "selfAvg": 9.0,
@@ -2257,7 +2257,7 @@
       },
       "responsif": {
         "average": 8.7,
-        "rawScore": 8.72,
+        "rawScore": 8.7,
         "kabinetAvg": 9.0,
         "stafAvg": 8.2,
         "selfAvg": 9.0,
@@ -2860,11 +2860,11 @@
   },
   "staf-016": {
     "isLive": true,
-    "averageScore": 8.2,
+    "averageScore": 8.5,
     "scores": {
       "leadership": {
-        "average": 8.3,
-        "rawScore": 8.283333333333333,
+        "average": 8.6,
+        "rawScore": 8.6,
         "kabinetAvg": 8.0,
         "stafAvg": 8.3,
         "selfAvg": 9.0,
@@ -2878,8 +2878,8 @@
         }
       },
       "development": {
-        "average": 8.2,
-        "rawScore": 8.161111111111111,
+        "average": 8.5,
+        "rawScore": 8.5,
         "kabinetAvg": 8.0,
         "stafAvg": 8.1,
         "selfAvg": 9.0,
@@ -2893,8 +2893,8 @@
         }
       },
       "empowerment": {
-        "average": 8.3,
-        "rawScore": 8.266666666666667,
+        "average": 8.6,
+        "rawScore": 8.6,
         "kabinetAvg": 7.7,
         "stafAvg": 8.3,
         "selfAvg": 10.0,
@@ -2908,8 +2908,8 @@
         }
       },
       "coordination": {
-        "average": 8.1,
-        "rawScore": 8.137777777777778,
+        "average": 8.4,
+        "rawScore": 8.4,
         "kabinetAvg": 7.9,
         "stafAvg": 8.1,
         "selfAvg": 9.0,
@@ -2923,8 +2923,8 @@
         }
       },
       "representation": {
-        "average": 8.4,
-        "rawScore": 8.438888888888888,
+        "average": 8.71,
+        "rawScore": 8.71,
         "kabinetAvg": 8.3,
         "stafAvg": 8.2,
         "selfAvg": 10.0,
@@ -2938,8 +2938,8 @@
         }
       },
       "administration": {
-        "average": 7.9,
-        "rawScore": 7.883333333333334,
+        "average": 8.19,
+        "rawScore": 8.19,
         "kabinetAvg": 7.7,
         "stafAvg": 8.0,
         "selfAvg": 8.0,
@@ -2953,8 +2953,8 @@
         }
       },
       "exemplary": {
-        "average": 8.2,
-        "rawScore": 8.2,
+        "average": 8.5,
+        "rawScore": 8.5,
         "kabinetAvg": 8.0,
         "stafAvg": 8.0,
         "selfAvg": 10.0,
@@ -2978,11 +2978,11 @@
   },
   "staf-017": {
     "isLive": true,
-    "averageScore": 7.7,
+    "averageScore": 8.4,
     "scores": {
       "leadership": {
-        "average": 7.6,
-        "rawScore": 7.63,
+        "average": 8.29,
+        "rawScore": 8.29,
         "kabinetAvg": 7.0,
         "stafAvg": 8.0,
         "selfAvg": 7.8,
@@ -2996,8 +2996,8 @@
         }
       },
       "development": {
-        "average": 7.6,
-        "rawScore": 7.644444444444444,
+        "average": 8.29,
+        "rawScore": 8.29,
         "kabinetAvg": 7.3,
         "stafAvg": 7.8,
         "selfAvg": 8.0,
@@ -3011,8 +3011,8 @@
         }
       },
       "empowerment": {
-        "average": 7.8,
-        "rawScore": 7.766666666666667,
+        "average": 8.51,
+        "rawScore": 8.51,
         "kabinetAvg": 7.3,
         "stafAvg": 8.0,
         "selfAvg": 8.0,
@@ -3026,8 +3026,8 @@
         }
       },
       "coordination": {
-        "average": 7.7,
-        "rawScore": 7.685555555555556,
+        "average": 8.4,
+        "rawScore": 8.4,
         "kabinetAvg": 7.3,
         "stafAvg": 7.9,
         "selfAvg": 7.8,
@@ -3041,8 +3041,8 @@
         }
       },
       "representation": {
-        "average": 7.7,
-        "rawScore": 7.705555555555556,
+        "average": 8.4,
+        "rawScore": 8.4,
         "kabinetAvg": 7.3,
         "stafAvg": 7.9,
         "selfAvg": 8.0,
@@ -3056,8 +3056,8 @@
         }
       },
       "administration": {
-        "average": 7.7,
-        "rawScore": 7.705555555555556,
+        "average": 8.4,
+        "rawScore": 8.4,
         "kabinetAvg": 7.3,
         "stafAvg": 7.9,
         "selfAvg": 8.0,
@@ -3071,8 +3071,8 @@
         }
       },
       "exemplary": {
-        "average": 7.6,
-        "rawScore": 7.644444444444444,
+        "average": 8.29,
+        "rawScore": 8.29,
         "kabinetAvg": 7.3,
         "stafAvg": 7.8,
         "selfAvg": 8.0,
@@ -3096,11 +3096,11 @@
   },
   "staf-018": {
     "isLive": true,
-    "averageScore": 8.2,
+    "averageScore": 8.3,
     "scores": {
       "kritis": {
-        "average": 8.1,
-        "rawScore": 8.106250000000001,
+        "average": 8.2,
+        "rawScore": 8.2,
         "kabinetAvg": 7.9,
         "stafAvg": 8.5,
         "selfAvg": 8.0,
@@ -3114,8 +3114,8 @@
         }
       },
       "disiplin": {
-        "average": 8.0,
-        "rawScore": 7.9937499999999995,
+        "average": 8.1,
+        "rawScore": 8.1,
         "kabinetAvg": 7.8,
         "stafAvg": 8.4,
         "selfAvg": 8.0,
@@ -3129,8 +3129,8 @@
         }
       },
       "inovatif": {
-        "average": 8.1,
-        "rawScore": 8.106250000000001,
+        "average": 8.2,
+        "rawScore": 8.2,
         "kabinetAvg": 7.9,
         "stafAvg": 8.5,
         "selfAvg": 8.0,
@@ -3144,8 +3144,8 @@
         }
       },
       "solidaritas": {
-        "average": 8.3,
-        "rawScore": 8.3125,
+        "average": 8.4,
+        "rawScore": 8.4,
         "kabinetAvg": 8.2,
         "stafAvg": 8.5,
         "selfAvg": 8.0,
@@ -3159,8 +3159,8 @@
         }
       },
       "sosial": {
-        "average": 8.1,
-        "rawScore": 8.131250000000001,
+        "average": 8.2,
+        "rawScore": 8.2,
         "kabinetAvg": 8.0,
         "stafAvg": 8.4,
         "selfAvg": 8.0,
@@ -3174,8 +3174,8 @@
         }
       },
       "rasa_kekeluargaan": {
-        "average": 8.5,
-        "rawScore": 8.450000000000001,
+        "average": 8.6,
+        "rawScore": 8.6,
         "kabinetAvg": 8.5,
         "stafAvg": 8.5,
         "selfAvg": 8.0,
@@ -3189,8 +3189,8 @@
         }
       },
       "inisiatif": {
-        "average": 8.2,
-        "rawScore": 8.25,
+        "average": 8.3,
+        "rawScore": 8.3,
         "kabinetAvg": 7.9,
         "stafAvg": 8.6,
         "selfAvg": 9.0,
@@ -3204,8 +3204,8 @@
         }
       },
       "tanggung_jawab": {
-        "average": 8.2,
-        "rawScore": 8.231250000000001,
+        "average": 8.3,
+        "rawScore": 8.3,
         "kabinetAvg": 8.0,
         "stafAvg": 8.4,
         "selfAvg": 9.0,
@@ -3219,8 +3219,8 @@
         }
       },
       "etika": {
-        "average": 8.4,
-        "rawScore": 8.36875,
+        "average": 8.5,
+        "rawScore": 8.5,
         "kabinetAvg": 8.2,
         "stafAvg": 8.4,
         "selfAvg": 9.0,
@@ -3234,8 +3234,8 @@
         }
       },
       "pemahaman_proker": {
-        "average": 8.6,
-        "rawScore": 8.55,
+        "average": 8.7,
+        "rawScore": 8.7,
         "kabinetAvg": 8.5,
         "stafAvg": 8.5,
         "selfAvg": 9.0,
@@ -3249,8 +3249,8 @@
         }
       },
       "fundamental": {
-        "average": 8.0,
-        "rawScore": 7.9937499999999995,
+        "average": 8.1,
+        "rawScore": 8.1,
         "kabinetAvg": 7.8,
         "stafAvg": 8.4,
         "selfAvg": 8.0,
@@ -3264,8 +3264,8 @@
         }
       },
       "responsif": {
-        "average": 8.3,
-        "rawScore": 8.31875,
+        "average": 8.4,
+        "rawScore": 8.4,
         "kabinetAvg": 8.0,
         "stafAvg": 8.6,
         "selfAvg": 9.0,
@@ -3289,11 +3289,11 @@
   },
   "staf-019": {
     "isLive": true,
-    "averageScore": 8.1,
+    "averageScore": 8.4,
     "scores": {
       "leadership": {
-        "average": 8.2,
-        "rawScore": 8.16,
+        "average": 8.5,
+        "rawScore": 8.5,
         "kabinetAvg": 7.9,
         "stafAvg": 8.3,
         "selfAvg": 8.0,
@@ -3307,8 +3307,8 @@
         }
       },
       "development": {
-        "average": 8.1,
-        "rawScore": 8.122222222222222,
+        "average": 8.4,
+        "rawScore": 8.4,
         "kabinetAvg": 8.0,
         "stafAvg": 8.2,
         "selfAvg": 8.0,
@@ -3322,8 +3322,8 @@
         }
       },
       "empowerment": {
-        "average": 8.2,
-        "rawScore": 8.238888888888889,
+        "average": 8.5,
+        "rawScore": 8.5,
         "kabinetAvg": 8.3,
         "stafAvg": 8.2,
         "selfAvg": 8.0,
@@ -3337,8 +3337,8 @@
         }
       },
       "coordination": {
-        "average": 8.2,
-        "rawScore": 8.238888888888889,
+        "average": 8.5,
+        "rawScore": 8.5,
         "kabinetAvg": 8.3,
         "stafAvg": 8.2,
         "selfAvg": 8.0,
@@ -3352,8 +3352,8 @@
         }
       },
       "representation": {
-        "average": 8.1,
-        "rawScore": 8.061111111111112,
+        "average": 8.4,
+        "rawScore": 8.4,
         "kabinetAvg": 8.0,
         "stafAvg": 8.1,
         "selfAvg": 8.0,
@@ -3367,8 +3367,8 @@
         }
       },
       "administration": {
-        "average": 7.9,
-        "rawScore": 7.938888888888889,
+        "average": 8.19,
+        "rawScore": 8.19,
         "kabinetAvg": 8.0,
         "stafAvg": 7.9,
         "selfAvg": 8.0,
@@ -3382,8 +3382,8 @@
         }
       },
       "exemplary": {
-        "average": 8.2,
-        "rawScore": 8.172222222222222,
+        "average": 8.5,
+        "rawScore": 8.5,
         "kabinetAvg": 8.7,
         "stafAvg": 7.9,
         "selfAvg": 8.0,
@@ -3407,11 +3407,11 @@
   },
   "staf-020": {
     "isLive": true,
-    "averageScore": 8.3,
+    "averageScore": 8.4,
     "scores": {
       "leadership": {
-        "average": 8.3,
-        "rawScore": 8.339506172839506,
+        "average": 8.4,
+        "rawScore": 8.4,
         "kabinetAvg": 8.0,
         "stafAvg": 8.6,
         "selfAvg": null,
@@ -3425,8 +3425,8 @@
         }
       },
       "development": {
-        "average": 8.3,
-        "rawScore": 8.339506172839506,
+        "average": 8.4,
+        "rawScore": 8.4,
         "kabinetAvg": 8.0,
         "stafAvg": 8.6,
         "selfAvg": null,
@@ -3440,8 +3440,8 @@
         }
       },
       "empowerment": {
-        "average": 8.5,
-        "rawScore": 8.469135802469134,
+        "average": 8.6,
+        "rawScore": 8.6,
         "kabinetAvg": 8.3,
         "stafAvg": 8.6,
         "selfAvg": null,
@@ -3455,8 +3455,8 @@
         }
       },
       "coordination": {
-        "average": 8.4,
-        "rawScore": 8.401234567901236,
+        "average": 8.5,
+        "rawScore": 8.5,
         "kabinetAvg": 8.3,
         "stafAvg": 8.4,
         "selfAvg": null,
@@ -3470,8 +3470,8 @@
         }
       },
       "representation": {
-        "average": 8.4,
-        "rawScore": 8.407407407407407,
+        "average": 8.5,
+        "rawScore": 8.5,
         "kabinetAvg": 8.0,
         "stafAvg": 8.7,
         "selfAvg": null,
@@ -3485,8 +3485,8 @@
         }
       },
       "administration": {
-        "average": 8.0,
-        "rawScore": 8.006172839506172,
+        "average": 8.1,
+        "rawScore": 8.1,
         "kabinetAvg": 7.7,
         "stafAvg": 8.2,
         "selfAvg": null,
@@ -3500,8 +3500,8 @@
         }
       },
       "exemplary": {
-        "average": 8.2,
-        "rawScore": 8.197530864197532,
+        "average": 8.3,
+        "rawScore": 8.3,
         "kabinetAvg": 8.3,
         "stafAvg": 8.1,
         "selfAvg": null,
@@ -3529,7 +3529,7 @@
     "scores": {
       "kritis": {
         "average": 8.5,
-        "rawScore": 8.506250000000001,
+        "rawScore": 8.5,
         "kabinetAvg": 8.5,
         "stafAvg": 8.4,
         "selfAvg": 9.0,
@@ -3544,7 +3544,7 @@
       },
       "disiplin": {
         "average": 8.2,
-        "rawScore": 8.225000000000001,
+        "rawScore": 8.2,
         "kabinetAvg": 8.2,
         "stafAvg": 8.2,
         "selfAvg": 8.0,
@@ -3559,7 +3559,7 @@
       },
       "inovatif": {
         "average": 8.2,
-        "rawScore": 8.20625,
+        "rawScore": 8.2,
         "kabinetAvg": 7.9,
         "stafAvg": 8.5,
         "selfAvg": 9.0,
@@ -3574,7 +3574,7 @@
       },
       "solidaritas": {
         "average": 8.1,
-        "rawScore": 8.0875,
+        "rawScore": 8.1,
         "kabinetAvg": 8.0,
         "stafAvg": 8.2,
         "selfAvg": 8.0,
@@ -3589,7 +3589,7 @@
       },
       "sosial": {
         "average": 8.0,
-        "rawScore": 7.95,
+        "rawScore": 8.0,
         "kabinetAvg": 7.8,
         "stafAvg": 8.2,
         "selfAvg": 8.0,
@@ -3604,7 +3604,7 @@
       },
       "rasa_kekeluargaan": {
         "average": 8.3,
-        "rawScore": 8.28125,
+        "rawScore": 8.3,
         "kabinetAvg": 8.2,
         "stafAvg": 8.1,
         "selfAvg": 9.0,
@@ -3619,7 +3619,7 @@
       },
       "inisiatif": {
         "average": 8.5,
-        "rawScore": 8.45625,
+        "rawScore": 8.5,
         "kabinetAvg": 8.2,
         "stafAvg": 8.6,
         "selfAvg": 9.0,
@@ -3634,7 +3634,7 @@
       },
       "tanggung_jawab": {
         "average": 8.2,
-        "rawScore": 8.231250000000001,
+        "rawScore": 8.2,
         "kabinetAvg": 8.0,
         "stafAvg": 8.4,
         "selfAvg": 9.0,
@@ -3664,7 +3664,7 @@
       },
       "pemahaman_proker": {
         "average": 8.4,
-        "rawScore": 8.4125,
+        "rawScore": 8.4,
         "kabinetAvg": 8.2,
         "stafAvg": 8.5,
         "selfAvg": 9.0,
@@ -3679,7 +3679,7 @@
       },
       "fundamental": {
         "average": 8.4,
-        "rawScore": 8.418750000000001,
+        "rawScore": 8.4,
         "kabinetAvg": 8.5,
         "stafAvg": 8.1,
         "selfAvg": 9.0,
@@ -3694,7 +3694,7 @@
       },
       "responsif": {
         "average": 8.6,
-        "rawScore": 8.59375,
+        "rawScore": 8.6,
         "kabinetAvg": 8.5,
         "stafAvg": 8.6,
         "selfAvg": 9.0,
@@ -3718,11 +3718,11 @@
   },
   "staf-022": {
     "isLive": true,
-    "averageScore": 8.3,
+    "averageScore": 9.2,
     "scores": {
       "kritis": {
-        "average": 8.0,
-        "rawScore": 7.9750000000000005,
+        "average": 9.3,
+        "rawScore": 9.3,
         "kabinetAvg": 7.9,
         "stafAvg": 8.1,
         "selfAvg": 8.0,
@@ -3736,8 +3736,8 @@
         }
       },
       "disiplin": {
-        "average": 8.2,
-        "rawScore": 8.225000000000001,
+        "average": 9.4,
+        "rawScore": 9.4,
         "kabinetAvg": 8.2,
         "stafAvg": 8.2,
         "selfAvg": 8.0,
@@ -3751,8 +3751,8 @@
         }
       },
       "inovatif": {
-        "average": 8.3,
-        "rawScore": 8.3375,
+        "average": 9.3,
+        "rawScore": 9.3,
         "kabinetAvg": 8.4,
         "stafAvg": 8.4,
         "selfAvg": 8.0,
@@ -3766,8 +3766,8 @@
         }
       },
       "solidaritas": {
-        "average": 8.4,
-        "rawScore": 8.406250000000002,
+        "average": 9.5,
+        "rawScore": 9.5,
         "kabinetAvg": 8.5,
         "stafAvg": 8.4,
         "selfAvg": 8.0,
@@ -3781,8 +3781,8 @@
         }
       },
       "sosial": {
-        "average": 8.2,
-        "rawScore": 8.225000000000001,
+        "average": 8.9,
+        "rawScore": 8.9,
         "kabinetAvg": 8.2,
         "stafAvg": 8.2,
         "selfAvg": 8.0,
@@ -3796,8 +3796,8 @@
         }
       },
       "rasa_kekeluargaan": {
-        "average": 8.4,
-        "rawScore": 8.406250000000002,
+        "average": 9.1,
+        "rawScore": 9.1,
         "kabinetAvg": 8.5,
         "stafAvg": 8.4,
         "selfAvg": 8.0,
@@ -3811,8 +3811,8 @@
         }
       },
       "inisiatif": {
-        "average": 8.4,
-        "rawScore": 8.37875,
+        "average": 9.3,
+        "rawScore": 9.3,
         "kabinetAvg": 8.4,
         "stafAvg": 8.4,
         "selfAvg": 8.0,
@@ -3826,8 +3826,8 @@
         }
       },
       "tanggung_jawab": {
-        "average": 8.3,
-        "rawScore": 8.26875,
+        "average": 9.5,
+        "rawScore": 9.5,
         "kabinetAvg": 8.2,
         "stafAvg": 8.4,
         "selfAvg": 8.0,
@@ -3841,8 +3841,8 @@
         }
       },
       "etika": {
-        "average": 8.4,
-        "rawScore": 8.3625,
+        "average": 9.2,
+        "rawScore": 9.2,
         "kabinetAvg": 8.5,
         "stafAvg": 8.2,
         "selfAvg": 8.0,
@@ -3856,8 +3856,8 @@
         }
       },
       "pemahaman_proker": {
-        "average": 8.4,
-        "rawScore": 8.406250000000002,
+        "average": 9.4,
+        "rawScore": 9.4,
         "kabinetAvg": 8.5,
         "stafAvg": 8.4,
         "selfAvg": 8.0,
@@ -3871,8 +3871,8 @@
         }
       },
       "fundamental": {
-        "average": 8.2,
-        "rawScore": 8.225000000000001,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 8.2,
         "stafAvg": 8.2,
         "selfAvg": 8.0,
@@ -3886,8 +3886,8 @@
         }
       },
       "responsif": {
-        "average": 8.5,
-        "rawScore": 8.450000000000001,
+        "average": 9.0,
+        "rawScore": 9.0,
         "kabinetAvg": 8.5,
         "stafAvg": 8.5,
         "selfAvg": 8.0,
@@ -3911,11 +3911,11 @@
   },
   "staf-023": {
     "isLive": true,
-    "averageScore": 8.1,
+    "averageScore": 8.3,
     "scores": {
       "kritis": {
-        "average": 8.0,
-        "rawScore": 8.01875,
+        "average": 8.2,
+        "rawScore": 8.2,
         "kabinetAvg": 7.9,
         "stafAvg": 8.2,
         "selfAvg": 8.0,
@@ -3929,8 +3929,8 @@
         }
       },
       "disiplin": {
-        "average": 8.1,
-        "rawScore": 8.1375,
+        "average": 8.3,
+        "rawScore": 8.3,
         "kabinetAvg": 7.8,
         "stafAvg": 8.5,
         "selfAvg": 9.0,
@@ -3944,8 +3944,8 @@
         }
       },
       "inovatif": {
-        "average": 8.0,
-        "rawScore": 7.96875,
+        "average": 8.2,
+        "rawScore": 8.2,
         "kabinetAvg": 7.6,
         "stafAvg": 8.5,
         "selfAvg": 8.0,
@@ -3959,8 +3959,8 @@
         }
       },
       "solidaritas": {
-        "average": 8.1,
-        "rawScore": 8.09375,
+        "average": 8.3,
+        "rawScore": 8.3,
         "kabinetAvg": 7.8,
         "stafAvg": 8.4,
         "selfAvg": 9.0,
@@ -3974,8 +3974,8 @@
         }
       },
       "sosial": {
-        "average": 8.0,
-        "rawScore": 7.9937499999999995,
+        "average": 8.2,
+        "rawScore": 8.2,
         "kabinetAvg": 7.8,
         "stafAvg": 8.4,
         "selfAvg": 8.0,
@@ -3989,8 +3989,8 @@
         }
       },
       "rasa_kekeluargaan": {
-        "average": 8.2,
-        "rawScore": 8.1875,
+        "average": 8.4,
+        "rawScore": 8.4,
         "kabinetAvg": 8.0,
         "stafAvg": 8.2,
         "selfAvg": 9.0,
@@ -4004,8 +4004,8 @@
         }
       },
       "inisiatif": {
-        "average": 7.9,
-        "rawScore": 7.8725,
+        "average": 8.1,
+        "rawScore": 8.1,
         "kabinetAvg": 7.5,
         "stafAvg": 8.5,
         "selfAvg": 8.0,
@@ -4019,8 +4019,8 @@
         }
       },
       "tanggung_jawab": {
-        "average": 8.1,
-        "rawScore": 8.1375,
+        "average": 8.3,
+        "rawScore": 8.3,
         "kabinetAvg": 7.8,
         "stafAvg": 8.5,
         "selfAvg": 9.0,
@@ -4034,8 +4034,8 @@
         }
       },
       "etika": {
-        "average": 7.7,
-        "rawScore": 7.675,
+        "average": 7.89,
+        "rawScore": 7.89,
         "kabinetAvg": 7.2,
         "stafAvg": 8.2,
         "selfAvg": 8.0,
@@ -4049,8 +4049,8 @@
         }
       },
       "pemahaman_proker": {
-        "average": 8.3,
-        "rawScore": 8.31875,
+        "average": 8.5,
+        "rawScore": 8.5,
         "kabinetAvg": 8.0,
         "stafAvg": 8.6,
         "selfAvg": 9.0,
@@ -4064,8 +4064,8 @@
         }
       },
       "fundamental": {
-        "average": 8.0,
-        "rawScore": 7.95,
+        "average": 8.2,
+        "rawScore": 8.2,
         "kabinetAvg": 7.8,
         "stafAvg": 8.2,
         "selfAvg": 8.0,
@@ -4079,8 +4079,8 @@
         }
       },
       "responsif": {
-        "average": 8.3,
-        "rawScore": 8.31875,
+        "average": 8.5,
+        "rawScore": 8.5,
         "kabinetAvg": 8.0,
         "stafAvg": 8.6,
         "selfAvg": 9.0,
@@ -4108,7 +4108,7 @@
     "scores": {
       "kritis": {
         "average": 8.1,
-        "rawScore": 8.062500000000002,
+        "rawScore": 8.1,
         "kabinetAvg": 7.9,
         "stafAvg": 8.4,
         "selfAvg": 8.0,
@@ -4123,7 +4123,7 @@
       },
       "disiplin": {
         "average": 8.4,
-        "rawScore": 8.4125,
+        "rawScore": 8.4,
         "kabinetAvg": 8.2,
         "stafAvg": 8.5,
         "selfAvg": 9.0,
@@ -4138,7 +4138,7 @@
       },
       "inovatif": {
         "average": 8.2,
-        "rawScore": 8.15,
+        "rawScore": 8.2,
         "kabinetAvg": 7.9,
         "stafAvg": 8.6,
         "selfAvg": 8.0,
@@ -4153,7 +4153,7 @@
       },
       "solidaritas": {
         "average": 8.6,
-        "rawScore": 8.55,
+        "rawScore": 8.6,
         "kabinetAvg": 8.5,
         "stafAvg": 8.5,
         "selfAvg": 9.0,
@@ -4168,7 +4168,7 @@
       },
       "sosial": {
         "average": 8.3,
-        "rawScore": 8.3125,
+        "rawScore": 8.3,
         "kabinetAvg": 8.2,
         "stafAvg": 8.5,
         "selfAvg": 8.0,
@@ -4183,7 +4183,7 @@
       },
       "rasa_kekeluargaan": {
         "average": 8.6,
-        "rawScore": 8.55,
+        "rawScore": 8.6,
         "kabinetAvg": 8.5,
         "stafAvg": 8.5,
         "selfAvg": 9.0,
@@ -4198,7 +4198,7 @@
       },
       "inisiatif": {
         "average": 8.3,
-        "rawScore": 8.32875,
+        "rawScore": 8.3,
         "kabinetAvg": 8.2,
         "stafAvg": 8.6,
         "selfAvg": 8.0,
@@ -4213,7 +4213,7 @@
       },
       "tanggung_jawab": {
         "average": 8.3,
-        "rawScore": 8.26875,
+        "rawScore": 8.3,
         "kabinetAvg": 8.2,
         "stafAvg": 8.4,
         "selfAvg": 8.0,
@@ -4228,7 +4228,7 @@
       },
       "etika": {
         "average": 8.4,
-        "rawScore": 8.36875,
+        "rawScore": 8.4,
         "kabinetAvg": 8.2,
         "stafAvg": 8.4,
         "selfAvg": 9.0,
@@ -4243,7 +4243,7 @@
       },
       "pemahaman_proker": {
         "average": 8.5,
-        "rawScore": 8.45625,
+        "rawScore": 8.5,
         "kabinetAvg": 8.2,
         "stafAvg": 8.6,
         "selfAvg": 9.0,
@@ -4258,7 +4258,7 @@
       },
       "fundamental": {
         "average": 8.1,
-        "rawScore": 8.0875,
+        "rawScore": 8.1,
         "kabinetAvg": 8.0,
         "stafAvg": 8.2,
         "selfAvg": 8.0,
@@ -4273,7 +4273,7 @@
       },
       "responsif": {
         "average": 8.6,
-        "rawScore": 8.59375,
+        "rawScore": 8.6,
         "kabinetAvg": 8.5,
         "stafAvg": 8.6,
         "selfAvg": 9.0,
@@ -4301,7 +4301,7 @@
     "scores": {
       "kritis": {
         "average": 8.7,
-        "rawScore": 8.73125,
+        "rawScore": 8.7,
         "kabinetAvg": 8.8,
         "stafAvg": 8.6,
         "selfAvg": 9.0,
@@ -4316,7 +4316,7 @@
       },
       "disiplin": {
         "average": 8.5,
-        "rawScore": 8.506250000000001,
+        "rawScore": 8.5,
         "kabinetAvg": 8.5,
         "stafAvg": 8.4,
         "selfAvg": 9.0,
@@ -4331,7 +4331,7 @@
       },
       "inovatif": {
         "average": 8.7,
-        "rawScore": 8.70625,
+        "rawScore": 8.7,
         "kabinetAvg": 8.6,
         "stafAvg": 8.8,
         "selfAvg": 9.0,
@@ -4346,7 +4346,7 @@
       },
       "solidaritas": {
         "average": 8.4,
-        "rawScore": 8.4125,
+        "rawScore": 8.4,
         "kabinetAvg": 8.2,
         "stafAvg": 8.5,
         "selfAvg": 9.0,
@@ -4361,7 +4361,7 @@
       },
       "sosial": {
         "average": 8.0,
-        "rawScore": 7.956250000000001,
+        "rawScore": 8.0,
         "kabinetAvg": 7.5,
         "stafAvg": 8.4,
         "selfAvg": 9.0,
@@ -4376,7 +4376,7 @@
       },
       "rasa_kekeluargaan": {
         "average": 8.2,
-        "rawScore": 8.231250000000001,
+        "rawScore": 8.2,
         "kabinetAvg": 8.0,
         "stafAvg": 8.4,
         "selfAvg": 9.0,
@@ -4391,7 +4391,7 @@
       },
       "inisiatif": {
         "average": 8.6,
-        "rawScore": 8.59375,
+        "rawScore": 8.6,
         "kabinetAvg": 8.5,
         "stafAvg": 8.6,
         "selfAvg": 9.0,
@@ -4406,7 +4406,7 @@
       },
       "tanggung_jawab": {
         "average": 8.6,
-        "rawScore": 8.59375,
+        "rawScore": 8.6,
         "kabinetAvg": 8.5,
         "stafAvg": 8.6,
         "selfAvg": 9.0,
@@ -4421,7 +4421,7 @@
       },
       "etika": {
         "average": 7.9,
-        "rawScore": 7.9125,
+        "rawScore": 7.9,
         "kabinetAvg": 7.5,
         "stafAvg": 8.2,
         "selfAvg": 9.0,
@@ -4436,7 +4436,7 @@
       },
       "pemahaman_proker": {
         "average": 8.6,
-        "rawScore": 8.637500000000001,
+        "rawScore": 8.6,
         "kabinetAvg": 8.5,
         "stafAvg": 8.8,
         "selfAvg": 9.0,
@@ -4451,7 +4451,7 @@
       },
       "fundamental": {
         "average": 8.5,
-        "rawScore": 8.506250000000001,
+        "rawScore": 8.5,
         "kabinetAvg": 8.5,
         "stafAvg": 8.4,
         "selfAvg": 9.0,
@@ -4466,7 +4466,7 @@
       },
       "responsif": {
         "average": 8.3,
-        "rawScore": 8.275,
+        "rawScore": 8.3,
         "kabinetAvg": 8.0,
         "stafAvg": 8.5,
         "selfAvg": 9.0,
@@ -4494,7 +4494,7 @@
     "scores": {
       "kritis": {
         "average": 8.3,
-        "rawScore": 8.2625,
+        "rawScore": 8.3,
         "kabinetAvg": 8.4,
         "stafAvg": 7.9,
         "selfAvg": 9.0,
@@ -4509,7 +4509,7 @@
       },
       "disiplin": {
         "average": 8.1,
-        "rawScore": 8.05625,
+        "rawScore": 8.1,
         "kabinetAvg": 8.0,
         "stafAvg": 7.9,
         "selfAvg": 9.0,
@@ -4524,7 +4524,7 @@
       },
       "inovatif": {
         "average": 8.2,
-        "rawScore": 8.175,
+        "rawScore": 8.2,
         "kabinetAvg": 8.4,
         "stafAvg": 7.6,
         "selfAvg": 9.0,
@@ -4539,7 +4539,7 @@
       },
       "solidaritas": {
         "average": 8.2,
-        "rawScore": 8.2375,
+        "rawScore": 8.2,
         "kabinetAvg": 8.2,
         "stafAvg": 8.0,
         "selfAvg": 9.0,
@@ -4554,7 +4554,7 @@
       },
       "sosial": {
         "average": 8.1,
-        "rawScore": 8.106250000000001,
+        "rawScore": 8.1,
         "kabinetAvg": 8.2,
         "stafAvg": 7.6,
         "selfAvg": 9.0,
@@ -4569,7 +4569,7 @@
       },
       "rasa_kekeluargaan": {
         "average": 8.2,
-        "rawScore": 8.2375,
+        "rawScore": 8.2,
         "kabinetAvg": 8.2,
         "stafAvg": 8.0,
         "selfAvg": 9.0,
@@ -4584,7 +4584,7 @@
       },
       "inisiatif": {
         "average": 8.1,
-        "rawScore": 8.05625,
+        "rawScore": 8.1,
         "kabinetAvg": 8.0,
         "stafAvg": 7.9,
         "selfAvg": 9.0,
@@ -4599,7 +4599,7 @@
       },
       "tanggung_jawab": {
         "average": 8.3,
-        "rawScore": 8.33125,
+        "rawScore": 8.3,
         "kabinetAvg": 8.5,
         "stafAvg": 7.9,
         "selfAvg": 9.0,
@@ -4614,7 +4614,7 @@
       },
       "etika": {
         "average": 8.1,
-        "rawScore": 8.08125,
+        "rawScore": 8.1,
         "kabinetAvg": 8.1,
         "stafAvg": 7.8,
         "selfAvg": 9.0,
@@ -4629,7 +4629,7 @@
       },
       "pemahaman_proker": {
         "average": 8.4,
-        "rawScore": 8.375,
+        "rawScore": 8.4,
         "kabinetAvg": 8.5,
         "stafAvg": 8.0,
         "selfAvg": 9.0,
@@ -4644,7 +4644,7 @@
       },
       "fundamental": {
         "average": 8.4,
-        "rawScore": 8.38125,
+        "rawScore": 8.4,
         "kabinetAvg": 8.8,
         "stafAvg": 7.6,
         "selfAvg": 9.0,
@@ -4659,7 +4659,7 @@
       },
       "responsif": {
         "average": 8.2,
-        "rawScore": 8.15,
+        "rawScore": 8.2,
         "kabinetAvg": 8.2,
         "stafAvg": 7.8,
         "selfAvg": 9.0,
@@ -4687,7 +4687,7 @@
     "scores": {
       "kritis": {
         "average": 8.1,
-        "rawScore": 8.062500000000002,
+        "rawScore": 8.1,
         "kabinetAvg": 7.9,
         "stafAvg": 8.4,
         "selfAvg": 8.0,
@@ -4702,7 +4702,7 @@
       },
       "disiplin": {
         "average": 7.9,
-        "rawScore": 7.90625,
+        "rawScore": 7.9,
         "kabinetAvg": 7.8,
         "stafAvg": 8.1,
         "selfAvg": 8.0,
@@ -4717,7 +4717,7 @@
       },
       "inovatif": {
         "average": 8.1,
-        "rawScore": 8.106250000000001,
+        "rawScore": 8.1,
         "kabinetAvg": 7.9,
         "stafAvg": 8.5,
         "selfAvg": 8.0,
@@ -4732,7 +4732,7 @@
       },
       "solidaritas": {
         "average": 8.3,
-        "rawScore": 8.3125,
+        "rawScore": 8.3,
         "kabinetAvg": 8.2,
         "stafAvg": 8.5,
         "selfAvg": 8.0,
@@ -4747,7 +4747,7 @@
       },
       "sosial": {
         "average": 8.3,
-        "rawScore": 8.26875,
+        "rawScore": 8.3,
         "kabinetAvg": 8.2,
         "stafAvg": 8.4,
         "selfAvg": 8.0,
@@ -4762,7 +4762,7 @@
       },
       "rasa_kekeluargaan": {
         "average": 8.4,
-        "rawScore": 8.39375,
+        "rawScore": 8.4,
         "kabinetAvg": 8.5,
         "stafAvg": 8.6,
         "selfAvg": 7.0,
@@ -4777,7 +4777,7 @@
       },
       "inisiatif": {
         "average": 8.3,
-        "rawScore": 8.275,
+        "rawScore": 8.3,
         "kabinetAvg": 8.0,
         "stafAvg": 8.5,
         "selfAvg": 9.0,
@@ -4792,7 +4792,7 @@
       },
       "tanggung_jawab": {
         "average": 8.2,
-        "rawScore": 8.2125,
+        "rawScore": 8.2,
         "kabinetAvg": 8.2,
         "stafAvg": 8.5,
         "selfAvg": 7.0,
@@ -4807,7 +4807,7 @@
       },
       "etika": {
         "average": 8.2,
-        "rawScore": 8.15625,
+        "rawScore": 8.2,
         "kabinetAvg": 8.1,
         "stafAvg": 8.2,
         "selfAvg": 8.0,
@@ -4822,7 +4822,7 @@
       },
       "pemahaman_proker": {
         "average": 8.3,
-        "rawScore": 8.3125,
+        "rawScore": 8.3,
         "kabinetAvg": 8.2,
         "stafAvg": 8.5,
         "selfAvg": 8.0,
@@ -4837,7 +4837,7 @@
       },
       "fundamental": {
         "average": 8.1,
-        "rawScore": 8.125,
+        "rawScore": 8.1,
         "kabinetAvg": 8.2,
         "stafAvg": 8.2,
         "selfAvg": 7.0,
@@ -4852,7 +4852,7 @@
       },
       "responsif": {
         "average": 8.2,
-        "rawScore": 8.21875,
+        "rawScore": 8.2,
         "kabinetAvg": 8.0,
         "stafAvg": 8.6,
         "selfAvg": 8.0,
@@ -4876,11 +4876,11 @@
   },
   "staf-028": {
     "isLive": true,
-    "averageScore": 7.8,
+    "averageScore": 8.2,
     "scores": {
       "kritis": {
-        "average": 7.8,
-        "rawScore": 7.75,
+        "average": 8.2,
+        "rawScore": 8.2,
         "kabinetAvg": 7.6,
         "stafAvg": 7.9,
         "selfAvg": 8.0,
@@ -4894,8 +4894,8 @@
         }
       },
       "disiplin": {
-        "average": 7.5,
-        "rawScore": 7.54375,
+        "average": 7.88,
+        "rawScore": 7.88,
         "kabinetAvg": 7.2,
         "stafAvg": 7.9,
         "selfAvg": 8.0,
@@ -4909,8 +4909,8 @@
         }
       },
       "inovatif": {
-        "average": 7.7,
-        "rawScore": 7.70625,
+        "average": 8.09,
+        "rawScore": 8.09,
         "kabinetAvg": 7.6,
         "stafAvg": 7.8,
         "selfAvg": 8.0,
@@ -4924,8 +4924,8 @@
         }
       },
       "solidaritas": {
-        "average": 8.0,
-        "rawScore": 8.01875,
+        "average": 8.41,
+        "rawScore": 8.41,
         "kabinetAvg": 7.8,
         "stafAvg": 7.9,
         "selfAvg": 10.0,
@@ -4939,8 +4939,8 @@
         }
       },
       "sosial": {
-        "average": 7.8,
-        "rawScore": 7.7749999999999995,
+        "average": 8.2,
+        "rawScore": 8.2,
         "kabinetAvg": 7.8,
         "stafAvg": 7.8,
         "selfAvg": 8.0,
@@ -4954,8 +4954,8 @@
         }
       },
       "rasa_kekeluargaan": {
-        "average": 8.0,
-        "rawScore": 7.975,
+        "average": 8.41,
+        "rawScore": 8.41,
         "kabinetAvg": 7.8,
         "stafAvg": 7.8,
         "selfAvg": 10.0,
@@ -4969,8 +4969,8 @@
         }
       },
       "inisiatif": {
-        "average": 7.8,
-        "rawScore": 7.76875,
+        "average": 8.2,
+        "rawScore": 8.2,
         "kabinetAvg": 7.5,
         "stafAvg": 8.1,
         "selfAvg": 8.0,
@@ -4984,8 +4984,8 @@
         }
       },
       "tanggung_jawab": {
-        "average": 7.7,
-        "rawScore": 7.6812499999999995,
+        "average": 8.09,
+        "rawScore": 8.09,
         "kabinetAvg": 7.5,
         "stafAvg": 7.9,
         "selfAvg": 8.0,
@@ -4999,8 +4999,8 @@
         }
       },
       "etika": {
-        "average": 7.5,
-        "rawScore": 7.51875,
+        "average": 7.88,
+        "rawScore": 7.88,
         "kabinetAvg": 7.1,
         "stafAvg": 8.0,
         "selfAvg": 8.0,
@@ -5014,8 +5014,8 @@
         }
       },
       "pemahaman_proker": {
-        "average": 8.0,
-        "rawScore": 7.9750000000000005,
+        "average": 8.41,
+        "rawScore": 8.41,
         "kabinetAvg": 7.9,
         "stafAvg": 8.1,
         "selfAvg": 8.0,
@@ -5029,8 +5029,8 @@
         }
       },
       "fundamental": {
-        "average": 7.8,
-        "rawScore": 7.81875,
+        "average": 8.2,
+        "rawScore": 8.2,
         "kabinetAvg": 7.8,
         "stafAvg": 7.9,
         "selfAvg": 8.0,
@@ -5044,8 +5044,8 @@
         }
       },
       "responsif": {
-        "average": 7.9,
-        "rawScore": 7.8625,
+        "average": 8.31,
+        "rawScore": 8.31,
         "kabinetAvg": 7.8,
         "stafAvg": 8.0,
         "selfAvg": 8.0,
@@ -6699,11 +6699,11 @@
   },
   "staf-039": {
     "isLive": true,
-    "averageScore": 8.6,
+    "averageScore": 8.7,
     "scores": {
       "kritis": {
-        "average": 8.2,
-        "rawScore": 8.222222222222223,
+        "average": 8.4,
+        "rawScore": 8.4,
         "kabinetAvg": 9.0,
         "stafAvg": 7.0,
         "selfAvg": null,
@@ -6717,8 +6717,8 @@
         }
       },
       "disiplin": {
-        "average": 8.7,
-        "rawScore": 8.722222222222223,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 9.5,
         "stafAvg": 7.5,
         "selfAvg": null,
@@ -6732,8 +6732,8 @@
         }
       },
       "inovatif": {
-        "average": 8.5,
-        "rawScore": 8.481481481481481,
+        "average": 8.6,
+        "rawScore": 8.6,
         "kabinetAvg": 9.0,
         "stafAvg": 7.7,
         "selfAvg": null,
@@ -6747,8 +6747,8 @@
         }
       },
       "solidaritas": {
-        "average": 8.5,
-        "rawScore": 8.481481481481481,
+        "average": 8.6,
+        "rawScore": 8.6,
         "kabinetAvg": 9.0,
         "stafAvg": 7.7,
         "selfAvg": null,
@@ -6762,8 +6762,8 @@
         }
       },
       "sosial": {
-        "average": 8.8,
-        "rawScore": 8.787037037037036,
+        "average": 8.9,
+        "rawScore": 8.9,
         "kabinetAvg": 9.5,
         "stafAvg": 7.7,
         "selfAvg": null,
@@ -6777,8 +6777,8 @@
         }
       },
       "rasa_kekeluargaan": {
-        "average": 8.4,
-        "rawScore": 8.416666666666666,
+        "average": 8.5,
+        "rawScore": 8.5,
         "kabinetAvg": 9.0,
         "stafAvg": 7.5,
         "selfAvg": null,
@@ -6792,8 +6792,8 @@
         }
       },
       "inisiatif": {
-        "average": 8.7,
-        "rawScore": 8.722222222222223,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 9.5,
         "stafAvg": 7.5,
         "selfAvg": null,
@@ -6807,8 +6807,8 @@
         }
       },
       "tanggung_jawab": {
-        "average": 8.8,
-        "rawScore": 8.787037037037036,
+        "average": 8.9,
+        "rawScore": 8.9,
         "kabinetAvg": 9.5,
         "stafAvg": 7.7,
         "selfAvg": null,
@@ -6822,8 +6822,8 @@
         }
       },
       "etika": {
-        "average": 9.0,
-        "rawScore": 8.981481481481483,
+        "average": 9.1,
+        "rawScore": 9.1,
         "kabinetAvg": 9.5,
         "stafAvg": 8.2,
         "selfAvg": null,
@@ -6837,8 +6837,8 @@
         }
       },
       "pemahaman_proker": {
-        "average": 8.7,
-        "rawScore": 8.675925925925926,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 9.0,
         "stafAvg": 8.2,
         "selfAvg": null,
@@ -6852,8 +6852,8 @@
         }
       },
       "fundamental": {
-        "average": 8.5,
-        "rawScore": 8.481481481481481,
+        "average": 8.6,
+        "rawScore": 8.6,
         "kabinetAvg": 9.0,
         "stafAvg": 7.7,
         "selfAvg": null,
@@ -6867,8 +6867,8 @@
         }
       },
       "responsif": {
-        "average": 8.6,
-        "rawScore": 8.61111111111111,
+        "average": 8.7,
+        "rawScore": 8.7,
         "kabinetAvg": 9.0,
         "stafAvg": 8.0,
         "selfAvg": null,
@@ -8833,11 +8833,11 @@
   },
   "staf-052": {
     "isLive": true,
-    "averageScore": 8.4,
+    "averageScore": 8.85,
     "scores": {
       "kritis": {
-        "average": 8.4,
-        "rawScore": 8.43888888888889,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 8.4,
         "stafAvg": 8.5,
         "selfAvg": null,
@@ -8851,8 +8851,8 @@
         }
       },
       "disiplin": {
-        "average": 8.4,
-        "rawScore": 8.354938271604938,
+        "average": 8.6,
+        "rawScore": 8.6,
         "kabinetAvg": 8.3,
         "stafAvg": 8.4,
         "selfAvg": null,
@@ -8866,8 +8866,8 @@
         }
       },
       "inovatif": {
-        "average": 8.2,
-        "rawScore": 8.25,
+        "average": 8.7,
+        "rawScore": 8.7,
         "kabinetAvg": 8.2,
         "stafAvg": 8.2,
         "selfAvg": null,
@@ -8881,8 +8881,8 @@
         }
       },
       "solidaritas": {
-        "average": 8.2,
-        "rawScore": 8.217592592592593,
+        "average": 9.1,
+        "rawScore": 9.1,
         "kabinetAvg": 8.2,
         "stafAvg": 8.2,
         "selfAvg": null,
@@ -8896,8 +8896,8 @@
         }
       },
       "sosial": {
-        "average": 8.3,
-        "rawScore": 8.260802469135802,
+        "average": 9.2,
+        "rawScore": 9.2,
         "kabinetAvg": 8.2,
         "stafAvg": 8.3,
         "selfAvg": null,
@@ -8911,8 +8911,8 @@
         }
       },
       "rasa_kekeluargaan": {
-        "average": 8.2,
-        "rawScore": 8.194444444444445,
+        "average": 9.0,
+        "rawScore": 9.0,
         "kabinetAvg": 8.0,
         "stafAvg": 8.5,
         "selfAvg": null,
@@ -8926,8 +8926,8 @@
         }
       },
       "inisiatif": {
-        "average": 8.1,
-        "rawScore": 8.108024691358025,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 8.0,
         "stafAvg": 8.3,
         "selfAvg": null,
@@ -8941,8 +8941,8 @@
         }
       },
       "tanggung_jawab": {
-        "average": 8.7,
-        "rawScore": 8.652777777777777,
+        "average": 9.0,
+        "rawScore": 9.0,
         "kabinetAvg": 8.8,
         "stafAvg": 8.5,
         "selfAvg": null,
@@ -8956,8 +8956,8 @@
         }
       },
       "etika": {
-        "average": 8.5,
-        "rawScore": 8.5,
+        "average": 8.9,
+        "rawScore": 8.9,
         "kabinetAvg": 8.5,
         "stafAvg": 8.5,
         "selfAvg": null,
@@ -8971,8 +8971,8 @@
         }
       },
       "pemahaman_proker": {
-        "average": 8.7,
-        "rawScore": 8.695987654320987,
+        "average": 8.9,
+        "rawScore": 8.9,
         "kabinetAvg": 8.8,
         "stafAvg": 8.6,
         "selfAvg": null,
@@ -8986,8 +8986,8 @@
         }
       },
       "fundamental": {
-        "average": 8.3,
-        "rawScore": 8.260802469135802,
+        "average": 8.5,
+        "rawScore": 8.5,
         "kabinetAvg": 8.2,
         "stafAvg": 8.3,
         "selfAvg": null,
@@ -9002,7 +9002,7 @@
       },
       "responsif": {
         "average": 8.7,
-        "rawScore": 8.695987654320987,
+        "rawScore": 8.7,
         "kabinetAvg": 8.8,
         "stafAvg": 8.6,
         "selfAvg": null,
@@ -9412,11 +9412,11 @@
   },
   "staf-055": {
     "isLive": true,
-    "averageScore": 8.8,
+    "averageScore": 8.7,
     "scores": {
       "kritis": {
-        "average": 9.0,
-        "rawScore": 8.965625,
+        "average": 8.9,
+        "rawScore": 8.9,
         "kabinetAvg": 9.2,
         "stafAvg": 8.6,
         "selfAvg": 9.0,
@@ -9430,8 +9430,8 @@
         }
       },
       "disiplin": {
-        "average": 8.5,
-        "rawScore": 8.516041666666666,
+        "average": 8.4,
+        "rawScore": 8.4,
         "kabinetAvg": 8.7,
         "stafAvg": 8.7,
         "selfAvg": 7.0,
@@ -9445,8 +9445,8 @@
         }
       },
       "inovatif": {
-        "average": 8.9,
-        "rawScore": 8.855625,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 9.0,
         "stafAvg": 8.6,
         "selfAvg": 9.0,
@@ -9460,8 +9460,8 @@
         }
       },
       "solidaritas": {
-        "average": 8.8,
-        "rawScore": 8.843125,
+        "average": 8.7,
+        "rawScore": 8.7,
         "kabinetAvg": 9.0,
         "stafAvg": 8.8,
         "selfAvg": 8.0,
@@ -9475,8 +9475,8 @@
         }
       },
       "sosial": {
-        "average": 8.8,
-        "rawScore": 8.768125,
+        "average": 8.7,
+        "rawScore": 8.7,
         "kabinetAvg": 9.0,
         "stafAvg": 8.3,
         "selfAvg": 9.0,
@@ -9490,8 +9490,8 @@
         }
       },
       "rasa_kekeluargaan": {
-        "average": 8.6,
-        "rawScore": 8.580625000000001,
+        "average": 8.5,
+        "rawScore": 8.5,
         "kabinetAvg": 8.5,
         "stafAvg": 8.6,
         "selfAvg": 9.0,
@@ -9505,8 +9505,8 @@
         }
       },
       "inisiatif": {
-        "average": 8.8,
-        "rawScore": 8.843125,
+        "average": 8.7,
+        "rawScore": 8.7,
         "kabinetAvg": 9.0,
         "stafAvg": 8.8,
         "selfAvg": 8.0,
@@ -9520,8 +9520,8 @@
         }
       },
       "tanggung_jawab": {
-        "average": 8.9,
-        "rawScore": 8.943125,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 9.0,
         "stafAvg": 8.8,
         "selfAvg": 9.0,
@@ -9535,8 +9535,8 @@
         }
       },
       "etika": {
-        "average": 8.9,
-        "rawScore": 8.855625,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 9.0,
         "stafAvg": 8.6,
         "selfAvg": 9.0,
@@ -9550,8 +9550,8 @@
         }
       },
       "pemahaman_proker": {
-        "average": 8.9,
-        "rawScore": 8.943125,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 9.0,
         "stafAvg": 8.8,
         "selfAvg": 9.0,
@@ -9565,8 +9565,8 @@
         }
       },
       "fundamental": {
-        "average": 8.4,
-        "rawScore": 8.436875,
+        "average": 8.3,
+        "rawScore": 8.3,
         "kabinetAvg": 8.5,
         "stafAvg": 8.5,
         "selfAvg": 8.0,
@@ -9580,8 +9580,8 @@
         }
       },
       "responsif": {
-        "average": 8.5,
-        "rawScore": 8.524375000000001,
+        "average": 8.4,
+        "rawScore": 8.4,
         "kabinetAvg": 8.5,
         "stafAvg": 8.7,
         "selfAvg": 8.0,
@@ -9991,11 +9991,11 @@
   },
   "staf-058": {
     "isLive": true,
-    "averageScore": 8.7,
+    "averageScore": 8.6,
     "scores": {
       "kritis": {
-        "average": 8.7,
-        "rawScore": 8.662962962962963,
+        "average": 8.6,
+        "rawScore": 8.6,
         "kabinetAvg": 9.0,
         "stafAvg": 8.1,
         "selfAvg": null,
@@ -10009,8 +10009,8 @@
         }
       },
       "disiplin": {
-        "average": 8.5,
-        "rawScore": 8.459259259259259,
+        "average": 8.4,
+        "rawScore": 8.4,
         "kabinetAvg": 8.7,
         "stafAvg": 8.1,
         "selfAvg": null,
@@ -10024,8 +10024,8 @@
         }
       },
       "inovatif": {
-        "average": 8.9,
-        "rawScore": 8.90216049382716,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 9.2,
         "stafAvg": 8.4,
         "selfAvg": null,
@@ -10039,8 +10039,8 @@
         }
       },
       "solidaritas": {
-        "average": 8.7,
-        "rawScore": 8.726234567901235,
+        "average": 8.6,
+        "rawScore": 8.6,
         "kabinetAvg": 8.8,
         "stafAvg": 8.7,
         "selfAvg": null,
@@ -10054,8 +10054,8 @@
         }
       },
       "sosial": {
-        "average": 8.9,
-        "rawScore": 8.922222222222222,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 9.0,
         "stafAvg": 8.8,
         "selfAvg": null,
@@ -10069,8 +10069,8 @@
         }
       },
       "rasa_kekeluargaan": {
-        "average": 8.7,
-        "rawScore": 8.683024691358025,
+        "average": 8.6,
+        "rawScore": 8.6,
         "kabinetAvg": 8.8,
         "stafAvg": 8.6,
         "selfAvg": null,
@@ -10084,8 +10084,8 @@
         }
       },
       "inisiatif": {
-        "average": 8.8,
-        "rawScore": 8.792592592592593,
+        "average": 8.7,
+        "rawScore": 8.7,
         "kabinetAvg": 9.0,
         "stafAvg": 8.5,
         "selfAvg": null,
@@ -10099,8 +10099,8 @@
         }
       },
       "tanggung_jawab": {
-        "average": 8.8,
-        "rawScore": 8.81574074074074,
+        "average": 8.7,
+        "rawScore": 8.7,
         "kabinetAvg": 9.2,
         "stafAvg": 8.1,
         "selfAvg": null,
@@ -10114,8 +10114,8 @@
         }
       },
       "etika": {
-        "average": 8.9,
-        "rawScore": 8.90216049382716,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 9.2,
         "stafAvg": 8.4,
         "selfAvg": null,
@@ -10129,8 +10129,8 @@
         }
       },
       "pemahaman_proker": {
-        "average": 8.6,
-        "rawScore": 8.639814814814814,
+        "average": 8.5,
+        "rawScore": 8.5,
         "kabinetAvg": 8.8,
         "stafAvg": 8.5,
         "selfAvg": null,
@@ -10144,8 +10144,8 @@
         }
       },
       "fundamental": {
-        "average": 8.5,
-        "rawScore": 8.510185185185184,
+        "average": 8.4,
+        "rawScore": 8.4,
         "kabinetAvg": 8.8,
         "stafAvg": 8.1,
         "selfAvg": null,
@@ -10159,8 +10159,8 @@
         }
       },
       "responsif": {
-        "average": 8.6,
-        "rawScore": 8.596604938271605,
+        "average": 8.5,
+        "rawScore": 8.5,
         "kabinetAvg": 8.8,
         "stafAvg": 8.4,
         "selfAvg": null,
@@ -12200,11 +12200,11 @@
   },
   "staf-071": {
     "isLive": true,
-    "averageScore": 8.7,
+    "averageScore": 9.1,
     "scores": {
       "kritis": {
-        "average": 8.5,
-        "rawScore": 8.487727272727273,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 8.8,
         "stafAvg": 8.1,
         "selfAvg": 8.0,
@@ -12218,8 +12218,8 @@
         }
       },
       "disiplin": {
-        "average": 8.8,
-        "rawScore": 8.83,
+        "average": 9.2,
+        "rawScore": 9.2,
         "kabinetAvg": 9.2,
         "stafAvg": 8.2,
         "selfAvg": 9.0,
@@ -12233,8 +12233,8 @@
         }
       },
       "inovatif": {
-        "average": 8.7,
-        "rawScore": 8.666477272727274,
+        "average": 9.1,
+        "rawScore": 9.1,
         "kabinetAvg": 9.1,
         "stafAvg": 8.1,
         "selfAvg": 8.0,
@@ -12248,8 +12248,8 @@
         }
       },
       "solidaritas": {
-        "average": 8.9,
-        "rawScore": 8.91693181818182,
+        "average": 9.3,
+        "rawScore": 9.3,
         "kabinetAvg": 9.2,
         "stafAvg": 8.4,
         "selfAvg": 9.0,
@@ -12263,8 +12263,8 @@
         }
       },
       "sosial": {
-        "average": 8.9,
-        "rawScore": 8.930681818181819,
+        "average": 9.3,
+        "rawScore": 9.3,
         "kabinetAvg": 9.2,
         "stafAvg": 8.4,
         "selfAvg": 9.0,
@@ -12278,8 +12278,8 @@
         }
       },
       "rasa_kekeluargaan": {
-        "average": 9.0,
-        "rawScore": 8.9625,
+        "average": 9.4,
+        "rawScore": 9.4,
         "kabinetAvg": 9.2,
         "stafAvg": 8.5,
         "selfAvg": 9.0,
@@ -12293,8 +12293,8 @@
         }
       },
       "inisiatif": {
-        "average": 8.7,
-        "rawScore": 8.660795454545454,
+        "average": 9.1,
+        "rawScore": 9.1,
         "kabinetAvg": 8.9,
         "stafAvg": 8.2,
         "selfAvg": 9.0,
@@ -12308,8 +12308,8 @@
         }
       },
       "tanggung_jawab": {
-        "average": 8.8,
-        "rawScore": 8.76193181818182,
+        "average": 9.2,
+        "rawScore": 9.2,
         "kabinetAvg": 9.1,
         "stafAvg": 8.4,
         "selfAvg": 8.0,
@@ -12323,8 +12323,8 @@
         }
       },
       "etika": {
-        "average": 8.7,
-        "rawScore": 8.73465909090909,
+        "average": 9.1,
+        "rawScore": 9.1,
         "kabinetAvg": 9.1,
         "stafAvg": 8.0,
         "selfAvg": 9.0,
@@ -12338,8 +12338,8 @@
         }
       },
       "pemahaman_proker": {
-        "average": 8.6,
-        "rawScore": 8.628977272727273,
+        "average": 8.9,
+        "rawScore": 8.9,
         "kabinetAvg": 8.9,
         "stafAvg": 8.1,
         "selfAvg": 9.0,
@@ -12353,8 +12353,8 @@
         }
       },
       "fundamental": {
-        "average": 8.3,
-        "rawScore": 8.296590909090908,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 8.8,
         "stafAvg": 8.0,
         "selfAvg": 7.0,
@@ -12368,8 +12368,8 @@
         }
       },
       "responsif": {
-        "average": 8.7,
-        "rawScore": 8.698295454545455,
+        "average": 9.0,
+        "rawScore": 9.0,
         "kabinetAvg": 9.1,
         "stafAvg": 8.2,
         "selfAvg": 8.0,
@@ -15181,11 +15181,11 @@
   },
   "staf-088": {
     "isLive": true,
-    "averageScore": 8.8,
+    "averageScore": 8.9,
     "scores": {
       "kritis": {
-        "average": 8.9,
-        "rawScore": 8.86388888888889,
+        "average": 9.0,
+        "rawScore": 9.0,
         "kabinetAvg": 9.5,
         "stafAvg": 8.1,
         "selfAvg": 8.0,
@@ -15199,8 +15199,8 @@
         }
       },
       "disiplin": {
-        "average": 9.1,
-        "rawScore": 9.13888888888889,
+        "average": 9.2,
+        "rawScore": 9.2,
         "kabinetAvg": 10.0,
         "stafAvg": 8.1,
         "selfAvg": 8.0,
@@ -15214,8 +15214,8 @@
         }
       },
       "inovatif": {
-        "average": 8.8,
-        "rawScore": 8.825000000000001,
+        "average": 8.9,
+        "rawScore": 8.9,
         "kabinetAvg": 9.5,
         "stafAvg": 8.0,
         "selfAvg": 8.0,
@@ -15229,8 +15229,8 @@
         }
       },
       "solidaritas": {
-        "average": 8.7,
-        "rawScore": 8.725,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 9.5,
         "stafAvg": 8.0,
         "selfAvg": 7.0,
@@ -15244,8 +15244,8 @@
         }
       },
       "sosial": {
-        "average": 8.3,
-        "rawScore": 8.333333333333332,
+        "average": 8.6,
+        "rawScore": 8.6,
         "kabinetAvg": 9.0,
         "stafAvg": 7.7,
         "selfAvg": 7.0,
@@ -15259,8 +15259,8 @@
         }
       },
       "rasa_kekeluargaan": {
-        "average": 8.4,
-        "rawScore": 8.45,
+        "average": 8.6,
+        "rawScore": 8.6,
         "kabinetAvg": 9.0,
         "stafAvg": 8.0,
         "selfAvg": 7.0,
@@ -15274,8 +15274,8 @@
         }
       },
       "inisiatif": {
-        "average": 8.6,
-        "rawScore": 8.61111111111111,
+        "average": 8.7,
+        "rawScore": 8.7,
         "kabinetAvg": 9.0,
         "stafAvg": 7.9,
         "selfAvg": 9.0,
@@ -15289,8 +15289,8 @@
         }
       },
       "tanggung_jawab": {
-        "average": 9.2,
-        "rawScore": 9.216666666666667,
+        "average": 9.3,
+        "rawScore": 9.3,
         "kabinetAvg": 10.0,
         "stafAvg": 8.3,
         "selfAvg": 8.0,
@@ -15304,8 +15304,8 @@
         }
       },
       "etika": {
-        "average": 8.7,
-        "rawScore": 8.747222222222224,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 9.5,
         "stafAvg": 7.8,
         "selfAvg": 8.0,
@@ -15319,8 +15319,8 @@
         }
       },
       "pemahaman_proker": {
-        "average": 8.9,
-        "rawScore": 8.86388888888889,
+        "average": 9.0,
+        "rawScore": 9.0,
         "kabinetAvg": 9.5,
         "stafAvg": 8.1,
         "selfAvg": 8.0,
@@ -15334,8 +15334,8 @@
         }
       },
       "fundamental": {
-        "average": 8.8,
-        "rawScore": 8.786111111111111,
+        "average": 8.9,
+        "rawScore": 8.9,
         "kabinetAvg": 9.5,
         "stafAvg": 7.9,
         "selfAvg": 8.0,
@@ -15349,8 +15349,8 @@
         }
       },
       "responsif": {
-        "average": 8.9,
-        "rawScore": 8.86388888888889,
+        "average": 9.0,
+        "rawScore": 9.0,
         "kabinetAvg": 9.5,
         "stafAvg": 8.1,
         "selfAvg": 8.0,
@@ -15567,11 +15567,11 @@
   },
   "staf-090": {
     "isLive": true,
-    "averageScore": 8.8,
+    "averageScore": 8.7,
     "scores": {
       "kritis": {
-        "average": 8.5,
-        "rawScore": 8.51388888888889,
+        "average": 8.4,
+        "rawScore": 8.4,
         "kabinetAvg": 8.5,
         "stafAvg": 8.1,
         "selfAvg": 10.0,
@@ -15585,8 +15585,8 @@
         }
       },
       "disiplin": {
-        "average": 8.5,
-        "rawScore": 8.475000000000001,
+        "average": 8.4,
+        "rawScore": 8.4,
         "kabinetAvg": 8.5,
         "stafAvg": 8.0,
         "selfAvg": 10.0,
@@ -15600,8 +15600,8 @@
         }
       },
       "inovatif": {
-        "average": 8.5,
-        "rawScore": 8.51388888888889,
+        "average": 8.4,
+        "rawScore": 8.4,
         "kabinetAvg": 8.5,
         "stafAvg": 8.1,
         "selfAvg": 10.0,
@@ -15615,8 +15615,8 @@
         }
       },
       "solidaritas": {
-        "average": 8.9,
-        "rawScore": 8.866666666666667,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 9.0,
         "stafAvg": 8.3,
         "selfAvg": 10.0,
@@ -15630,8 +15630,8 @@
         }
       },
       "sosial": {
-        "average": 8.9,
-        "rawScore": 8.866666666666667,
+        "average": 8.8,
+        "rawScore": 8.8,
         "kabinetAvg": 9.0,
         "stafAvg": 8.3,
         "selfAvg": 10.0,
@@ -15645,8 +15645,8 @@
         }
       },
       "rasa_kekeluargaan": {
-        "average": 8.6,
-        "rawScore": 8.633333333333333,
+        "average": 8.5,
+        "rawScore": 8.5,
         "kabinetAvg": 9.0,
         "stafAvg": 7.7,
         "selfAvg": 10.0,
@@ -15660,8 +15660,8 @@
         }
       },
       "inisiatif": {
-        "average": 9.1,
-        "rawScore": 9.06388888888889,
+        "average": 9.0,
+        "rawScore": 9.0,
         "kabinetAvg": 9.5,
         "stafAvg": 8.1,
         "selfAvg": 10.0,
@@ -15675,8 +15675,8 @@
         }
       },
       "tanggung_jawab": {
-        "average": 8.8,
-        "rawScore": 8.75,
+        "average": 8.7,
+        "rawScore": 8.7,
         "kabinetAvg": 9.0,
         "stafAvg": 8.0,
         "selfAvg": 10.0,
@@ -15690,8 +15690,8 @@
         }
       },
       "etika": {
-        "average": 8.8,
-        "rawScore": 8.788888888888888,
+        "average": 8.7,
+        "rawScore": 8.7,
         "kabinetAvg": 9.0,
         "stafAvg": 8.1,
         "selfAvg": 10.0,
@@ -15705,8 +15705,8 @@
         }
       },
       "pemahaman_proker": {
-        "average": 9.1,
-        "rawScore": 9.141666666666667,
+        "average": 9.0,
+        "rawScore": 9.0,
         "kabinetAvg": 9.5,
         "stafAvg": 8.3,
         "selfAvg": 10.0,
@@ -15720,8 +15720,8 @@
         }
       },
       "fundamental": {
-        "average": 8.8,
-        "rawScore": 8.827777777777778,
+        "average": 8.7,
+        "rawScore": 8.7,
         "kabinetAvg": 9.0,
         "stafAvg": 8.2,
         "selfAvg": 10.0,
@@ -15735,8 +15735,8 @@
         }
       },
       "responsif": {
-        "average": 8.8,
-        "rawScore": 8.75,
+        "average": 8.7,
+        "rawScore": 8.7,
         "kabinetAvg": 9.0,
         "stafAvg": 8.0,
         "selfAvg": 10.0,

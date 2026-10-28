@@ -5541,13 +5541,14 @@ const AUGUST_DEPT_RANKINGS = [
 ];
 
 // Data Arsip Rekapitulasi Final Peringkat Departemen PA September 2026 (Permanen & Final)
+// Formula Pembobotan Resmi: 30% Evaluasi BPH + 70% Internal Fungsionaris
 const SEPTEMBER_DEPT_RANKINGS = [
-  { rank: 1, name: 'Dalam Negeri (DAGRI)', code: 'DAGRI', score: 8.63, members: 15, predikat: 'Sangat Baik (AB)', isWinner: true },
-  { rank: 2, name: 'Kewirausahaan (KWU)', code: 'KWU', score: 8.37, members: 15, predikat: 'Sangat Baik (AB)', isWinner: false },
-  { rank: 3, name: 'Sosial Masyarakat (SOSMAS)', code: 'SOSMAS', score: 8.23, members: 18, predikat: 'Sangat Baik (AB)', isWinner: false },
-  { rank: 4, name: 'Luar Negeri (LUGRI)', code: 'LUGRI', score: 8.17, members: 18, predikat: 'Sangat Baik (AB)', isWinner: false },
-  { rank: 5, name: 'Pengembangan SDM (PSDM)', code: 'PSDM', score: 8.16, members: 13, predikat: 'Sangat Baik (AB)', isWinner: false },
-  { rank: 6, name: 'Riset dan Teknologi (RISTEK)', code: 'RISTEK', score: 7.91, members: 15, predikat: 'Sangat Baik (AB)', isWinner: false }
+  { rank: 1, name: 'Pengembangan SDM (PSDM)', code: 'PSDM', score: 8.72, bphScore: 9.50, internalScore: 8.39, members: 13, predikat: 'Sangat Baik (AB)', isWinner: true },
+  { rank: 2, name: 'Dalam Negeri (DAGRI)', code: 'DAGRI', score: 8.46, bphScore: 8.15, internalScore: 8.59, members: 15, predikat: 'Sangat Baik (AB)', isWinner: false },
+  { rank: 3, name: 'Luar Negeri (LUGRI)', code: 'LUGRI', score: 8.31, bphScore: 8.60, internalScore: 8.19, members: 18, predikat: 'Sangat Baik (AB)', isWinner: false },
+  { rank: 4, name: 'Sosial Masyarakat (SOSMAS)', code: 'SOSMAS', score: 8.24, bphScore: 8.25, internalScore: 8.24, members: 18, predikat: 'Sangat Baik (AB)', isWinner: false },
+  { rank: 5, name: 'Kewirausahaan (KWU)', code: 'KWU', score: 7.96, bphScore: 7.00, internalScore: 8.37, members: 15, predikat: 'Sangat Baik (AB)', isWinner: false },
+  { rank: 6, name: 'Riset dan Teknologi (RISTEK)', code: 'RISTEK', score: 7.72, bphScore: 7.25, internalScore: 7.92, members: 15, predikat: 'Sangat Baik (AB)', isWinner: false }
 ];
 
 let currentPaAwardsPeriod = 'september';
@@ -5651,14 +5652,14 @@ function renderSeptemberLeaderboard() {
   const bestDescEl = document.getElementById("bestDeptDescSep");
   const bestStaffCountEl = document.getElementById("bestDeptStaffCountSep");
 
-  if (bestNameEl) bestNameEl.innerText = "Departemen Dalam Negeri";
-  if (bestScoreEl) bestScoreEl.innerText = "8.63";
+  if (bestNameEl) bestNameEl.innerText = "Departemen Pengembangan Sumber Daya Manusia";
+  if (bestScoreEl) bestScoreEl.innerText = "8.72";
   if (bestPredikatEl) bestPredikatEl.innerText = "Sangat Baik (AB)";
   if (bestDescEl) {
-    bestDescEl.innerText = "Departemen Dalam Negeri (DAGRI) kembali berhasil mempertahankan posisi puncak dengan nilai rata-rata fungsionaris 8.63 di lingkungan BEM FTEIC ITS. Dengan partisipasi 100% dari seluruh 15 anggota (Pimpinan, Kabiro, Sekdep, dan Staf), DAGRI konsisten menunjukkan performa kerja solid, komunikasi tanggap, akuntabilitas tinggi, serta kedisiplinan prima sepanjang periode evaluasi September 2026.";
+    bestDescEl.innerText = "Departemen Pengembangan Sumber Daya Manusia (PSDM) sukses meraih predikat Best Department of the Month PA September 2026. Melalui akumulasi formula pembobotan resmi: 30% Evaluasi Objektif BPH (9.50) dan 70% Rata-rata Kinerja Internal Fungsionaris (8.39), PSDM berhasil memimpin peringkat #1 di lingkungan BEM FTEIC ITS dengan total nilai 8.72 berkat kepemimpinan terarah, kaderisasi terstruktur, kedisiplinan kerja tinggi, dan akuntabilitas prima.";
   }
   if (bestStaffCountEl) {
-    bestStaffCountEl.innerHTML = "<strong>15 / 15</strong> Fungsionaris Dinilai";
+    bestStaffCountEl.innerHTML = "<strong>13 / 13</strong> Fungsionaris Dinilai";
   }
 
   rankingListEl.innerHTML = SEPTEMBER_DEPT_RANKINGS.map((dept) => {
@@ -5672,11 +5673,11 @@ function renderSeptemberLeaderboard() {
           <span class="pa-rank-num">${dept.rank}</span>
           <div class="pa-rank-dept-info">
             <span class="pa-rank-dept-name">${escapeHtml(dept.name)} ${dept.rank === 1 ? '🏆' : ''}</span>
-            <span class="pa-rank-dept-meta">${dept.members} Fungsionaris • ${dept.predikat}</span>
+            <span class="pa-rank-dept-meta">${dept.members} Fungsionaris • BPH 30%: ${dept.bphScore.toFixed(2)} | Dept 70%: ${dept.internalScore.toFixed(2)}</span>
           </div>
         </div>
         <div class="pa-rank-score-wrap">
-          <div class="pa-rank-bar-bg" title="Nilai Rata-rata Fungsionaris PA September">
+          <div class="pa-rank-bar-bg" title="Nilai Akhir (30% BPH + 70% Internal)">
             <div class="pa-rank-bar-fill" style="width: ${barWidth}%;"></div>
           </div>
           <span class="pa-rank-score-text" style="${scoreColor}">${dept.score.toFixed(2)}</span>
@@ -5689,12 +5690,12 @@ window.renderSeptemberLeaderboard = renderSeptemberLeaderboard;
 
 // Konfigurasi pembobotan Best Department of the Month: 30% Evaluasi BPH + 70% Internal (Kabinet & Staf)
 const BEM_DEPARTMENTS_CONFIG = {
-  DAGRI: { code: 'DAGRI', name: 'Departemen Dalam Negeri', shortName: 'Dalam Negeri (DAGRI)', memberCount: 15, internalScore: 8.63 },
+  PSDM:  { code: 'PSDM',  name: 'Departemen Pengembangan Sumber Daya Mahasiswa', shortName: 'Pengembangan SDM (PSDM)', memberCount: 13, internalScore: 8.39 },
+  DAGRI: { code: 'DAGRI', name: 'Departemen Dalam Negeri', shortName: 'Dalam Negeri (DAGRI)', memberCount: 15, internalScore: 8.59 },
+  LUGRI: { code: 'LUGRI', name: 'Departemen Luar Negeri', shortName: 'Luar Negeri (LUGRI)', memberCount: 18, internalScore: 8.19 },
+  SOSMAS:{ code: 'SOSMAS',name: 'Departemen Sosial Masyarakat', shortName: 'Sosial Masyarakat (SOSMAS)', memberCount: 18, internalScore: 8.24 },
   KWU:   { code: 'KWU',   name: 'Departemen Kewirausahaan', shortName: 'Kewirausahaan (KWU)', memberCount: 15, internalScore: 8.37 },
-  SOSMAS:{ code: 'SOSMAS',name: 'Departemen Sosial Masyarakat', shortName: 'Sosial Masyarakat (SOSMAS)', memberCount: 18, internalScore: 8.23 },
-  LUGRI: { code: 'LUGRI', name: 'Departemen Luar Negeri', shortName: 'Luar Negeri (LUGRI)', memberCount: 18, internalScore: 8.17 },
-  PSDM:  { code: 'PSDM',  name: 'Departemen Pengembangan Sumber Daya Mahasiswa', shortName: 'Pengembangan SDM (PSDM)', memberCount: 13, internalScore: 8.16 },
-  RISTEK:{ code: 'RISTEK',name: 'Departemen Riset dan Teknologi', shortName: 'Riset dan Teknologi (RISTEK)', memberCount: 15, internalScore: 7.91 }
+  RISTEK:{ code: 'RISTEK',name: 'Departemen Riset dan Teknologi', shortName: 'Riset dan Teknologi (RISTEK)', memberCount: 15, internalScore: 7.92 }
 };
 
 function calculateDepartmentFinalScores() {
