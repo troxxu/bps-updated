@@ -5656,7 +5656,7 @@ function renderSeptemberLeaderboard() {
   if (bestScoreEl) bestScoreEl.innerText = "8.72";
   if (bestPredikatEl) bestPredikatEl.innerText = "Sangat Baik (AB)";
   if (bestDescEl) {
-    bestDescEl.innerText = "Departemen Pengembangan Sumber Daya Manusia (PSDM) sukses meraih predikat Best Department of the Month PA September 2026. Melalui akumulasi formula pembobotan resmi: 30% Evaluasi Objektif BPH (9.50) dan 70% Rata-rata Kinerja Internal Fungsionaris (8.39), PSDM berhasil memimpin peringkat #1 di lingkungan BEM FTEIC ITS dengan total nilai 8.72 berkat kepemimpinan terarah, kaderisasi terstruktur, kedisiplinan kerja tinggi, dan akuntabilitas prima.";
+    bestDescEl.innerText = "Departemen Pengembangan Sumber Daya Manusia (PSDM) sukses meraih predikat Best Department of the Month PA September 2026 dengan nilai rata-rata 8.72 di lingkungan BEM FTEIC ITS. Dengan partisipasi 100% dari seluruh 13 anggota, PSDM konsisten menunjukkan performa kerja solid, kepemimpinan terarah, komunikasi tanggap, akuntabilitas tinggi, serta kedisiplinan prima sepanjang periode evaluasi September 2026.";
   }
   if (bestStaffCountEl) {
     bestStaffCountEl.innerHTML = "<strong>13 / 13</strong> Fungsionaris Dinilai";
@@ -5673,11 +5673,11 @@ function renderSeptemberLeaderboard() {
           <span class="pa-rank-num">${dept.rank}</span>
           <div class="pa-rank-dept-info">
             <span class="pa-rank-dept-name">${escapeHtml(dept.name)} ${dept.rank === 1 ? '🏆' : ''}</span>
-            <span class="pa-rank-dept-meta">${dept.members} Fungsionaris • BPH 30%: ${dept.bphScore.toFixed(2)} | Dept 70%: ${dept.internalScore.toFixed(2)}</span>
+            <span class="pa-rank-dept-meta">${dept.members} Fungsionaris • ${dept.predikat}</span>
           </div>
         </div>
         <div class="pa-rank-score-wrap">
-          <div class="pa-rank-bar-bg" title="Nilai Akhir (30% BPH + 70% Internal)">
+          <div class="pa-rank-bar-bg" title="Nilai Rata-rata Fungsionaris PA September">
             <div class="pa-rank-bar-fill" style="width: ${barWidth}%;"></div>
           </div>
           <span class="pa-rank-score-text" style="${scoreColor}">${dept.score.toFixed(2)}</span>
